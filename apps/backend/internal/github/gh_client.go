@@ -692,6 +692,65 @@ func (c *GHClient) ListRepoBranches(ctx context.Context, owner, repo string) ([]
 	return branches, nil
 }
 
+func (c *GHClient) CreateGist(ctx context.Context, in CreateGistInput) (*GistResponse, error) {
+	payload := struct {
+		Description string                 `json:"description,omitempty"`
+		Public      bool                   `json:"public"`
+		Files       map[string]gistFileDTO `json:"files"`
+	}{
+		Description: in.Description,
+		Public:      in.Public,
+		Files:       make(map[string]gistFileDTO, len(in.Files)),
+	}
+	for name, f := range in.Files {
+		payload.Files[name] = gistFileDTO(f)
+	}
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return nil, fmt.Errorf("marshal gist payload: %w", err)
+	}
+	args := []string{"api", "gists",
+		"-X", "POST",
+		"-H", "Accept: " + githubAccept,
+		"--input", "-",
+	}
+	out, err := c.runWithStdin(ctx, body, args...)
+	if err != nil {
+		return nil, fmt.Errorf("create gist: %w", err)
+	}
+	var resp GistResponse
+	if err := json.Unmarshal([]byte(out), &resp); err != nil {
+		return nil, fmt.Errorf("decode gist response: %w", err)
+	}
+	return &resp, nil
+}
+
+func (c *GHClient) DeleteGist(ctx context.Context, gistID string) error {
+	if gistID == "" {
+		return fmt.Errorf("delete gist: empty id")
+	}
+	_, err := c.run(ctx, "api", "gists/"+gistID, "-X", "DELETE")
+	if err != nil {
+		// gh exits non-zero for HTTP errors; stderr contains the status
+		// line (e.g. "HTTP 404: Not Found"). Promote 404 to *GitHubAPIError
+		// so share.IsAlreadyGone matches consistently — PATClient.delete()
+		// already returns a typed error for the same case, and the share
+		// service uses errors.As to detect "gist already revoked upstream"
+		// and treat it as a soft success rather than a 502. Use isNotFoundErr
+		// so every gh-CLI 404 format ("HTTP 404", "404 Not Found", "status: 404")
+		// is recognised, not just the most common one.
+		if isNotFoundErr(err) {
+			return &GitHubAPIError{
+				StatusCode: http.StatusNotFound,
+				Endpoint:   "/gists/" + gistID,
+				Body:       err.Error(),
+			}
+		}
+		return fmt.Errorf("delete gist %s: %w", gistID, err)
+	}
+	return nil
+}
+
 const ghCLITimeout = 30 * time.Second
 
 // withDefaultGHTimeout applies a 30s timeout if the context has no deadline.
@@ -709,6 +768,23 @@ func (c *GHClient) run(ctx context.Context, args ...string) (string, error) {
 	ctx, cancel := withDefaultGHTimeout(ctx)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "gh", args...)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		c.inspectRateStderr(args, stderr.String())
+		return stdout.String(), fmt.Errorf("gh %s: %w: %s", args[0], err, stderr.String())
+	}
+	return stdout.String(), nil
+}
+
+// runWithStdin is like run but pipes stdin into the gh CLI process.
+// Useful for `gh api --input -` calls where the body comes from JSON.
+func (c *GHClient) runWithStdin(ctx context.Context, stdin []byte, args ...string) (string, error) {
+	ctx, cancel := withDefaultGHTimeout(ctx)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "gh", args...)
+	cmd.Stdin = bytes.NewReader(stdin)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
