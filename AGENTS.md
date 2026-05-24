@@ -101,4 +101,10 @@ When a change is scoped to a single subtree, update the scoped `AGENTS.md` inste
 
 ---
 
-**Last Updated**: 2026-05-16
+## Remote cloud environment
+
+For developing in ephemeral cloud VMs (Cursor Cloud, Codex, GitHub Codespaces, etc.), see [`docs/remote-cloud-environment.md`](docs/remote-cloud-environment.md) — covers runtime requirements, generated-file gotchas, and dev-mode setup.
+
+---
+
+**Last Updated**: 2026-05-24
