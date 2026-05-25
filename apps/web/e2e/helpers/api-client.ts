@@ -7,6 +7,13 @@ import type {
   TaskSessionState,
 } from "../../lib/types/http";
 import type { Agent, AgentProfile } from "../../lib/types/http-agents";
+import type {
+  SSHAgentReadinessResponse,
+  SSHProbeShellsResponse,
+  SSHSession,
+  SSHTestRequest,
+  SSHTestResult,
+} from "../../lib/types/http-ssh";
 
 // --- GitHub Mock Types ---
 
@@ -1000,6 +1007,7 @@ export class ApiClient {
       task_environment_id?: string;
       worktree_path?: string;
       worktree_branch?: string;
+      error_message?: string;
     }>;
     total: number;
   }> {
@@ -1531,6 +1539,57 @@ export class ApiClient {
     return fetch(`${this.baseUrl}/api/v1/office/runtime/memory${path}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+  }
+
+  // --- SSH executor helpers ---
+
+  /**
+   * Create an SSH executor. The `config` map carries the fields the SSH
+   * runtime reads at launch time: ssh_host / ssh_port / ssh_user /
+   * ssh_host_fingerprint / ssh_identity_source / ssh_identity_file /
+   * ssh_proxy_jump. Pre-trusting a fingerprint here lets tests skip the UI
+   * test-then-trust flow.
+   */
+  async createSSHExecutor(
+    name: string,
+    config: Record<string, string>,
+  ): Promise<{ id: string; name: string; type: string; config: Record<string, string> }> {
+    return this.request("POST", "/api/v1/executors", { name, type: "ssh", config });
+  }
+
+  async updateExecutor(
+    executorId: string,
+    patch: { name?: string; config?: Record<string, string> },
+  ): Promise<void> {
+    await this.request("PATCH", `/api/v1/executors/${executorId}`, patch);
+  }
+
+  async getExecutor(executorId: string): Promise<{
+    id: string;
+    name: string;
+    type: string;
+    config?: Record<string, string>;
+  }> {
+    return this.request("GET", `/api/v1/executors/${executorId}`);
+  }
+
+  async testSSHConnection(req: SSHTestRequest): Promise<SSHTestResult> {
+    return this.request("POST", "/api/v1/ssh/test", req);
+  }
+
+  async listSSHSessions(executorId: string): Promise<SSHSession[]> {
+    return this.request("GET", `/api/v1/ssh/executors/${executorId}/sessions`);
+  }
+
+  async probeSSHAgents(
+    executorId: string,
+    body?: { shell?: string },
+  ): Promise<SSHAgentReadinessResponse> {
+    return this.request("POST", `/api/v1/ssh/executors/${executorId}/probe-agents`, body ?? {});
+  }
+
+  async probeSSHShells(executorId: string): Promise<SSHProbeShellsResponse> {
+    return this.request("POST", `/api/v1/ssh/executors/${executorId}/probe-shells`);
   }
 }
 

@@ -82,6 +82,30 @@ const (
 
 	// Office metadata keys
 	MetadataKeySkillManifestJSON = "skill_manifest_json"
+
+	// SSH runtime metadata keys (per-session, except SSHWorkdirRoot which is per-profile).
+	MetadataKeySSHHostAlias          = "ssh_host_alias"
+	MetadataKeySSHHost               = "ssh_host"
+	MetadataKeySSHPort               = "ssh_port"
+	MetadataKeySSHUser               = "ssh_user"
+	MetadataKeySSHHostFingerprint    = "ssh_host_fingerprint"
+	MetadataKeySSHRemoteTaskDir      = "ssh_remote_task_dir"
+	MetadataKeySSHRemoteSessionDir   = "ssh_remote_session_dir"
+	MetadataKeySSHRemoteAgentctlPort = "ssh_remote_agentctl_port"
+	MetadataKeySSHRemoteAgentctlPID  = "ssh_remote_agentctl_pid"
+	MetadataKeySSHLocalForwardPort   = "ssh_local_forward_port"
+	MetadataKeySSHRemoteAgentctlURL  = "ssh_remote_agentctl_url"
+	MetadataKeySSHWorkdirRoot        = "ssh_workdir_root"
+	MetadataKeySSHProxyJump          = "ssh_proxy_jump"
+	MetadataKeySSHIdentitySource     = "ssh_identity_source"
+	MetadataKeySSHIdentityFile       = "ssh_identity_file"
+	// MetadataKeySSHShell names the login shell used when running commands
+	// over SSH on the remote (probe, agentctl launch, install, setup
+	// scripts). Empty / unset falls back to "bash" at runtime — see
+	// WrapLoginShell. Stored per-profile so different profiles on the same
+	// host can use different shells; flows into req.Metadata via the
+	// standard executor-config merge in buildLaunchMetadata.
+	MetadataKeySSHShell = "ssh_shell"
 )
 
 // persistentMetadataKeys lists metadata keys carried forward from a previous
@@ -94,6 +118,23 @@ var persistentMetadataKeys = map[string]bool{
 	MetadataKeySpriteState:     true,
 	MetadataKeySpriteCreatedAt: true,
 	MetadataKeyLocalPort:       true,
+
+	// SSH runtime
+	MetadataKeySSHHost:               true,
+	MetadataKeySSHPort:               true,
+	MetadataKeySSHUser:               true,
+	MetadataKeySSHHostFingerprint:    true,
+	MetadataKeySSHRemoteTaskDir:      true,
+	MetadataKeySSHRemoteSessionDir:   true,
+	MetadataKeySSHRemoteAgentctlPort: true,
+	MetadataKeySSHRemoteAgentctlPID:  true,
+	MetadataKeySSHLocalForwardPort:   true,
+	MetadataKeySSHRemoteAgentctlURL:  true,
+	MetadataKeySSHWorkdirRoot:        true,
+	MetadataKeySSHProxyJump:          true,
+	MetadataKeySSHIdentitySource:     true,
+	MetadataKeySSHIdentityFile:       true,
+	MetadataKeySSHShell:              true,
 
 	// Executor type marker
 	MetadataKeyIsRemote: true,
@@ -120,6 +161,21 @@ var persistentMetadataPrefixes = []string{
 	"env_secret_id_", // Secret store UUIDs for profile env vars
 }
 
+// sessionScopedMetadataKeys lists metadata keys that point to per-session
+// runtime resources (process PIDs, allocated ports, session directories on
+// the remote). These keys ARE persisted across a SAME-session resume — that's
+// how a backend restart reattaches to a still-running remote agent — but they
+// MUST NOT be carried across SIBLING sessions on the same task. If they were,
+// the second session would try to attach to the first session's agentctl
+// process and end up sharing its ACP session and instance port.
+var sessionScopedMetadataKeys = map[string]bool{
+	MetadataKeySSHRemoteSessionDir:   true,
+	MetadataKeySSHRemoteAgentctlPort: true,
+	MetadataKeySSHRemoteAgentctlPID:  true,
+	MetadataKeySSHLocalForwardPort:   true,
+	MetadataKeySSHRemoteAgentctlURL:  true,
+}
+
 // ShouldPersistMetadataKey returns true if the given metadata key should
 // be carried forward when resuming a session from an ExecutorRunning record.
 func ShouldPersistMetadataKey(key string) bool {
@@ -132,6 +188,13 @@ func ShouldPersistMetadataKey(key string) bool {
 		}
 	}
 	return false
+}
+
+// IsSessionScopedMetadataKey reports whether key references per-session
+// runtime resources that must not leak across sibling sessions on the same
+// task environment.
+func IsSessionScopedMetadataKey(key string) bool {
+	return sessionScopedMetadataKeys[key]
 }
 
 // FilterPersistentMetadata returns a copy of src containing only keys that

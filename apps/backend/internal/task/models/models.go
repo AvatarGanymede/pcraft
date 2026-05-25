@@ -13,6 +13,13 @@ import (
 // ErrExecutorRunningNotFound is returned when no executor running record exists for a session.
 var ErrExecutorRunningNotFound = errors.New("executor running not found")
 
+// ErrExecutorNotFound is returned by the executor repository when no
+// executor row exists for the given ID. Callers should use errors.Is to
+// distinguish "row doesn't exist" (404 semantically) from transport-level
+// failures (storage outage, timeout, ctx cancel) that happen to also
+// surface from the same lookup.
+var ErrExecutorNotFound = errors.New("executor not found")
+
 // ErrExecutionRotated is returned by CAS-style updates on executors_running when the
 // row's agent_execution_id has rotated since the caller observed it. Indicates the
 // caller's write target a now-defunct execution and should be discarded — typically
@@ -513,6 +520,7 @@ const (
 	ExecutorTypeLocalDocker  ExecutorType = "local_docker"
 	ExecutorTypeRemoteDocker ExecutorType = "remote_docker"
 	ExecutorTypeSprites      ExecutorType = "sprites"
+	ExecutorTypeSSH          ExecutorType = "ssh"
 	ExecutorTypeMockRemote   ExecutorType = "mock_remote"
 )
 
@@ -521,7 +529,7 @@ const (
 // These environments run shells inside the container/VM, not on the host.
 func IsRemoteExecutorType(t ExecutorType) bool {
 	switch t {
-	case ExecutorTypeSprites, ExecutorTypeRemoteDocker, ExecutorTypeLocalDocker, ExecutorTypeMockRemote:
+	case ExecutorTypeSprites, ExecutorTypeRemoteDocker, ExecutorTypeLocalDocker, ExecutorTypeSSH, ExecutorTypeMockRemote:
 		return true
 	default:
 		return false
@@ -543,6 +551,8 @@ func (t ExecutorType) Runtime() agentruntime.Runtime {
 		return agentruntime.RuntimeRemoteDocker
 	case ExecutorTypeSprites:
 		return agentruntime.RuntimeSprites
+	case ExecutorTypeSSH:
+		return agentruntime.RuntimeSSH
 	default:
 		return agentruntime.RuntimeStandalone
 	}
@@ -560,7 +570,7 @@ func IsContainerizedExecutorType(t ExecutorType) bool {
 // IsAlwaysResumableRuntime reports whether the given runtime represents
 // an executor that can always be resumed even without an explicit resume token.
 func IsAlwaysResumableRuntime(runtime agentruntime.Runtime) bool {
-	return runtime == agentruntime.RuntimeSprites
+	return runtime == agentruntime.RuntimeSprites || runtime == agentruntime.RuntimeSSH
 }
 
 const (

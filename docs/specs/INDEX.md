@@ -104,6 +104,7 @@ System pages (Radarr/Sonarr-style) for status, disk usage, database maintenance,
 | [improve-kandev](improve-kandev/spec.md) | draft |
 | [homebrew-core](homebrew-core/spec.md) | draft |
 | [public-share-links](public-share-links/spec.md) | draft |
+| [ssh-executor](ssh-executor/spec.md) | draft |
 
 ---
 

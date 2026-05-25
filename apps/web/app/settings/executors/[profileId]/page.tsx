@@ -25,6 +25,7 @@ import {
   rowsToEnvVars,
 } from "@/components/settings/profile-edit/env-vars-card";
 import { ScriptCard } from "@/components/settings/profile-edit/script-card";
+import { SSHAgentReadinessCard } from "@/components/settings/ssh-agent-readiness-card";
 import {
   type GitIdentityMode,
   type GitIdentityState,
@@ -84,10 +85,15 @@ function parseRemoteCredentials(config?: Record<string, string>): string[] {
 }
 
 function useRemoteExecutorFlags(executorType: ExecutorType) {
+  // SSH joins the "remote" set because it runs the agent on a host whose
+  // filesystem doesn't share paths with the kandev backend — so the same
+  // remote-credentials + auth-secrets surface applies (the SSH executor
+  // SFTPs files into the remote user's $HOME).
   const isRemote =
     executorType === "local_docker" ||
     executorType === "remote_docker" ||
-    executorType === "sprites";
+    executorType === "sprites" ||
+    executorType === "ssh";
   return {
     isRemote,
     isDocker: executorType === "local_docker" || executorType === "remote_docker",
@@ -405,15 +411,29 @@ function ProfileEditSections({
   profile,
   form,
   secrets,
+  onShellChange,
 }: {
   executor: Executor;
   profile: ExecutorProfile;
   form: ReturnType<typeof useProfileFormState>;
   secrets: ReturnType<typeof useSecrets>["items"];
+  onShellChange?: (shell: string) => Promise<void>;
 }) {
+  const isSSH = executor.type === "ssh";
   return (
     <>
       <ProfileDetailsCard name={form.name} onNameChange={form.setName} />
+      {isSSH && (
+        // SSH-specific: lives right after profile details (top of the page)
+        // because the very next question after "name this profile" on an
+        // SSH host is "which agents are installed here". Drives the shell
+        // selector that governs every subsequent SSH command run by kandev.
+        <SSHAgentReadinessCard
+          executorId={executor.id}
+          shell={profile.config?.ssh_shell}
+          onShellChange={onShellChange}
+        />
+      )}
       {form.isSprites && (
         <SpritesApiKeyCard
           secretId={form.spritesSecretId}
@@ -506,6 +526,28 @@ function ProfileEditForm({ executor, profile }: { executor: Executor; profile: E
     });
   };
 
+  // Shell selector lives on the SSH readiness card and persists out-of-band
+  // from the main Save button — users twiddling the dropdown shouldn't have
+  // to remember to press Save afterwards. The PATCH carries the full
+  // (merged) config so the backend's config-replace semantics don't wipe
+  // adjacent keys (workdir_root, prepare_script env, etc.). Key name is
+  // ssh_shell to match MetadataKeySSHShell — buildLaunchMetadata copies
+  // profile.config keys verbatim into req.Metadata, so the same string
+  // has to identify the shell on both sides.
+  const handleShellChange = useCallback(
+    async (next: string) => {
+      const mergedConfig = { ...(profile.config ?? {}), ssh_shell: next };
+      await persistence.save({
+        name: profile.name,
+        config: mergedConfig,
+        prepare_script: profile.prepare_script ?? "",
+        cleanup_script: profile.cleanup_script ?? "",
+        env_vars: profile.env_vars ?? [],
+      });
+    },
+    [persistence, profile],
+  );
+
   const handleDelete = (options?: { removeRelatedDockerContainers?: boolean }) => {
     const beforeDelete = options?.removeRelatedDockerContainers
       ? async () => {
@@ -525,7 +567,13 @@ function ProfileEditForm({ executor, profile }: { executor: Executor; profile: E
         profileName={profile.name}
         description={getExecutorDescription(executor.type)}
       />
-      <ProfileEditSections executor={executor} profile={profile} form={form} secrets={secrets} />
+      <ProfileEditSections
+        executor={executor}
+        profile={profile}
+        form={form}
+        secrets={secrets}
+        onShellChange={handleShellChange}
+      />
       {spritesTokenMissing && (
         <p className="text-sm text-destructive">Sprites API key is required.</p>
       )}
