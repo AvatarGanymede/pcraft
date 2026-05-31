@@ -24,6 +24,11 @@ import (
 // Used when a caller omits priority so the DB CHECK constraint is satisfied.
 const defaultPriority = "medium"
 
+// ErrSubtaskDepthExceeded is returned when a caller tries to create a
+// subtask of a kanban subtask (nesting depth > 1). Office task trees are
+// intentionally exempt.
+var ErrSubtaskDepthExceeded = fmt.Errorf("cannot create a subtask of a subtask — maximum nesting depth is 1 for kanban tasks. Create a sibling task under the same parent or a top-level task instead")
+
 type taskStopTarget struct {
 	sessionID   string
 	executionID string
@@ -51,6 +56,9 @@ func isOfficeRequest(req *CreateTaskRequest) bool {
 // Ephemeral tasks (quick chat, config chat) must NOT have a workflow.
 func (s *Service) CreateTask(ctx context.Context, req *CreateTaskRequest) (*models.Task, error) {
 	if err := s.validateCreateTaskRequest(req); err != nil {
+		return nil, err
+	}
+	if err := s.validateSubtaskDepth(ctx, req); err != nil {
 		return nil, err
 	}
 
@@ -155,6 +163,22 @@ func (s *Service) validateCreateTaskRequest(req *CreateTaskRequest) error {
 	}
 	if req.IsEphemeral && req.WorkflowID != "" {
 		return fmt.Errorf("workflow_id must be empty for ephemeral tasks")
+	}
+	return nil
+}
+
+// validateSubtaskDepth prevents nesting deeper than one level for kanban
+// (non-office) tasks. Office task trees intentionally allow arbitrary depth.
+func (s *Service) validateSubtaskDepth(ctx context.Context, req *CreateTaskRequest) error {
+	if req.ParentID == "" {
+		return nil
+	}
+	parent, err := s.tasks.GetTask(ctx, req.ParentID)
+	if err != nil {
+		return fmt.Errorf("invalid parent_id: %w", err)
+	}
+	if parent.ParentID != "" && !parent.IsFromOffice {
+		return ErrSubtaskDepthExceeded
 	}
 	return nil
 }

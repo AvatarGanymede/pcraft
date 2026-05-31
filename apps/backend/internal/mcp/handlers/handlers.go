@@ -454,6 +454,11 @@ func (h *Handlers) handleCreateTask(ctx context.Context, msg *ws.Message) (*ws.M
 	})
 	if err != nil {
 		h.logger.Error("failed to create task", zap.Error(err))
+		// Defense-in-depth: resolveTaskRepositories already catches this for the
+		// MCP path, but non-MCP callers (UI, internal engine) reach here directly.
+		if errors.Is(err, service.ErrSubtaskDepthExceeded) {
+			return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, err.Error(), nil)
+		}
 		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeInternalError, "Failed to create task", nil)
 	}
 
@@ -496,6 +501,9 @@ func (h *Handlers) resolveTaskRepositories(
 		}
 		if parent.IsEphemeral {
 			return taskRepoResult{}, fmt.Errorf("cannot create subtasks of an ephemeral task (quick chat); omit parent_id to create a top-level task")
+		}
+		if parent.ParentID != "" && !parent.IsFromOffice {
+			return taskRepoResult{}, service.ErrSubtaskDepthExceeded
 		}
 		repos := explicitRepos
 		if repos == nil {
