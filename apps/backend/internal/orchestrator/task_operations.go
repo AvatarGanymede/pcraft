@@ -2199,6 +2199,28 @@ func (s *Service) RespondToPermission(ctx context.Context, sessionID, pendingID,
 	return nil
 }
 
+// DrainQueuedMessage dispatches one queued message for a session that is ready
+// for input. It is intentionally one-at-a-time: each successful prompt will
+// complete its own turn and then drain the next entry through handleAgentReady.
+func (s *Service) DrainQueuedMessage(ctx context.Context, sessionID string) (bool, error) {
+	if sessionID == "" {
+		return false, fmt.Errorf("session_id is required")
+	}
+	session, err := s.repo.GetTaskSession(ctx, sessionID)
+	if err != nil {
+		return false, fmt.Errorf("failed to get session: %w", err)
+	}
+	if err := s.checkSessionPromptable(session.TaskID, sessionID, session.State); err != nil {
+		return false, err
+	}
+	return s.drainQueuedMessageForPromptableSession(ctx, sessionID), nil
+}
+
+func (s *Service) isCancelInFlight(sessionID string) bool {
+	_, ok := s.cancelInFlight.Load(sessionID)
+	return ok
+}
+
 // CancelAgent interrupts the current agent turn without terminating the process,
 // allowing the user to send a new prompt.
 //

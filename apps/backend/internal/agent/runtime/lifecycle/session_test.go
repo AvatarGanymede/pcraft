@@ -36,13 +36,7 @@ func newSessionTestLogger() *logger.Logger {
 func newTestStopCh(t *testing.T) chan struct{} {
 	t.Helper()
 	stopCh := make(chan struct{})
-	t.Cleanup(func() {
-		select {
-		case <-stopCh:
-		default:
-			close(stopCh)
-		}
-	})
+	t.Cleanup(func() { closeStopChOnce(stopCh) })
 	return stopCh
 }
 
@@ -221,6 +215,7 @@ func TestInitializeAndPrompt_StreamBeforeInitialize(t *testing.T) {
 	streamMgr := NewStreamManager(log, StreamCallbacks{
 		OnAgentEvent: func(execution *AgentExecution, event agentctl.AgentEvent) {},
 	}, nil, stopCh)
+	cleanupStreamManager(t, stopCh, streamMgr)
 	sm.SetDependencies(nil, streamMgr, nil, nil)
 
 	client := createTestClient(t, mock.server.URL)
@@ -295,6 +290,7 @@ func TestInitializeAndPrompt_StreamTimeout(t *testing.T) {
 	streamMgr := NewStreamManager(log, StreamCallbacks{
 		OnAgentEvent: func(execution *AgentExecution, event agentctl.AgentEvent) {},
 	}, nil, stopCh)
+	cleanupStreamManager(t, stopCh, streamMgr)
 	sm.SetDependencies(nil, streamMgr, nil, nil)
 
 	// Bind to a random port and immediately close it so the port is guaranteed
@@ -357,6 +353,7 @@ func TestInitializeAndPrompt_WithTaskDescription(t *testing.T) {
 	streamMgr := NewStreamManager(log, StreamCallbacks{
 		OnAgentEvent: func(execution *AgentExecution, event agentctl.AgentEvent) {},
 	}, nil, stopCh)
+	cleanupStreamManager(t, stopCh, streamMgr)
 	sm.SetDependencies(nil, streamMgr, nil, nil)
 
 	client := createTestClient(t, mock.server.URL)
