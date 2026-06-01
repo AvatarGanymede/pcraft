@@ -1788,10 +1788,10 @@ func (s *Service) publishSessionWaitingEvent(ctx context.Context, taskID, sessio
 		return
 	}
 	eventData := map[string]interface{}{
-		"task_id":          taskID,
-		"session_id":       sessionID,
+		metaKeyTaskID:      taskID,
+		metaKeySessionID:   sessionID,
 		"workflow_step_id": stepID,
-		"new_state":        string(models.TaskSessionStateWaitingForInput),
+		metaKeyNewState:    string(models.TaskSessionStateWaitingForInput),
 	}
 	// Include agent_profile_id and session metadata so the frontend can
 	// identify the agent (e.g. MCP support) without waiting for SSR hydration.
@@ -1802,6 +1802,9 @@ func (s *Service) publishSessionWaitingEvent(ctx context.Context, taskID, sessio
 		session = s
 	}
 	if session != nil {
+		if !session.UpdatedAt.IsZero() {
+			eventData[metaKeyUpdatedAt] = session.UpdatedAt.UTC().Format(time.RFC3339Nano)
+		}
 		if session.AgentProfileID != "" {
 			eventData["agent_profile_id"] = session.AgentProfileID
 		}
@@ -1831,14 +1834,17 @@ func (s *Service) publishSessionCreatedEvent(ctx context.Context, taskID, sessio
 		return
 	}
 	eventData := map[string]interface{}{
-		"task_id":    taskID,
-		"session_id": sessionID,
-		"new_state":  string(models.TaskSessionStateCreated),
+		metaKeyTaskID:    taskID,
+		metaKeySessionID: sessionID,
+		metaKeyNewState:  string(models.TaskSessionStateCreated),
 	}
 	if stepID != "" {
 		eventData["workflow_step_id"] = stepID
 	}
 	if session, err := s.repo.GetTaskSession(ctx, sessionID); err == nil && session != nil {
+		if !session.UpdatedAt.IsZero() {
+			eventData[metaKeyUpdatedAt] = session.UpdatedAt.UTC().Format(time.RFC3339Nano)
+		}
 		if session.AgentProfileID != "" {
 			eventData["agent_profile_id"] = session.AgentProfileID
 		}
