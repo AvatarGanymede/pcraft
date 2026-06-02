@@ -854,7 +854,7 @@ func TestHandleCreateTask_BlockedBy_Accepted(t *testing.T) {
 	assertWSError(t, resp, ws.ErrorCodeValidation)
 }
 
-func TestHandleClarificationTimeout_MarksMessagesExpired(t *testing.T) {
+func TestHandleClarificationTimeout_DetachesMessages(t *testing.T) {
 	svc, repo := newTestTaskService(t)
 	ctx := context.Background()
 
@@ -908,15 +908,16 @@ func TestHandleClarificationTimeout_MarksMessagesExpired(t *testing.T) {
 
 	msgs, err := repo.FindPendingClarificationMessagesBySessionID(ctx, sess.ID)
 	require.NoError(t, err)
-	require.Empty(t, msgs, "all clarification messages should be expired")
+	require.Len(t, msgs, 1, "clarification should stay pending for deferred answer")
+	require.Equal(t, true, msgs[0].Metadata["agent_disconnected"])
 }
 
-func TestHandleClarificationTimeout_WithoutCanceller_ReturnsZero(t *testing.T) {
+func TestHandleClarificationTimeout_WithoutCanceller_ReturnsError(t *testing.T) {
 	h := &Handlers{sessionCanceller: nil, logger: testLogger(t).WithFields()}
 	msg := makeWSMessage(t, ws.ActionMCPClarificationTimeout, map[string]interface{}{"session_id": "s1"})
 	resp, err := h.handleClarificationTimeout(context.Background(), msg)
 	require.NoError(t, err)
-	require.Equal(t, ws.MessageTypeResponse, resp.Type)
+	assertWSError(t, resp, ws.ErrorCodeInternalError)
 }
 
 func TestHandleAskUserQuestion_Dedup_CreatesOnePendingBundle(t *testing.T) {
