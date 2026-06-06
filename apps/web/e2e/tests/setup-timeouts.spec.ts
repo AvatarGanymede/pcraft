@@ -1,4 +1,8 @@
 import { test, expect } from "../fixtures/test-base";
+import { useRegularMode } from "../helpers/regular-mode";
+
+// Exercises the regular task-create dialog (New Task in the sidebar); run with office off.
+useRegularMode();
 
 test.describe("First-time setup: timeouts and error handling", () => {
   // Allow one retry for transient cold-start timing issues on first test.

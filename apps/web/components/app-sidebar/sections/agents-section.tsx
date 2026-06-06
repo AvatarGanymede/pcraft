@@ -3,32 +3,42 @@
 import { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { IconPlus, IconRobot } from "@tabler/icons-react";
+import { Button } from "@kandev/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
+import { useInOffice } from "@/hooks/use-in-office";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";
 import { listAgentProfiles } from "@/lib/api/domains/office-api";
 import { cn } from "@/lib/utils";
 import type { AgentProfile } from "@/lib/state/slices/office/types";
 import { selectActiveSessionsForAgent } from "@/lib/state/slices/session/selectors";
-import { SidebarCollapsibleSection } from "./sidebar-collapsible-section";
-import { AgentAvatar } from "./agent-avatar";
-import { AgentStatusDot } from "../agents/components/agent-status-dot";
-import { LiveAgentIndicator } from "../agents/components/live-agent-indicator";
+import { AgentAvatar } from "@/app/office/components/agent-avatar";
+import { AgentStatusDot } from "@/app/office/agents/components/agent-status-dot";
+import { LiveAgentIndicator } from "@/app/office/agents/components/live-agent-indicator";
+import {
+  APP_SIDEBAR_SECTION_IDS,
+  SIDEBAR_ITEM_ACTIVE,
+  SIDEBAR_ITEM_INACTIVE,
+} from "../app-sidebar-constants";
+import { AppSidebarSection } from "../app-sidebar-section";
 
-export function SidebarAgentsList() {
+type AgentsSectionProps = {
+  collapsed: boolean;
+};
+
+export function AgentsSection({ collapsed }: AgentsSectionProps) {
   const router = useRouter();
+  const inOffice = useInOffice();
   const agents = useAppStore((s) => s.office.agentProfiles);
   const workspaceId = useAppStore((s) => s.workspaces.activeId);
   const setOfficeAgentProfiles = useAppStore((s) => s.setOfficeAgentProfiles);
 
-  // Refetch agents on mount and on WS "agents" events. This ensures the
-  // sidebar (and any page that reads agentProfiles from the store, such
-  // as the org chart and agent detail layout) recovers from stale SSR
-  // hydration without waiting for a user action or WS event to arrive.
   const refetchAgents = useCallback(async () => {
-    if (!workspaceId) return;
+    if (!workspaceId || !inOffice) return;
     const res = await listAgentProfiles(workspaceId).catch(() => ({ agents: [] }));
     setOfficeAgentProfiles(res.agents ?? []);
-  }, [workspaceId, setOfficeAgentProfiles]);
+  }, [workspaceId, inOffice, setOfficeAgentProfiles]);
 
   useEffect(() => {
     refetchAgents();
@@ -36,23 +46,43 @@ export function SidebarAgentsList() {
 
   useOfficeRefetch("agents", refetchAgents);
 
+  if (!inOffice) return null;
+
+  const headerAction = (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-5 w-5 cursor-pointer"
+          aria-label="Add agent"
+          onClick={() => router.push("/office/agents")}
+        >
+          <IconPlus className="h-3 w-3 text-muted-foreground/60" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Add agent</TooltipContent>
+    </Tooltip>
+  );
+
   return (
-    <SidebarCollapsibleSection label="Agents" onAdd={() => router.push("/office/agents")}>
+    <AppSidebarSection
+      id={APP_SIDEBAR_SECTION_IDS.agents}
+      label="Agents"
+      collapsed={collapsed}
+      icon={IconRobot}
+      headerAction={headerAction}
+    >
       {agents.length === 0 ? (
         <p className="px-3 py-2 text-xs text-muted-foreground">No agents yet</p>
       ) : (
-        agents.map((agent) => <SidebarAgentRow key={agent.id} agent={agent} />)
+        agents.map((agent) => <AgentRow key={agent.id} agent={agent} />)
       )}
-    </SidebarCollapsibleSection>
+    </AppSidebarSection>
   );
 }
 
-// Row is its own component so each one can subscribe to the live-session
-// count selector independently. For typical office workspaces (under ~20
-// agents) the per-row subscription is cheap; if the list ever grows much
-// larger, refactor into a single bulk selector that returns a map keyed
-// by agent id.
-function SidebarAgentRow({ agent }: { agent: AgentProfile }) {
+function AgentRow({ agent }: { agent: AgentProfile }) {
   const pathname = usePathname();
   const href = `/office/agents/${agent.id}`;
   const isActive = pathname === href;
@@ -71,8 +101,8 @@ function SidebarAgentRow({ agent }: { agent: AgentProfile }) {
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-2.5 px-3 py-1.5 text-[13px] font-medium rounded-md cursor-pointer",
-        isActive ? "bg-accent text-foreground" : "text-foreground/80 hover:bg-muted/60",
+        "flex items-center gap-2.5 px-2.5 py-1.5 text-[13px] font-medium rounded-md cursor-pointer",
+        isActive ? SIDEBAR_ITEM_ACTIVE : SIDEBAR_ITEM_INACTIVE,
       )}
     >
       <AgentAvatar role={agent.role} name={agent.name} size="sm" />
@@ -87,10 +117,7 @@ function SidebarAgentRow({ agent }: { agent: AgentProfile }) {
         </span>
       ) : null}
       {!isAutoPaused && errorCount > 0 ? (
-        <span
-          data-testid="sidebar-agent-error-count"
-          className="rounded-full bg-red-500/15 text-red-600 dark:text-red-400 px-1.5 py-0.5 text-[10px] font-medium"
-        >
+        <span className="rounded-full bg-red-500/15 text-red-600 dark:text-red-400 px-1.5 py-0.5 text-[10px] font-medium">
           {errorCount} error{errorCount === 1 ? "" : "s"}
         </span>
       ) : null}

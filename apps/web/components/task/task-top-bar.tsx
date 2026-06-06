@@ -2,24 +2,9 @@
 
 import { memo, type ReactNode } from "react";
 import Link from "next/link";
-import { IconBug, IconDots, IconHome, IconSettings } from "@tabler/icons-react";
+import { IconBug } from "@tabler/icons-react";
 import { Button } from "@kandev/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@kandev/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@kandev/ui/breadcrumb";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
 import { EditorsMenu } from "@/components/task/editors-menu";
 import { LayoutPresetSelector } from "@/components/task/layout-preset-selector";
@@ -35,12 +20,6 @@ import { useLinearAvailable } from "@/hooks/domains/linear/use-linear-availabili
 import { PortForwardButton } from "@/components/task/port-forward-dialog";
 import { ExecutorSettingsButton } from "@/components/task/executor-settings-button";
 import { WorkflowStepper, type WorkflowStepperStep } from "@/components/task/workflow-stepper";
-import { QuickChatButton } from "@/components/task/quick-chat-button";
-import {
-  TopbarActionOverflow,
-  type TopbarOverflowItem,
-} from "@/components/task/topbar-action-overflow";
-import { IntegrationsMenu } from "@/components/integrations/integrations-menu";
 import { isDebugUI } from "@/lib/config";
 
 type TaskTopBarProps = {
@@ -91,7 +70,7 @@ const TaskTopBar = memo(function TaskTopBar({
   return (
     <header
       data-testid="task-topbar"
-      className="@container/topbar grid grid-cols-[minmax(0,1fr)_minmax(0,auto)_minmax(0,1fr)] items-center gap-2 overflow-hidden px-3 py-1 border-b border-border"
+      className="@container/topbar grid h-10 shrink-0 grid-cols-[minmax(0,1fr)_minmax(0,auto)_minmax(0,1fr)] items-center gap-2 overflow-hidden px-3 py-1 border-b border-border"
     >
       <TopBarLeft
         taskId={taskId}
@@ -161,7 +140,8 @@ function IssueTrackerButtons({
   );
 }
 
-/** Left section: home → task name breadcrumb, integrations menu, executor info */
+/** Left section: task name breadcrumb + executor info. Home + integrations
+ *  moved to the unified AppSidebar in the UI overhaul. */
 function TopBarLeft({
   taskId,
   activeSessionId,
@@ -174,18 +154,6 @@ function TopBarLeft({
     <div className="flex items-center gap-2.5 min-w-0 overflow-hidden">
       <Breadcrumb className="min-w-0">
         <BreadcrumbList className="flex-nowrap text-sm min-w-0">
-          <BreadcrumbItem className="shrink-0">
-            <BreadcrumbLink asChild>
-              <Link
-                href="/"
-                className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
-                data-testid="task-breadcrumb-home"
-              >
-                <IconHome className="h-4 w-4" />
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator className="shrink-0" />
           <BreadcrumbItem className="min-w-0">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -198,8 +166,6 @@ function TopBarLeft({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-
-      <IntegrationsMenu />
 
       {!isArchived && showExecutorSettings && (
         <ExecutorSettingsButton taskId={taskId} sessionId={activeSessionId ?? null} />
@@ -227,66 +193,28 @@ function TopbarCluster({
   );
 }
 
-function MoreToolsMenu({
+function DebugOverlayToggle({
   showDebugOverlay,
   onToggleDebugOverlay,
 }: {
   showDebugOverlay?: boolean;
-  onToggleDebugOverlay?: () => void;
+  onToggleDebugOverlay: () => void;
 }) {
-  const showDebugItem = isDebugUI() && onToggleDebugOverlay;
-  const debugLabel = showDebugOverlay ? "Hide Debug Info" : "Show Debug Info";
-
-  return (
-    <DropdownMenu>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-8 cursor-pointer px-2"
-              aria-label="More task tools"
-            >
-              <IconDots className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent>More tools</TooltipContent>
-      </Tooltip>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel className="text-xs">More tools</DropdownMenuLabel>
-        {showDebugItem && (
-          <>
-            <DropdownMenuItem className="cursor-pointer gap-2" onClick={onToggleDebugOverlay}>
-              <IconBug className="h-4 w-4 text-muted-foreground" />
-              <span>{debugLabel}</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </>
-        )}
-        <DropdownMenuItem asChild className="cursor-pointer gap-2">
-          <Link href="/settings/general">
-            <IconSettings className="h-4 w-4 text-muted-foreground" />
-            <span>Settings</span>
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function SettingsButton() {
+  const label = showDebugOverlay ? "Hide Debug Info" : "Show Debug Info";
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button asChild size="sm" variant="outline" className="h-8 cursor-pointer px-2">
-          <Link href="/settings/general" aria-label="Settings">
-            <IconSettings className="h-4 w-4" />
-          </Link>
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8 cursor-pointer px-2"
+          onClick={onToggleDebugOverlay}
+          aria-label={label}
+        >
+          <IconBug className="h-4 w-4" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Settings</TooltipContent>
+      <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
 }
@@ -341,7 +269,7 @@ function TopbarToolsGroup({
   onToggleDebugOverlay?: () => void;
   isArchived?: boolean;
 }) {
-  const showDebugMenu = isDebugUI() && onToggleDebugOverlay;
+  const showDebugToggle = isDebugUI() && onToggleDebugOverlay;
 
   return (
     <TopbarCluster label="Task tools" className="[&_button]:h-8 [&_button]:text-xs">
@@ -351,19 +279,19 @@ function TopbarToolsGroup({
           <EditorsMenu activeSessionId={activeSessionId ?? null} />
         </>
       )}
-      {showDebugMenu ? (
-        <MoreToolsMenu
+      {showDebugToggle && (
+        <DebugOverlayToggle
           showDebugOverlay={showDebugOverlay}
           onToggleDebugOverlay={onToggleDebugOverlay}
         />
-      ) : (
-        <SettingsButton />
       )}
     </TopbarCluster>
   );
 }
 
-/** Right section: status/attention, tools menu */
+/** Right section: status/attention + tools rendered inline.
+ *  The former overflow popover was removed in the UI overhaul — every cluster
+ *  is always visible so users don't have to discover the dots menu. */
 function TopBarRight({
   taskId,
   activeSessionId,
@@ -387,41 +315,15 @@ function TopBarRight({
   taskTitle?: string;
   officeTaskHref?: string | null;
 }) {
-  const items: TopbarOverflowItem[] = [];
-
-  if (officeTaskHref) {
-    items.push({
-      id: "office-view",
-      label: "Open in office view",
-      priority: 90,
-      content: (
+  return (
+    <div className="flex items-center justify-self-end gap-2 [&_button]:whitespace-nowrap">
+      {officeTaskHref && (
         <TopbarCluster label="Open in office view" className="[&_a]:h-8 [&_a]:text-xs">
           <Button asChild size="sm" variant="outline" className="h-8 cursor-pointer px-2">
             <Link href={officeTaskHref}>Open in office view</Link>
           </Button>
         </TopbarCluster>
-      ),
-    });
-  }
-
-  if (!isArchived && workspaceId) {
-    items.push({
-      id: "quick-chat",
-      label: "Quick chat",
-      priority: 20,
-      content: (
-        <TopbarCluster label="Quick chat" className="[&_button]:h-8 [&_button]:text-xs">
-          <QuickChatButton workspaceId={workspaceId} />
-        </TopbarCluster>
-      ),
-    });
-  }
-
-  items.push({
-    id: "attention",
-    label: "Task status and attention",
-    priority: 80,
-    content: (
+      )}
       <AttentionStatusGroup
         taskId={taskId}
         activeSessionId={activeSessionId}
@@ -431,25 +333,13 @@ function TopBarRight({
         isAgentctlReady={isAgentctlReady}
         taskTitle={taskTitle}
       />
-    ),
-  });
-
-  items.push({
-    id: "tools",
-    label: "Task tools",
-    priority: 10,
-    content: (
       <TopbarToolsGroup
         activeSessionId={activeSessionId}
         showDebugOverlay={showDebugOverlay}
         onToggleDebugOverlay={onToggleDebugOverlay}
         isArchived={isArchived}
       />
-    ),
-  });
-
-  return (
-    <TopbarActionOverflow items={items} className="justify-self-end [&_button]:whitespace-nowrap" />
+    </div>
   );
 }
 

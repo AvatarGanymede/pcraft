@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, memo } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { linkToTask } from "@/lib/links";
 import type {
   Message,
   TaskState,
@@ -177,6 +179,8 @@ function toSidebarItem(
 type TaskSessionSidebarProps = {
   workspaceId: string | null;
   workflowId: string | null;
+  /** Hide the embedded filter bar when the host surface (e.g. AppSidebar) renders its own. */
+  hideFilterBar?: boolean;
 };
 
 type SidebarItem = Omit<ReturnType<typeof toSidebarItem>, "workflowId"> & { workflowId?: string };
@@ -456,6 +460,8 @@ function useSidebarActions(store: StoreApi) {
   const setActiveSession = useAppStore((state) => state.setActiveSession);
   const [preparingTaskId, setPreparingTaskId] = useState<string | null>(null);
   const { renameTaskById } = useTaskActions();
+  const router = useRouter();
+  const pathname = usePathname();
   const { removeTaskFromBoard, loadTaskSessionsForTask } = useTaskRemoval({
     store,
     useLayoutSwitch: true,
@@ -468,6 +474,18 @@ function useSidebarActions(store: StoreApi) {
 
   const handleSelectTask = useCallback(
     (taskId: string) => {
+      // The AppSidebar is mounted globally. On a non-task route the dockview
+      // isn't mounted, so the in-place layout switch (which only rewrites the
+      // URL via history.replaceState) would change the address bar without
+      // ever showing the task. Navigate to the task page in that case; the
+      // in-place fast-switch is only correct once the dockview is on screen.
+      const onTaskRoute =
+        !!pathname && (pathname.startsWith("/t/") || pathname.startsWith("/office/tasks/"));
+      if (!onTaskRoute) {
+        setActiveTask(taskId);
+        router.push(linkToTask(taskId));
+        return;
+      }
       const state = store.getState();
       const task = findTaskInSnapshots(taskId, state.kanbanMulti.snapshots, state.kanban.tasks);
       selectTaskWithLayout({
@@ -480,7 +498,7 @@ function useSidebarActions(store: StoreApi) {
         setPreparingTaskId,
       });
     },
-    [loadTaskSessionsForTask, switchToSession, setActiveTask, store],
+    [loadTaskSessionsForTask, switchToSession, setActiveTask, store, router, pathname],
   );
 
   const archiveActions = useArchiveActions(store);
@@ -554,10 +572,12 @@ function useGroupedSidebarView(displayTasks: TaskSwitcherItem[]) {
 
 export const TaskSessionSidebar = memo(function TaskSessionSidebar({
   workspaceId,
+  hideFilterBar,
 }: TaskSessionSidebarProps) {
   const store = useAppStoreApi();
   useRepositories(workspaceId);
   useWorkspacePRs(workspaceId);
+  const pathname = usePathname();
 
   const {
     activeTaskId,
@@ -568,6 +588,14 @@ export const TaskSessionSidebar = memo(function TaskSessionSidebar({
     tasksWithRepositories,
     primarySessionIds,
   } = useSidebarData(workspaceId);
+
+  // The sidebar is global, so `activeTaskId` lingers after navigating Home.
+  // Only highlight a task while actually viewing a task route — otherwise the
+  // last-opened task stays visually "selected" on Home and elsewhere.
+  const onTaskRoute =
+    !!pathname && (pathname.startsWith("/t/") || pathname.startsWith("/office/tasks/"));
+  const highlightedTaskId = onTaskRoute ? activeTaskId : null;
+  const highlightedSelectedTaskId = onTaskRoute ? selectedTaskId : null;
 
   useBulkGitStatusSubscription(primarySessionIds);
 
@@ -598,14 +626,14 @@ export const TaskSessionSidebar = memo(function TaskSessionSidebar({
   const { pinnedTaskIds, togglePinnedTask, handleReorderGroup, handleReorderSubtasks } = prefs;
   return (
     <PanelRoot data-testid="task-sidebar">
-      <SidebarFilterBar />
+      {!hideFilterBar && <SidebarFilterBar />}
       <PanelBody className="space-y-4 p-0" data-testid="task-sidebar-scroll">
         <TaskSwitcher
           grouped={grouped}
           workflows={workflows}
           stepsByWorkflowId={stepsByWorkflowId}
-          activeTaskId={activeTaskId}
-          selectedTaskId={selectedTaskId}
+          activeTaskId={highlightedTaskId}
+          selectedTaskId={highlightedSelectedTaskId}
           collapsedGroupKeys={effectiveView.collapsedGroups}
           onToggleGroup={(groupKey) => toggleSidebarGroupCollapsed(effectiveView.id, groupKey)}
           collapsedSubtaskParentIds={collapsedSubtaskParents}

@@ -11,9 +11,9 @@ type KanbanHeaderMobileProps = {
   currentPage?: "kanban" | "tasks";
   title: string;
   workspaceLabel: string;
+  searchQuery?: string;
   onSearchChange?: (query: string) => void;
-  showReleaseNotesButton: boolean;
-  onOpenReleaseNotes: () => void;
+  isSearchLoading?: boolean;
   showHealthIndicator: boolean;
   onOpenHealthDialog: () => void;
 };
@@ -23,9 +23,9 @@ export function KanbanHeaderMobile({
   currentPage = "kanban",
   title,
   workspaceLabel,
+  searchQuery = "",
   onSearchChange,
-  showReleaseNotesButton,
-  onOpenReleaseNotes,
+  isSearchLoading = false,
   showHealthIndicator,
   onOpenHealthDialog,
 }: KanbanHeaderMobileProps) {
@@ -46,6 +46,7 @@ export function KanbanHeaderMobile({
       <PageTopbar
         title={title}
         subtitle={workspaceLabel}
+        backLabel={title === "Home" ? "" : "Kandev"}
         className="h-10 px-3 py-1"
         variant={title === "Home" ? "root" : "breadcrumb"}
         actions={
@@ -80,8 +81,9 @@ export function KanbanHeaderMobile({
         onOpenChange={setMenuOpen}
         workspaceId={workspaceId}
         currentPage={currentPage}
-        showReleaseNotesButton={showReleaseNotesButton}
-        onOpenReleaseNotes={onOpenReleaseNotes}
+        searchQuery={searchQuery}
+        onSearchChange={onSearchChange}
+        isSearchLoading={isSearchLoading}
         showHealthIndicator={showHealthIndicator}
         onOpenHealthDialog={onOpenHealthDialog}
       />

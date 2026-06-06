@@ -1,17 +1,24 @@
 import { test, expect } from "../../fixtures/office-fixture";
+import { AppSidebarPage } from "../../pages/app-sidebar-page";
 
 test.describe("Sidebar navigation", () => {
   test("sidebar shows CEO agent link", async ({ testPage, officeSeed: _ }) => {
     await testPage.goto("/office");
     await expect(testPage.getByText("Agents Enabled")).toBeVisible({ timeout: 10_000 });
-    // The sidebar renders the agent name + an adjacent "Open <name>" icon link;
-    // scope to the aside and take the first /CEO/ match. The sidebar
-    // agent list hydrates from a client-side fetch after first paint —
+    // Post-overhaul: the office Agents section lives in the unified AppSidebar
+    // (`<aside data-testid="app-sidebar">`) inside a COLLAPSIBLE section that
+    // defaults to collapsed on the `/office` dashboard (SECTION_ROUTE_MAP only
+    // auto-expands it on `/office/agents`). Expand it first, then assert the
+    // row. Each agent row is a single `<Link href="/office/agents/<id>">` whose
+    // accessible name is the agent name (the avatar is aria-hidden). The
+    // sidebar agent list hydrates from a client-side fetch after first paint —
     // 10s gives that hydration headroom on a heavily-loaded run without
-    // affecting the happy path (it resolves in <1s in isolation).
-    await expect(testPage.locator("aside").getByRole("link", { name: /CEO/i }).first()).toBeVisible(
-      { timeout: 10_000 },
-    );
+    // affecting the happy path (<1s in isolation).
+    const sidebar = new AppSidebarPage(testPage);
+    await sidebar.expandSection("Agents");
+    await expect(sidebar.root.getByRole("link", { name: /CEO/i }).first()).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
   test("sidebar shows tasks link", async ({ testPage, officeSeed: _ }) => {
@@ -30,11 +37,22 @@ test.describe("Sidebar navigation", () => {
     });
   });
 
-  test("navigate to tasks page via sidebar", async ({ testPage, officeSeed: _ }) => {
+  test("navigate to tasks page via dashboard card", async ({ testPage, officeSeed: _ }) => {
     await testPage.goto("/office");
     await expect(testPage.getByText("Agents Enabled")).toBeVisible({ timeout: 10_000 });
-    await testPage.locator("aside").getByRole("link", { name: /Tasks/i }).first().click();
-    await expect(testPage.getByRole("heading", { name: /Tasks/i }).first()).toBeVisible({
+    // Post-overhaul: the sidebar "Tasks" entry is a collapsible section header
+    // (a toggle button), not a navigation link — there is no longer an
+    // in-sidebar link to the /office/tasks page. Navigate via the dashboard
+    // "Tasks In Progress" metric card link instead (mirrors the sibling
+    // "navigate to agents page via sidebar" test, which uses "Agents Enabled").
+    await testPage.getByRole("link", { name: /Tasks In Progress/i }).click();
+    // Scope the heading assertion to the page content (`<main>` in the office
+    // layout). The unified AppSidebar's collapsible "Tasks" section header also
+    // exposes the accessible text "Tasks", so an unscoped role=heading/text
+    // match could be ambiguous against the global rail.
+    await expect(
+      testPage.locator("main").getByRole("heading", { name: /Tasks/i }).first(),
+    ).toBeVisible({
       timeout: 10_000,
     });
   });

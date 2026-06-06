@@ -342,6 +342,8 @@ export const TaskItem = memo(function TaskItem({
       role="button"
       tabIndex={0}
       data-testid="sidebar-task-item"
+      data-active={isSelected ? "true" : "false"}
+      aria-current={isSelected ? "true" : undefined}
       onClick={onClick}
       onKeyDown={(e) => handleTaskItemKeyDown(e, onClick)}
       style={indent.depth > 0 ? { paddingLeft: indent.paddingLeftPx } : undefined}
@@ -353,14 +355,7 @@ export const TaskItem = memo(function TaskItem({
       )}
     >
       <SelectionBar isSelected={isSelected} color={taskColor} />
-      {indent.depth > 0 && (
-        <span
-          style={{ left: indent.connectorLeftPx }}
-          className="absolute top-[10px] select-none text-[11px] text-muted-foreground/30"
-        >
-          ↳
-        </span>
-      )}
+      <RowConnector depth={indent.depth} leftPx={indent.connectorLeftPx} />
       <TaskStateIcon
         sessionState={sessionState}
         state={state}
@@ -403,6 +398,19 @@ export const TaskItem = memo(function TaskItem({
     </div>
   );
 });
+
+// Nested-subtask connector glyph. Renders nothing at the top level (depth 0).
+function RowConnector({ depth, leftPx }: { depth: number; leftPx: number }) {
+  if (depth === 0) return null;
+  return (
+    <span
+      style={{ left: leftPx }}
+      className="absolute top-[10px] select-none text-[11px] text-muted-foreground/30"
+    >
+      ↳
+    </span>
+  );
+}
 
 function SelectionBar({ isSelected, color }: { isSelected: boolean; color: TaskColor | null }) {
   if (color) {

@@ -1484,3 +1484,55 @@
 .animate-queue-close {
   animation: queue-panel-close 180ms cubic-bezier(0.32, 0.72, 0, 1);
 }
+
+/* Unified AppSidebar — header/text content fades in when the rail expands
+ * from its collapsed (icon-only) state. */
+@keyframes app-sidebar-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.sidebar-fade-in {
+  animation: app-sidebar-fade-in 200ms ease-out;
+}
+
+/* AppSidebar section expand/collapse — a quick height animation that pushes
+ * sibling sections, replacing the old opacity fade. Driven by the Radix
+ * Collapsible `data-state` + content-height CSS var. */
+@keyframes sidebar-section-expand {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+@keyframes sidebar-section-collapse {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+.sidebar-section-content {
+  overflow: hidden;
+}
+.sidebar-section-content[data-state="open"] {
+  animation: sidebar-section-expand 180ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.sidebar-section-content[data-state="closed"] {
+  animation: sidebar-section-collapse 160ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-fade-in,
+  .sidebar-section-content[data-state="open"],
+  .sidebar-section-content[data-state="closed"] {
+    animation: none;
+  }
+}

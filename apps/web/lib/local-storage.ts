@@ -260,8 +260,9 @@ export function setFilesPanelScrollPosition(sessionId: string, position: number)
 // new initial-default caps; loading them would resurface the very behaviour
 // users complained about (sidebar "maxed out" by default after upgrade).
 // Bumping the prefix invalidates legacy saves so every env opens at the
-// preset defaults once, then resumes per-env persistence under v2.
-const DOCKVIEW_ENV_LAYOUT_PREFIX = "kandev.dockview.env-layout-v2.";
+// preset defaults once, then resumes per-env persistence. Bumped to v3 to
+// discard layouts captured with the now-removed dockview sidebar column.
+const DOCKVIEW_ENV_LAYOUT_PREFIX = "kandev.dockview.env-layout-v3.";
 
 /**
  * Get the saved dockview layout for a task environment.
@@ -311,10 +312,10 @@ export function clearGlobalSidebarWidth(): void {
 }
 
 // --- Dockview per-env maximize state (sessionStorage) ---
-// v2: bumped alongside DOCKVIEW_ENV_LAYOUT_PREFIX. The maximize blob
+// v3: bumped in lockstep with DOCKVIEW_ENV_LAYOUT_PREFIX. The maximize blob
 // references the pre-maximize layout, which can carry the same oversized
 // widths as the env layout.
-const DOCKVIEW_ENV_MAXIMIZE_PREFIX = "kandev.dockview.env-maximize-v2.";
+const DOCKVIEW_ENV_MAXIMIZE_PREFIX = "kandev.dockview.env-maximize-v3.";
 
 export type EnvMaximizeState = {
   /** The pre-maximize (normal) layout to restore on exit-maximize. */
@@ -823,6 +824,9 @@ export function pruneSubtaskOrder(map: Record<string, string[]>, taskId: string)
   }
   return changed;
 }
+
+// AppSidebar collapse/section/width storage helpers live in
+// `./local-storage-app-sidebar` to keep this module under the line cap.
 
 // --- Sidebar collapsed subtask parents (sessionStorage, tab-scoped) ---
 

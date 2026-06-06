@@ -116,6 +116,21 @@ export type SidebarTaskPrefsState = {
   subtaskOrderByParentId: Record<string, string[]>;
 };
 
+/** Unified AppSidebar collapse + per-section expand state (localStorage). */
+export type AppSidebarState = {
+  collapsed: boolean;
+  /** Keyed by section id: "tasks", "projects", "agents", "settings". */
+  sectionExpanded: Record<string, boolean>;
+  /** User-resized expanded width in pixels. */
+  width: number;
+  /**
+   * When true the whole sidebar is taken over by the settings tree (toggled by
+   * the footer gear). Transient view mode — intentionally NOT persisted so a
+   * reload never traps the user in settings.
+   */
+  settingsMode: boolean;
+};
+
 export type UISliceState = {
   previewPanel: PreviewPanelState;
   rightPanel: RightPanelState;
@@ -137,6 +152,8 @@ export type UISliceState = {
   kanbanPreviewedTaskId: string | null;
   /** Sidebar pin + manual-order. Per-browser, persisted to localStorage. */
   sidebarTaskPrefs: SidebarTaskPrefsState;
+  /** Unified AppSidebar collapse + section expand state (localStorage). */
+  appSidebar: AppSidebarState;
 };
 
 export type UISliceActions = {
@@ -201,6 +218,11 @@ export type UISliceActions = {
    * deleted ID back.
    */
   removeTaskFromSidebarPrefs: (taskId: string) => void;
+  toggleAppSidebar: () => void;
+  setAppSidebarCollapsed: (collapsed: boolean) => void;
+  toggleAppSidebarSection: (sectionId: string) => void;
+  setAppSidebarWidth: (width: number) => void;
+  toggleAppSidebarSettingsMode: () => void;
 };
 
 export type { SidebarView, SidebarViewDraft };

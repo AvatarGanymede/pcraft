@@ -348,7 +348,6 @@ export function KanbanBoard({ onPreviewTask, onOpenTask, onBeforeEdit }: KanbanB
     <div className="h-dvh w-full flex flex-col" data-testid="kanban-board">
       <HomepageCommands onCreateTask={s.handleCreate} />
       <KanbanHeader
-        onCreateTask={s.handleCreate}
         workspaceId={s.workspaceState.activeId ?? undefined}
         searchQuery={s.searchQuery}
         onSearchChange={s.setSearchQuery}

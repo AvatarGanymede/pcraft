@@ -28,7 +28,6 @@ import { useEnvironmentSessionId } from "@/hooks/use-environment-session-id";
 import { useActiveTaskHasRepos } from "@/hooks/domains/kanban/use-active-task-has-repos";
 
 // Panel components (rendered via portals, not directly by dockview)
-import { TaskSessionSidebar } from "./task-session-sidebar";
 import { LeftHeaderActions, RightHeaderActions } from "./dockview-header-actions";
 import { DockviewWatermark } from "./dockview-watermark";
 import { TaskChatPanel } from "./task-chat-panel";
@@ -141,7 +140,6 @@ function PortalSlot(props: IDockviewPanelProps) {
 // All panel types use the same PortalSlot wrapper — dockview only manages
 // layout positioning.  Actual rendering happens in PanelPortalHost below.
 const components: Record<string, React.FunctionComponent<IDockviewPanelProps>> = {
-  sidebar: PortalSlot,
   chat: PortalSlot,
   "diff-viewer": PortalSlot,
   "file-editor": PortalSlot,
@@ -180,7 +178,13 @@ function useSyncUserDefaultLayout() {
     const state = defaultLayout?.layout as unknown as
       | import("@/lib/state/layout-manager").LayoutState
       | undefined;
-    setUserDefaultLayout(state?.columns ? state : null);
+    // Drop the obsolete "sidebar" column: the dockview-embedded sidebar pane was
+    // retired for the unified AppSidebar, but a default layout saved before that
+    // change still carries it. The default-build path applies this layout
+    // without the restore-time sanitize layer, so an orphaned sidebar column
+    // (its panel component is no longer registered) renders a broken grid.
+    const columns = state?.columns?.filter((c) => c.id !== "sidebar");
+    setUserDefaultLayout(columns && columns.length > 0 ? { ...state, columns } : null);
   }, [savedLayouts, setUserDefaultLayout]);
 }
 
@@ -202,22 +206,6 @@ const tabComponents: Record<string, React.FunctionComponent<IDockviewPanelHeader
 
 // Each content component renders the real panel UI.  They live permanently
 // in the PanelPortalHost and survive dockview layout switches.
-
-function SidebarContent({ panelId }: { panelId: string }) {
-  const workspaceId = useAppStore((state) => state.workspaces.activeId);
-  // Read kanban.workflowId (task snapshot), not workflows.activeId (homepage filter), to preserve "All Workflows" across task navigation.
-  const workflowId = useAppStore((state) => state.kanban.workflowId);
-  const workspaceName = useAppStore((state) => {
-    const ws = state.workspaces.items.find((w: { id: string }) => w.id === workspaceId);
-    return ws?.name ?? "Workspace";
-  });
-
-  useEffect(() => {
-    setPanelTitle(panelId, workspaceName);
-  }, [panelId, workspaceName]);
-
-  return <TaskSessionSidebar workspaceId={workspaceId} workflowId={workflowId} />;
-}
 
 export const CHAT_PANEL_FALLBACK_LABEL = "Agent";
 
@@ -442,7 +430,7 @@ function renderPanel(
 
   switch (resolved) {
     case "sidebar":
-      return <SidebarContent panelId={panelId} />;
+      return null;
     case "chat":
       return <ChatContent panelId={panelId} params={params} />;
     case "diff-viewer":
