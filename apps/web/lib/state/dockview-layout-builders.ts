@@ -1,7 +1,6 @@
 import type { DockviewApi, AddPanelOptions } from "dockview-react";
 import {
   SIDEBAR_LOCK,
-  SIDEBAR_GROUP,
   CENTER_GROUP,
   RIGHT_TOP_GROUP,
   RIGHT_BOTTOM_GROUP,
@@ -9,6 +8,7 @@ import {
   computeSidebarMaxPx,
   computeRightMaxPx,
   getPinnedWidth,
+  isCenterCandidateGroupId,
   getRootSplitview as getRootSplitviewImpl,
   resolveGroupIds,
   setPinnedTarget,
@@ -244,14 +244,14 @@ export function fallbackGroupPosition(api: DockviewApi): { referenceGroup: strin
   if (centerGroup) return { referenceGroup: centerGroup.id };
 
   const chatGroupId = api.getPanel("chat")?.group?.id;
-  if (chatGroupId) return { referenceGroup: chatGroupId };
+  if (chatGroupId && isCenterCandidateGroupId(chatGroupId)) return { referenceGroup: chatGroupId };
 
   const sessionGroupId = api.panels.find((p) => p.id.startsWith("session:"))?.group?.id;
-  if (sessionGroupId) return { referenceGroup: sessionGroupId };
+  if (sessionGroupId && isCenterCandidateGroupId(sessionGroupId)) {
+    return { referenceGroup: sessionGroupId };
+  }
 
-  const centerish = api.groups.find(
-    (g) => g.id !== SIDEBAR_GROUP && g.id !== RIGHT_TOP_GROUP && g.id !== RIGHT_BOTTOM_GROUP,
-  );
+  const centerish = api.groups.find((g) => isCenterCandidateGroupId(g.id));
   if (centerish) return { referenceGroup: centerish.id };
 
   return undefined;

@@ -60,6 +60,22 @@ describe("resolveGroupIds", () => {
     expect(ids.centerGroupId).toBe(sessionGroupId);
   });
 
+  it("does not classify a right-column session panel as the center group", () => {
+    // Regression: a corrupted task layout restored only Files/Changes in
+    // group-right-top, then auto-added the session tab into that same group.
+    // Treating that session panel as the center poisoned centerGroupId and
+    // caused future center panels to land in the right tools column.
+    const api = makeApi(
+      [{ id: SIDEBAR_GROUP }, { id: RIGHT_TOP_GROUP }, { id: RIGHT_BOTTOM_GROUP }],
+      [{ id: "session:abc123", group: { id: RIGHT_TOP_GROUP } }],
+    );
+
+    const ids = resolveGroupIds(api);
+
+    expect(ids.centerGroupId).toBe(CENTER_GROUP);
+    expect(ids.centerGroupId).not.toBe(RIGHT_TOP_GROUP);
+  });
+
   it("returns the CENTER_GROUP constant as last-resort when nothing matches", () => {
     // Last-resort fallback: returns the well-known constant even when no live
     // group carries that ID. The caller (focusOrAddPanel) detects the stale ID
@@ -137,11 +153,11 @@ describe("applyLayout — pinned target capture with no override", () => {
     // Empty overrides → each pinned column should fall back to its default.
     applyLayout(api, state, new Map(), 1600, 800);
 
-    // Defaults at totalWidth 1600: ratio 0.25*1600 = 400 → sidebar clamps to
-    // 350, right stays 400. NOT the transient 245 / 258.
+    // Defaults at totalWidth 1600: sidebar ratio clamps to 350; right ratio
+    // clamps to its legacy 450 cap. NOT the transient 245 / 258.
     expect(getPinnedTarget("sidebar")).toBe(350);
-    expect(getPinnedTarget("right")).toBe(400);
+    expect(getPinnedTarget("right")).toBe(450);
     expect(resizeView).toHaveBeenCalledWith(0, 350);
-    expect(resizeView).toHaveBeenCalledWith(2, 400);
+    expect(resizeView).toHaveBeenCalledWith(2, 450);
   });
 });
