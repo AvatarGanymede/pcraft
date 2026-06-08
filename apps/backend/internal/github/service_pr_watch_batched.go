@@ -241,6 +241,25 @@ func (s *Service) applyBatchedNumberedWatch(
 	if err := s.store.UpdatePRWatchTimestamps(ctx, w.ID, now, nil, status.ChecksState, status.ReviewState); err != nil {
 		s.logger.Error("failed to update PR watch timestamps", zap.String("id", w.ID), zap.Error(err))
 	}
+	// Gap-fill: a numbered watch can exist even when its exact task_pr row was
+	// never created. This targeted read is unconditional because the common
+	// existing-row path is cheap, and the missing-row path must repair before
+	// SyncTaskPR. If AssociatePRWithTask creates the row, it publishes the
+	// creation event; the following SyncTaskPR may publish a second event when
+	// status fields changed. That double event is harmless because clients
+	// re-fetch the task PR state.
+	if existing, err := s.store.GetTaskPRByRepoAndNumber(ctx, w.TaskID, w.RepositoryID, w.PRNumber); err != nil {
+		s.logger.Error("failed to load exact task PR",
+			zap.String("task_id", w.TaskID), zap.String("repository_id", w.RepositoryID),
+			zap.Int("pr_number", w.PRNumber), zap.Error(err))
+		return PRWatchSyncResult{Watch: w, Status: status, Found: true, SyncFailed: true}
+	} else if existing == nil && status.PR != nil {
+		if _, assocErr := s.AssociatePRWithTask(ctx, w.TaskID, w.RepositoryID, status.PR); assocErr != nil {
+			s.logger.Error("failed to associate numbered PR with task",
+				zap.String("task_id", w.TaskID), zap.Int("pr_number", w.PRNumber), zap.Error(assocErr))
+			return PRWatchSyncResult{Watch: w, Status: status, Found: true, SyncFailed: true}
+		}
+	}
 	if syncErr := s.SyncTaskPR(ctx, w.TaskID, status); syncErr != nil {
 		s.logger.Error("failed to sync task PR", zap.String("task_id", w.TaskID), zap.Error(syncErr))
 		// SyncFailed=true so poller skips publishing PR feedback while the
