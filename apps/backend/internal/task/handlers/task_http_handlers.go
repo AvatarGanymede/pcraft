@@ -777,6 +777,10 @@ func (h *TaskHandlers) handlePostCreateTaskSession(
 		return
 	}
 	if body.PrepareSession && !body.StartAgent {
+		// Prepare-only: no follow-up start is coming, so DeferredStart is
+		// intentionally omitted — a passthrough profile should be eagerly
+		// upgraded to a full launch here so the terminal has a PTY to attach to.
+		// (Contrast startAgentForNewTask below, which sets DeferredStart=true.)
 		resp, err := h.orchestrator.LaunchSession(c.Request.Context(), &orchestrator.LaunchSessionRequest{
 			TaskID:            taskID,
 			Intent:            orchestrator.IntentPrepare,
@@ -816,6 +820,10 @@ func (h *TaskHandlers) startAgentForNewTask(
 		ExecutorID:        body.ExecutorID,
 		ExecutorProfileID: body.ExecutorProfileID,
 		WorkflowStepID:    resolvedStepID,
+		// The async IntentStartCreated below carries the prompt. Mark this as a
+		// deferred start so a passthrough profile is not eagerly launched here
+		// with an empty prompt (which would pre-empt that prompt-bearing start).
+		DeferredStart: true,
 	})
 	if err != nil {
 		h.logger.Error("failed to prepare session for task", zap.Error(err), zap.String("task_id", taskID))
@@ -1314,6 +1322,12 @@ func (h *TaskHandlers) httpStartConfigChat(c *gin.Context) {
 		Intent:         orchestrator.IntentPrepare,
 		AgentProfileID: agentProfileID,
 		ExecutorID:     executorID,
+		// When a prompt is present, launchConfigChatAgent below follows with a
+		// prompt-bearing IntentStartCreated. Defer the start so a passthrough
+		// profile isn't eagerly launched here with an empty prompt. With no
+		// prompt there is no follow-up, so keep the eager upgrade that gives the
+		// terminal a PTY to attach to.
+		DeferredStart: body.Prompt != "",
 	})
 	if err != nil {
 		h.deleteTaskOnError(task.ID, "config chat", err)

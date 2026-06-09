@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -15,9 +16,122 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/kandev/kandev/internal/orchestrator"
 	"github.com/kandev/kandev/internal/task/models"
 	"github.com/kandev/kandev/internal/task/service"
 )
+
+// captureOrchestrator records every LaunchSession request so tests can assert
+// on the fields the handler set. prepErr, when non-nil, is returned from
+// LaunchSession to short-circuit the two-phase create flow before its async
+// start goroutine spawns (keeping assertions race-free).
+type captureOrchestrator struct {
+	mu       sync.Mutex
+	requests []*orchestrator.LaunchSessionRequest
+	prepErr  error
+}
+
+func (m *captureOrchestrator) LaunchSession(_ context.Context, req *orchestrator.LaunchSessionRequest) (*orchestrator.LaunchSessionResponse, error) {
+	m.mu.Lock()
+	m.requests = append(m.requests, req)
+	m.mu.Unlock()
+	if m.prepErr != nil {
+		return nil, m.prepErr
+	}
+	return &orchestrator.LaunchSessionResponse{SessionID: "sess-1"}, nil
+}
+
+func (m *captureOrchestrator) EnsureSession(_ context.Context, _ string, _ ...orchestrator.EnsureSessionOptions) (*orchestrator.EnsureSessionResponse, error) {
+	return nil, nil
+}
+
+// TestStartAgentForNewTask_SetsDeferredStart pins the call-site half of the
+// passthrough start_agent prompt-delivery fix: the synchronous prepare must
+// carry DeferredStart=true so launchPrepare does not eagerly upgrade a
+// passthrough profile into a promptless PTY launch and pre-empt the
+// prompt-bearing IntentStartCreated that follows. Returning an error from the
+// prepare call keeps the async start goroutine from spawning, so the assertion
+// reads orch.requests without racing it.
+func TestStartAgentForNewTask_SetsDeferredStart(t *testing.T) {
+	orch := &captureOrchestrator{prepErr: errors.New("prepare failed")}
+	h := &TaskHandlers{orchestrator: orch, logger: newTestLogger(t)}
+
+	resp := &createTaskResponse{}
+	body := httpCreateTaskRequest{StartAgent: true, AgentProfileID: "profile-1"}
+	h.startAgentForNewTask(context.Background(), resp, "task-1", "do the thing", body, "step-1")
+
+	orch.mu.Lock()
+	defer orch.mu.Unlock()
+	require.Len(t, orch.requests, 1, "prepare error must short-circuit before the async start goroutine")
+	prep := orch.requests[0]
+	assert.Equal(t, orchestrator.IntentPrepare, prep.Intent)
+	assert.True(t, prep.DeferredStart,
+		"sync prepare must defer the start so the passthrough PTY is launched with the prompt by the follow-up IntentStartCreated")
+}
+
+// configChatRepo returns a non-nil workspace so resolveConfigChatDefaults does
+// not nil-deref; everything else inherits mockRepository's no-op stubs.
+type configChatRepo struct {
+	mockRepository
+}
+
+func (r *configChatRepo) GetWorkspace(_ context.Context, id string) (*models.Workspace, error) {
+	return &models.Workspace{ID: id}, nil
+}
+
+// TestHttpStartConfigChat_SetsDeferredStart pins the second call site of the
+// passthrough prompt-delivery fix. Unlike start_agent (always deferred), config
+// chat defers the start only when a prompt is present — with no prompt there is
+// no follow-up start, so the passthrough upgrade must stay on to give the
+// terminal a PTY. Both branches are load-bearing, so both are pinned. The prepare
+// LaunchSession is invoked synchronously before the async launchConfigChatAgent
+// goroutine spawns, so requests[0] is the prepare and is read under the mock's
+// mutex — race-free without asserting the (timing-dependent) total count.
+func TestHttpStartConfigChat_SetsDeferredStart(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	log := newTestLogger(t)
+
+	cases := []struct {
+		name              string
+		prompt            string
+		wantDeferredStart bool
+	}{
+		{name: "prompt present defers the start", prompt: "configure my workflow", wantDeferredStart: true},
+		{name: "no prompt keeps the eager PTY upgrade", prompt: "", wantDeferredStart: false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			repo := &configChatRepo{}
+			svc := service.NewService(service.Repos{
+				Workspaces: repo, Tasks: repo, TaskRepos: repo,
+				Workflows: repo, Messages: repo, Turns: repo,
+				Sessions: repo, GitSnapshots: repo, RepoEntities: repo,
+				Executors: repo, Environments: repo, TaskEnvironments: repo,
+				Reviews: repo,
+			}, nil, log, service.RepositoryDiscoveryConfig{})
+			orch := &captureOrchestrator{}
+			h := &TaskHandlers{service: svc, orchestrator: orch, logger: log}
+
+			rec := httptest.NewRecorder()
+			c, _ := gin.CreateTestContext(rec)
+			body := `{"agent_profile_id":"cfg-profile","prompt":` + strconv.Quote(tc.prompt) + `}`
+			c.Request = httptest.NewRequest(http.MethodPost, "/workspaces/ws-1/config-chat", strings.NewReader(body))
+			c.Request.Header.Set("Content-Type", "application/json")
+			c.Params = gin.Params{{Key: "id", Value: "ws-1"}}
+
+			h.httpStartConfigChat(c)
+
+			orch.mu.Lock()
+			defer orch.mu.Unlock()
+			require.GreaterOrEqual(t, len(orch.requests), 1, "the synchronous prepare must have been issued")
+			prep := orch.requests[0]
+			assert.Equal(t, orchestrator.IntentPrepare, prep.Intent, "first call is the synchronous prepare")
+			assert.Equal(t, tc.wantDeferredStart, prep.DeferredStart,
+				"config-chat prepare must defer the start iff a prompt will be delivered by the follow-up IntentStartCreated")
+		})
+	}
+}
 
 type captureCreateTaskRepo struct {
 	mockRepository
