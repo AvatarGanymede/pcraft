@@ -443,6 +443,36 @@ function removeChatPlaceholder(api: DockviewApi): void {
 }
 
 /**
+ * Keep agent/session tabs before contextual siblings in their tab group.
+ *
+ * Dockview restores saved tab order verbatim. If a task previously saved
+ * `pr-detail` before `session:<id>`, the restored agent panel already exists,
+ * so `resolveInitialPosition(... index: 0)` never runs. Move session siblings
+ * as a stable block so multi-session ordering remains stable.
+ */
+export function ensureSessionTabPrecedesNonSessionTabs(api: DockviewApi, sessionId: string): void {
+  const panel = api.getPanel(`session:${sessionId}`);
+  const groupPanels = panel?.group?.panels;
+  if (!panel || !groupPanels) return;
+
+  const firstNonSessionIndex = groupPanels.findIndex((p) => !p.id.startsWith("session:"));
+  if (firstNonSessionIndex === -1) return;
+
+  const sessionPanelsToMove = groupPanels
+    .slice(firstNonSessionIndex + 1)
+    .filter((groupPanel) => groupPanel.id.startsWith("session:"));
+
+  for (const sessionPanel of sessionPanelsToMove.reverse()) {
+    sessionPanel.api.moveTo({
+      group: panel.group,
+      position: "center",
+      index: firstNonSessionIndex,
+      skipSetActive: true,
+    });
+  }
+}
+
+/**
  * Decide whether to force-activate the session panel after it (and any
  * sibling tabs) have been ensured.
  *
@@ -690,6 +720,7 @@ function runAutoSessionTabEffect(
   // "chat" placeholder. Order matters: removing chat first would empty and
   // destroy the center group, collapsing the horizontal layout.
   removeChatPlaceholder(api);
+  ensureSessionTabPrecedesNonSessionTabs(api, effectiveSessionId);
 
   const activePanel = activateSessionPanel(
     api,
