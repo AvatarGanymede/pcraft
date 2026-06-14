@@ -270,6 +270,22 @@ func (a *Adapter) convertToolCallResultUpdate(sessionID string, tcu *acp.Session
 	// are known, schedule the synthetic prompt; on terminal status, clean up.
 	a.handleWakeupEvent(sessionID, toolCallID, tcu.Meta, tcu.RawInput, isTerminal)
 
+	// Todo tools from MCP-style runtimes report the final list in the completion
+	// output rather than through ACP's native plan notification. Feed those
+	// entries into the same plan stream Claude/Codex already use so the existing
+	// above-input todo indicator updates without a separate UI path. Emitted
+	// after the adapter lock is released because sendUpdate takes a read lock
+	// and sync.RWMutex is not reentrant.
+	if tcu.RawOutput != nil {
+		if entries, ok := planEntriesFromTodosResult(tcu.RawOutput); ok {
+			a.sendUpdate(AgentEvent{
+				Type:        streams.EventTypePlan,
+				SessionID:   sessionID,
+				PlanEntries: entries,
+			})
+		}
+	}
+
 	// When a switch_mode tool carries a plan (e.g. ExitPlanMode), emit it
 	// as an agent_plan event so the orchestrator creates a visible plan message.
 	if tcu.RawInput != nil {
