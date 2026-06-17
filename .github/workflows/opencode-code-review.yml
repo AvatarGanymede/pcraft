@@ -18,6 +18,9 @@ concurrency:
   group: opencode-review-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  OPENCODE_MODEL: opencode-go/minimax-m3
+
 jobs:
   opencode-review-same-repo:
     if: >
@@ -154,7 +157,7 @@ jobs:
 
           "$HOME/.opencode/bin/opencode" run \
             --agent github-pr-review \
-            --model opencode-go/minimax-m3 \
+            --model "$OPENCODE_MODEL" \
             --title "PR #${{ github.event.pull_request.number }} OpenCode review" \
             --file /tmp/opencode-review-guidelines.md \
             --file /tmp/opencode-review.patch \
@@ -193,6 +196,63 @@ jobs:
 
           if not isinstance(findings, list):
             print("OpenCode findings payload was not a JSON array; skipping comments.")
+            raise SystemExit(0)
+
+          if not findings:
+            marker = "<!-- opencode-review:no-findings -->"
+            short_sha = os.environ["HEAD_SHA"][:12]
+            model = os.environ["OPENCODE_MODEL"]
+            body = (
+              f"{marker}\n"
+              "**OpenCode review complete**\n\n"
+              f"OpenCode model: `{model}`\n\n"
+              f"No suggestions found for commit `{short_sha}`."
+            )
+
+            comments_result = subprocess.run(
+              [
+                "gh", "api", "--paginate",
+                f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['PR_NUMBER']}/comments?per_page=100",
+              ],
+              text=True,
+              capture_output=True,
+              check=False,
+            )
+            comment_id = None
+            if comments_result.returncode == 0:
+              try:
+                comments = json.loads(comments_result.stdout)
+              except json.JSONDecodeError as exc:
+                print(f"Could not parse existing PR comments: {exc}")
+                comments = []
+              for comment in reversed(comments):
+                if marker in (comment.get("body") or ""):
+                  comment_id = comment.get("id")
+                  break
+            else:
+              print(f"Could not list existing PR comments: {comments_result.stderr.strip()}")
+
+            method = "PATCH" if comment_id else "POST"
+            endpoint = (
+              f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/comments/{comment_id}"
+              if comment_id
+              else f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['PR_NUMBER']}/comments"
+            )
+            result = subprocess.run(
+              [
+                "gh", "api", "-X", method,
+                endpoint,
+                "-f", f"body={body}",
+              ],
+              text=True,
+              capture_output=True,
+              check=False,
+            )
+            if result.returncode == 0:
+              action = "Updated" if comment_id else "Posted"
+              print(f"{action} OpenCode no-suggestions comment.")
+            else:
+              print(f"Skipped OpenCode no-suggestions comment: {result.stderr.strip()}")
             raise SystemExit(0)
 
           posted = 0
@@ -419,7 +479,7 @@ jobs:
 
           "$HOME/.opencode/bin/opencode" run \
             --agent github-pr-review \
-            --model opencode-go/minimax-m3 \
+            --model "$OPENCODE_MODEL" \
             --title "PR #${{ github.event.pull_request.number }} OpenCode review" \
             --file /tmp/opencode-review-guidelines.md \
             --file /tmp/opencode-review.patch \
@@ -458,6 +518,63 @@ jobs:
 
           if not isinstance(findings, list):
             print("OpenCode findings payload was not a JSON array; skipping comments.")
+            raise SystemExit(0)
+
+          if not findings:
+            marker = "<!-- opencode-review:no-findings -->"
+            short_sha = os.environ["HEAD_SHA"][:12]
+            model = os.environ["OPENCODE_MODEL"]
+            body = (
+              f"{marker}\n"
+              "**OpenCode review complete**\n\n"
+              f"OpenCode model: `{model}`\n\n"
+              f"No suggestions found for commit `{short_sha}`."
+            )
+
+            comments_result = subprocess.run(
+              [
+                "gh", "api", "--paginate",
+                f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['PR_NUMBER']}/comments?per_page=100",
+              ],
+              text=True,
+              capture_output=True,
+              check=False,
+            )
+            comment_id = None
+            if comments_result.returncode == 0:
+              try:
+                comments = json.loads(comments_result.stdout)
+              except json.JSONDecodeError as exc:
+                print(f"Could not parse existing PR comments: {exc}")
+                comments = []
+              for comment in reversed(comments):
+                if marker in (comment.get("body") or ""):
+                  comment_id = comment.get("id")
+                  break
+            else:
+              print(f"Could not list existing PR comments: {comments_result.stderr.strip()}")
+
+            method = "PATCH" if comment_id else "POST"
+            endpoint = (
+              f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/comments/{comment_id}"
+              if comment_id
+              else f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['PR_NUMBER']}/comments"
+            )
+            result = subprocess.run(
+              [
+                "gh", "api", "-X", method,
+                endpoint,
+                "-f", f"body={body}",
+              ],
+              text=True,
+              capture_output=True,
+              check=False,
+            )
+            if result.returncode == 0:
+              action = "Updated" if comment_id else "Posted"
+              print(f"{action} OpenCode no-suggestions comment.")
+            else:
+              print(f"Skipped OpenCode no-suggestions comment: {result.stderr.strip()}")
             raise SystemExit(0)
 
           posted = 0
