@@ -540,6 +540,40 @@ func TestNormalizerRead(t *testing.T) {
 			t.Errorf("expected Offset=50 Limit=150 from update, got Offset=%d Limit=%d", rf.Offset, rf.Limit)
 		}
 	})
+
+	t.Run("keeps multi-file read path raw so the UI can split it", func(t *testing.T) {
+		args := map[string]any{
+			"kind": "read",
+			"raw_input": map[string]any{
+				"path": "deployments/values.backupprod.yaml:1-80,deployments/values.au-backupprod.yaml:1-80",
+			},
+		}
+		rf := normalizer.NormalizeToolCall("read", args).ReadFile()
+		if rf == nil {
+			t.Fatal("expected ReadFile to be set")
+		}
+		// Multiple files cannot be represented by a single Offset/Limit; keep the
+		// raw comma-joined path verbatim and let the frontend render one link per
+		// file. Offset/Limit stay zero (no single top-level range).
+		if rf.FilePath != "deployments/values.backupprod.yaml:1-80,deployments/values.au-backupprod.yaml:1-80" {
+			t.Errorf("expected raw multi-file FilePath preserved, got %q", rf.FilePath)
+		}
+		if rf.Offset != 0 || rf.Limit != 0 {
+			t.Errorf("expected Offset=0 Limit=0 for multi-file read, got Offset=%d Limit=%d", rf.Offset, rf.Limit)
+		}
+	})
+
+	t.Run("keeps multi-file read path raw arriving on a tool_call_update", func(t *testing.T) {
+		payload := normalizer.NormalizeToolCall("read", map[string]any{"kind": "read"})
+		normalizer.UpdatePayloadInput(payload, map[string]any{"path": "a/x.go:1-10,a/y.go:1-10"}, nil)
+		rf := payload.ReadFile()
+		if rf.FilePath != "a/x.go:1-10,a/y.go:1-10" {
+			t.Errorf("expected raw multi-file FilePath preserved, got %q", rf.FilePath)
+		}
+		if rf.Offset != 0 || rf.Limit != 0 {
+			t.Errorf("expected Offset=0 Limit=0 for multi-file read, got Offset=%d Limit=%d", rf.Offset, rf.Limit)
+		}
+	})
 }
 
 // TestNormalizerResult tests the normalizer's result handling.
@@ -1026,6 +1060,32 @@ func TestUpdatePayloadInput_ReadFile(t *testing.T) {
 		})
 		if payload.ReadFile().FilePath != "/workspace/README.md" {
 			t.Errorf("expected FilePath '/workspace/README.md', got %q", payload.ReadFile().FilePath)
+		}
+	})
+
+	t.Run("switches stale single-file state to raw multi-file path", func(t *testing.T) {
+		// An earlier update streamed a single-file path with a range; a later
+		// update carries the full multi-file path. The payload must drop the
+		// stale single-file Offset/Limit and keep the raw comma-joined path for
+		// the UI to split (mirrors normalizeRead).
+		payload := normalizer.NormalizeToolCall("read", map[string]any{
+			"kind": "read",
+			"raw_input": map[string]any{
+				"path": "a.go:1-10",
+			},
+		})
+		if rf := payload.ReadFile(); rf.FilePath != "a.go" || rf.Offset != 1 || rf.Limit != 10 {
+			t.Fatalf("unexpected initial state: %+v", rf)
+		}
+		normalizer.UpdatePayloadInput(payload, map[string]any{
+			"file_path": "a.go:1-10,b.go:1-10",
+		}, nil)
+		rf := payload.ReadFile()
+		if rf.FilePath != "a.go:1-10,b.go:1-10" {
+			t.Errorf("expected raw multi-file FilePath, got %q", rf.FilePath)
+		}
+		if rf.Offset != 0 || rf.Limit != 0 {
+			t.Errorf("expected Offset/Limit cleared, got Offset=%d Limit=%d", rf.Offset, rf.Limit)
 		}
 	})
 }

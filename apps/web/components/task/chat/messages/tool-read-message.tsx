@@ -8,6 +8,7 @@ import type { Message } from "@/lib/types/http";
 import { ExpandableRow } from "./expandable-row";
 import { useExpandState } from "./use-expand-state";
 import { useOpenFileAtLine } from "@/hooks/use-file-editors";
+import { splitReadFiles, type ReadFileRef } from "@/lib/read-selector";
 
 type ReadFileOutput = {
   content?: string;
@@ -68,11 +69,39 @@ function parseReadMetadata(comment: Message) {
   const readFile = metadata?.normalized?.read_file;
   const readOutput = readFile?.output;
   const filePath = readFile?.file_path;
-  const startLine = readFile?.offset;
-  const lineRange = formatLineRange(readFile?.offset, readFile?.limit);
+  const offset = readFile?.offset;
+  const limit = readFile?.limit;
   const hasOutput = !!readOutput?.content;
   const isSuccess = status === "complete";
-  return { status, readOutput, filePath, startLine, lineRange, hasOutput, isSuccess };
+  return { status, readOutput, filePath, offset, limit, hasOutput, isSuccess };
+}
+
+// ReadFileLink renders one openable file link plus its line-range badge. Used
+// for each file when a single read references several comma-joined files; the
+// per-file startLine drives the scroll-to-line on open.
+function ReadFileLink({
+  file,
+  worktreePath,
+  onOpenFile,
+}: {
+  file: ReadFileRef;
+  worktreePath?: string;
+  onOpenFile?: (path: string) => void;
+}) {
+  const handleOpenFile = useOpenFileAtLine(onOpenFile, file.startLine, worktreePath);
+  const lineRange = formatLineRange(file.startLine, file.lineCount);
+  return (
+    <span className="inline-flex items-baseline min-w-0">
+      <FilePathButton
+        filePath={file.path}
+        worktreePath={worktreePath}
+        onOpenFile={onOpenFile ? handleOpenFile : undefined}
+      />
+      {lineRange && (
+        <span className="font-mono text-xs text-muted-foreground/70 shrink-0">{lineRange}</span>
+      )}
+    </span>
+  );
 }
 
 // ToolReadMessage renders a read tool call: the file link, line-range badge, and
@@ -82,11 +111,26 @@ export const ToolReadMessage = memo(function ToolReadMessage({
   worktreePath,
   onOpenFile,
 }: ToolReadMessageProps) {
-  const { status, readOutput, filePath, startLine, lineRange, hasOutput, isSuccess } =
+  const { status, readOutput, filePath, offset, limit, hasOutput, isSuccess } =
     parseReadMetadata(comment);
   const autoExpanded = status === "running";
   const { isExpanded, handleToggle } = useExpandState(status, autoExpanded);
-  const handleOpenFile = useOpenFileAtLine(onOpenFile, startLine, worktreePath);
+  // splitReadFiles (pure, cheap — the React Compiler memoizes) yields the clean,
+  // openable path + parsed range for every file. This also fixes legacy/raw
+  // reads whose selector is still glued to the path ("foo.sh:88-137"). For a
+  // single file the backend may instead carry the range in offset/limit, so
+  // merge that in as a fallback.
+  const files = filePath ? splitReadFiles(filePath) : [];
+  const resolvedFiles =
+    files.length === 1
+      ? [
+          {
+            path: files[0].path,
+            startLine: files[0].startLine || offset || 0,
+            lineCount: files[0].lineCount || limit || 0,
+          },
+        ]
+      : files;
 
   return (
     <ExpandableRow
@@ -100,17 +144,15 @@ export const ToolReadMessage = memo(function ToolReadMessage({
             {!isSuccess && <ReadStatusIcon status={status} />}
           </span>
           {filePath && (
-            <span className="inline-flex items-baseline min-w-0">
-              <FilePathButton
-                filePath={filePath}
-                worktreePath={worktreePath}
-                onOpenFile={onOpenFile ? handleOpenFile : undefined}
-              />
-              {lineRange && (
-                <span className="font-mono text-xs text-muted-foreground/70 shrink-0">
-                  {lineRange}
+            <span className="inline-flex flex-wrap items-baseline gap-x-1 min-w-0">
+              {resolvedFiles.map((file, idx) => (
+                <span key={`${file.path}-${idx}`} className="inline-flex items-baseline min-w-0">
+                  <ReadFileLink file={file} worktreePath={worktreePath} onOpenFile={onOpenFile} />
+                  {idx < resolvedFiles.length - 1 && (
+                    <span className="text-muted-foreground/50">,</span>
+                  )}
                 </span>
-              )}
+              ))}
             </span>
           )}
           {readOutput?.truncated && (

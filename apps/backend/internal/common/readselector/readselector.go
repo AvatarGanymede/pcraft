@@ -54,6 +54,72 @@ func Split(raw string) (path string, startLine, lineCount int) {
 	return base, start, count
 }
 
+// File is one file reference parsed out of a (possibly multi-file) read path.
+type File struct {
+	Path      string
+	StartLine int
+	LineCount int
+}
+
+// SplitFiles splits an omp read path that may reference several comma-joined
+// files ("a.yaml:1-80,b.yaml:1-80") into one File per file, each with its own
+// parsed line range. A comma segment that is purely a line-spec list ("960-973")
+// or a mode keyword ("raw"/"conflicts") is treated as an additional range of the
+// preceding file — so a single file's multi-range selector ("main.go:5-16,40-80")
+// stays one File, matching Split (first range wins).
+//
+// Multiple files are only reported when every segment is a self-contained file
+// reference — it carries a read selector or its basename has an extension.
+// Otherwise it returns the single Split result, so single-file behavior is never
+// disturbed: a comma inside a directory name ("a,b/foo.go") or inside a filename
+// ("src/foo,bar.go:1-20") stays one File rather than splitting into phantoms.
+func SplitFiles(raw string) []File {
+	parts := strings.Split(raw, ",")
+	files := make([]File, 0, len(parts))
+	multi := true
+	for i, part := range parts {
+		if i > 0 && isContinuationRange(part) {
+			continue
+		}
+		if !isStrongFile(part) {
+			multi = false
+		}
+		path, start, count := Split(part)
+		files = append(files, File{Path: path, StartLine: start, LineCount: count})
+	}
+	if multi && len(files) > 1 {
+		return files
+	}
+	path, start, count := Split(raw)
+	return []File{{Path: path, StartLine: start, LineCount: count}}
+}
+
+// isContinuationRange reports whether a comma segment is an extra range of the
+// preceding file rather than a new file: a bare line-spec list or a mode keyword.
+func isContinuationRange(part string) bool {
+	if part == "raw" || part == "conflicts" {
+		return true
+	}
+	_, _, ok := parseLineSpecList(part)
+	return ok
+}
+
+// isStrongFile reports whether a comma segment is a self-contained file
+// reference: it carries a read selector (Split strips it) or its basename has an
+// extension. A segment that looks fileish only via a path separator ("src/foo"
+// in the single filename "src/foo,bar.go") is NOT a file boundary, so a comma
+// inside a filename is not mistaken for a multi-file bundle.
+func isStrongFile(part string) bool {
+	if path, _, _ := Split(part); path != part {
+		return true
+	}
+	base := part
+	if i := strings.LastIndexAny(part, `/\`); i >= 0 {
+		base = part[i+1:]
+	}
+	return strings.Contains(base, ".")
+}
+
 func isWindowsDrivePrefix(raw string, colon int) bool {
 	return colon == 1 && len(raw) >= 2 && isASCIIAlpha(raw[0])
 }
