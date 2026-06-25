@@ -2,9 +2,9 @@
 
 import { Fragment, memo, useMemo, useState } from "react";
 import { IconCheck, IconChevronDown, IconLogicBuffer } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Button } from "@kandev/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Button } from "@pcraft/ui/button";
 import type { WorkflowSnapshotData } from "@/lib/state/slices/kanban/types";
 import type { AgentProfileOption } from "@/lib/state/slices";
 import { AgentLogo } from "@/components/agent-logo";

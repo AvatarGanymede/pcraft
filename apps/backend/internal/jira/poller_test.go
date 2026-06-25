@@ -6,7 +6,7 @@ import (
 	"testing"
 	"testing/synctest"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // pollerFixture wires a Service against a real in-memory store and fake

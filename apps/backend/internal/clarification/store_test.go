@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 func TestNewStore_DefaultTimeout(t *testing.T) {

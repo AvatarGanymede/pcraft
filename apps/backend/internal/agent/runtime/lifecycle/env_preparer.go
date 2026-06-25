@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // PrepareStepStatus represents the status of a preparation step.

@@ -16,10 +16,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/persistence"
-	"github.com/kandev/kandev/internal/system/jobs"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/persistence"
+	"github.com/AvatarGanymede/pcraft/internal/system/jobs"
 )
 
 // PollInterval is the cadence at which the background goroutine polls GitHub.
@@ -187,7 +187,7 @@ func NewService(pool *db.Pool, current string, httpClient *http.Client, log *log
 	}
 	homeDir := ""
 	if dir, err := os.UserHomeDir(); err == nil {
-		homeDir = filepath.Join(dir, ".kandev")
+		homeDir = filepath.Join(dir, ".pcraft")
 	}
 	s := &Service{
 		pool:           pool,

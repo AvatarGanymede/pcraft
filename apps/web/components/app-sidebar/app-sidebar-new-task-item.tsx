@@ -5,7 +5,7 @@ import dynamic from "@/lib/routing/client-dynamic";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconMessageCircle, IconSquarePlus, IconSubtask } from "@tabler/icons-react";
 import type { Icon as TablerIcon } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useInOffice } from "@/hooks/use-in-office";
 import { useQuickChatLauncher } from "@/hooks/use-quick-chat-launcher";

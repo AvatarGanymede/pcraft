@@ -3,7 +3,7 @@ package runtimeflags
 var definitions = []RuntimeFlagDefinition{
 	{
 		Key:         "features.office",
-		EnvVar:      "KANDEV_FEATURES_OFFICE",
+		EnvVar:      "PCRAFT_FEATURES_OFFICE",
 		Kind:        KindFeature,
 		Label:       "Office mode",
 		Description: "Enables autonomous agent office workflows and related settings.",
@@ -16,7 +16,7 @@ var definitions = []RuntimeFlagDefinition{
 	},
 	{
 		Key:         "debug.devMode",
-		EnvVar:      "KANDEV_DEBUG_DEV_MODE",
+		EnvVar:      "PCRAFT_DEBUG_DEV_MODE",
 		Kind:        KindDebug,
 		Label:       "Debug mode",
 		Description: "Enables local diagnostic endpoints and agent message debug logs for troubleshooting backend, agent, and tool-call behavior.",
@@ -27,8 +27,8 @@ var definitions = []RuntimeFlagDefinition{
 		RestartRequired: true,
 		Mutable:         true,
 		ImpliedEnvVars: []string{
-			"KANDEV_DEBUG_PPROF_ENABLED",
-			"KANDEV_DEBUG_AGENT_MESSAGES",
+			"PCRAFT_DEBUG_PPROF_ENABLED",
+			"PCRAFT_DEBUG_AGENT_MESSAGES",
 		},
 	},
 }

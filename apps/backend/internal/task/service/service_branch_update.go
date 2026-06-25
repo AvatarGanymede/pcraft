@@ -8,9 +8,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/securityutil"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/securityutil"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // UpdateRepositoryBaseBranchRequest carries the parameters for the

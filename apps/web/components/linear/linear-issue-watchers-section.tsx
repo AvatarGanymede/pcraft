@@ -2,8 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { IconBellRinging, IconPlus } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { useToast } from "@/components/toast-provider";
 import { useLinearIssueWatches } from "@/hooks/domains/linear/use-linear-issue-watches";

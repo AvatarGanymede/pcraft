@@ -3,9 +3,9 @@ package backendapp
 import (
 	"context"
 
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	"github.com/kandev/kandev/internal/common/logger"
-	userservice "github.com/kandev/kandev/internal/user/service"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	userservice "github.com/AvatarGanymede/pcraft/internal/user/service"
 	"go.uber.org/zap"
 )
 

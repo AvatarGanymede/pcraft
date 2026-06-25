@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { ModelCombobox } from "@/components/settings/model-combobox";
 import {
   type UtilityAgent,

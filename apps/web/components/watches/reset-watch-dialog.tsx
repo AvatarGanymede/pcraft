@@ -10,7 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 
 // previewLoader fetches the count of tasks that would be deleted. The
 // dialog calls it once when it opens; the result is cached for the

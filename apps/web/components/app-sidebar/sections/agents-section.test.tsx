@@ -47,12 +47,12 @@ vi.mock("@/components/state-provider", () => ({
   useAppStore: (selector: (s: typeof state) => unknown) => selector(state),
 }));
 
-vi.mock("@kandev/ui/collapsible", () => ({
+vi.mock("@pcraft/ui/collapsible", () => ({
   Collapsible: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   CollapsibleContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   TooltipTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,

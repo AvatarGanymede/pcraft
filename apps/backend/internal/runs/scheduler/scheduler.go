@@ -23,7 +23,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // DefaultTickInterval is the safety-net tick. Engine-emitted rows are
@@ -41,13 +41,13 @@ const DefaultTickInterval = 5 * time.Second
 // has elapsed.
 const SignalCoalesceWindow = 10 * time.Millisecond
 
-// TickIntervalFromEnv reads KANDEV_OFFICE_SCHEDULER_TICK_MS and returns
+// TickIntervalFromEnv reads PCRAFT_OFFICE_SCHEDULER_TICK_MS and returns
 // the corresponding duration. Falls back to DefaultTickInterval when
 // the variable is unset or invalid. The env var name keeps the
 // "office" prefix for backward compatibility with existing
 // deployments.
 func TickIntervalFromEnv() time.Duration {
-	raw := os.Getenv("KANDEV_OFFICE_SCHEDULER_TICK_MS")
+	raw := os.Getenv("PCRAFT_OFFICE_SCHEDULER_TICK_MS")
 	if raw == "" {
 		return DefaultTickInterval
 	}

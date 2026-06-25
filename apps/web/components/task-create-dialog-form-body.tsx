@@ -77,19 +77,13 @@ function NoCompatibleAgentState({
   executorProfileName: string | null;
   executorProfileId: string;
 }) {
-  const target = executorProfileName ? `“${executorProfileName}”` : "this executor";
-  const href = executorProfileId
-    ? `/settings/executors/${executorProfileId}`
-    : "/settings/executors";
+  const target = executorProfileName ? `"${executorProfileName}"` : "this executor";
   return (
     <div
       className="flex h-auto min-h-7 items-center justify-between gap-3 rounded-sm border border-input px-3 py-1.5 text-xs text-muted-foreground"
       data-testid="agent-profile-empty-state"
     >
       <span>No compatible agent profiles for {target}.</span>
-      <Link href={href} className="shrink-0 cursor-pointer text-primary hover:underline">
-        Configure credentials
-      </Link>
     </div>
   );
 }

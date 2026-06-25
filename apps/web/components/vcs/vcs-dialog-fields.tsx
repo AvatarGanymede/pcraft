@@ -1,11 +1,11 @@
 "use client";
 
 import { IconLoader2, IconSparkles } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
-import { Textarea } from "@kandev/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 type GenerateButtonProps = {
   onClick: () => void;

@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	officedashboard "github.com/kandev/kandev/internal/office/dashboard"
-	taskdto "github.com/kandev/kandev/internal/task/dto"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	userdto "github.com/kandev/kandev/internal/user/dto"
-	usermodels "github.com/kandev/kandev/internal/user/models"
+	officedashboard "github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	taskdto "github.com/AvatarGanymede/pcraft/internal/task/dto"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	userdto "github.com/AvatarGanymede/pcraft/internal/user/dto"
+	usermodels "github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 func (b bootStateBuilder) tasksPageBootData(ctx context.Context, req *http.Request) (map[string]any, map[string]any) {

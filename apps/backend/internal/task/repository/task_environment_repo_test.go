@@ -7,10 +7,10 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // Phase 0 tests for the multi-repo TaskEnvironment / TaskEnvironmentRepo schema.

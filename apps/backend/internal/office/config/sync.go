@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
 )
 
 // ScanFilesystem reads the on-disk workspace config into a ConfigBundle and

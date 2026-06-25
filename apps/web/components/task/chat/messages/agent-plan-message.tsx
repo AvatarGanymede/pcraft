@@ -2,8 +2,8 @@
 
 import { useState, memo } from "react";
 import { IconMinus, IconPlus, IconMaximize } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
 import { MemoizedMarkdown } from "@/components/shared/memoized-markdown";
 import type { Message } from "@/lib/types/http";
 

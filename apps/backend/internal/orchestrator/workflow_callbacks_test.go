@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
 )
 
 // TestSetSessionModeCallback_Execute covers the engine callback wired for the

@@ -44,7 +44,7 @@ import {
   AgentRunsRoute,
 } from "./office-agent-client-routes";
 import { RoutineDetailRoute } from "./office-routine-client-routes";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 type RouteRenderer = () => React.ReactNode;
 

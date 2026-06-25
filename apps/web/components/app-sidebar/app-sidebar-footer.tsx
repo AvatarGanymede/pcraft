@@ -3,32 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import {
-  IconBuildings,
-  IconChartBar,
-  IconLayoutKanban,
   IconSettings,
   IconSparkles,
   IconStethoscope,
 } from "@tabler/icons-react";
 import type { Icon as TablerIcon } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { ImproveKandevDialog } from "@/components/improve-kandev-dialog";
 import { ReleaseNotesDialog } from "@/components/release-notes/release-notes-dialog";
 import { useAppStore } from "@/components/state-provider";
-import { useFeature } from "@/hooks/domains/features/use-feature";
 import { useReleaseNotes } from "@/hooks/use-release-notes";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { linkToTask } from "@/lib/links";
 import { cn } from "@/lib/utils";
-import {
-  isOfficeWorkspace,
-  rememberLastOfficeWorkspace,
-  rememberLastKanbanWorkspace,
-  resolveLastOfficeWorkspace,
-  resolveLastKanbanWorkspace,
-  workspaceHomeHref,
-} from "./app-sidebar-workspace-navigation";
 
 type AppSidebarFooterProps = {
   collapsed: boolean;
@@ -99,14 +87,8 @@ export function AppSidebarFooter({ collapsed }: AppSidebarFooterProps) {
   const router = useRouter();
   const workspaces = useAppStore((s) => s.workspaces);
   const workspaceId = workspaces.activeId;
-  const activeWorkspace = workspaces.items.find((workspace) => workspace.id === workspaceId);
-  const activeIsOffice = isOfficeWorkspace(activeWorkspace);
-  const targetWorkspace = activeIsOffice
-    ? resolveLastKanbanWorkspace(workspaces.items)
-    : resolveLastOfficeWorkspace(workspaces.items);
   const settingsMode = useAppStore((s) => s.appSidebar.settingsMode);
   const toggleSettingsMode = useAppStore((s) => s.toggleAppSidebarSettingsMode);
-  const officeEnabled = useFeature("office");
   const releaseNotes = useReleaseNotes();
   const [improveOpen, setImproveOpen] = useState(false);
 
@@ -126,13 +108,6 @@ export function AppSidebarFooter({ collapsed }: AppSidebarFooterProps) {
         testId="sidebar-settings-gear"
       />
       <FooterIconButton
-        icon={IconChartBar}
-        label="Stats"
-        collapsed={collapsed}
-        onClick={() => router.push("/stats")}
-        testId="sidebar-stats-button"
-      />
-      <FooterIconButton
         icon={IconStethoscope}
         label="Improve Kandev"
         collapsed={collapsed}
@@ -147,23 +122,6 @@ export function AppSidebarFooter({ collapsed }: AppSidebarFooterProps) {
           onClick={releaseNotes.openDialog}
           badge={releaseNotes.hasUnseen}
           testId="sidebar-release-notes-button"
-        />
-      )}
-      {officeEnabled && (
-        <FooterIconButton
-          icon={activeIsOffice ? IconLayoutKanban : IconBuildings}
-          label={activeIsOffice ? "Kanban" : "Office"}
-          collapsed={collapsed}
-          onClick={() => {
-            if (!activeIsOffice) rememberLastKanbanWorkspace(activeWorkspace);
-            if (activeIsOffice) rememberLastOfficeWorkspace(activeWorkspace);
-            const href =
-              !activeIsOffice && !targetWorkspace
-                ? "/office/setup?mode=new"
-                : workspaceHomeHref(targetWorkspace ?? undefined);
-            router.push(href);
-          }}
-          testId={activeIsOffice ? "sidebar-kanban-button" : "sidebar-office-button"}
         />
       )}
       <ThemeToggle />

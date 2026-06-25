@@ -18,7 +18,7 @@ import {
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import {
   DropdownMenuItem,
   DropdownMenuPortal,
@@ -26,7 +26,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
 import type { WorkflowStep } from "@/components/kanban-card";
 import {

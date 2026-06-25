@@ -10,8 +10,8 @@ import (
 	"time"
 
 	acp "github.com/coder/acp-go-sdk"
-	acpclient "github.com/kandev/kandev/internal/agentctl/server/acp"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	acpclient "github.com/AvatarGanymede/pcraft/internal/agentctl/server/acp"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

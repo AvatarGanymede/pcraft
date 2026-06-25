@@ -17,7 +17,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // DefaultInterval is the cadence used by Poller when no Interval is set.

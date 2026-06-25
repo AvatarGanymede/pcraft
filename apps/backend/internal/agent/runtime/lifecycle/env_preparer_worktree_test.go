@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 func TestCopyFilesStep_SingleFile(t *testing.T) {

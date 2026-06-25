@@ -10,11 +10,11 @@ import {
   IconLoader2,
   IconSubtask,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { PRTaskIcon } from "@/components/github/pr-task-icon";
 import {
   KanbanCardDropdownMenuItems,

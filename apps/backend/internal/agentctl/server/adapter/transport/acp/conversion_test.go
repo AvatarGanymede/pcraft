@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // newTestAdapter creates a minimal Adapter suitable for unit testing conversion functions.

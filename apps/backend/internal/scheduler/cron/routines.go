@@ -6,7 +6,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // RoutineTicker is the surface RoutinesHandler needs from the office

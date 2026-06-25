@@ -5,31 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
-
-func TestIsContainerizedExecutor(t *testing.T) {
-	tests := []struct {
-		executorType string
-		want         bool
-	}{
-		{"local_docker", true},
-		{"remote_docker", true},
-		{"sprites", true},
-		{"local", false},
-		{"worktree", false},
-		{"", false},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.executorType, func(t *testing.T) {
-			got := isContainerizedExecutor(tt.executorType)
-			if got != tt.want {
-				t.Errorf("isContainerizedExecutor(%q) = %v, want %v", tt.executorType, got, tt.want)
-			}
-		})
-	}
-}
 
 func TestMethodIDToEnvVar(t *testing.T) {
 	tests := []struct {

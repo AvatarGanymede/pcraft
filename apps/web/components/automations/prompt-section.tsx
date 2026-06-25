@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Label } from "@kandev/ui/label";
+import { Label } from "@pcraft/ui/label";
 import { ScriptEditor } from "@/components/settings/profile-edit/script-editor";
 import type { PlaceholderInfo } from "@/lib/types/automation";
 import { toScriptPlaceholders } from "./automation-placeholders";

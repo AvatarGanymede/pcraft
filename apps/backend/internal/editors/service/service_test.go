@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestOpenFolder_EmptySessionID(t *testing.T) {

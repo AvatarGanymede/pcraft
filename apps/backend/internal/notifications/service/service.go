@@ -8,13 +8,13 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	gatewayws "github.com/kandev/kandev/internal/gateway/websocket"
-	"github.com/kandev/kandev/internal/notifications/models"
-	"github.com/kandev/kandev/internal/notifications/providers"
-	notificationstore "github.com/kandev/kandev/internal/notifications/store"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	userstore "github.com/kandev/kandev/internal/user/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	gatewayws "github.com/AvatarGanymede/pcraft/internal/gateway/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/models"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/providers"
+	notificationstore "github.com/AvatarGanymede/pcraft/internal/notifications/store"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	userstore "github.com/AvatarGanymede/pcraft/internal/user/store"
 	"go.uber.org/zap"
 )
 

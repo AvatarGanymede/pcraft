@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { IconChevronDown, IconLoader2 } from "@tabler/icons-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import { useSessionMessages } from "@/hooks/domains/session/use-session-messages";
 import { MessageRenderer } from "@/components/task/chat/message-renderer";
 import type { Message } from "@/lib/types/http";

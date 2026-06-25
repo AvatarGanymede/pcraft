@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/worktree/copyfiles"
+	"github.com/AvatarGanymede/pcraft/internal/worktree/copyfiles"
 )
 
 // CopyFilesRequest is the JSON body for POST /workspace/copy-files.

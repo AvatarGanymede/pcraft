@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 func TestResolveNonExistentPath(t *testing.T) {

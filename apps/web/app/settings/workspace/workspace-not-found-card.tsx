@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
 
 export function WorkspaceNotFoundCard({ onBack }: { onBack: () => void }) {
   return (

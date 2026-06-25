@@ -5,7 +5,6 @@ import {
   listAgentDiscovery,
   listAgents,
   listAvailableAgents,
-  listExecutors,
   listWorkspaces,
 } from "@/lib/api";
 import { mapUserSettingsResponse } from "@/lib/ssr/user-settings";
@@ -21,10 +20,9 @@ async function SettingsLayoutServer({ children }: { children: React.ReactNode })
     // Fetch discovery + available agents alongside the DB-backed list so a
     // hard refresh of /settings/agents/[name] (where no profile exists yet)
     // can still render the agent from the discovered set.
-    const [workspaces, executors, agents, discovery, available, userSettingsResponse] =
+    const [workspaces, agents, discovery, available, userSettingsResponse] =
       await Promise.all([
         listWorkspaces({ cache: "no-store" }),
-        listExecutors({ cache: "no-store" }),
         listAgents({ cache: "no-store" }),
         listAgentDiscovery({ cache: "no-store" }),
         listAvailableAgents({ cache: "no-store" }),
@@ -46,9 +44,6 @@ async function SettingsLayoutServer({ children }: { children: React.ReactNode })
           default_config_agent_profile_id: workspace.default_config_agent_profile_id ?? null,
         })),
         activeId: workspaces.workspaces[0]?.id ?? null,
-      },
-      executors: {
-        items: executors.executors,
       },
       agentProfiles: {
         items: agents.agents.flatMap((agent) =>

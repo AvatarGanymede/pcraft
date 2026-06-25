@@ -5,8 +5,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"

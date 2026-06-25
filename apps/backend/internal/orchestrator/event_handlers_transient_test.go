@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // overloaded529 is the exact transient 529 Overloaded envelope the

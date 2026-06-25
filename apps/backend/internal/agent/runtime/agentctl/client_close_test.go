@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // closeBarrierMockServer is a minimal agentctl mock that exposes the two

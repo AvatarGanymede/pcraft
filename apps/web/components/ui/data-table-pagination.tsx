@@ -6,9 +6,9 @@ import {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-} from "@kandev/ui/pagination";
-import { Button } from "@kandev/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+} from "@pcraft/ui/pagination";
+import { Button } from "@pcraft/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import {
   IconChevronLeft,
   IconChevronRight,

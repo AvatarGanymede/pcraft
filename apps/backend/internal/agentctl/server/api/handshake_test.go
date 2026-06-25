@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 func setupHandshakeServer(cfg *config.Config) *ControlServer {

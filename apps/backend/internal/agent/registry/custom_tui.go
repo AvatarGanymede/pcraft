@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 // RegisterCustomTUIAgent creates a TUIAgent from user-provided parameters and registers it.

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

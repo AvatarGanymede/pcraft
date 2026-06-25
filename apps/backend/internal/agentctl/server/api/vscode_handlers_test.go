@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 func TestHandleVscodeStart_Success(t *testing.T) {

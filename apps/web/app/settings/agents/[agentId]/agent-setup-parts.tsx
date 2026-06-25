@@ -11,9 +11,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@kandev/ui/alert-dialog";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
+} from "@pcraft/ui/alert-dialog";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
 import { UnsavedChangesBadge, UnsavedSaveButton } from "@/components/settings/unsaved-indicator";
 import { ProfileFormFields } from "@/components/settings/profile-form-fields";
 import { ProfileEnvVarsSection } from "@/components/settings/agent-profile-page";

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	acp "github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // burstAgent is a minimal acp.Agent stub used by the load-replay regression

@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // RunDetailRepo is the subset of repo functions GetRunDetail needs.

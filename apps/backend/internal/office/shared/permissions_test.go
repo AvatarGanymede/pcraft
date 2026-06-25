@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 func TestResolvePermissions_Defaults(t *testing.T) {

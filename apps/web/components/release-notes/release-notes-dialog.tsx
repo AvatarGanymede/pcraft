@@ -7,10 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@kandev/ui/dialog";
-import { ScrollArea } from "@kandev/ui/scroll-area";
-import { Badge } from "@kandev/ui/badge";
-import { Separator } from "@kandev/ui/separator";
+} from "@pcraft/ui/dialog";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
+import { Badge } from "@pcraft/ui/badge";
+import { Separator } from "@pcraft/ui/separator";
 import { IconExternalLink } from "@tabler/icons-react";
 import { remarkPlugins, markdownComponents } from "@/components/shared/markdown-components";
 import { getReleaseUrl } from "@/lib/release-notes";

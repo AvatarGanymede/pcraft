@@ -10,8 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func init() { gin.SetMode(gin.TestMode) }

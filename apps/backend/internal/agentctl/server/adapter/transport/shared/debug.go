@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // debugMode controls whether agent messages are logged.
-// Enable via KANDEV_DEBUG_AGENT_MESSAGES=true environment variable.
+// Enable via PCRAFT_DEBUG_AGENT_MESSAGES=true environment variable.
 var debugMode = os.Getenv(envDebugMessages) == "true"
 
 // acpLog is the process-wide managed writer registry. It is allocated even

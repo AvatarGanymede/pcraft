@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"maps"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 const (

@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // Scope constants for office_provider_health.scope. The triple

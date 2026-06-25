@@ -13,10 +13,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	agentctlclient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
+	agentctlclient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 func TestCheckWebSocketOrigin(t *testing.T) {

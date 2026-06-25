@@ -3,8 +3,8 @@
 import Link from "@/components/routing/app-link";
 import { usePathname } from "@/lib/routing/client-router";
 import type { Icon as TablerIcon } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_ITEM_ACTIVE, SIDEBAR_ITEM_INACTIVE } from "./app-sidebar-constants";
 

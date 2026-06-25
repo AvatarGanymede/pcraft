@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";
 import { NewTaskDialog } from "../components/new-task-dialog";

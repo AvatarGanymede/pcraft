@@ -2,8 +2,8 @@
 
 import Link from "@/components/routing/app-link";
 import { IconCircle, IconCircleCheck, IconExternalLink } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Spinner } from "@kandev/ui/spinner";
+import { Badge } from "@pcraft/ui/badge";
+import { Spinner } from "@pcraft/ui/spinner";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import type { Issue } from "@/lib/types/gitlab";
 

@@ -11,10 +11,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func (s *Service) handleTaskStateChanged(ctx context.Context, data watcher.TaskEventData) {

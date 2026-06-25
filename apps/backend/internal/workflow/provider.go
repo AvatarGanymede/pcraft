@@ -4,9 +4,9 @@ package workflow
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/workflow/repository"
-	"github.com/kandev/kandev/internal/workflow/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/repository"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/service"
 )
 
 // Provide creates the workflow repository and service using separate writer and reader pools.

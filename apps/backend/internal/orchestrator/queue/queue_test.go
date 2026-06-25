@@ -5,7 +5,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // createTestTask creates a task for testing with the given parameters.

@@ -9,10 +9,10 @@ import {
   IconCode,
   IconTools,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
-import { Separator } from "@kandev/ui/separator";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
+import { Separator } from "@pcraft/ui/separator";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { getBackendConfig } from "@/lib/config";
 import {

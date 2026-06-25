@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconArrowBackUp, IconLoader2 } from "@tabler/icons-react";
 
 interface HunkActionBarProps {

@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 func testLogger() *logger.Logger {

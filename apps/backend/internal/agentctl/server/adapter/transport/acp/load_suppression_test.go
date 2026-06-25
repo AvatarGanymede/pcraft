@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	acp "github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // makeNotification is a helper that wraps a SessionUpdate in a SessionNotification.

@@ -3,8 +3,8 @@
 import { useCallback, useMemo, useState } from "react";
 import type { IWatermarkPanelProps } from "dockview-react";
 import { IconPlus, IconLayoutSidebarRightCollapse } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@kandev/ui/dropdown-menu";
+import { Button } from "@pcraft/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@pcraft/ui/dropdown-menu";
 import { useDockviewStore } from "@/lib/state/dockview-store";
 import { useAppStore } from "@/components/state-provider";
 import { useEnvironmentId } from "@/hooks/use-environment-session-id";

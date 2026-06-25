@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Workspace-mode and ordering constants used across handoff plumbing.

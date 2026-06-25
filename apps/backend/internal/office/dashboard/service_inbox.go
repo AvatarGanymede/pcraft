@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // GetInboxItems returns a computed view of all items needing user attention.

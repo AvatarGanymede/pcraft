@@ -1,6 +1,6 @@
 "use client";
 
-import { ToggleGroup, ToggleGroupItem } from "@kandev/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@pcraft/ui/toggle-group";
 import type { Tier } from "@/lib/state/slices/office/types";
 
 const TIER_OPTIONS: Array<{ value: Tier; label: string; hint: string }> = [

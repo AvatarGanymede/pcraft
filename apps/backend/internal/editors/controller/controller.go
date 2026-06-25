@@ -4,9 +4,9 @@ import (
 	"context"
 	"sort"
 
-	"github.com/kandev/kandev/internal/editors/discovery"
-	"github.com/kandev/kandev/internal/editors/dto"
-	"github.com/kandev/kandev/internal/editors/service"
+	"github.com/AvatarGanymede/pcraft/internal/editors/discovery"
+	"github.com/AvatarGanymede/pcraft/internal/editors/dto"
+	"github.com/AvatarGanymede/pcraft/internal/editors/service"
 )
 
 type Controller struct {

@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/system/jobs"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/system/jobs"
 )
 
 // stubBus is a minimal in-memory EventBus used by the jobs.Tracker. We only

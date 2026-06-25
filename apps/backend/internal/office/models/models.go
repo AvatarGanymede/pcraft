@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // AgentRole and AgentStatus are aliases for the canonical types declared

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // Repository defines the storage requirements for MCP config access.

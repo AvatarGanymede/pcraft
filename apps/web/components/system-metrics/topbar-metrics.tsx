@@ -10,7 +10,7 @@ import {
   IconDisc,
   IconServer,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { formatDistanceToNow } from "date-fns";
 import { useAppStore } from "@/components/state-provider";
 import { useResponsiveBreakpoint } from "@/hooks/use-responsive-breakpoint";

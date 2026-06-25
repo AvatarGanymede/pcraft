@@ -1,4 +1,4 @@
-import { Skeleton } from "@kandev/ui/skeleton";
+import { Skeleton } from "@pcraft/ui/skeleton";
 import {
   ActivitySkeleton,
   ChartsSkeleton,

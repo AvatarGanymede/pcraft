@@ -9,8 +9,8 @@ import {
   IconSearch,
   IconX,
 } from "@tabler/icons-react";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { cn } from "@kandev/ui/lib/utils";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { cn } from "@pcraft/ui/lib/utils";
 import { FileIcon } from "@/components/ui/file-icon";
 import { useTree, type VisibleRow } from "@/hooks/use-tree";
 import type { ReviewFile, FileTreeNode } from "./types";

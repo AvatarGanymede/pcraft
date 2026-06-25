@@ -1,8 +1,8 @@
 "use client";
 
 import { IconDownload, IconLoader2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
 import { AgentLogo } from "@/components/agent-logo";
 import type { InstallJob } from "@/lib/api";
 import type { AvailableAgent } from "@/lib/types/http";

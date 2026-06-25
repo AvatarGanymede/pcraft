@@ -5,12 +5,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/p4"
+
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 
@@ -33,6 +35,7 @@ type TaskHandlers struct {
 	repo                handlerRepo
 	planService         *service.PlanService
 	handoffSvc          *service.HandoffService
+	p4svc               *p4.Service
 	onTaskCreatedWithPR func(ctx context.Context, taskID, sessionID, prURL, branch string)
 	logger              *logger.Logger
 }

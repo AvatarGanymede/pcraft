@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 )
 
 func TestHandleSetPollMode_AcceptsValidModes(t *testing.T) {

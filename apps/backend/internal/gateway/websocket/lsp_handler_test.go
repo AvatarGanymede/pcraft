@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/lsp/installer"
+	"github.com/AvatarGanymede/pcraft/internal/lsp/installer"
 )
 
 func TestReadLSPMessage_Valid(t *testing.T) {

@@ -8,8 +8,8 @@ import {
   IconTrash,
   IconDownload,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Textarea } from "@pcraft/ui/textarea";
 import { toast } from "sonner";
 import { formatRelativeTime } from "@/lib/utils";
 import {

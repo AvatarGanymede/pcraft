@@ -1,9 +1,9 @@
 "use client";
 
 import { IconLoader2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import type { LocalRepository } from "@/lib/types/http";
 
 export type ManualValidation = {

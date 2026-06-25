@@ -14,9 +14,9 @@ type runtimeBundle struct {
 }
 
 func resolveRuntimeBundle() (runtimeBundle, error) {
-	dir := os.Getenv("KANDEV_BUNDLE_DIR")
+	dir := os.Getenv("PCRAFT_BUNDLE_DIR")
 	if dir == "" {
-		return runtimeBundle{}, fmt.Errorf("no Kandev runtime found; KANDEV_BUNDLE_DIR is not set")
+		return runtimeBundle{}, fmt.Errorf("no Kandev runtime found; PCRAFT_BUNDLE_DIR is not set")
 	}
 	return validateRuntimeBundle(dir, "env")
 }

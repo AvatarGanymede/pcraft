@@ -9,12 +9,12 @@ import {
   IconBrandDiscord,
   IconWebhook,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Input } from "@kandev/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Input } from "@pcraft/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { toast } from "sonner";
 import type { AgentProfile } from "@/lib/state/slices/office/types";
 import * as officeApi from "@/lib/api/domains/office-api";

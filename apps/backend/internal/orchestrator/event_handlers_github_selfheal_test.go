@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/github"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // TestCreateIssueTask_SelfHealsWhenAgentProfileSoftDeleted is the regression

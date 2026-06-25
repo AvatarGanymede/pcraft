@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/orchestrator"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/stretchr/testify/require"
 )
 

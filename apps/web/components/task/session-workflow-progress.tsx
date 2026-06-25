@@ -1,8 +1,8 @@
 "use client";
 
 import type { WorkflowStep } from "@/lib/types/http";
-import { cn } from "@kandev/ui/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { cn } from "@pcraft/ui/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 type SessionWorkflowProgressProps = {
   steps: WorkflowStep[];

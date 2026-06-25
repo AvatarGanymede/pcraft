@@ -2,7 +2,7 @@
 
 import { memo, useMemo, useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { TaskCreateDialog } from "@/components/task-create-dialog";
 import { useAppStore } from "@/components/state-provider";
 import { useRegisterCommands } from "@/hooks/use-register-commands";

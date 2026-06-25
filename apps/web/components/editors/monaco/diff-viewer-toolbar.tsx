@@ -1,6 +1,6 @@
-import { cn } from "@kandev/ui/lib/utils";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@kandev/ui/tooltip";
+import { cn } from "@pcraft/ui/lib/utils";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@pcraft/ui/tooltip";
 import {
   IconCopy,
   IconTextWrap,

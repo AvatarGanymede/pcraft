@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestCIAutomationShouldAutoFix(t *testing.T) {

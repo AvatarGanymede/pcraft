@@ -7,9 +7,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Agent event type string constants.

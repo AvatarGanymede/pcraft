@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { IconClock, IconRun } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { useAppStore } from "@/components/state-provider";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";
 import { listRuns } from "@/lib/api/domains/office-api";

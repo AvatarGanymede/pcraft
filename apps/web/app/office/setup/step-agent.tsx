@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { AgentSelector } from "@/components/task-create-dialog-selectors";
 import { useAgentProfileOptions } from "@/components/task-create-dialog-options";
@@ -14,7 +14,7 @@ import { getCapabilityWarning } from "@/lib/capability-warning";
 import { CliProfileEditor } from "@/components/agent/cli-profile-editor";
 import { Combobox, type ComboboxOption } from "@/components/combobox";
 import { getExecutorIcon } from "@/lib/executor-icons";
-import { ToggleGroup, ToggleGroupItem } from "@kandev/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@pcraft/ui/toggle-group";
 import type { Tier } from "@/lib/state/slices/office/types";
 import { seedTier } from "./seed-tier-mapping";
 
@@ -36,12 +36,6 @@ type StepAgentProps = {
 // Fallback used only when meta has not been hydrated yet (graceful degradation).
 const FALLBACK_EXECUTOR_OPTIONS = [
   { id: "local_pc", label: "Local (standalone)", description: "Run on host machine" },
-  { id: "local_docker", label: "Local Docker", description: "Run in a local Docker container" },
-  {
-    id: "sprites",
-    label: "Sprites (remote sandbox)",
-    description: "Run in a Sprites cloud environment",
-  },
 ];
 
 function sortProfiles(profiles: AgentProfileOption[]): AgentProfileOption[] {
@@ -291,9 +285,6 @@ function ProfilePickerHint({
 // `lib/executor-icons.ts` (which uses runtime executor type names).
 const EXECUTOR_ICON_TYPE: Record<string, string> = {
   local_pc: "local",
-  local_docker: "local_docker",
-  remote_docker: "remote_docker",
-  sprites: "sprites",
 };
 
 function ExecutorSelector({

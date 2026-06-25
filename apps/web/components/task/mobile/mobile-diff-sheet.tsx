@@ -1,14 +1,18 @@
 "use client";
 
 import { memo, useMemo, useState, useEffect, useRef, useCallback } from "react";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@kandev/ui/drawer";
-import { Button } from "@kandev/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@kandev/ui/tabs";
-import { TaskChangesPanel } from "../task-changes-panel";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@pcraft/ui/drawer";
+import { Button } from "@pcraft/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
 import { CommitDiffView } from "../commit-detail-panel";
 import type { ReviewSource, SourceCounts } from "@/hooks/domains/session/use-review-sources";
 import type { SelectedDiff } from "../task-layout";
-import type { DiffSheetMode } from "../changes-diff-target";
+
+// TODO: Migrate to shared types when diff viewer is re-implemented
+type DiffSheetMode =
+  | { kind: "all"; sourceFilter?: string }
+  | { kind: "file"; path: string; sourceFilter?: string; repositoryName?: string }
+  | { kind: "commit"; sha: string; repo?: string };
 
 const MOBILE_DIFF_SOURCE_FILTER_KEY = "mobile-diff-source-filter";
 
@@ -163,22 +167,8 @@ function renderPanel(
   if (mode.kind === "commit") {
     return <CommitDiffView sha={mode.sha} repo={mode.repo} onOpenFile={onOpenFile} wordWrap />;
   }
-  const panelMode = mode.kind;
-  const filePath = mode.kind === "file" ? mode.path : undefined;
-  const fileRepositoryName = mode.kind === "file" ? mode.repositoryName : undefined;
-  const effectiveSourceFilter = mode.kind === "all" ? activeSource : (mode.sourceFilter ?? "all");
-  return (
-    <TaskChangesPanel
-      mode={panelMode}
-      filePath={filePath}
-      fileRepositoryName={fileRepositoryName}
-      selectedDiff={selectedDiff}
-      onClearSelected={onClearSelected}
-      onOpenFile={onOpenFile}
-      sourceFilter={effectiveSourceFilter}
-      wordWrap
-    />
-  );
+  // TODO: Re-implement file/all diff viewer
+  return <div className="p-4 text-muted-foreground">Diff viewer is being reworked.</div>;
 }
 
 /**

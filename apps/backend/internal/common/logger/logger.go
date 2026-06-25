@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 )
 
 // Context keys for extracting values from context.
@@ -158,7 +158,7 @@ func detectLogFormat() string {
 	}
 
 	// Check for explicit production environment
-	if env := os.Getenv("KANDEV_ENV"); env == "production" || env == "prod" {
+	if env := os.Getenv("PCRAFT_ENV"); env == "production" || env == "prod" {
 		return "json"
 	}
 

@@ -14,7 +14,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 // Stage type tags carried in run payloads / prompt context. Originally

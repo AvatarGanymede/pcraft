@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/worktree"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -28,25 +28,11 @@ func isConfigModeSession(session *models.TaskSession) bool {
 	return ok && cm
 }
 
-// isContainerizedExecutor returns true for executor types that run agents in
-// containers or remote sandboxes (Docker variants + Sprites). These executors
-// need GitHub token injection for git operations since they don't have access
-// to the host's git credentials, and they're the same set that needs the
-// kandev-managed feature branch propagated through env metadata.
-func isContainerizedExecutor(executorType string) bool {
-	switch models.ExecutorType(executorType) {
-	case models.ExecutorTypeLocalDocker, models.ExecutorTypeRemoteDocker, models.ExecutorTypeSprites:
-		return true
-	default:
-		return false
-	}
-}
-
 // runAgentProcessAsync starts the agent subprocess in a background goroutine.
 // On error it marks the session as FAILED. The task is also marked FAILED only
 // when escalateTaskOnFailure is true; resume callers pass false so a transient
 // background bootstrap error does not destructively overwrite the task's
-// existing state (e.g. REVIEW). fromResume is forwarded to onAgentStartFailed
+// existing state (e.g. IN_PROGRESS). fromResume is forwarded to onAgentStartFailed
 // so the orchestrator can suppress user-facing toasts on background recovery.
 // On success it calls onSuccess with a non-cancellable context derived from ctx.
 // ctx is used with WithoutCancel so trace spans are preserved without inheriting cancellation.
@@ -73,8 +59,8 @@ func (e *Executor) runAgentProcessAsync(ctx context.Context, taskID, sessionID, 
 					zap.Error(updateErr))
 			}
 			if escalateTaskOnFailure {
-				if updateErr := e.updateTaskState(updateCtx, taskID, v1.TaskStateFailed); updateErr != nil {
-					e.logger.Warn("failed to mark task as failed after start error",
+				if updateErr := e.updateTaskState(updateCtx, taskID, v1.TaskStateBacklog); updateErr != nil {
+					e.logger.Warn("failed to mark task as backlog after start error",
 						zap.String("task_id", taskID),
 						zap.Error(updateErr))
 				}
@@ -537,8 +523,8 @@ func (e *Executor) handleLaunchFailure(ctx context.Context, taskID, sessionID st
 			zap.String("session_id", sessionID),
 			zap.Error(updateErr))
 	}
-	if updateErr := e.updateTaskState(failCtx, taskID, v1.TaskStateFailed); updateErr != nil {
-		e.logger.Warn("failed to mark task as failed after launch error",
+	if updateErr := e.updateTaskState(failCtx, taskID, v1.TaskStateBacklog); updateErr != nil {
+		e.logger.Warn("failed to mark task as backlog after launch error",
 			zap.String("task_id", taskID),
 			zap.Error(updateErr))
 	}
@@ -656,7 +642,7 @@ func (e *Executor) buildLaunchAgentRequest(ctx context.Context, task *v1.Task, s
 	// 2. Profile remote_credentials with gh_cli_token (extract from local gh CLI)
 	// 3. Global GITHUB_TOKEN secret (fallback)
 	// 4. Auto-extract from local gh CLI (final fallback)
-	if isContainerizedExecutor(execConfig.ExecutorType) {
+	if false {
 		e.applyContainerCredentials(ctx, req, metadata)
 	}
 
@@ -1096,9 +1082,6 @@ func (e *Executor) persistTaskEnvironment(
 		if resp.ContainerID != "" {
 			existingEnv.ContainerID = resp.ContainerID
 		}
-		if sandboxID := extractSandboxID(resp.Metadata); sandboxID != "" {
-			existingEnv.SandboxID = sandboxID
-		}
 		// Refresh TaskDirName when the request carries a new value — covers
 		// resume-after-failure where the original env row was stamped with an
 		// empty task_dir_name and the resume regenerates it.
@@ -1133,7 +1116,7 @@ func (e *Executor) persistTaskEnvironment(
 		WorkspacePath:  workspacePath,
 		ContainerID:    resp.ContainerID,
 		TaskDirName:    req.TaskDirName,
-		SandboxID:      extractSandboxID(resp.Metadata),
+		SandboxID:      "",
 	}
 	// Embed per-repo rows in the same create transaction when multi-repo.
 	if len(resp.Worktrees) > 0 {
@@ -1203,16 +1186,4 @@ func (e *Executor) persistTaskEnvironmentRepos(ctx context.Context, envID string
 				zap.Error(createErr))
 		}
 	}
-}
-
-// extractSandboxID extracts the sandbox identifier from launch response metadata.
-// For Sprites executors, this is the sprite_name.
-func extractSandboxID(metadata map[string]interface{}) string {
-	if metadata == nil {
-		return ""
-	}
-	if name, ok := metadata["sprite_name"].(string); ok {
-		return name
-	}
-	return ""
 }

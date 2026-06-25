@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { IconChevronDown, IconLoader2 } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/components/state-provider";
 import { useBranches } from "@/hooks/domains/workspace/use-repository-branches";

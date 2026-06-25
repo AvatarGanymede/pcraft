@@ -1,8 +1,8 @@
 "use client";
 
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Label } from "@kandev/ui/label";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Label } from "@pcraft/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   ScriptEditor,
   computeEditorHeight,

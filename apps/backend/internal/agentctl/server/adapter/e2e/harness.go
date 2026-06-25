@@ -12,9 +12,9 @@
 //
 // Debug logging (set externally — read at package init time). Frames are
 // written to per-session files raw-/normalized-{protocol}-{agentID}-{sessionID}.jsonl
-// under KANDEV_DEBUG_LOG_DIR (default <KANDEV_HOME_DIR>/logs/acp, else ~/.kandev/logs/acp):
+// under PCRAFT_DEBUG_LOG_DIR (default <PCRAFT_HOME_DIR>/logs/acp, else ~/.pcraft/logs/acp):
 //
-//	KANDEV_DEBUG_AGENT_MESSAGES=true KANDEV_DEBUG_LOG_DIR=/tmp/e2e-debug ...
+//	PCRAFT_DEBUG_AGENT_MESSAGES=true PCRAFT_DEBUG_LOG_DIR=/tmp/e2e-debug ...
 //
 // OTel tracing:
 //
@@ -30,11 +30,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // AgentSpec defines the configuration for an E2E agent test.

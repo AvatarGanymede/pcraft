@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/settings/cliflags"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/agent/settings/profileconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/cliflags"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/profileconfig"
 )
 
 type CreateProfileRequest struct {
@@ -439,7 +439,7 @@ const (
 	maxProfileEnvVarKeyLen      = 256
 	maxProfileEnvVarValueLen    = 8 * 1024
 	reservedProfileEnvVarKey    = "TASK_DESCRIPTION"
-	reservedProfileEnvVarPrefix = "KANDEV_"
+	reservedProfileEnvVarPrefix = "PCRAFT_"
 )
 
 func validateProfileEnvVarDTOs(in []dto.ProfileEnvVarDTO) error {

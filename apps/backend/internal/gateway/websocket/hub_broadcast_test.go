@@ -3,7 +3,7 @@ package websocket
 import (
 	"testing"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // registerTestClient adds a client to the hub's connected set so broadcasts can

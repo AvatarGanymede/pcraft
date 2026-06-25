@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 
 /**
  * Shared "Close terminal?" confirmation. Rendered before a destroy-on-close

@@ -9,7 +9,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 type settingsScanner struct {

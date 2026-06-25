@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/workflow/service"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/service"
 )
 
 // Controller handles workflow-related requests

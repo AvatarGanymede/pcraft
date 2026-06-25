@@ -2,8 +2,8 @@
 
 import { forwardRef, useCallback, useState } from "react";
 import { IconAlertTriangle, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { NewSessionDialog } from "@/components/task/new-session-dialog";
 import { useAppStore } from "@/components/state-provider";
 import type { ContextFile } from "@/lib/state/context-files-store";

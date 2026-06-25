@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/kandev/kandev/internal/analytics/models"
+	"github.com/AvatarGanymede/pcraft/internal/analytics/models"
 )
 
 // Repository defines the interface for analytics/statistics operations.

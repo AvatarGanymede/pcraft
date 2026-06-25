@@ -3,9 +3,9 @@ package lifecycle
 import (
 	"testing"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/events"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestWakeup_SecondTurnAgentReadyIsSuppressed reproduces the bug deterministically

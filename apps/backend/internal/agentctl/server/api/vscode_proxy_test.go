@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 )
 
 func TestHandleVscodeProxy_ProxiesRequest(t *testing.T) {

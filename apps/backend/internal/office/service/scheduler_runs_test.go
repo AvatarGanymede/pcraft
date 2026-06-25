@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 func TestClaimNextRun_ReturnsNilWhenEmpty(t *testing.T) {

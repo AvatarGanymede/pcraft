@@ -8,11 +8,11 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	workflowcfg "github.com/kandev/kandev/config/workflows"
-	"github.com/kandev/kandev/internal/common/logger"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/workflow/repository"
+	workflowcfg "github.com/AvatarGanymede/pcraft/config/workflows"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 // WorkflowProvider gives the workflow service access to workflows owned by the task domain.

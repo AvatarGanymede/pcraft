@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Select,
   SelectContent,
@@ -10,8 +10,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@kandev/ui/select";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { IconGitBranch, IconPaperclip } from "@tabler/icons-react";
 import { AgentLogo } from "@/components/agent-logo";
 import {

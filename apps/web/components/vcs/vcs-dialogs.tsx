@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
+} from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
 import {
   GenerateButton,
   CommitBodyField,

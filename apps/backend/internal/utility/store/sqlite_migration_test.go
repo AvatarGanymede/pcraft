@@ -8,7 +8,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 )
 
 // openTestDB opens a fresh SQLite file under t.TempDir and registers cleanup.

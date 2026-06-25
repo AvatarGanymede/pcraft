@@ -1,15 +1,15 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+} from "@pcraft/ui/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { useKanbanDisplaySettings } from "@/hooks/use-kanban-display-settings";
 import type { Repository } from "@/lib/types/http";

@@ -10,14 +10,14 @@ import (
 	"github.com/coder/acp-go-sdk"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/settings/profileconfig"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/common/appctx"
-	"github.com/kandev/kandev/internal/common/logger"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/profileconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/common/appctx"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.opentelemetry.io/otel/trace"
 )
 

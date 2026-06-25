@@ -12,12 +12,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // PRIVACY / PERF: the JSONL frames written here contain the full prompt, file,
 // and tool-call content exchanged with the agent. They are strictly a
-// local-dev debugging aid gated behind KANDEV_DEBUG_AGENT_MESSAGES and must
+// local-dev debugging aid gated behind PCRAFT_DEBUG_AGENT_MESSAGES and must
 // never be enabled in a shared/production deployment. See the agentctl
 // CLAUDE.md "ACP Protocol" section for the documented env knobs.
 
@@ -33,12 +33,12 @@ const (
 
 // Environment knobs (all optional; sensible defaults below).
 const (
-	envDebugMessages   = "KANDEV_DEBUG_AGENT_MESSAGES"
-	envLogDir          = "KANDEV_DEBUG_LOG_DIR"
-	envHomeDir         = "KANDEV_HOME_DIR"
-	envACPMaxFiles     = "KANDEV_DEBUG_ACP_MAX_FILES"
-	envACPRetentionHrs = "KANDEV_DEBUG_ACP_RETENTION_HOURS"
-	envACPMaxFileBytes = "KANDEV_DEBUG_ACP_MAX_FILE_BYTES"
+	envDebugMessages   = "PCRAFT_DEBUG_AGENT_MESSAGES"
+	envLogDir          = "PCRAFT_DEBUG_LOG_DIR"
+	envHomeDir         = "PCRAFT_HOME_DIR"
+	envACPMaxFiles     = "PCRAFT_DEBUG_ACP_MAX_FILES"
+	envACPRetentionHrs = "PCRAFT_DEBUG_ACP_RETENTION_HOURS"
+	envACPMaxFileBytes = "PCRAFT_DEBUG_ACP_MAX_FILE_BYTES"
 )
 
 const (
@@ -62,8 +62,8 @@ type acpLogConfig struct {
 }
 
 // acpLogConfigFromEnv resolves the on-disk config from the environment,
-// applying defaults. The output directory resolves to KANDEV_DEBUG_LOG_DIR,
-// then <KANDEV_HOME_DIR>/logs/acp, then ~/.kandev/logs/acp, then the process
+// applying defaults. The output directory resolves to PCRAFT_DEBUG_LOG_DIR,
+// then <PCRAFT_HOME_DIR>/logs/acp, then ~/.pcraft/logs/acp, then the process
 // CWD as a last resort.
 func acpLogConfigFromEnv() acpLogConfig {
 	return acpLogConfig{
@@ -91,18 +91,18 @@ func resolveACPLogDir() string {
 	if dir := os.Getenv(envLogDir); dir != "" {
 		return dir
 	}
-	// Honor KANDEV_HOME_DIR before $HOME so dev/e2e isolation (and Docker/K8s
+	// Honor PCRAFT_HOME_DIR before $HOME so dev/e2e isolation (and Docker/K8s
 	// roots) keep ACP logs inside the configured Kandev home. The env value is
-	// already the Kandev root (e.g. <repo>/.kandev-dev), mirroring
+	// already the Kandev root (e.g. <repo>/.pcraft-dev), mirroring
 	// config.Config.ResolvedHomeDir — so we append logs/acp directly and must
-	// NOT add another ".kandev" segment. agentctl is a lean container binary
+	// NOT add another ".pcraft" segment. agentctl is a lean container binary
 	// that doesn't pull in the viper-based common/config, so we read the env
 	// directly rather than importing ResolvedHomeDir.
 	if home := os.Getenv(envHomeDir); home != "" {
 		return filepath.Join(expandTilde(home), "logs", "acp")
 	}
 	if home, err := os.UserHomeDir(); err == nil && home != "" {
-		return filepath.Join(home, ".kandev", "logs", "acp")
+		return filepath.Join(home, ".pcraft", "logs", "acp")
 	}
 	if cwd, err := os.Getwd(); err == nil {
 		return cwd

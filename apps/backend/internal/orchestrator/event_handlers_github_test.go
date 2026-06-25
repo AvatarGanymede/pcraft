@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // mockGitHubService implements GitHubService for testing.

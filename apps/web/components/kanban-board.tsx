@@ -32,7 +32,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 import { IconAlertTriangle } from "@tabler/icons-react";
 
 function useWorkflowSelection({

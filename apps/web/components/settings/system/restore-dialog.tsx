@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Spinner } from "@kandev/ui/spinner";
+} from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconAlertTriangle, IconCircleCheck } from "@tabler/icons-react";
 import { restoreBackup } from "@/lib/api/domains/system-api";
 import { useSystemJob } from "@/hooks/domains/system/use-system-jobs";

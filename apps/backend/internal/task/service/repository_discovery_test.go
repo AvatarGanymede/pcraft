@@ -10,11 +10,11 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 )
 
 func TestDiscoverLocalRepositoriesSkipsIgnoredRoots(t *testing.T) {

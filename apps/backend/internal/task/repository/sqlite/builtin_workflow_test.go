@@ -8,9 +8,9 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	workflowrepo "github.com/kandev/kandev/internal/workflow/repository"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	workflowrepo "github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 // newRepoForBuiltinWorkflowTests builds a fresh repo against an on-disk SQLite

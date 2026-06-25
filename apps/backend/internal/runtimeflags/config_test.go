@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/profiles"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/profiles"
 )
 
 func TestApplyStatesToConfigClearsProfileDebugEnvWhenDisabled(t *testing.T) {

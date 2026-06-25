@@ -31,17 +31,13 @@ import { useActiveTaskHasRepos } from "@/hooks/domains/kanban/use-active-task-ha
 import { LeftHeaderActions, RightHeaderActions } from "./dockview-header-actions";
 import { DockviewWatermark } from "./dockview-watermark";
 import { TaskChatPanel } from "./task-chat-panel";
-import { TaskChangesPanel } from "./task-changes-panel";
 import type { ReviewSource } from "@/hooks/domains/session/use-review-sources";
-import type { OpenDiffOptions } from "./changes-diff-target";
-import { ChangesPanel } from "./changes-panel";
 import { FilesPanel } from "./files-panel";
 import { TaskPlanPanel } from "./task-plan-panel";
 import { FileEditorPanel } from "./file-editor-panel";
 import { PassthroughToolbar } from "./passthrough-toolbar";
 import { PanelRoot, PanelBody } from "./panel-primitives";
 import { ContextMenuTab } from "./tab-context-menu";
-import { ChangesTab } from "./changes-tab";
 import { PlanTab } from "./plan-tab";
 import { PreviewFileTab, PreviewDiffTab, PreviewCommitTab, PinnedDefaultTab } from "./preview-tab";
 import { SessionTab } from "./session-tab";
@@ -190,7 +186,6 @@ function useSyncUserDefaultLayout() {
 
 const tabComponents: Record<string, React.FunctionComponent<IDockviewPanelHeaderProps>> = {
   permanentTab: PermanentTab,
-  changesTab: ChangesTab,
   planTab: PlanTab,
   sessionTab: SessionTab,
   terminalTab: TerminalTab,
@@ -267,30 +262,8 @@ function DiffViewerContent({
   panelId: string;
   params: Record<string, unknown>;
 }) {
-  const selectedDiff = useDockviewStore((s) => s.selectedDiff);
-  const setSelectedDiff = useDockviewStore((s) => s.setSelectedDiff);
-  const { openFile } = useFileEditors();
-  const panelKind = (params?.kind as string) ?? "all";
-  const selectedPath = panelKind === "file" ? (params?.path as string) : undefined;
-  const sourceFilter = ((params?.source as string) || "all") as "all" | ReviewSource;
-  const panelSelectedDiff = panelKind === "all" ? selectedDiff : null;
-  const handleClosePanel = useCallback(() => {
-    const dockApi = useDockviewStore.getState().api;
-    const panel = dockApi?.getPanel(panelId);
-    if (dockApi && panel) dockApi.removePanel(panel);
-  }, [panelId]);
-
-  return (
-    <TaskChangesPanel
-      mode={panelKind as "all" | "file"}
-      filePath={selectedPath}
-      sourceFilter={sourceFilter}
-      selectedDiff={panelSelectedDiff}
-      onClearSelected={() => setSelectedDiff(null)}
-      onOpenFile={openFile}
-      onBecameEmpty={handleClosePanel}
-    />
-  );
+  // TODO: Re-implement diff viewer panel
+  return <div className="p-4 text-muted-foreground">Diff viewer is being reworked.</div>;
 }
 
 function describeTaskRepositoriesForDebug(state: AppState, taskId: string | null) {
@@ -318,79 +291,8 @@ function describeTaskRepositoriesForDebug(state: AppState, taskId: string | null
 }
 
 function ChangesContent({ panelId }: { panelId: string }) {
-  const addDiffViewerPanel = useDockviewStore((s) => s.addDiffViewerPanel);
-  const addFileDiffPanel = useDockviewStore((s) => s.addFileDiffPanel);
-  const addCommitDetailPanel = useDockviewStore((s) => s.addCommitDetailPanel);
-  const { openFile } = useFileEditors();
-  const appStore = useAppStoreApi();
-
-  // Dynamic title with file count — use environment-stable sessionId so the
-  // tab title doesn't re-fetch on same-environment session tab switches.
-  const activeSessionId = useEnvironmentSessionId();
-  const totalCount = useSessionChangesCount(activeSessionId);
-
-  // Repo-less tasks have no git changes ever — auto-close the panel so users
-  // don't see a permanently empty Changes tab. Gate on a confirmed `false`:
-  // `null` means the task hasn't loaded yet, and removing the panel during
-  // that window is unrecoverable in the same session.
-  const taskHasRepos = useActiveTaskHasRepos();
-  useEffect(() => {
-    const dockApi = useDockviewStore.getState().api;
-    const panel = dockApi?.getPanel(panelId);
-    if (isDebug()) {
-      const state = appStore.getState();
-      const activeTaskId = state.tasks.activeTaskId;
-      const repoDebug = describeTaskRepositoriesForDebug(state, activeTaskId);
-      let action = "keep";
-      if (taskHasRepos === false) {
-        action = panel ? "remove" : "remove-missing-panel";
-      }
-      debugChangesVisibility("auto-close decision", {
-        panelId,
-        taskHasRepos: taskHasRepos === null ? "unknown" : String(taskHasRepos),
-        action,
-        activeTaskId: activeTaskId ?? "-",
-        sessionId: state.tasks.activeSessionId ?? "-",
-        taskSource: repoDebug.source,
-        repositoryId: repoDebug.repositoryId,
-        repoCount: repoDebug.repoCount,
-        repoIds: repoDebug.repoIds,
-        livePanelIds: dockApi?.panels.map((p) => p.id).join(",") ?? "-",
-      });
-    }
-    if (taskHasRepos !== false) return;
-    if (dockApi && panel) dockApi.removePanel(panel);
-  }, [taskHasRepos, panelId, appStore]);
-
-  useEffect(() => {
-    const title = totalCount > 0 ? `Changes (${totalCount})` : "Changes";
-    setPanelTitle(panelId, title);
-  }, [totalCount, panelId]);
-
-  const handleEditFile = useCallback((path: string) => openFile(path), [openFile]);
-  const handleOpenDiffFile = useCallback(
-    (path: string, options?: OpenDiffOptions) =>
-      addFileDiffPanel(path, { source: options?.source, repositoryName: options?.repositoryName }),
-    [addFileDiffPanel],
-  );
-  const handleOpenCommitDetail = useCallback(
-    (sha: string, repo?: string) => addCommitDetailPanel(sha, { repo }),
-    [addCommitDetailPanel],
-  );
-  const handleOpenDiffAll = useCallback(() => addDiffViewerPanel(), [addDiffViewerPanel]);
-  const handleOpenReview = useCallback(() => {
-    window.dispatchEvent(new CustomEvent("open-review-dialog"));
-  }, []);
-
-  return (
-    <ChangesPanel
-      onOpenDiffFile={handleOpenDiffFile}
-      onEditFile={handleEditFile}
-      onOpenCommitDetail={handleOpenCommitDetail}
-      onOpenDiffAll={handleOpenDiffAll}
-      onOpenReview={handleOpenReview}
-    />
-  );
+  // TODO: Re-implement changes panel
+  return <div className="p-4 text-muted-foreground">Changes panel is being reworked.</div>;
 }
 
 function FilesContent() {

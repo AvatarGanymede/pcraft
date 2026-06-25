@@ -4,10 +4,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kandev/kandev/internal/notifications/dto"
-	"github.com/kandev/kandev/internal/notifications/models"
-	"github.com/kandev/kandev/internal/notifications/service"
-	userstore "github.com/kandev/kandev/internal/user/store"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/dto"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/models"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/service"
+	userstore "github.com/AvatarGanymede/pcraft/internal/user/store"
 )
 
 type Controller struct {

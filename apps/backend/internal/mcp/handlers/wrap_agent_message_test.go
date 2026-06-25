@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestWrapAgentMessage_BasicShape(t *testing.T) {

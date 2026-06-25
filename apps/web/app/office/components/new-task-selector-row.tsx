@@ -1,15 +1,15 @@
 "use client";
 
 import { IconDotsVertical, IconEye, IconCircleCheck } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import type { AgentProfile, Project } from "@/lib/state/slices/office/types";
 import type { IssueDraft } from "./new-task-draft";

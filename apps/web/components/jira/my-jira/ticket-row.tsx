@@ -1,15 +1,15 @@
 "use client";
 
 import { IconExternalLink, IconPlus } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@kandev/ui/avatar";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@pcraft/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import type { JiraTicket } from "@/lib/types/jira";
 import { formatRelative, statusBadgeClass } from "@/components/jira/jira-ticket-common";
 import type { JiraTaskPreset } from "./presets";

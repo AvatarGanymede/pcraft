@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
-import { Textarea } from "@kandev/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { UnsavedChangesBadge, UnsavedSaveButton } from "@/components/settings/unsaved-indicator";
 import { useProfileMcpConfig } from "./use-profile-mcp-config";
 import type { AgentProfileMcpConfig } from "@/lib/types/http";
@@ -14,7 +14,7 @@ type ProfileMcpConfigCardProps = {
   supportsMcp: boolean;
   /**
    * Whether the profile is in CLI passthrough mode. When true (and
-   * mcpInjection is set), the card explains how kandev injects MCP servers
+   * mcpInjection is set), the card explains how pcraft injects MCP servers
    * into the agent's CLI.
    */
   cliPassthrough?: boolean;
@@ -68,7 +68,7 @@ const POPULAR_SERVERS: Record<string, Record<string, unknown>> = {
   },
 };
 
-const KANDEV_TOOLS_DESCRIPTION =
+const PCRAFT_TOOLS_DESCRIPTION =
   "Tools: list_workspaces, list_boards, list_workflow_steps, list_tasks, create_task, update_task";
 
 type PopularServerButtonProps = {
@@ -152,7 +152,7 @@ function PassthroughMcpInjectionHint({
   if (!cliPassthrough || !mcpInjection) return null;
   return (
     <p className="text-xs text-muted-foreground">
-      In CLI passthrough mode, kandev injects these MCP servers via {mcpInjection}.
+      In CLI passthrough mode, pcraft injects these MCP servers via {mcpInjection}.
     </p>
   );
 }
@@ -222,12 +222,12 @@ function McpServersEditor({
         <Tooltip>
           <TooltipTrigger asChild>
             <span className="text-xs rounded-full border border-primary/50 bg-primary/10 px-2 py-1 text-primary">
-              ✓ Kandev MCP
+              ✓ Pcraft MCP
             </span>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="max-w-[320px] text-xs">
             <p className="font-medium mb-1">Automatically available</p>
-            <p>{KANDEV_TOOLS_DESCRIPTION}</p>
+            <p>{PCRAFT_TOOLS_DESCRIPTION}</p>
           </TooltipContent>
         </Tooltip>
       </div>

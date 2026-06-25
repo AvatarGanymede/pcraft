@@ -8,7 +8,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 const (

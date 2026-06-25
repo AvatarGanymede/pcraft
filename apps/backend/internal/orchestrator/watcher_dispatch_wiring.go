@@ -6,7 +6,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/github"
 )
 
 // serviceTaskStarter adapts Service.StartTask to the coordinator's

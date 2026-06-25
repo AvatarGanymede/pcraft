@@ -12,8 +12,8 @@ import {
   IconPencil,
   IconTextWrap,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { FileActionsDropdown } from "@/components/editors/file-actions-dropdown";
 import { useGlobalViewMode } from "@/hooks/use-global-view-mode";
 

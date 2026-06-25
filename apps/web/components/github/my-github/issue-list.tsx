@@ -2,15 +2,15 @@
 
 import Link from "@/components/routing/app-link";
 import { IconCircle, IconCircleCheck, IconPlus, IconChevronDown } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Spinner } from "@kandev/ui/spinner";
+} from "@pcraft/ui/dropdown-menu";
+import { Spinner } from "@pcraft/ui/spinner";
 import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/lib/utils";
 import type { GitHubIssue } from "@/lib/types/github";

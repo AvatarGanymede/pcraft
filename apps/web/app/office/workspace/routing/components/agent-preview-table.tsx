@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "@/components/routing/app-link";
-import { Badge } from "@kandev/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Badge } from "@pcraft/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import type { AgentRoutePreview } from "@/lib/state/slices/office/types";
 import { providerLabel } from "./provider-order-editor";
 

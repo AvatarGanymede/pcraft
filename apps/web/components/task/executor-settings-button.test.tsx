@@ -68,7 +68,7 @@ vi.mock("./task-reset-env-confirm-dialog", () => ({
   TaskResetEnvConfirmDialog: () => null,
 }));
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,

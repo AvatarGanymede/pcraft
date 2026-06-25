@@ -11,16 +11,16 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/orchestrator/dto"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/dto"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // PromptResult contains the result of a prompt operation
@@ -320,7 +320,7 @@ func (s *Service) StartCreatedSession(ctx context.Context, taskID, sessionID, ag
 	}
 
 	// Transition task state: CREATED → SCHEDULING → (IN_PROGRESS via executor)
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); err != nil {
 		s.logger.Warn("failed to update task state to SCHEDULING",
 			zap.String("task_id", taskID),
 			zap.Error(err))
@@ -496,7 +496,7 @@ func (s *Service) StartTaskWithEnv(ctx context.Context, taskID string, agentProf
 // task.Description and drop role framing / AGENTS.md / wake context.
 //
 // Env merging: launch.Env carries the office-built env vars (token,
-// KANDEV_*); route.Env carries provider-scoped overrides. The route
+// PCRAFT_*); route.Env carries provider-scoped overrides. The route
 // env wins on key collisions because per-provider env is the more
 // specific authority.
 //
@@ -559,7 +559,7 @@ func (s *Service) startTask(ctx context.Context, taskID string, agentProfileID s
 	if s.isOfficeTask(ctx, taskID) {
 		s.logger.Debug("skipping SCHEDULING transition for office task",
 			zap.String("task_id", taskID))
-	} else if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); err != nil {
+	} else if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); err != nil {
 		s.logger.Warn("failed to update task state to SCHEDULING",
 			zap.String("task_id", taskID),
 			zap.Error(err))
@@ -647,7 +647,7 @@ func (s *Service) startTask(ctx context.Context, taskID string, agentProfileID s
 
 	// Office tasks restrict the MCP toolset: kanban tools (move/update/list
 	// task, etc.) are excluded because office agents call those via the
-	// kandev CLI ($KANDEV_CLI). See docs/specs/office-agent-cli/spec.md.
+	// kandev CLI ($PCRAFT_CLI). See docs/specs/office-agent-cli/spec.md.
 	mcpMode := ""
 	if s.isOfficeTask(ctx, taskID) {
 		mcpMode = executor.McpModeOffice
@@ -1036,17 +1036,17 @@ func (s *Service) ResumeTaskSession(ctx context.Context, taskID, sessionID strin
 		}
 		// Use resumeCtx (WithoutCancel) for the failure-recording writes too —
 		// if the caller's ctx was already cancelled (e.g. WS client navigated
-		// away), the SessionStateFailed and TaskStateFailed updates would
+		// away), the session state as FAILED and task state as BACKLOG updates would
 		// themselves fail with "context canceled" and leave the task stuck
 		// looking "running" forever.
 		s.updateTaskSessionState(resumeCtx, taskID, sessionID, models.TaskSessionStateFailed, err.Error(), false, session)
-		if stateErr := s.taskRepo.UpdateTaskState(resumeCtx, taskID, v1.TaskStateFailed); stateErr != nil {
-			s.logger.Warn("failed to update task state to FAILED after resume error",
+		if stateErr := s.taskRepo.UpdateTaskState(resumeCtx, taskID, v1.TaskStateBacklog); stateErr != nil {
+			s.logger.Warn("failed to update task state to BACKLOG after resume error",
 				zap.String("task_id", taskID),
 				zap.String("session_id", sessionID),
 				zap.Error(stateErr))
 		} else {
-			s.processParentChildrenCompletedForTaskState(resumeCtx, taskID, v1.TaskStateFailed)
+			s.processParentChildrenCompletedForTaskState(resumeCtx, taskID, v1.TaskStateBacklog)
 		}
 		return nil, err
 	}
@@ -1248,13 +1248,13 @@ func (s *Service) ensureSessionRunning(ctx context.Context, sessionID string, se
 			return nil // Agent is already running, nothing to do
 		}
 		s.updateTaskSessionState(ctx, session.TaskID, sessionID, models.TaskSessionStateFailed, err.Error(), false, session)
-		if stateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateFailed); stateErr != nil {
-			s.logger.Warn("failed to update task state to FAILED after session ensure resume error",
+		if stateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateBacklog); stateErr != nil {
+			s.logger.Warn("failed to update task state to BACKLOG after session ensure resume error",
 				zap.String("task_id", session.TaskID),
 				zap.String("session_id", sessionID),
 				zap.Error(stateErr))
 		} else {
-			s.processParentChildrenCompletedForTaskState(resumeCtx, session.TaskID, v1.TaskStateFailed)
+			s.processParentChildrenCompletedForTaskState(resumeCtx, session.TaskID, v1.TaskStateBacklog)
 		}
 		return fmt.Errorf("failed to resume session: %w", err)
 	}
@@ -1650,7 +1650,7 @@ func (s *Service) StopTask(ctx context.Context, taskID string, reason string, fo
 	}
 
 	// Move task to REVIEW state for user review
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateReview); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress); err != nil {
 		s.logger.Error("failed to update task state to REVIEW after stop",
 			zap.String("task_id", taskID),
 			zap.Error(err))
@@ -2237,7 +2237,7 @@ func (s *Service) handlePromptError(ctx context.Context, taskID, sessionID strin
 	// in progress while it retries — so don't flap it to REVIEW here.
 	if !isTransientPromptError(err) && !errors.Is(err, lifecycle.ErrCancelEscalated) &&
 		!routingerr.IsTransientProviderError(err.Error()) {
-		_ = s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateReview)
+		_ = s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress)
 	}
 	s.completeTurnForSession(ctx, sessionID)
 	return err
@@ -2430,12 +2430,12 @@ func (s *Service) CancelAgent(ctx context.Context, sessionID string) error {
 	}
 
 	// Transition session to WAITING_FOR_INPUT so the user can send a new
-	// prompt, and reconcile the task row to REVIEW so the sidebar shows the
+	// prompt, and reconcile the task row to IN_PROGRESS so the sidebar shows the
 	// green check rather than the yellow "needs input" question icon — a
 	// cancelled turn is treated as finished work the user may want to review.
 	if session != nil {
 		s.updateTaskSessionState(ctx, session.TaskID, sessionID, models.TaskSessionStateWaitingForInput, "", true, session)
-		s.writeTaskReviewStateOnCancel(ctx, session.TaskID)
+		s.writeTaskStateOnCancel(ctx, session.TaskID)
 	}
 
 	// Record cancellation in the message history
@@ -2482,10 +2482,10 @@ func (s *Service) CompleteTask(ctx context.Context, taskID string) error {
 	}
 
 	// Update task state to COMPLETED
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateCompleted); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateDone); err != nil {
 		return fmt.Errorf("failed to update task state: %w", err)
 	}
-	s.processParentChildrenCompletedForTaskState(ctx, taskID, v1.TaskStateCompleted)
+	s.processParentChildrenCompletedForTaskState(ctx, taskID, v1.TaskStateDone)
 
 	s.logger.Info("task marked as COMPLETED",
 		zap.String("task_id", taskID))

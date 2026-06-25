@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "@/lib/routing/client-router";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import {
   IconActivity,
   IconAlertTriangle,

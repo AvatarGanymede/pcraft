@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 func TestExtractAgentID(t *testing.T) {

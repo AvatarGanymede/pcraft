@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 func TestProvide_MockAgentModes(t *testing.T) {

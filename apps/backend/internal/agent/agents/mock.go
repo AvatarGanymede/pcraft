@@ -5,9 +5,8 @@ import (
 	_ "embed"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 //go:embed logos/mock_light.svg
@@ -68,7 +67,7 @@ func NewMockAgent() *MockAgent {
 
 // NewMockAgentWithID returns a MockAgent identical to NewMockAgent but
 // with its ID, Name and DisplayName pre-set to the supplied values.
-// Used in E2E mode (KANDEV_MOCK_PROVIDERS) to register the same mock
+// Used in E2E mode (PCRAFT_MOCK_PROVIDERS) to register the same mock
 // binary under multiple canonical routing provider IDs so routing
 // validation accepts real-looking provider_order lists while every
 // launch still routes through the mock binary.
@@ -134,25 +133,7 @@ func (a *MockAgent) IsInstalled(ctx context.Context) (*DiscoveryResult, error) {
 }
 
 func (a *MockAgent) BuildCommand(opts CommandOptions) Command {
-	// For container-bound runtimes (Docker, Sprites, remote Docker) the
-	// agent process exec's inside a Linux container, where the host path
-	// computed by configureMockAgent doesn't exist. The container's image
-	// has /usr/local/bin on PATH and container.go bind-mounts the
-	// linux/amd64 mock-agent there, so the bare name resolves correctly.
-	//
-	// SSH is the same shape: the agent runs on a remote host whose
-	// filesystem doesn't share paths with the kandev backend's, so the
-	// host-absolute binary path can't apply. The SSH e2e image bakes
-	// mock-agent at /usr/local/bin/mock-agent; production SSH expects
-	// users to install agents into the remote's $PATH (real agents like
-	// Claude use `npx` and never hit this branch).
-	//
-	// For host runtimes (standalone) we prefer the absolute host path
-	// that configureMockAgent computed via os.Executable() — that's the
-	// only way the host path works in dev mode (where the shell's $PATH
-	// doesn't include apps/backend/bin). Fall back to the bare name when
-	// no path is set: e2e fixtures prepend the kandev bin dir to PATH.
-	if opts.Runtime.IsContainerized() || opts.Runtime == agentruntime.RuntimeSSH {
+	if opts.Runtime.IsContainerized() {
 		return Cmd(mockAgentDefaultID).Build()
 	}
 	binary := mockAgentDefaultID

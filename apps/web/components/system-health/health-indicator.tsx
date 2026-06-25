@@ -2,15 +2,15 @@
 
 import { useRouter } from "@/lib/routing/client-router";
 import type { ComponentProps } from "react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import { IconAlertTriangle, IconExternalLink } from "@tabler/icons-react";
 import { useAppStore } from "@/components/state-provider";
 import type { HealthIssue } from "@/lib/types/health";

@@ -1,7 +1,7 @@
 // Package projects defines types and business logic for office projects.
 package projects
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // Project is a type alias for models.Project.
 type Project = models.Project

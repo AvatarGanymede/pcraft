@@ -6,9 +6,9 @@ import (
 	"sync"
 
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 

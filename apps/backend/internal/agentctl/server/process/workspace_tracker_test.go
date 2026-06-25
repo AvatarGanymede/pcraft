@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // setupTestRepo creates a git repository with a remote for testing.

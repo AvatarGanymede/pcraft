@@ -24,7 +24,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import {
   TaskMoveContextMenuItems,
   type TaskMoveWorkflow,

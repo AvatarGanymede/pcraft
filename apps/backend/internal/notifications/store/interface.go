@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/notifications/models"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/models"
 )
 
 type Repository interface {

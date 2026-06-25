@@ -9,7 +9,7 @@ vi.mock("@/hooks/domains/session/use-queue", () => ({
   useQueue: (sessionId: string | null) => useQueueMock(sessionId),
 }));
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children }: { children: ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: ReactNode }) => <>{children}</>,
@@ -19,7 +19,7 @@ vi.mock("@kandev/ui/tooltip", () => ({
 // Mock Radix Collapsible because the real primitive pulls in a React global the
 // jsdom test environment doesn't provide. We just need open/closed behavior to
 // drive the assertions — the close-animation path is exercised in E2E.
-vi.mock("@kandev/ui/collapsible", () => {
+vi.mock("@pcraft/ui/collapsible", () => {
   const Collapsible = ({ open, children }: { open: boolean; children: ReactNode }) =>
     open ? <div data-collapsible-open="true">{children}</div> : null;
   const CollapsibleContent = ({ children }: { children: ReactNode }) => <>{children}</>;

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/testutil"
+	"github.com/AvatarGanymede/pcraft/internal/testutil"
 )
 
 func TestPostgresLatestVersionMetaRoundTrip(t *testing.T) {

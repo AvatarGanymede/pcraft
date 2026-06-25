@@ -8,13 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/docker"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // testAgent implements agents.Agent for use in lifecycle tests.

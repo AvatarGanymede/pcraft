@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 )
 
 var startTime = time.Now()

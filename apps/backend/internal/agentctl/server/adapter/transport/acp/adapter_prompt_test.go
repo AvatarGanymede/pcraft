@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	acp "github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestCancelActiveToolCalls_PreservesSubagentTask pins the fix for the

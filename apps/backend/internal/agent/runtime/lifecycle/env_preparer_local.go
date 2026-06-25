@@ -12,10 +12,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/shellexec"
-	"github.com/kandev/kandev/internal/common/subproc"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/shellexec"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // LocalPreparer prepares a local (non-worktree) execution environment.

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // labelRepo is the persistence interface required by LabelService.

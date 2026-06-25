@@ -11,8 +11,8 @@ import {
   IconExternalLink,
   IconLock,
 } from "@tabler/icons-react";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@kandev/ui/collapsible";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@pcraft/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { AgentLogo } from "@/components/agent-logo";
 import { ProfileFormFields, type ProfileFormData } from "@/components/settings/profile-form-fields";
 import type { AvailableAgent, ToolStatus } from "@/lib/types/http";

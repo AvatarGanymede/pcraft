@@ -4,7 +4,7 @@ import { use, useCallback, useEffect, type ReactNode } from "react";
 import Link from "@/components/routing/app-link";
 import { usePathname } from "@/lib/routing/client-router";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";
 import { listAgentProfiles } from "@/lib/api/domains/office-api";

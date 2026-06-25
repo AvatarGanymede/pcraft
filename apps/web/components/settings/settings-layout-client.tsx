@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "@/lib/routing/client-router";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { PageTopbar } from "@/components/page-topbar";
 
 // Brand/initialism overrides so the derived label matches how the rest of the

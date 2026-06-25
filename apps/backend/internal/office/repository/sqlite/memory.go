@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // UpsertAgentMemory creates or updates an agent memory entry.

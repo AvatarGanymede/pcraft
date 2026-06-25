@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // --- Issue Watch Tests ---

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 // inMemorySecretStore implements secrets.SecretStore for testing.

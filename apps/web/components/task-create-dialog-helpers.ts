@@ -127,6 +127,10 @@ export type BuildCreatePayloadArgs = {
   attachments?: MessageAttachment[];
   parentId?: string;
   workspacePath?: string;
+  p4WorkspaceId?: string;
+  panelId?: string;
+  requirement?: string;
+  prefabPath?: string;
 };
 
 export function buildCreateTaskPayload(args: BuildCreatePayloadArgs): CreateTaskParams {
@@ -146,6 +150,10 @@ export function buildCreateTaskPayload(args: BuildCreatePayloadArgs): CreateTask
     attachments: args.attachments,
     parent_id: args.parentId || undefined,
     workspace_path: args.workspacePath || undefined,
+    p4_workspace_id: args.p4WorkspaceId || undefined,
+    panel_id: args.panelId || undefined,
+    requirement: args.requirement || undefined,
+    prefab: args.prefabPath || undefined,
   };
 }
 
@@ -159,9 +167,17 @@ export function validateCreateInputs(inputs: {
   remoteRepos?: TaskRemoteRepoRow[];
   agentProfileId: string;
   noRepository?: boolean;
+  p4WorkspaceId?: string;
+  panelId?: string;
+  requirement?: string;
 }): boolean {
+  const hasP4 =
+    (inputs.p4WorkspaceId ?? "").trim() !== "" &&
+    (inputs.panelId ?? "").trim() !== "" &&
+    (inputs.requirement ?? "").trim() !== "";
   const hasRemoteRepo = (inputs.remoteRepos ?? []).some((r) => r.url.trim() !== "");
   const hasRepo =
+    hasP4 ||
     inputs.noRepository ||
     inputs.repositories.some((r) => r.repositoryId || r.localPath) ||
     hasRemoteRepo;

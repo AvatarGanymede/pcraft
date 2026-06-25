@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

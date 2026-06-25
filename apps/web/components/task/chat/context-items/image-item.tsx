@@ -2,8 +2,8 @@
 
 import { memo, useState, useCallback } from "react";
 import { IconFile, IconPhoto } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Dialog, DialogContent } from "@kandev/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Dialog, DialogContent } from "@pcraft/ui/dialog";
 import type { ImageContextItem } from "@/lib/types/context";
 import {
   IMAGE_PREVIEW_DIALOG_CONTENT_CLASSNAME,

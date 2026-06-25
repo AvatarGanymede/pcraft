@@ -5,7 +5,7 @@ import { IconMinus } from "@tabler/icons-react";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useEnvironmentId } from "@/hooks/use-environment-session-id";
 import { PassthroughTerminal } from "./passthrough-terminal";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { cn } from "@/lib/utils";
 
 const MIN_HEIGHT = 150;

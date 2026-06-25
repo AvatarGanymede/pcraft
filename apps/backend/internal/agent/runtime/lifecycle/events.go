@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 // EventPublisher handles publishing agent lifecycle and session events to the event bus.

@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 func TestGetInbox_IncludesProviderDegradedItems(t *testing.T) {

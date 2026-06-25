@@ -13,14 +13,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	agentctlclient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/portutil"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
+	agentctlclient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/portutil"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // queryValueTrue is the string "true" used in query parameter comparisons.

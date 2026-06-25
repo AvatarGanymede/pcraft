@@ -41,7 +41,7 @@ const CollapsibleOpenCtx = createContext<{
   onOpenChange?: (next: boolean) => void;
 }>({ open: true });
 
-vi.mock("@kandev/ui/collapsible", () => ({
+vi.mock("@pcraft/ui/collapsible", () => ({
   Collapsible: ({
     open,
     onOpenChange,
@@ -70,13 +70,13 @@ vi.mock("@kandev/ui/collapsible", () => ({
   },
 }));
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children }: { children: ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: ReactNode }) => <>{children}</>,
 }));
 
-vi.mock("@kandev/ui/button", () => ({
+vi.mock("@pcraft/ui/button", () => ({
   Button: ({ children, ...rest }: { children: ReactNode } & Record<string, unknown>) => (
     <button {...rest}>{children}</button>
   ),

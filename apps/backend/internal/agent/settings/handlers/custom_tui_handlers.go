@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/settings/controller"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 type createCustomTUIAgentRequest struct {

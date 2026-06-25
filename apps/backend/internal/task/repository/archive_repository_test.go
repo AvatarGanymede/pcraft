@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestSQLiteRepository_ArchiveTask(t *testing.T) {

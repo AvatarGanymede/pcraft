@@ -6,7 +6,7 @@ import (
 )
 
 // DefaultMaxPerSession is the default cap for queued messages per session
-// when the env var KANDEV_QUEUE_MAX_PER_SESSION is unset or invalid.
+// when the env var PCRAFT_QUEUE_MAX_PER_SESSION is unset or invalid.
 const DefaultMaxPerSession = 10
 
 // Sender identities written to QueuedMessage.QueuedBy. The handlers default

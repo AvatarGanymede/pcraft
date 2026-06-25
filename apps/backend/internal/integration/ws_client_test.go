@@ -14,7 +14,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/require"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // OrchestratorWSClient is a WebSocket client for orchestrator tests

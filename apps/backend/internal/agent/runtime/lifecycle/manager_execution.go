@@ -9,10 +9,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/common/appctx"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/common/appctx"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 // ErrSessionWorkspaceNotReady indicates the task session exists but does not yet

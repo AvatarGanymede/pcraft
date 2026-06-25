@@ -8,8 +8,8 @@ package skills
 import (
 	"context"
 
-	runtimeskill "github.com/kandev/kandev/internal/agent/runtime/lifecycle/skill"
-	"github.com/kandev/kandev/internal/office/models"
+	runtimeskill "github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle/skill"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // officeSkillReader wraps anything that knows how to look up an

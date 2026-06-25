@@ -9,18 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/automation"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/github"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/automation"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // errKey is the JSON field used for error responses from the E2E endpoints.
 const errKey = "error"
 
 // registerE2EResetRoutes registers the E2E test-only endpoints.
-// The endpoints are available when KANDEV_MOCK_AGENT is "true" or "only" (dev/E2E modes).
+// The endpoints are available when PCRAFT_MOCK_AGENT is "true" or "only" (dev/E2E modes).
 func registerE2EResetRoutes(
 	router *gin.Engine,
 	repo *sqliterepo.Repository,
@@ -29,7 +29,7 @@ func registerE2EResetRoutes(
 	githubSvc *github.Service,
 	log *logger.Logger,
 ) {
-	mockMode := os.Getenv("KANDEV_MOCK_AGENT")
+	mockMode := os.Getenv("PCRAFT_MOCK_AGENT")
 	if mockMode != "true" && mockMode != "only" {
 		return
 	}

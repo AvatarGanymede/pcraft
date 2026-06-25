@@ -14,9 +14,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/common/shellexec"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/common/shellexec"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 

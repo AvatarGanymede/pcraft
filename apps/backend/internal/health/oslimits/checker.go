@@ -6,7 +6,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/kandev/kandev/internal/health"
+	"github.com/AvatarGanymede/pcraft/internal/health"
 )
 
 const (

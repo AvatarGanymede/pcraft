@@ -6,14 +6,14 @@ import (
 	"sync"
 )
 
-const injectEnvVar = "KANDEV_PROVIDER_FAILURES"
+const injectEnvVar = "PCRAFT_PROVIDER_FAILURES"
 
 var (
 	injectOnce sync.Once
 	injectMap  map[string]Code
 )
 
-// LoadInjectionFromEnv parses KANDEV_PROVIDER_FAILURES into a provider→code
+// LoadInjectionFromEnv parses PCRAFT_PROVIDER_FAILURES into a provider→code
 // map. Malformed entries are skipped silently so tests can use safe syntax.
 func LoadInjectionFromEnv() map[string]Code {
 	raw := os.Getenv(injectEnvVar)
@@ -50,7 +50,7 @@ func getInjection() map[string]Code {
 // InjectedCode returns the test-injected error code for providerID,
 // or ("", false) when no injection is configured for that provider.
 // Callers (the scheduler dispatch loop) consult this pre-launch so
-// KANDEV_PROVIDER_FAILURES drives deterministic E2E behaviour without
+// PCRAFT_PROVIDER_FAILURES drives deterministic E2E behaviour without
 // requiring the agent binary to fail on its own.
 func InjectedCode(providerID string) (Code, bool) {
 	inj := getInjection()

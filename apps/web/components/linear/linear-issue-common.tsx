@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage } from "@kandev/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@pcraft/ui/avatar";
 import { getLinearIssue, setLinearIssueState } from "@/lib/api/domains/linear-api";
 import type { LinearIssue, LinearStateCategory } from "@/lib/types/linear";
 import { IntegrationAuthErrorMessage } from "@/components/integrations/auth-error-message";

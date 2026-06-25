@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // -- Inbox, Activity, Runs --

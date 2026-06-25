@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/secrets"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 func TestMergeEnvFillMissing(t *testing.T) {

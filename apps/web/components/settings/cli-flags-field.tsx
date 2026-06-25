@@ -2,11 +2,11 @@
 
 import { useId, useMemo, useState } from "react";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
 import type { CLIFlag, PermissionSetting } from "@/lib/types/http";
 
 /**

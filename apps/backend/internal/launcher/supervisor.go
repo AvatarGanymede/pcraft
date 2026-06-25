@@ -146,9 +146,9 @@ func prepareSupervisorEnv(env []string, homeDir string) ([]string, string, strin
 	_ = os.Chmod(dir, 0o700)
 	socket := filepath.Join(dir, "control.sock")
 	manifest := filepath.Join(dir, "launch.json")
-	env = upsertEnv(env, "KANDEV_SUPERVISOR_SOCKET", socket)
-	env = upsertEnv(env, "KANDEV_SUPERVISOR_MANIFEST", manifest)
-	env = upsertEnv(env, "KANDEV_RESTART_ADAPTER", "supervisor")
+	env = upsertEnv(env, "PCRAFT_SUPERVISOR_SOCKET", socket)
+	env = upsertEnv(env, "PCRAFT_SUPERVISOR_MANIFEST", manifest)
+	env = upsertEnv(env, "PCRAFT_RESTART_ADAPTER", "supervisor")
 	return env, socket, manifest, nil
 }
 
@@ -168,23 +168,23 @@ func buildManifest(command string, args []string, cwd string, env []string, home
 
 func allowedSupervisorEnv(env []string) map[string]string {
 	allow := map[string]bool{
-		"KANDEV_HOME_DIR":              true,
-		"KANDEV_DATABASE_PATH":         true,
-		"KANDEV_SERVER_PORT":           true,
-		"KANDEV_WEB_INTERNAL_URL":      true,
-		"KANDEV_AGENT_STANDALONE_PORT": true,
-		"KANDEV_LOG_LEVEL":             true,
-		"KANDEV_DEBUG_DEV_MODE":        true,
-		"KANDEV_DEBUG_AGENT_MESSAGES":  true,
-		"KANDEV_DEBUG_PPROF_ENABLED":   true,
-		"KANDEV_E2E_MOCK":              true,
-		"KANDEV_MOCK_AGENT":            true,
-		"KANDEV_MOCK_GITHUB":           true,
-		"KANDEV_MOCK_JIRA":             true,
-		"KANDEV_MOCK_LINEAR":           true,
-		"KANDEV_SUPERVISOR_SOCKET":     true,
-		"KANDEV_SUPERVISOR_MANIFEST":   true,
-		"KANDEV_RESTART_ADAPTER":       true,
+		"PCRAFT_HOME_DIR":              true,
+		"PCRAFT_DATABASE_PATH":         true,
+		"PCRAFT_SERVER_PORT":           true,
+		"PCRAFT_WEB_INTERNAL_URL":      true,
+		"PCRAFT_AGENT_STANDALONE_PORT": true,
+		"PCRAFT_LOG_LEVEL":             true,
+		"PCRAFT_DEBUG_DEV_MODE":        true,
+		"PCRAFT_DEBUG_AGENT_MESSAGES":  true,
+		"PCRAFT_DEBUG_PPROF_ENABLED":   true,
+		"PCRAFT_E2E_MOCK":              true,
+		"PCRAFT_MOCK_AGENT":            true,
+		"PCRAFT_MOCK_GITHUB":           true,
+		"PCRAFT_MOCK_JIRA":             true,
+		"PCRAFT_MOCK_LINEAR":           true,
+		"PCRAFT_SUPERVISOR_SOCKET":     true,
+		"PCRAFT_SUPERVISOR_MANIFEST":   true,
+		"PCRAFT_RESTART_ADAPTER":       true,
 	}
 	out := map[string]string{}
 	for _, item := range env {

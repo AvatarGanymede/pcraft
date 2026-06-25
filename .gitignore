@@ -52,9 +52,10 @@ temp/
 # Agent session files (local development)
 .augment/
 
-# Isolated kandev home used by `make dev` (see apps/cli/src/dev.ts).
+# Isolated pcraft home used by `make dev`.
 # Keeps dev backend state (db, tasks, worktrees, repos) out of the user's
-# production ~/.kandev when developing kandev using kandev.
+# production ~/.pcraft when developing pcraft using pcraft.
+/.pcraft-dev/
 /.kandev-dev/
 
 # Runtime scratch workspaces created for repo-less tasks. The lifecycle
@@ -82,10 +83,14 @@ tmp/
 apps/backend/bin/
 
 # Go binaries (built locally)
-apps/backend/kandev
+apps/backend/bin/
+apps/backend/pcraft
 apps/backend/agentctl
 apps/backend/mock-agent
 apps/backend/acpdbg
+
+# Embedded web assets (synced from frontend build)
+apps/backend/internal/webapp/embedded/generated/
 
 # acpdbg JSONL output (raw ACP wire frames from debug runs)
 apps/backend/acp-debug/

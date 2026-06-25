@@ -7,8 +7,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 )
 
 // Repository provides SQLite-based task storage operations.

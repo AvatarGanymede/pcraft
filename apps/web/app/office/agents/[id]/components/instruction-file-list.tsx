@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { IconPlus, IconFile, IconFileText } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { cn } from "@kandev/ui/lib/utils";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { cn } from "@pcraft/ui/lib/utils";
 import type { InstructionFile } from "./agent-instructions-tab";
 
 type InstructionFileListProps = {

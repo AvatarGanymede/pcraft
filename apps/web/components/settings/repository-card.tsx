@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { IconEdit, IconGitBranch, IconPlus, IconTrash, IconX } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
 import { useRequest } from "@/lib/http/use-request";
 import { useToast } from "@/components/toast-provider";
 import { UnsavedChangesBadge, UnsavedSaveButton } from "@/components/settings/unsaved-indicator";

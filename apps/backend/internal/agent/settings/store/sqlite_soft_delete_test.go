@@ -6,7 +6,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // TestGetAgentProfile_DeletedRowIsHidden pins the existing semantic: the

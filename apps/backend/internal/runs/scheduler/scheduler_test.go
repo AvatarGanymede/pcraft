@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/runs/scheduler"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/runs/scheduler"
 )
 
 // fakeProcessor counts how many times Tick is invoked. Each call

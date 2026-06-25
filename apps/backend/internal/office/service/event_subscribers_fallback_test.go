@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 // stubTaskWorkspace is a minimal implementation of service.TaskWorkspaceService

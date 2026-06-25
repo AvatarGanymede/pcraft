@@ -12,7 +12,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 // Adapter exposes upsert-style access on top of secrets.SecretStore.

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,8 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Spinner } from "@kandev/ui/spinner";
+} from "@pcraft/ui/dialog";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconAlertTriangle, IconCheck } from "@tabler/icons-react";
 import type { KandevRestartPhase } from "@/hooks/domains/system/use-kandev-restart";
 

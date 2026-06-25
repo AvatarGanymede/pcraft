@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { IconCopy, IconLoader } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { toast } from "sonner";
 
 import {

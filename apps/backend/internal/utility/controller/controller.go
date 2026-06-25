@@ -3,9 +3,9 @@ package controller
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/utility/dto"
-	"github.com/kandev/kandev/internal/utility/service"
-	"github.com/kandev/kandev/internal/utility/template"
+	"github.com/AvatarGanymede/pcraft/internal/utility/dto"
+	"github.com/AvatarGanymede/pcraft/internal/utility/service"
+	"github.com/AvatarGanymede/pcraft/internal/utility/template"
 )
 
 // Controller handles utility agent operations.

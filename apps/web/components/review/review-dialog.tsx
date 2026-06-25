@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useMemo, useCallback, createRef, useState, useRef, useEffect } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@kandev/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@pcraft/ui/dialog";
 import type { DiffComment } from "@/lib/diff/types";
 import type { FileInfo, CumulativeDiff } from "@/lib/state/slices/session-runtime/types";
 import type { PRDiffFile } from "@/lib/types/github";

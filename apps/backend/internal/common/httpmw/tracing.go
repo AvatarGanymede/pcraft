@@ -8,7 +8,7 @@ import (
 	"go.opentelemetry.io/otel/codes"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 
-	"github.com/kandev/kandev/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
 )
 
 // OtelTracing creates a Gin middleware that wraps each request in an OTel span.

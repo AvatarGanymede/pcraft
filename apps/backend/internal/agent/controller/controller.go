@@ -4,9 +4,9 @@ package controller
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/agent/dto"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agent/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
 )
 
 // Controller coordinates agent business logic

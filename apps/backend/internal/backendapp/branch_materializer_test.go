@@ -11,12 +11,12 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/task/models"
-	taskrepo "github.com/kandev/kandev/internal/task/repository"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // stubRescanner records calls so the materializer test can assert that the

@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 type Workflow = {

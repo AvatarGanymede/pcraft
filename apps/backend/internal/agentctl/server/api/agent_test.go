@@ -9,11 +9,11 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/common/logger"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 func newTestLogger() *logger.Logger {

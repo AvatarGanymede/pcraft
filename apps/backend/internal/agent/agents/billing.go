@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/kandev/kandev/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
 )
 
 // defaultBillingType returns BillingTypeAPIKey. Used by agents that do not

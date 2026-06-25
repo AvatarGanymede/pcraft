@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/instance"
-	"github.com/kandev/kandev/internal/common/httpmw"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/instance"
+	"github.com/AvatarGanymede/pcraft/internal/common/httpmw"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 

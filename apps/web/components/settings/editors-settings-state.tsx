@@ -22,7 +22,7 @@ import {
   getCustomKindLabel,
   isCustomEditor,
 } from "@/components/settings/editor-form";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 
 export function useEditorsSettingsState() {
   const setEditors = useAppStore((state) => state.setEditors);

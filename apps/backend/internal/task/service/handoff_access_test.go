@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // fakeTaskLookup is a tiny in-memory implementation of taskLookup keyed

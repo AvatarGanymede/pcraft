@@ -10,10 +10,10 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // mockPassthroughProfileResolver is a mock for testing passthrough verification

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import {
   IconCheck,
   IconClock,

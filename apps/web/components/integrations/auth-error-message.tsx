@@ -2,7 +2,7 @@
 
 import Link from "@/components/routing/app-link";
 import { IconLockExclamation } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 // Drops support URLs upstream APIs sometimes inline into error response
 // bodies — they're noise once the user has a clear CTA. Shared because both

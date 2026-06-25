@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	workflowcfg "github.com/kandev/kandev/config/workflows"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	workflowcfg "github.com/AvatarGanymede/pcraft/config/workflows"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // TestOfficeDefaultWorkflow_FullCycleSmoke is the Phase 6 (ADR-0004) end-to-end

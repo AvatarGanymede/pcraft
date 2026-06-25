@@ -8,11 +8,11 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/shared"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 type testActivityLogger struct{}

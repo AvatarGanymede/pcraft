@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 
-	officemodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	officemodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 func TestWakeupRequest_CreateAndGet(t *testing.T) {

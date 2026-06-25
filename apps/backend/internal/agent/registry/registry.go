@@ -10,9 +10,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/common/logger"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Type aliases for backward compatibility during migration.
@@ -44,24 +44,7 @@ func NewRegistry(log *logger.Logger) *Registry {
 // LoadDefaults loads default agent configurations
 func (r *Registry) LoadDefaults() {
 	all := []agents.Agent{
-		agents.NewAuggie(),
 		agents.NewClaudeACP(),
-		agents.NewCodexACP(),
-		agents.NewCopilotACP(),
-		agents.NewGemini(),
-		agents.NewOpenCodeACP(),
-		agents.NewAmpACP(),
-		agents.NewQwenACP(),
-		agents.NewIFlowACP(),
-		agents.NewDroidACP(),
-		agents.NewKilocodeACP(),
-		agents.NewPiACP(),
-		agents.NewCursorACP(),
-		agents.NewKimiACP(),
-		agents.NewKiroACP(),
-		agents.NewQoderACP(),
-		agents.NewTraeACP(),
-		agents.NewOmpACP(),
 		agents.NewMockAgent(),
 	}
 
@@ -84,12 +67,12 @@ func (r *Registry) Get(id string) (agents.Agent, bool) {
 }
 
 // GetDefault returns the default agent.
-// It tries "auggie" first, then falls back to the enabled agent with the lowest DisplayOrder.
+// It tries "claude-acp" first, then falls back to the enabled agent with the lowest DisplayOrder.
 func (r *Registry) GetDefault() (agents.Agent, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	if ag, exists := r.agents["auggie"]; exists && ag.Enabled() {
+	if ag, exists := r.agents["claude-acp"]; exists && ag.Enabled() {
 		return ag, nil
 	}
 

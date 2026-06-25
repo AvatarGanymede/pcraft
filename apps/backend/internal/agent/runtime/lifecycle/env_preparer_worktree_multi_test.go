@@ -9,9 +9,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // inMemoryWorktreeStore is a minimal worktree.Store for preparer tests.

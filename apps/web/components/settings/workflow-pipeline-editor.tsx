@@ -33,9 +33,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
-import { ScrollArea, ScrollBar } from "@kandev/ui/scroll-area";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/alert-dialog";
+import { ScrollArea, ScrollBar } from "@pcraft/ui/scroll-area";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { WorkflowStep } from "@/lib/types/http";
 import { cn } from "@/lib/utils";
 import { StepConfigPanel } from "./workflow-pipeline-editor-panels";

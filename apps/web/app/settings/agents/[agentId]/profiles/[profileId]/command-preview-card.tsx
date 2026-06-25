@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { IconCopy, IconCheck, IconTerminal2 } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Skeleton } from "@kandev/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Skeleton } from "@pcraft/ui/skeleton";
 import { previewAgentCommandAction, type CommandPreviewResponse } from "@/app/actions/agents";
 import type { CLIFlag, ProfileEnvVar } from "@/lib/types/http";
 

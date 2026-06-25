@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Textarea } from "@kandev/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@kandev/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@pcraft/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { toast } from "sonner";
 import { useAppStore } from "@/components/state-provider";
 import { createTask } from "@/lib/api/domains/kanban-api";

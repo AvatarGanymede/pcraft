@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/workflow/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 func setupTestService(t *testing.T) (*Service, *sqlx.DB) {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/workflow/engine"
-	"github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // fakeRepo is a minimal in-memory WorkflowRepo. The adapters delegate

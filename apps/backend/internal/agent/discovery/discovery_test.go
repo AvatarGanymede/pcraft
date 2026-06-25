@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 type discoveryTestAgent struct {

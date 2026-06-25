@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import { IconChevronDown, IconChevronRight, IconMessage } from "@tabler/icons-react";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 import type { DiffComment } from "@/lib/diff/types";
 import { formatLineRange } from "@/lib/diff";
 

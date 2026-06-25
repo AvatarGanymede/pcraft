@@ -7,11 +7,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

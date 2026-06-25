@@ -1,6 +1,6 @@
 package websocket
 
-import "github.com/kandev/kandev/internal/common/logger"
+import "github.com/AvatarGanymede/pcraft/internal/common/logger"
 
 // Provide creates the unified WebSocket gateway.
 func Provide(log *logger.Logger) (*Gateway, error) {

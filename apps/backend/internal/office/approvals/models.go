@@ -2,7 +2,7 @@
 // approvals feature.
 package approvals
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // ApprovalType constants for approval request types.
 const (

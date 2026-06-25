@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
 
 function parseMcpPolicyJson(currentPolicy: string | undefined): Record<string, unknown> {
   try {

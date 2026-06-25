@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { useToast } from "@/components/toast-provider";
 import { useDockviewStore } from "@/lib/state/dockview-store";

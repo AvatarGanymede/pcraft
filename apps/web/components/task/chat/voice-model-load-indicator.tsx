@@ -1,7 +1,7 @@
 "use client";
 
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { Progress } from "@kandev/ui/progress";
+import { Progress } from "@pcraft/ui/progress";
 
 export type VoiceModelLoadIndicatorProps = {
   state: "idle" | "loading" | "ready" | "error";

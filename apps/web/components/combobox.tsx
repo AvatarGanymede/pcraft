@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import { IconCheck, IconChevronDown, IconLoader2 } from "@tabler/icons-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -13,9 +13,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@kandev/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 export type ComboboxOption = {
   value: string;

@@ -7,7 +7,7 @@ import {
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { useTabMaximizeOnDoubleClick } from "./use-tab-maximize";
 
 /** An item in the tab right-click context menu.

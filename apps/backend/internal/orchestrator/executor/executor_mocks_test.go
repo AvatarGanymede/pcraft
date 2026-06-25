@@ -6,13 +6,13 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentdto "github.com/kandev/kandev/internal/agent/dto"
-	"github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentdto "github.com/AvatarGanymede/pcraft/internal/agent/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // mockAgentManager implements AgentManagerClient for testing

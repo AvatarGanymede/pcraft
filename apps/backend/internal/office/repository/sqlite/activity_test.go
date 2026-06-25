@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 func TestActivityEntry_CreateAndList(t *testing.T) {

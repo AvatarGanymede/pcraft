@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 // Pins the lifecycle-event emission contract:

@@ -2,9 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { IconBox, IconLoader2, IconTrash } from "@tabler/icons-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@kandev/ui/hover-card";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@pcraft/ui/hover-card";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 import { getExecutorStatusIcon } from "@/lib/executor-icons";
 import { TaskResetEnvConfirmDialog } from "./task-reset-env-confirm-dialog";

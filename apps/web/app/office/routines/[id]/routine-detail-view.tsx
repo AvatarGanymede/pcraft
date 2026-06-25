@@ -4,12 +4,12 @@ import { useCallback, useState } from "react";
 import Link from "@/components/routing/app-link";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconChevronRight, IconPlayerPlay, IconDeviceFloppy } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { toast } from "sonner";
 import { useAppStore } from "@/components/state-provider";
 import {

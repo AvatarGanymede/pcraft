@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconCheck, IconCopy, IconTrash, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import type { Annotation } from "@/lib/preview-inspect-bridge";
 import { formatAnnotations } from "@/lib/preview-inspect-bridge";
 

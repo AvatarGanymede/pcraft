@@ -12,7 +12,7 @@ import {
   IconPinFilled,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@kandev/ui/hover-card";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@pcraft/ui/hover-card";
 import type { ContextItemKind } from "@/lib/types/context";
 
 const ICON_BY_KIND: Record<ContextItemKind, TablerIcon> = {

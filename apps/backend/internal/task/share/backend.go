@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/kandev/kandev/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/github"
 )
 
 // ErrSnapshotTooLarge is returned when a snapshot exceeds the backend's

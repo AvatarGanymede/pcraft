@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/logger"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // newTestManagerForAggregator builds a minimal Manager with just the bits the

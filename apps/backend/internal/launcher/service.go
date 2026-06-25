@@ -244,10 +244,10 @@ func installSystemd(args serviceArgs, build BuildInfo, unitPath string) int {
 
 func runLaunchdService(args serviceArgs, build BuildInfo) int {
 	plistPath := launchdPlistPath(args.System)
-	target := "gui/" + fmt.Sprint(os.Getuid()) + "/com.kdlbs.kandev"
+	target := "gui/" + fmt.Sprint(os.Getuid()) + "/com.kdlbs.pcraft"
 	domain := "gui/" + fmt.Sprint(os.Getuid())
 	if args.System {
-		target = "system/com.kdlbs.kandev"
+		target = "system/com.kdlbs.pcraft"
 		domain = "system"
 	}
 	switch args.Action {
@@ -349,18 +349,18 @@ type nativeServiceUnitInput struct {
 
 func renderSystemdUnit(input nativeServiceUnitInput) string {
 	env := []string{
-		serviceEnvLine("KANDEV_HOME_DIR", input.HomeDir),
-		serviceEnvLine("KANDEV_LOG_LEVEL", "info"),
+		serviceEnvLine("PCRAFT_HOME_DIR", input.HomeDir),
+		serviceEnvLine("PCRAFT_LOG_LEVEL", "info"),
 		serviceEnvLineAllowSpecifiers("PATH", "/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:%h/.local/bin:%h/.bun/bin:%h/.opencode/bin"),
 	}
 	if input.Port != 0 {
-		env = append(env, serviceEnvLine("KANDEV_SERVER_PORT", fmt.Sprint(input.Port)))
+		env = append(env, serviceEnvLine("PCRAFT_SERVER_PORT", fmt.Sprint(input.Port)))
 	}
 	if input.BundleDir != "" {
-		env = append(env, serviceEnvLine("KANDEV_BUNDLE_DIR", input.BundleDir))
+		env = append(env, serviceEnvLine("PCRAFT_BUNDLE_DIR", input.BundleDir))
 	}
 	if input.Version != "" {
-		env = append(env, serviceEnvLine("KANDEV_VERSION", input.Version))
+		env = append(env, serviceEnvLine("PCRAFT_VERSION", input.Version))
 	}
 	userLine := ""
 	wantedBy := "default.target"
@@ -378,15 +378,15 @@ func renderSystemdUnit(input nativeServiceUnitInput) string {
 }
 
 func renderLaunchdPlist(input nativeServiceUnitInput) string {
-	envEntries := [][2]string{{"KANDEV_HOME_DIR", input.HomeDir}, {"KANDEV_LOG_LEVEL", "info"}, {"PATH", "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"}}
+	envEntries := [][2]string{{"PCRAFT_HOME_DIR", input.HomeDir}, {"PCRAFT_LOG_LEVEL", "info"}, {"PATH", "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"}}
 	if input.Port != 0 {
-		envEntries = append(envEntries, [2]string{"KANDEV_SERVER_PORT", fmt.Sprint(input.Port)})
+		envEntries = append(envEntries, [2]string{"PCRAFT_SERVER_PORT", fmt.Sprint(input.Port)})
 	}
 	if input.BundleDir != "" {
-		envEntries = append(envEntries, [2]string{"KANDEV_BUNDLE_DIR", input.BundleDir})
+		envEntries = append(envEntries, [2]string{"PCRAFT_BUNDLE_DIR", input.BundleDir})
 	}
 	if input.Version != "" {
-		envEntries = append(envEntries, [2]string{"KANDEV_VERSION", input.Version})
+		envEntries = append(envEntries, [2]string{"PCRAFT_VERSION", input.Version})
 	}
 	var envXML strings.Builder
 	for _, entry := range envEntries {
@@ -402,7 +402,7 @@ func renderLaunchdPlist(input nativeServiceUnitInput) string {
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.kdlbs.kandev</string>
+  <string>com.kdlbs.pcraft</string>
   <key>ProgramArguments</key>
   <array>
     <string>` + escapeXML(input.Executable) + `</string>
@@ -466,14 +466,14 @@ func quoteForUnitValue(value string, escapeSystemdSpecifiers bool) string {
 }
 
 func serviceBundleDir(executable string) string {
-	if v := os.Getenv("KANDEV_BUNDLE_DIR"); v != "" {
+	if v := os.Getenv("PCRAFT_BUNDLE_DIR"); v != "" {
 		return v
 	}
 	return filepath.Dir(filepath.Dir(executable))
 }
 
 func serviceVersion(buildVersion string) string {
-	if v := os.Getenv("KANDEV_VERSION"); v != "" {
+	if v := os.Getenv("PCRAFT_VERSION"); v != "" {
 		return v
 	}
 	return buildVersion
@@ -519,9 +519,9 @@ func linuxUnitPath(system bool) string {
 
 func launchdPlistPath(system bool) string {
 	if system {
-		return "/Library/LaunchDaemons/com.kdlbs.kandev.plist"
+		return "/Library/LaunchDaemons/com.kdlbs.pcraft.plist"
 	}
-	return filepath.Join(mustHomeDir(), "Library", "LaunchAgents", "com.kdlbs.kandev.plist")
+	return filepath.Join(mustHomeDir(), "Library", "LaunchAgents", "com.kdlbs.pcraft.plist")
 }
 
 func systemctlScope(system bool) []string {

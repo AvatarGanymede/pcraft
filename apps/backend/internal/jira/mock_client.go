@@ -212,7 +212,7 @@ func (m *MockClient) Reset() {
 }
 
 // MockClientFactory always returns the same shared MockClient regardless of
-// per-workspace credentials. Use this from Provide when KANDEV_MOCK_JIRA=true.
+// per-workspace credentials. Use this from Provide when PCRAFT_MOCK_JIRA=true.
 func MockClientFactory(shared *MockClient) ClientFactory {
 	return func(*JiraConfig, string) Client {
 		return shared

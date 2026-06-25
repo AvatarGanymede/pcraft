@@ -13,10 +13,10 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/testutil"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/testutil"
 )
 
 func TestPostgresBootInitializesRepositories(t *testing.T) {

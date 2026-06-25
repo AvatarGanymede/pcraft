@@ -13,10 +13,10 @@ import {
   IconRefresh,
   IconTerminal2,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Separator } from "@kandev/ui/separator";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Separator } from "@pcraft/ui/separator";
 import { useAppStore } from "@/components/state-provider";
 import {
   createCustomTUIAgent,

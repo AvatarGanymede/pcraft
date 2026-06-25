@@ -20,7 +20,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // Config is the agentctl configuration.
@@ -60,12 +60,12 @@ type Config struct {
 
 	// IdleTimeout is the duration after which an instance with no in-flight
 	// requests and no recent HTTP activity is reaped by the instance
-	// manager. Sourced from KANDEV_ACP_IDLE_TIMEOUT (default 1h).
+	// manager. Sourced from PCRAFT_ACP_IDLE_TIMEOUT (default 1h).
 	// Setting it to 0 disables the reaper.
 	IdleTimeout time.Duration
 
 	// IdleReaperInterval is how often the idle reaper scans for stale
-	// instances. Sourced from KANDEV_ACP_IDLE_REAPER_INTERVAL (default 1m).
+	// instances. Sourced from PCRAFT_ACP_IDLE_REAPER_INTERVAL (default 1m).
 	// Only the test suite needs to override this; production code should
 	// rely on the default.
 	IdleReaperInterval time.Duration
@@ -247,12 +247,12 @@ func Load() *Config {
 			ProcessBufferMaxBytes:  getEnvInt64("AGENTCTL_PROCESS_BUFFER_MAX_BYTES", 2*1024*1024),
 		},
 		ShellEnabled:       getEnvBool("AGENTCTL_SHELL_ENABLED", true),
-		LogLevel:           getEnvWithFallback("AGENTCTL_LOG_LEVEL", "KANDEV_LOG_LEVEL", "info"),
+		LogLevel:           getEnvWithFallback("AGENTCTL_LOG_LEVEL", "PCRAFT_LOG_LEVEL", "info"),
 		LogFormat:          getEnv("AGENTCTL_LOG_FORMAT", "json"),
-		McpLogFile:         getEnv("KANDEV_MCP_LOG_FILE", ""),
+		McpLogFile:         getEnv("PCRAFT_MCP_LOG_FILE", ""),
 		VscodeCommand:      getEnv("AGENTCTL_VSCODE_COMMAND", "code-server"),
-		IdleTimeout:        getEnvDuration("KANDEV_ACP_IDLE_TIMEOUT", time.Hour),
-		IdleReaperInterval: getEnvDuration("KANDEV_ACP_IDLE_REAPER_INTERVAL", time.Minute),
+		IdleTimeout:        getEnvDuration("PCRAFT_ACP_IDLE_TIMEOUT", time.Hour),
+		IdleReaperInterval: getEnvDuration("PCRAFT_ACP_IDLE_REAPER_INTERVAL", time.Minute),
 	}
 
 	// Bootstrap nonce mode: agentctl generates its own token and the backend

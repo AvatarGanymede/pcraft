@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import { useToast } from "@/components/toast-provider";
 import { linkTaskIssue, unlinkTaskIssue } from "@/lib/api/domains/github-api";
 import type { Repository } from "@/lib/types/http";

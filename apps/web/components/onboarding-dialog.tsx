@@ -8,8 +8,8 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
+} from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
 import {
   IconArrowRight,
   IconArrowLeft,
@@ -27,7 +27,7 @@ import {
   IconArrowDown,
   IconCloud,
 } from "@tabler/icons-react";
-import { Kbd } from "@kandev/ui/kbd";
+import { Kbd } from "@pcraft/ui/kbd";
 import { type ProfileFormData } from "@/components/settings/profile-form-fields";
 import { permissionsToProfilePatch, profilePermissionValues } from "@/lib/agent-permissions";
 import { listAvailableAgents, listWorkflowTemplates } from "@/lib/api";

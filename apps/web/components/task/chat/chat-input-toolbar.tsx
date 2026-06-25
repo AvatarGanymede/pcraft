@@ -15,8 +15,8 @@ import {
 
 import { EnhancePromptButton } from "@/components/enhance-prompt-button";
 import { GridSpinner } from "@/components/grid-spinner";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useToolbarCollapsed } from "@/hooks/use-toolbar-collapsed";
 import { SHORTCUTS } from "@/lib/keyboard/constants";

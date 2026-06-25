@@ -10,8 +10,8 @@ import {
   IconCheck,
   IconPlus,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Skeleton } from "@kandev/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Skeleton } from "@pcraft/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { PanelHeaderBarSplit } from "./panel-primitives";
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // TestUpdateTaskSessionState_IdleTransitions exercises the IDLE-aware state

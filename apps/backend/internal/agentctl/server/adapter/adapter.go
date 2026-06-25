@@ -13,10 +13,10 @@ import (
 	"context"
 	"io"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Re-export permission types from the shared types package for convenience.

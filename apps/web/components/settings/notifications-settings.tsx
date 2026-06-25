@@ -2,14 +2,14 @@
 
 import { useMemo, useReducer, useSyncExternalStore, type FormEvent } from "react";
 import { IconBell, IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@kandev/ui/hover-card";
-import { Input } from "@kandev/ui/input";
-import { Separator } from "@kandev/ui/separator";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@pcraft/ui/hover-card";
+import { Input } from "@pcraft/ui/input";
+import { Separator } from "@pcraft/ui/separator";
+import { Textarea } from "@pcraft/ui/textarea";
 import { SettingsPageTemplate } from "@/components/settings/settings-page-template";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { DEFAULT_NOTIFICATION_EVENTS, EVENT_LABELS } from "@/lib/notifications/events";
 import type { NotificationProvider } from "@/lib/types/http";
 import {

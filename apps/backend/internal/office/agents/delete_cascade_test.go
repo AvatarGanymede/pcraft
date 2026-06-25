@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // recordingTerminator captures TerminateAllForAgent calls so the deletion test

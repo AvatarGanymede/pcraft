@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/prompts/models"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/models"
 )
 
 func createTestRepo(t *testing.T) (*sqliteRepository, func()) {

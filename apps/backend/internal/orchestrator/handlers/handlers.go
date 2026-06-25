@@ -5,11 +5,11 @@ import (
 	"context"
 	"errors"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/orchestrator/dto"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/dto"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 

@@ -3,7 +3,7 @@ package models
 import (
 	"testing"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // TestAgentInstance_AliasIsTransparent verifies that office.AgentInstance is a

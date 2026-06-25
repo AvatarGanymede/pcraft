@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 func TestAgentProfileEnvVars_Roundtrip(t *testing.T) {

@@ -9,9 +9,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/db"
-	systemsettings "github.com/kandev/kandev/internal/system/settings"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	systemsettings "github.com/AvatarGanymede/pcraft/internal/system/settings"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 func TestServiceSubscribeLifecycle(t *testing.T) {

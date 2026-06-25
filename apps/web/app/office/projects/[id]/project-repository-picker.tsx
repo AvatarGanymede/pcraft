@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IconCode, IconPlus, IconWorld } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Command,
   CommandEmpty,
@@ -10,9 +10,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { discoverRepositoriesAction } from "@/app/actions/workspaces";
 import { useRepositories } from "@/hooks/domains/workspace/use-repositories";
 import { cn, formatUserHomePath } from "@/lib/utils";

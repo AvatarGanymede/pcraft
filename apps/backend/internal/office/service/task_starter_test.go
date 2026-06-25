@@ -6,12 +6,12 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // mockTaskStarter records calls to StartTask and returns a configurable error.

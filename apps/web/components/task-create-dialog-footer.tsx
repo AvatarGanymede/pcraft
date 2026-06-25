@@ -8,14 +8,14 @@ import {
   IconChevronDown,
   IconPlus,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { DialogClose } from "@kandev/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { DialogClose } from "@pcraft/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { SHORTCUTS } from "@/lib/keyboard/constants";
 import { KeyboardShortcutTooltip } from "@/components/keyboard-shortcut-tooltip";
 
@@ -355,11 +355,6 @@ export const TaskCreateDialogFooter = memo(function TaskCreateDialogFooter(
 
   return (
     <>
-      {!isSessionMode && !isTaskStarted && executorHint && (
-        <div className="flex flex-1 items-center gap-3 text-sm text-muted-foreground">
-          <span className="text-xs text-muted-foreground">{executorHint}</span>
-        </div>
-      )}
       <DialogClose asChild>
         <Button
           type="button"

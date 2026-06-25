@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { IconExternalLink, IconTrash } from "@tabler/icons-react";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 import { revokeShare, type Share } from "@/lib/api/domains/share-api";
 

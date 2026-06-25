@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 
 	"go.uber.org/zap"
 )

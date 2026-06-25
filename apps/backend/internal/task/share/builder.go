@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // ErrSessionNotShareable is returned when BuildSnapshot is asked to snapshot

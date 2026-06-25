@@ -10,8 +10,8 @@ import {
   IconPlayerPause,
   IconRoute,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
 import { useAppStore } from "@/components/state-provider";
 import { dismissInboxItem, retryProvider } from "@/lib/api/domains/office-extended-api";
 import type { InboxItem } from "@/lib/state/slices/office/types";

@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { IconAlertTriangle, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import { FileDiffViewer, DiffErrorBoundary } from "@/components/diff";
 import type { RevertBlockInfo } from "@/components/diff";
 import { getWebSocketClient } from "@/lib/ws/connection";

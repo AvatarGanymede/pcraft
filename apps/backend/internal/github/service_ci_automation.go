@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
 )
 
 // GetTaskCIOptionsResponse returns task CI automation options plus effective prompt text.

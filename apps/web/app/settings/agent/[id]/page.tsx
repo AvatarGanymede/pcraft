@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "@/lib/routing/client-router";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
 
 export default function AgentEditPage() {
   const router = useRouter();

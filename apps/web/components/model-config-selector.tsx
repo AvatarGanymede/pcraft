@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import { IconCheck, IconChevronDown } from "@tabler/icons-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,10 +12,10 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { ScrollArea } from "@kandev/ui/scroll-area";
-import { Separator } from "@kandev/ui/separator";
+} from "@pcraft/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
+import { Separator } from "@pcraft/ui/separator";
 
 export type ModelSelectorOption = {
   id: string;

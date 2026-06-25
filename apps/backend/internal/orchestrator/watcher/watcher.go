@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TaskEventData contains data from task events

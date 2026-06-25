@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { IconCode } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useShellSettings } from "@/hooks/domains/settings/use-shell-settings";

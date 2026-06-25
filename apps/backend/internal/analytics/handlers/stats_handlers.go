@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/analytics/dto"
-	"github.com/kandev/kandev/internal/analytics/models"
-	"github.com/kandev/kandev/internal/analytics/repository"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/analytics/dto"
+	"github.com/AvatarGanymede/pcraft/internal/analytics/models"
+	"github.com/AvatarGanymede/pcraft/internal/analytics/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 

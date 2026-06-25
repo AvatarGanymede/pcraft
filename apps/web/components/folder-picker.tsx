@@ -2,8 +2,8 @@
 
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { IconFolder, IconBox, IconChevronRight } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { listDirectory, type DirectoryListing } from "@/lib/api/domains/fs-api";
 

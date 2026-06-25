@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { toast } from "sonner";
 import { useAppStore } from "@/components/state-provider";
 import { updateAgentProfile } from "@/lib/api/domains/office-api";

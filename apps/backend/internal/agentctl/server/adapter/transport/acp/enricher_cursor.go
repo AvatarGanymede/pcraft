@@ -1,6 +1,6 @@
 package acp
 
-import "github.com/kandev/kandev/internal/agentctl/types/streams"
+import "github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 
 // enrichCursorPayload is intentionally minimal: Cursor ACP currently emits
 // generic titles ("Read File") without locations or structured rawInput on

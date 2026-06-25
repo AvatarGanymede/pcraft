@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/office/costs/modelsdev"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/office/costs/modelsdev"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Regression: when the agent renames or switches branches inside a session,

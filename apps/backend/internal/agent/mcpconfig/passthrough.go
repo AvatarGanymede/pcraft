@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // PassthroughPaths carries filesystem locations a strategy may use to

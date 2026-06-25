@@ -5,11 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // MockController exposes HTTP endpoints to seed the in-memory MockClient.
-// Activated only when KANDEV_MOCK_GITLAB=true.
+// Activated only when PCRAFT_MOCK_GITLAB=true.
 type MockController struct {
 	mock    *MockClient
 	service *Service

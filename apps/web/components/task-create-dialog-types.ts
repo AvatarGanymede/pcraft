@@ -17,6 +17,7 @@ import type {
   useExecutorProfileOptions,
 } from "@/components/task-create-dialog-options";
 import type { useToast } from "@/components/toast-provider";
+import type { P4TaskFormValues } from "@/components/task-create-dialog-p4-fields";
 
 /**
  * One repository row in the task-create form. The form tracks every repo
@@ -348,6 +349,10 @@ export type SubmitHandlersDeps = {
   noRepository: boolean;
   /** Optional host folder for repo-less tasks; empty means kandev creates a scratch workspace. */
   workspacePath: string;
+  p4WorkspaceId?: string;
+  panelId?: string;
+  requirement?: string;
+  prefabPath?: string;
   /**
    * Optional async transform applied to the trimmed description before the
    * API payload is built. Used by feature wrappers (e.g. Improve Kandev) to
@@ -432,4 +437,6 @@ export type DialogFormBodyProps = {
    * hands-free.
    */
   onVoiceAutoSend?: () => void;
+  p4Values: P4TaskFormValues;
+  onP4ValuesChange: (patch: Partial<P4TaskFormValues>) => void;
 };

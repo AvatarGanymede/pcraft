@@ -1,9 +1,9 @@
 package service
 
 import (
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Request types
@@ -56,13 +56,16 @@ type CreateTaskRequest struct {
 
 // UpdateTaskRequest contains the data for updating a task
 type UpdateTaskRequest struct {
-	Title        *string                `json:"title,omitempty"`
-	Description  *string                `json:"description,omitempty"`
-	Priority     *string                `json:"priority,omitempty"`
-	State        *v1.TaskState          `json:"state,omitempty"`
-	Repositories []TaskRepositoryInput  `json:"repositories,omitempty"`
-	Position     *int                   `json:"position,omitempty"`
-	Metadata     map[string]interface{} `json:"metadata,omitempty"`
+	Title          *string                `json:"title,omitempty"`
+	Description    *string                `json:"description,omitempty"`
+	Priority       *string                `json:"priority,omitempty"`
+	State          *v1.TaskState          `json:"state,omitempty"`
+	Repositories   []TaskRepositoryInput  `json:"repositories,omitempty"`
+	Position       *int                   `json:"position,omitempty"`
+	Metadata       map[string]interface{} `json:"metadata,omitempty"`
+	P4WorkspaceID  *string                `json:"p4_workspace_id,omitempty"`
+	P4Changelist   *string                `json:"p4_changelist,omitempty"`
+	BlockedByTaskID *string               `json:"blocked_by_task_id,omitempty"`
 }
 
 // CreateWorkflowRequest contains the data for creating a new workflow

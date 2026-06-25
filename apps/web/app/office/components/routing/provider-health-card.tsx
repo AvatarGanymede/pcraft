@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "@/components/routing/app-link";
-import { Card } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
+import { Card } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
 import { useAppStore } from "@/components/state-provider";
 import { useProviderHealth } from "@/hooks/domains/office/use-provider-health";
 import { useWorkspaceRouting } from "@/hooks/domains/office/use-workspace-routing";

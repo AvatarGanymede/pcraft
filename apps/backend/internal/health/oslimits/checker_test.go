@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/health"
+	"github.com/AvatarGanymede/pcraft/internal/health"
 )
 
 // stubProbe is a test double for the Probe interface.

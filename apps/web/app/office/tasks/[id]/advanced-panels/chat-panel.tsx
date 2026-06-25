@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { IconSend, IconPlayerPlay, IconLoader2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Input } from "@kandev/ui/input";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Input } from "@pcraft/ui/input";
 import { useSessionMessages } from "@/hooks/domains/session/use-session-messages";
 import { useSession } from "@/hooks/domains/session/use-session";
 import { useSessionLaunch } from "@/hooks/domains/session/use-session-launch";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import type { OnboardingFSWorkspace } from "@/lib/api/domains/office-api";
 import { CloseButton } from "./close-button";
 

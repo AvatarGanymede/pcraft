@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/notifications/models"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/models"
 )
 
 type NotificationProviderDTO struct {

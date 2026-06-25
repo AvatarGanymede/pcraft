@@ -8,7 +8,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 func newTestLogger() *logger.Logger {

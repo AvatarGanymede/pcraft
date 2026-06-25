@@ -5,8 +5,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // getExecutorBackend returns the appropriate runtime for the given executor type.

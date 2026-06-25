@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { IconTerminal2 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import {
   Select,
   SelectContent,
@@ -15,8 +15,8 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@kandev/ui/select";
-import { Separator } from "@kandev/ui/separator";
+} from "@pcraft/ui/select";
+import { Separator } from "@pcraft/ui/separator";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { ShellSettingsCard } from "@/components/settings/shell-settings-card";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";

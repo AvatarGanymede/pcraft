@@ -8,11 +8,11 @@ import {
   IconChevronDown,
   IconChevronRight,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Badge } from "@kandev/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Badge } from "@pcraft/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { toast } from "sonner";
 import type { AgentProfile } from "@/lib/state/slices/office/types";
 import * as officeApi from "@/lib/api/domains/office-api";

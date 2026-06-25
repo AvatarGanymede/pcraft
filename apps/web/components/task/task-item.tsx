@@ -23,10 +23,10 @@ import { TASK_COLOR_BAR_CLASS, type TaskColor } from "@/lib/task-colors";
 import type { TaskState, TaskSessionState } from "@/lib/types/http";
 import { shouldUseQuestionTaskIcon, shouldUsePermissionTaskIcon } from "@/lib/ui/state-icons";
 import type { SessionPollMode } from "@/lib/state/slices/session-runtime/types";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { RemoteCloudTooltip } from "./remote-cloud-tooltip";
 import { classifyTask } from "./task-classify";
-import { ScrollOnOverflow } from "@kandev/ui/scroll-on-overflow";
+import { ScrollOnOverflow } from "@pcraft/ui/scroll-on-overflow";
 
 type DiffStats = {
   additions: number;

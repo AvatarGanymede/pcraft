@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Switch } from "@kandev/ui/switch";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
-import { ToggleGroup, ToggleGroupItem } from "@kandev/ui/toggle-group";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Switch } from "@pcraft/ui/switch";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { ToggleGroup, ToggleGroupItem } from "@pcraft/ui/toggle-group";
 import { useAgentRoute } from "@/hooks/domains/office/use-agent-route";
 import { useAppStore } from "@/components/state-provider";
 import { useWorkspaceRouting } from "@/hooks/domains/office/use-workspace-routing";

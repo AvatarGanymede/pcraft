@@ -52,7 +52,7 @@ vi.mock("@/hooks/use-lazy-load-messages", () => ({
 vi.mock("@/components/task/chat/messages/agent-status", () => ({
   AgentStatus: () => <div data-testid="agent-status" />,
 }));
-vi.mock("@kandev/ui/pannel-session", () => ({
+vi.mock("@pcraft/ui/pannel-session", () => ({
   SessionPanelContent: ({ children }: { children: ReactNode }) => (
     <div data-testid="session-panel-content">{children}</div>
   ),

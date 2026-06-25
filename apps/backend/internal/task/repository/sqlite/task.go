@@ -11,10 +11,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // defaultTaskAlias is the fallback alias the projection helpers use when
@@ -825,12 +825,12 @@ func (r *Repository) CountOpenWatcherCreatedTasks(ctx context.Context, metadataK
 	query := r.ro.Rebind(fmt.Sprintf(`
 		SELECT COUNT(*) FROM tasks
 		WHERE archived_at IS NULL
-			AND state NOT IN (?, ?, ?)
+			AND state NOT IN (?, ?)
 			AND %s = ?
 	`, dialect.JSONExtract(r.ro.DriverName(), "metadata", metadataKey)))
 	var n int
 	if err := r.ro.QueryRowxContext(ctx, query,
-		v1.TaskStateCompleted, v1.TaskStateFailed, v1.TaskStateCancelled, watchID,
+		v1.TaskStateDone, v1.TaskStateClosed, watchID,
 	).Scan(&n); err != nil {
 		return 0, err
 	}

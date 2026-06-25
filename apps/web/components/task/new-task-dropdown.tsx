@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { IconPlus, IconSubtask, IconChevronDown } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { ButtonGroup } from "@kandev/ui/button-group";
+import { Button } from "@pcraft/ui/button";
+import { ButtonGroup } from "@pcraft/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { TaskCreateDialog } from "@/components/task-create-dialog";
 import { NewSubtaskDialog } from "./new-subtask-dialog";
 import type { Task } from "@/lib/types/http";

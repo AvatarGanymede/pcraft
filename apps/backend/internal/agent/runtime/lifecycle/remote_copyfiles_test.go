@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	client "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/worktree/copyfiles"
+	client "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/worktree/copyfiles"
 )
 
 func TestEmitCopyFilesStep_Pluralization(t *testing.T) {

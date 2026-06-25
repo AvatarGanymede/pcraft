@@ -6,7 +6,7 @@ package sentry
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/integrations/optional"
+	"github.com/AvatarGanymede/pcraft/internal/integrations/optional"
 )
 
 // AuthMethodAuthToken is the only auth method Sentry supports in Phase 1: a

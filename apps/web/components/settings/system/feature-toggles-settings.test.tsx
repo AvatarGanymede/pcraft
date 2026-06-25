@@ -1,5 +1,5 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RuntimeFlagState } from "@/lib/types/runtime-flags";
 import { FeatureTogglesSettings } from "./feature-toggles-settings";
@@ -9,7 +9,7 @@ const toastMock = vi.fn();
 const DEBUG_MODE_LABEL = "Debug mode";
 const FEATURE_TOGGLES_LOAD_FAILURE = "Feature toggles could not be loaded.";
 
-vi.mock("@kandev/ui/switch", () => ({
+vi.mock("@pcraft/ui/switch", () => ({
   Switch: ({
     checked,
     disabled,

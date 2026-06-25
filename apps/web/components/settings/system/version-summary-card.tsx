@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "@/components/routing/app-link";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import { IconRefresh, IconArrowRight } from "@tabler/icons-react";
 import { useUpdates } from "@/hooks/domains/system/use-updates";
 

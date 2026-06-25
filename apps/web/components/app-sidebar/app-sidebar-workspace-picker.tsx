@@ -3,7 +3,6 @@
 import { forwardRef, useCallback, useState, type ComponentPropsWithoutRef } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import {
-  IconBriefcase,
   IconCheck,
   IconChevronDown,
   IconLayoutKanban,
@@ -15,14 +14,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
-import { useFeature } from "@/hooks/domains/features/use-feature";
 import { cn } from "@/lib/utils";
-import {
-  rememberLastOfficeWorkspace,
-  rememberLastKanbanWorkspace,
-} from "./app-sidebar-workspace-navigation";
 
 /**
  * Compact, secondary workspace switcher inlined after the Kandev brand in the
@@ -72,15 +66,11 @@ function workspaceTypeLabel(type: WorkspaceType) {
 }
 
 function WorkspaceTypeIcon({ type, className }: { type: WorkspaceType; className: string }) {
-  if (type === "office") {
-    return <IconBriefcase className={className} />;
-  }
   return <IconLayoutKanban className={className} />;
 }
 
 export function AppSidebarWorkspacePicker() {
   const router = useRouter();
-  const officeEnabled = useFeature("office");
   const workspaces = useAppStore((s) => s.workspaces);
   const setActiveWorkspace = useAppStore((s) => s.setActiveWorkspace);
   const [open, setOpen] = useState(false);
@@ -96,22 +86,10 @@ export function AppSidebarWorkspacePicker() {
         setOpen(false);
         return;
       }
-      const type = workspaceType(workspace);
-      if (workspaceType(activeWorkspace) === "office" && type !== "office") {
-        rememberLastOfficeWorkspace(activeWorkspace);
-      }
-      if (type === "office") {
-        rememberLastOfficeWorkspace(workspace);
-      }
-      rememberLastKanbanWorkspace(workspace);
       setActiveWorkspace(id);
-      if (officeEnabled) {
-        const target = type === "office" ? "/office" : "/";
-        router.push(`${target}?workspaceId=${id}`);
-      }
       setOpen(false);
     },
-    [activeId, activeWorkspace, router, setActiveWorkspace, officeEnabled],
+    [activeId, setActiveWorkspace],
   );
 
   return (
@@ -146,32 +124,13 @@ export function AppSidebarWorkspacePicker() {
           })
         )}
         <DropdownMenuSeparator />
-        {officeEnabled ? (
-          <>
-            <DropdownMenuItem
-              className="cursor-pointer gap-2"
-              onSelect={() => router.push("/settings/workspace")}
-            >
-              <IconLayoutKanban className="h-3.5 w-3.5" />
-              <span>New kanban workspace</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer gap-2"
-              onSelect={() => router.push("/office/setup?mode=new")}
-            >
-              <IconBriefcase className="h-3.5 w-3.5" />
-              <span>New office workspace</span>
-            </DropdownMenuItem>
-          </>
-        ) : (
-          <DropdownMenuItem
-            className="cursor-pointer gap-2"
-            onSelect={() => router.push("/settings/workspace")}
-          >
-            <IconPlus className="h-3.5 w-3.5" />
-            <span>Add workspace</span>
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem
+          className="cursor-pointer gap-2"
+          onSelect={() => router.push("/settings/workspace")}
+        >
+          <IconPlus className="h-3.5 w-3.5" />
+          <span>Add workspace</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // PreviewItem mirrors the dashboard's AgentRoutePreview shape but lives

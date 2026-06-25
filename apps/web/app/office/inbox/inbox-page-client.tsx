@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
-import { Tabs, TabsList, TabsTrigger } from "@kandev/ui/tabs";
-import { Input } from "@kandev/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
+import { Input } from "@pcraft/ui/input";
 import { toast } from "sonner";
 import { useAppStore } from "@/components/state-provider";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";

@@ -1,7 +1,7 @@
 // Package dashboard provides dashboard, inbox, activity, and workspace-level git HTTP handlers.
 package dashboard
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // RunActivityDay holds aggregated run outcome counts for a single calendar day.
 type RunActivityDay struct {

@@ -7,12 +7,12 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // createOfficeIntegrationService spins up a Service against a DB that has

@@ -1,9 +1,9 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
 import { PageTopbar } from "@/components/page-topbar";
-import { ToggleGroup, ToggleGroupItem } from "@kandev/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@pcraft/ui/toggle-group";
 import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "@/lib/routing/client-router";
 import { IconChartBar } from "@tabler/icons-react";

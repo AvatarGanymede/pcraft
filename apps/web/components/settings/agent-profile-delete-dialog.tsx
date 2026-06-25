@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 import type { ActiveSessionInfo, WatcherReference } from "@/lib/types/agent-profile-errors";
 
 const WATCHER_KIND_LABELS: Record<WatcherReference["kind"], string> = {

@@ -7,7 +7,7 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // RegisterPprofRoutes mounts the standard net/http/pprof handlers on the Gin router

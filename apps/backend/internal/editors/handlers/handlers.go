@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/editors/controller"
-	"github.com/kandev/kandev/internal/editors/dto"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/editors/controller"
+	"github.com/AvatarGanymede/pcraft/internal/editors/dto"
 )
 
 type Handlers struct {

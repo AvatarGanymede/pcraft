@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // inheritFromParentSession copies missing profile IDs from the parent task's

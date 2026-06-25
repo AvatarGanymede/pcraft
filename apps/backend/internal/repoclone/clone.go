@@ -12,8 +12,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // ghCredentialHelper is the git credential helper command that delegates to gh CLI.
@@ -26,7 +26,7 @@ const (
 type Config struct {
 	// BasePath is the base directory for cloned repos.
 	// Supports ~ expansion for home directory.
-	// Default: ~/.kandev/repos
+	// Default: ~/.pcraft/repos
 	BasePath string `mapstructure:"basePath"`
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { DialogTitle } from "@kandev/ui/dialog";
+import { DialogTitle } from "@pcraft/ui/dialog";
 
 export type DialogHeaderContentProps = {
   isCreateMode: boolean;

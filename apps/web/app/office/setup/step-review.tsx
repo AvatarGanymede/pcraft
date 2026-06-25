@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { Card } from "@kandev/ui/card";
+import { Badge } from "@pcraft/ui/badge";
+import { Card } from "@pcraft/ui/card";
 import { useAppStore } from "@/components/state-provider";
 
 type StepReviewProps = {

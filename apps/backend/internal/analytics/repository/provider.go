@@ -3,7 +3,7 @@ package repository
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/analytics/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/analytics/repository/sqlite"
 )
 
 // Provide creates the SQLite analytics repository using separate writer and reader pools.

@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 // splitParticipantsByRole splits a participant list into reviewer and

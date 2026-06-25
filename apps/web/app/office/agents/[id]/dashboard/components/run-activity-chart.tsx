@@ -3,7 +3,7 @@
  * each bar stacks succeeded (green) / failed (red) / other (muted).
  */
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
 import { StackedBars, type StackedBarRow } from "./stacked-bars";
 import type { AgentRunActivityDay } from "@/lib/api/domains/office-extended-api";
 import { formatBarLabel } from "./format-date";

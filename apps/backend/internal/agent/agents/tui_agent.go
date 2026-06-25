@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // TUIAgentConfig is a declarative specification for CLI passthrough / TUI agents.

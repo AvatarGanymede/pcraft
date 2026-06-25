@@ -12,9 +12,9 @@ import {
   CommandItem,
   CommandList,
   CommandShortcut,
-} from "@kandev/ui/command";
-import { Kbd, KbdGroup } from "@kandev/ui/kbd";
-import { Badge } from "@kandev/ui/badge";
+} from "@pcraft/ui/command";
+import { Kbd, KbdGroup } from "@pcraft/ui/kbd";
+import { Badge } from "@pcraft/ui/badge";
 import type { CommandPanelMode, CommandItem as CommandItemType } from "@/lib/commands/types";
 import { formatShortcut } from "@/lib/keyboard/utils";
 import { getShortcut } from "@/lib/keyboard/shortcut-overrides";

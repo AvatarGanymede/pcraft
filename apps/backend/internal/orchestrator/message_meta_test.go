@@ -3,7 +3,7 @@ package orchestrator
 import (
 	"testing"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func TestUserMessageMeta_ToMap_Empty(t *testing.T) {

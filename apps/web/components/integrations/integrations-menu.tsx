@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "@/components/routing/app-link";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   IconBrandGithub,
   IconBrandGitlab,

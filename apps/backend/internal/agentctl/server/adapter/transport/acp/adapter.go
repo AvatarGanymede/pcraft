@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/coder/acp-go-sdk"
-	acpclient "github.com/kandev/kandev/internal/agentctl/server/acp"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
+	acpclient "github.com/AvatarGanymede/pcraft/internal/agentctl/server/acp"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.opentelemetry.io/otel/attribute"
 	"go.uber.org/zap"
 )
@@ -65,7 +65,7 @@ const notifQueueCapacity = 4096
 // memory to (capacity * avg notification size).
 const acpNotifQueueDefault = 16384
 
-// acpNotifQueueMin / acpNotifQueueMax clamp KANDEV_ACP_NOTIF_QUEUE so a
+// acpNotifQueueMin / acpNotifQueueMax clamp PCRAFT_ACP_NOTIF_QUEUE so a
 // misconfigured value can't either re-introduce the overflow (too low) or
 // blow the heap (too high).
 const (
@@ -74,9 +74,9 @@ const (
 )
 
 // acpNotifQueueCapacity returns the per-connection inbound notification queue
-// capacity, honoring KANDEV_ACP_NOTIF_QUEUE when set and parseable.
+// capacity, honoring PCRAFT_ACP_NOTIF_QUEUE when set and parseable.
 func acpNotifQueueCapacity() int {
-	raw := os.Getenv("KANDEV_ACP_NOTIF_QUEUE")
+	raw := os.Getenv("PCRAFT_ACP_NOTIF_QUEUE")
 	if raw == "" {
 		return acpNotifQueueDefault
 	}

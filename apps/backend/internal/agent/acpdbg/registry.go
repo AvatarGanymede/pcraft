@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // AgentSpec is the minimal info acpdbg needs to spawn a registered agent.

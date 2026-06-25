@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconMenu2, IconSearch } from "@tabler/icons-react";
 import { PageTopbar } from "@/components/page-topbar";
 import { MobileMenuSheet } from "./mobile-menu-sheet";

@@ -7,7 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Provide builds the Slack service. Cleanup is a no-op — the service holds

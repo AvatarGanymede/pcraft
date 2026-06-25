@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // turnServiceAdapter adapts the task service to the orchestrator.TurnService interface.

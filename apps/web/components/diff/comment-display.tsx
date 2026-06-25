@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconTrash, IconEdit, IconMessage, IconPlayerPlay } from "@tabler/icons-react";
 import type { DiffComment } from "@/lib/diff/types";
 import { formatLineRange } from "@/lib/diff";

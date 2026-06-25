@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
 )
 
 type SQLiteStore struct {

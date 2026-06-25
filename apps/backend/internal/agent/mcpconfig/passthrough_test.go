@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 var sampleServers = []types.McpServer{

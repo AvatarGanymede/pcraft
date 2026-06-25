@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	agentregistry "github.com/kandev/kandev/internal/agent/registry"
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	agentusage "github.com/kandev/kandev/internal/agent/usage"
+	agentregistry "github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	agentusage "github.com/AvatarGanymede/pcraft/internal/agent/usage"
 )
 
 // usageProviderAdapter implements officeagents.UsageProvider by:
@@ -58,14 +58,6 @@ func (a *usageProviderAdapter) ensureRegistered(profileID, agentName string) {
 		credPath := filepath.Join(home, ".claude", ".credentials.json")
 		client := agentusage.NewClaudeUsageClientWithPath(credPath)
 		key := agentusage.CacheKey("anthropic", credPath)
-		a.svc.Register(profileID, client, key)
-	case "codex-acp":
-		// Path must match codex_acp.go's SourceFiles / Runtime mounts —
-		// the real Codex CLI persists OAuth tokens at ~/.codex/auth.json,
-		// not the earlier XDG-style ~/.config/codex/ guess.
-		authPath := filepath.Join(home, ".codex", "auth.json")
-		client := agentusage.NewCodexUsageClientWithPath(authPath)
-		key := agentusage.CacheKey("openai", authPath)
 		a.svc.Register(profileID, client, key)
 	}
 }

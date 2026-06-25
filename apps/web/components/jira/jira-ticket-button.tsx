@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { IconTicket } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { JiraTicketDialog } from "./jira-ticket-dialog";
 import { extractJiraKey } from "./jira-ticket-common";
 

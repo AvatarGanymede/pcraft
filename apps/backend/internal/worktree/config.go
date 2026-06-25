@@ -18,7 +18,7 @@ type Config struct {
 	// TasksBasePath is the base directory for per-task worktree storage.
 	// Each task gets a subdirectory containing one repo worktree (future: multiple).
 	// Supports ~ expansion for home directory.
-	// Default: ~/.kandev/tasks
+	// Default: ~/.pcraft/tasks
 	TasksBasePath string `mapstructure:"tasks_base_path"`
 
 	// BranchPrefix is the prefix used for worktree branch names.

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { IconAdjustments } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { useRegisterCommands } from "@/hooks/use-register-commands";
 import type { CommandItem } from "@/lib/commands/types";

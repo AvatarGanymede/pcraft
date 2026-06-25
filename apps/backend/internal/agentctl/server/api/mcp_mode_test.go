@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	mcpserver "github.com/kandev/kandev/internal/mcp/server"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	mcpserver "github.com/AvatarGanymede/pcraft/internal/mcp/server"
 )
 
 func newTestServerWithMCP(t *testing.T) *Server {

@@ -2,7 +2,7 @@
 package dialect
 
 const (
-	SQLite3 = "sqlite3"
+	SQLite3 = "sqlite"
 	PGX     = "pgx"
 )
 

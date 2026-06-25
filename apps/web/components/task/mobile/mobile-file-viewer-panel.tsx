@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { PanelBody, PanelHeaderBarSplit, PanelRoot } from "../panel-primitives";
 import { FileViewerContent } from "../file-viewer-content";
 import { MarkdownPreviewContent } from "../markdown-preview-content";

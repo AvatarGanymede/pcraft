@@ -1,7 +1,7 @@
 "use client";
 
 import { IconArrowsExchange, IconMessage2, IconPencil, IconPlus } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { IdChip, KandevBody, KandevRow, KeyValueRow, SummaryDot, TaskStateBadge } from "./shared";
 import { pickArray, pickString } from "./parse";
 import type { KandevRenderer } from "./types";

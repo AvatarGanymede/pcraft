@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
-import { Spinner } from "@kandev/ui/spinner";
+import { Button } from "@pcraft/ui/button";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconCheck, IconAlertTriangle } from "@tabler/icons-react";
 import type { SelfUpdatePhase } from "@/hooks/domains/system/use-self-update";
 

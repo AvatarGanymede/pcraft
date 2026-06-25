@@ -3,9 +3,9 @@ package adapter
 import (
 	"fmt"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/acp"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/acp"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // NewAdapter creates a new protocol adapter based on the specified protocol type.

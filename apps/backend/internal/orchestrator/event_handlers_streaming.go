@@ -6,12 +6,12 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // handleAgentStreamEvent handles agent stream events (tool calls, message chunks, etc.)
@@ -228,7 +228,7 @@ func (s *Service) handleToolCallEvent(ctx context.Context, payload *lifecycle.Ag
 		// Use setSessionRunning (not updateTaskSessionState) so the task is
 		// flipped to IN_PROGRESS in lockstep — otherwise an out-of-turn tool
 		// event (e.g. a Monitor watcher firing after on_turn_complete moved
-		// the task to REVIEW) leaves session=RUNNING with task=REVIEW.
+		// the task to REVIEW) leaves session=RUNNING with task=IN_PROGRESS.
 		s.setSessionRunning(ctx, payload.TaskID, payload.SessionID)
 	}
 }
@@ -544,7 +544,7 @@ func (s *Service) setSessionWaitingForInput(ctx context.Context, taskID, session
 	// Resolve session up front so we can skip the redundant task-state write
 	// when the session was already WAITING_FOR_INPUT. Without this guard, every
 	// caller (workflow on_turn_complete + handleCompleteStreamEvent + other
-	// terminal paths) writes tasks.state=REVIEW on every turn even though the
+	// terminal paths) writes tasks.state=IN_PROGRESS on every turn even though the
 	// state hasn't changed, producing duplicate "task moved to REVIEW" logs and
 	// unnecessary DB churn.
 	var session *models.TaskSession
@@ -578,24 +578,24 @@ func (s *Service) setSessionWaitingForInput(ctx context.Context, taskID, session
 }
 
 func (s *Service) writeTaskReviewState(ctx context.Context, taskID string) {
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateReview); err != nil {
-		s.logger.Error("failed to update task state to REVIEW",
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress); err != nil {
+		s.logger.Error("failed to update task state to IN_PROGRESS",
 			zap.String("task_id", taskID),
 			zap.Error(err))
 		return
 	}
-	s.logger.Info("task moved to REVIEW state",
+	s.logger.Info("task moved to IN_PROGRESS state",
 		zap.String("task_id", taskID))
 }
 
-// writeTaskReviewStateOnCancel clears the kanban "actively working" task
+// writeTaskStateOnCancel clears the kanban "actively working" task
 // states when the user cancels a turn mid-flight by landing the task in
-// REVIEW — the same bucket a normal turn completion uses, so the sidebar
+// IN_PROGRESS — the same bucket a normal turn completion uses, so the sidebar
 // shows the green check rather than the yellow "needs input" question icon.
 // Office task status reflects workflow position, not runtime cancel, so those
 // tasks are left alone. Only actively-working tasks are reconciled; tasks
-// already past IN_PROGRESS / SCHEDULING keep their state.
-func (s *Service) writeTaskReviewStateOnCancel(ctx context.Context, taskID string) {
+// already past IN_PROGRESS keep their state.
+func (s *Service) writeTaskStateOnCancel(ctx context.Context, taskID string) {
 	dbTask, err := s.repo.GetTask(ctx, taskID)
 	if err != nil || dbTask == nil {
 		if err != nil {
@@ -612,11 +612,11 @@ func (s *Service) writeTaskReviewStateOnCancel(ctx context.Context, taskID strin
 	updated, err := s.taskRepo.UpdateTaskStateIfCurrentIn(
 		ctx,
 		taskID,
-		v1.TaskStateReview,
-		[]v1.TaskState{v1.TaskStateInProgress, v1.TaskStateScheduling},
+		v1.TaskStateInProgress,
+		[]v1.TaskState{v1.TaskStateInProgress},
 	)
 	if err != nil {
-		s.logger.Error("failed to update task state to REVIEW",
+		s.logger.Error("failed to update task state to IN_PROGRESS",
 			zap.String("task_id", taskID),
 			zap.Error(err))
 		return
@@ -624,7 +624,7 @@ func (s *Service) writeTaskReviewStateOnCancel(ctx context.Context, taskID strin
 	if !updated {
 		return
 	}
-	s.logger.Info("task moved to REVIEW state after turn cancel",
+	s.logger.Info("task moved to IN_PROGRESS state after turn cancel",
 		zap.String("task_id", taskID))
 }
 

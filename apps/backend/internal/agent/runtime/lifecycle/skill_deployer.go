@@ -3,7 +3,7 @@ package lifecycle
 import (
 	"context"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // SkillDeployer materialises an agent profile's skills + custom prompt into

@@ -6,7 +6,7 @@ package linear
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/integrations/optional"
+	"github.com/AvatarGanymede/pcraft/internal/integrations/optional"
 )
 
 // AuthMethodAPIKey is the only auth method Linear supports today: a Personal

@@ -12,8 +12,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/toast-provider";
 import { WebSocketConnector } from "@/components/ws-connector";
 import { CommandRegistryProvider } from "@/lib/commands/command-registry";
-import { Toaster as SonnerToaster } from "@kandev/ui/sonner";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { Toaster as SonnerToaster } from "@pcraft/ui/sonner";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 type AppShellProps = {
   children: React.ReactNode;

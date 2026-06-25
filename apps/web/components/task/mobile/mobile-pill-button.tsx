@@ -2,7 +2,7 @@
 
 import { forwardRef, type ReactNode } from "react";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 type MobilePillButtonProps = {
   /** Optional icon to lead with (e.g. folder, terminal). */

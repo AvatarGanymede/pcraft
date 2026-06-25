@@ -25,7 +25,7 @@ const (
 type TaskSnapshot struct {
 	ID                     string
 	WorkspaceID            string
-	State                  string // pre-update DB state, e.g. "TODO" / "REVIEW" / "BLOCKED"
+	State                  string // pre-update DB state, e.g. "TODO" / "IN_PROGRESS" / "BLOCKED"
 	AssigneeAgentProfileID string
 	ParentID               string
 }

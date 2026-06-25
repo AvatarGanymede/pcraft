@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { Badge } from "@kandev/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import type { Task, TaskDecision } from "@/app/office/tasks/[id]/types";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { TabsContent } from "@kandev/ui/tabs";
+import { TabsContent } from "@pcraft/ui/tabs";
 import { FileEditorContent } from "./file-editor-content";
 import { FileImageViewer } from "./file-image-viewer";
 import { FileBinaryViewer } from "./file-binary-viewer";

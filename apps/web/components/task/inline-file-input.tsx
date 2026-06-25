@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useCallback } from "react";
-import { Input } from "@kandev/ui/input";
+import { Input } from "@pcraft/ui/input";
 import { FileIcon } from "@/components/ui/file-icon";
 
 type InlineFileInputProps = {

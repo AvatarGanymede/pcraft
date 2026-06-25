@@ -3,7 +3,7 @@ package scheduler
 import (
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Routing metric event names. They live under the routing.metric.*

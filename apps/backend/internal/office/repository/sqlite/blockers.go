@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // CreateTaskBlocker creates a blocker relationship between two tasks.

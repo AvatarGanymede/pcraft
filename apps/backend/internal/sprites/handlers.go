@@ -11,9 +11,9 @@ import (
 	sprites "github.com/superfly/sprites-go"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/secrets"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 const (

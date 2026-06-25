@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestLaunchPreparedSession_SingleRepoWorktree_PersistsSubdirAsWorkspacePath is

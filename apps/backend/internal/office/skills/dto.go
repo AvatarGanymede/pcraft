@@ -1,6 +1,6 @@
 package skills
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // CreateSkillRequest is the request body for creating a skill.
 type CreateSkillRequest struct {

@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { IconCheck, IconCopy, IconLoader2, IconX } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { probeSSHAgents, probeSSHShells } from "@/lib/api/domains/ssh-api";

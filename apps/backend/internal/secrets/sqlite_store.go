@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
 )
 
 type sqliteStore struct {

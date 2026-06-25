@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // Tokenise returns the argv tokens for a single CLIFlag entry. An empty or

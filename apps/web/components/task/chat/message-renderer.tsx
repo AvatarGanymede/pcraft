@@ -2,7 +2,7 @@
 
 import { memo, useState, useCallback, type ReactElement } from "react";
 import { IconPlayerPlay } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import type { Message, TaskSessionState } from "@/lib/types/http";
 import type { ToolCallMetadata } from "@/components/task/chat/types";
 import { launchSession } from "@/lib/services/session-launch-service";

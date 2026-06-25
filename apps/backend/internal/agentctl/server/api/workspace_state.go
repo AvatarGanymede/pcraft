@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 	"go.uber.org/zap"
 )
 

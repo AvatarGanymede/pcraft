@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // metadataKeyProfileEnvResolved caches resolved profile env vars on an execution

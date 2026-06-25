@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconArrowsLeftRight, IconDownload } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 export function ConfigSection() {
   const router = useRouter();

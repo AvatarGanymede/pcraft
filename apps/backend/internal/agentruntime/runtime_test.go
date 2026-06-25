@@ -10,9 +10,6 @@ func TestRuntimeIsContainerized(t *testing.T) {
 		want    bool
 	}{
 		{RuntimeStandalone, false},
-		{RuntimeDocker, true},
-		{RuntimeRemoteDocker, true},
-		{RuntimeSprites, true},
 		{Runtime(""), false},
 		{Runtime("unknown"), false},
 	}
@@ -35,9 +32,6 @@ func TestRuntimeString(t *testing.T) {
 		want    string
 	}{
 		{RuntimeStandalone, "standalone"},
-		{RuntimeDocker, "docker"},
-		{RuntimeRemoteDocker, "remote_docker"},
-		{RuntimeSprites, "sprites"},
 		{Runtime(""), ""},
 	}
 

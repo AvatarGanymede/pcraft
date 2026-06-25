@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/lsp/installer"
-	"github.com/kandev/kandev/internal/user/models"
-	"github.com/kandev/kandev/internal/user/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/lsp/installer"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/user/store"
 	"go.uber.org/zap"
 )
 

@@ -11,15 +11,15 @@ import {
   IconSearch,
   IconTrash,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import type { SavedView } from "./use-saved-views";
 import type { SortKey } from "./filter-model";
 

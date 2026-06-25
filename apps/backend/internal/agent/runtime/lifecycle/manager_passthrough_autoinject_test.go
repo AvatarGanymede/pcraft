@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 // fakePassthroughRunner is a minimal stub of the passthroughRunner seam used

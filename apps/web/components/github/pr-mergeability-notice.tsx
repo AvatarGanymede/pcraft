@@ -1,7 +1,7 @@
 "use client";
 
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { cn } from "@/lib/utils";
 import type { MergeableState } from "@/lib/types/github";
 

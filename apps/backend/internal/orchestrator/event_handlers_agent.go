@@ -8,13 +8,13 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // handleAgentRunning handles agent running events (user sent input in passthrough mode)
@@ -519,14 +519,14 @@ func (s *Service) handleAgentCompleted(ctx context.Context, data watcher.AgentEv
 		zap.String("session_state", string(session.State)),
 		zap.Bool("workflow_transitioned", transitioned))
 
-	// If no workflow transition occurred, move task to REVIEW state for user review
+	// If no workflow transition occurred, move task to IN_PROGRESS state for user review
 	if !transitioned {
-		if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateReview); err != nil {
+		if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateInProgress); err != nil {
 			s.logger.Error("failed to update task state to REVIEW",
 				zap.String("task_id", data.TaskID),
 				zap.Error(err))
 		} else {
-			s.logger.Info("task moved to REVIEW state after agent completion",
+			s.logger.Info("task moved to IN_PROGRESS state after agent completion",
 				zap.String("task_id", data.TaskID))
 		}
 	}
@@ -589,12 +589,12 @@ func (s *Service) handleAgentFailed(ctx context.Context, data watcher.AgentEvent
 		return
 	}
 
-	// No session — fall back to scheduler retry + task to REVIEW.
+	// No session — fall back to scheduler retry + task to IN_PROGRESS.
 	s.scheduler.HandleTaskCompleted(data.TaskID, false)
 	s.scheduler.RetryTask(data.TaskID)
 
-	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateReview); err != nil {
-		s.logger.Error("failed to update task state to REVIEW after failure",
+	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateInProgress); err != nil {
+		s.logger.Error("failed to update task state to IN_PROGRESS after failure",
 			zap.String("task_id", data.TaskID),
 			zap.Error(err))
 	}
@@ -671,8 +671,8 @@ func (s *Service) handleResumeFailure(ctx context.Context, data watcher.AgentEve
 	s.updateTaskSessionState(ctx, data.TaskID, data.SessionID, models.TaskSessionStateWaitingForInput, "", false)
 
 	// 4. Ensure task is in REVIEW state.
-	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateReview); err != nil {
-		s.logger.Warn("failed to set task to REVIEW after resume failure",
+	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateInProgress); err != nil {
+		s.logger.Warn("failed to set task to IN_PROGRESS after resume failure",
 			zap.String("task_id", data.TaskID),
 			zap.Error(err))
 	}
@@ -716,8 +716,8 @@ func (s *Service) handleRecoverableFailure(ctx context.Context, data watcher.Age
 	s.updateTaskSessionState(ctx, data.TaskID, data.SessionID, nextState, data.ErrorMessage, false)
 
 	// Ensure task is in REVIEW state.
-	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateReview); err != nil {
-		s.logger.Warn("failed to set task to REVIEW after recoverable failure",
+	if err := s.taskRepo.UpdateTaskState(ctx, data.TaskID, v1.TaskStateInProgress); err != nil {
+		s.logger.Warn("failed to set task to IN_PROGRESS after recoverable failure",
 			zap.String("task_id", data.TaskID),
 			zap.Error(err))
 	}
@@ -733,7 +733,7 @@ func (s *Service) persistLastAgentError(ctx context.Context, data watcher.AgentE
 	}
 	// Keep this metadata until the user dismisses the UI notice locally or a
 	// later recoverable failure replaces it. A successful turn should not erase
-	// the investigation breadcrumb that explains why the task was marked REVIEW.
+	// the investigation breadcrumb that explains why the task was marked IN_PROGRESS.
 	lastErr := models.LastAgentError{
 		Message:          errMsg,
 		OccurredAt:       time.Now().UTC(),

@@ -11,7 +11,7 @@ import {
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { markdownComponents, remarkPlugins } from "@/components/shared/markdown-components";
 import {
   EmptyListNote,

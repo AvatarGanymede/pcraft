@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/tuzig/vt10x"
 	"go.uber.org/zap"
 )

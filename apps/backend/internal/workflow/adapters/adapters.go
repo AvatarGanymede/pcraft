@@ -12,9 +12,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/workflow/engine"
-	"github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/workflow/repository"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 // WorkflowRepo captures the subset of *repository.Repository methods the

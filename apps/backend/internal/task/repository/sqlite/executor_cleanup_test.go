@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestListExecutorsRunningScansMetadataAndRuntimeFields(t *testing.T) {
@@ -28,7 +28,7 @@ func TestListExecutorsRunningScansMetadataAndRuntimeFields(t *testing.T) {
 		SessionID:        "session-completed",
 		TaskID:           "task-1",
 		ExecutorID:       "executor-1",
-		Runtime:          agentruntime.RuntimeDocker,
+		Runtime:          agentruntime.RuntimeStandalone,
 		Status:           models.ExecutorRunningStatusPrepared,
 		Resumable:        true,
 		ResumeToken:      "resume-token",
@@ -66,7 +66,7 @@ func TestListExecutorsRunningScansMetadataAndRuntimeFields(t *testing.T) {
 	if row == nil {
 		t.Fatalf("session-completed row missing: %#v", got)
 	}
-	if row.Runtime != agentruntime.RuntimeDocker || row.Status != models.ExecutorRunningStatusPrepared || !row.Resumable {
+	if row.Runtime != agentruntime.RuntimeStandalone || row.Status != models.ExecutorRunningStatusPrepared || !row.Resumable {
 		t.Fatalf("runtime fields not scanned: %#v", row)
 	}
 	if row.ResumeToken != "resume-token" || row.LastMessageUUID != "message-1" || row.AgentExecutionID != "exec-completed" {

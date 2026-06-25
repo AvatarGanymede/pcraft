@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // WakePayload is the pre-computed task context injected into the
-// KANDEV_WAKE_PAYLOAD_JSON environment variable for agent sessions.
+// PCRAFT_WAKE_PAYLOAD_JSON environment variable for agent sessions.
 type WakePayload struct {
 	Task          *WakePayloadTask     `json:"task,omitempty"`
 	NewComments   []WakePayloadComment `json:"newComments,omitempty"`

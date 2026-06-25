@@ -3,7 +3,7 @@ package runtime
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // SkillLister is the narrow runtime-facing skill package catalog.

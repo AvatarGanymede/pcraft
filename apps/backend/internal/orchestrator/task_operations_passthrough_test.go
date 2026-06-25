@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestPromptTask_PassthroughRoutesToPTYStdin walks the full Service.PromptTask

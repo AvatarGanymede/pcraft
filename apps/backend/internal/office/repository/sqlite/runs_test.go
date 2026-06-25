@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 func strPtr(s string) *string { return &s }

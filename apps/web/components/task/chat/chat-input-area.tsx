@@ -2,8 +2,8 @@
 
 import { useCallback, useState, type ReactNode } from "react";
 import { IconArrowRight, IconGitMerge, IconGitPullRequestClosed, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { TodoIndicator } from "./todo-indicator";
 import { PRStatusChip } from "@/components/github/pr-status-chip";
 import { ShareButton, shareableSessionStateClient } from "@/components/task/share/share-button";

@@ -11,7 +11,7 @@ import {
   IconMessageCircle,
   IconPlus,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useToast } from "@/components/toast-provider";
 import { useAppStore } from "@/components/state-provider";
 import { useCommentsStore } from "@/lib/state/slices/comments";

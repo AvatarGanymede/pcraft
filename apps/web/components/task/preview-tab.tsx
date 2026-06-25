@@ -8,7 +8,7 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { cn } from "@/lib/utils";
 import { useDockviewStore } from "@/lib/state/dockview-store";
 import type { PreviewType } from "@/lib/state/dockview-panel-actions";

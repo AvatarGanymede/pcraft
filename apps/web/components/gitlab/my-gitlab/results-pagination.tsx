@@ -9,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@kandev/ui/pagination";
+} from "@pcraft/ui/pagination";
 
 type ResultsPaginationProps = {
   page: number;

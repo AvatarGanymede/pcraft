@@ -5,9 +5,9 @@ import (
 	"os"
 	"testing"
 
-	officemodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	officemodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestDeleteWorkspaceStopsTasksDeletesDataAndConfig(t *testing.T) {

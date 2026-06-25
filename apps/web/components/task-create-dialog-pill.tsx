@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Badge } from "@kandev/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Command,
   CommandEmpty,
@@ -12,9 +12,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
+} from "@pcraft/ui/command";
 import type { Branch } from "@/lib/types/http";
-import { BranchRefreshButton } from "@/components/branch-refresh-button";
 import { useTaskCreateDialogPopoverContainer } from "@/hooks/use-task-create-dialog-popover-container";
 import { useTooltipMountGate } from "@/hooks/use-tooltip-mount-gate";
 
@@ -30,7 +29,7 @@ export type PillOption = {
  * body only supports cmdk children (`CommandItem`, etc.) — keyboard nav and
  * focus are routed through cmdk. If you need a popover with mixed content
  * (search list + a free-form `<input>`, banners, etc.), build a custom
- * `Popover` from `@kandev/ui/popover` instead of warping `Pill`.
+ * `Popover` from `@pcraft/ui/popover` instead of warping `Pill`.
  */
 
 type PillProps = {
@@ -171,7 +170,19 @@ function PillPopoverContent({
       <Command filter={filter}>
         <div className="flex items-center gap-1 px-2 pt-1">
           <CommandInput placeholder={searchPlaceholder} className="h-9 flex-1" />
-          {onRefresh && <BranchRefreshButton onRefresh={onRefresh} refreshing={refreshing} />}
+          {onRefresh && (
+            <button
+              type="button"
+              className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-muted/40 cursor-pointer"
+              onClick={onRefresh}
+              disabled={refreshing}
+              aria-label="Refresh branches"
+            >
+              <svg className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+              </svg>
+            </button>
+          )}
         </div>
         <PillCommandList
           options={options}

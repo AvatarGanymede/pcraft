@@ -430,7 +430,7 @@ func emitSubagentSequence(e *emitter, model string) {
 
 // emitCreateSubtask calls the kandev MCP `create_task_kandev` tool with
 // parent_id="self" to create a subtask of the current task. Useful for
-// manually exercising sidebar subtask UI in dev with KANDEV_MOCK_AGENT=true.
+// manually exercising sidebar subtask UI in dev with PCRAFT_MOCK_AGENT=true.
 // Usage: `/subtask` or `/subtask My subtask title`.
 func emitCreateSubtask(e *emitter, cmd, model string) {
 	title := parseSubtaskTitle(cmd)

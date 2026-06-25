@@ -6,8 +6,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // materializeRuntimeProjectMCP writes project-local MCP config for protocol-mode

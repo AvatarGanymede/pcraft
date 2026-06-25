@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // fakeRepo is the routing.Repo stub used by every resolver test. The

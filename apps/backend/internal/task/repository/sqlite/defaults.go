@@ -9,11 +9,10 @@ import (
 
 	"github.com/google/uuid"
 
-	workflowcfg "github.com/kandev/kandev/config/workflows"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	workflowcfg "github.com/AvatarGanymede/pcraft/config/workflows"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // Built-in workflow template IDs used by office onboarding to materialise
@@ -175,14 +174,6 @@ func (r *Repository) ensureDefaultExecutors(ctx context.Context) error {
 	if executorCount == 0 {
 		return r.insertDefaultExecutors(ctx)
 	}
-	// Ensure system executors have is_system flag set
-	for _, systemID := range []string{models.ExecutorIDLocal, models.ExecutorIDWorktree} {
-		if _, err := r.db.ExecContext(ctx, r.db.Rebind(`
-			UPDATE executors SET is_system = 1 WHERE id = ?
-		`), systemID); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -199,8 +190,6 @@ func (r *Repository) insertDefaultExecutors(ctx context.Context) error {
 	}{
 		{id: models.ExecutorIDLocal, name: "Local", execType: models.ExecutorTypeLocal, status: models.ExecutorStatusActive, isSystem: true, resumable: true, config: map[string]string{}},
 		{id: models.ExecutorIDWorktree, name: "Worktree", execType: models.ExecutorTypeWorktree, status: models.ExecutorStatusActive, isSystem: true, resumable: true, config: map[string]string{}},
-		{id: models.ExecutorIDLocalDocker, name: "Local Docker", execType: models.ExecutorTypeLocalDocker, status: models.ExecutorStatusActive, isSystem: false, resumable: true, config: map[string]string{"docker_host": config.DefaultDockerHost()}},
-		{id: models.ExecutorIDSprites, name: "Sprites.dev", execType: models.ExecutorTypeSprites, status: models.ExecutorStatusDisabled, isSystem: false, resumable: true, config: map[string]string{}},
 	}
 	for _, executor := range executors {
 		configJSON, err := json.Marshal(executor.config)

@@ -1,8 +1,8 @@
 "use client";
 
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import { useAppStore } from "@/components/state-provider";
 import type { AgentProfile } from "@/lib/state/slices/office/types";
 

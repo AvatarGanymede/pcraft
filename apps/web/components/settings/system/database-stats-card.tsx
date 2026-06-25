@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Spinner } from "@kandev/ui/spinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Spinner } from "@pcraft/ui/spinner";
 import {
   IconDatabase,
   IconBolt,
@@ -11,7 +11,7 @@ import {
   IconRefresh,
   IconTrash,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useDatabaseStats } from "@/hooks/domains/system/use-database-stats";
 import { optimizeDatabase, vacuumDatabase } from "@/lib/api/domains/system-api";
 import { formatBytes } from "@/lib/utils/format-bytes";

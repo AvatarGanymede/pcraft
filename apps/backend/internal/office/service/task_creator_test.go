@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 // mockTaskCreator records CreateOfficeTask calls and returns a configurable error.

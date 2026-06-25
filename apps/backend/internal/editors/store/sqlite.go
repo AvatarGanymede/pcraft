@@ -12,9 +12,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/editors/discovery"
-	"github.com/kandev/kandev/internal/editors/models"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/editors/discovery"
+	"github.com/AvatarGanymede/pcraft/internal/editors/models"
 )
 
 type sqliteRepository struct {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconPlus } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 

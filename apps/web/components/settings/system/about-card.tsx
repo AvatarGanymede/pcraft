@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Spinner } from "@kandev/ui/spinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconInfoCircle, IconExternalLink } from "@tabler/icons-react";
 import { useSystemInfo } from "@/hooks/domains/system/use-system-info";
 

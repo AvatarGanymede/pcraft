@@ -1,5 +1,5 @@
 import { IconCheck } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 
 type ExecutionStage = {
   id: string;

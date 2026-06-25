@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 const (

@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/worktree/copyfiles"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/worktree/copyfiles"
 )
 
 // newCopyFilesTestServer builds an agentctl Server with a real WorkDir on

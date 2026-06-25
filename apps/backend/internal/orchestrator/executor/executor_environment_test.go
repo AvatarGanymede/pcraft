@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func newEnvTestExecutor(t *testing.T) *Executor {
@@ -451,28 +451,6 @@ func TestApplyExecutorRunningMetadata_RequestKeysWin(t *testing.T) {
 
 	if got := req.Metadata[lifecycle.MetadataKeySSHHost]; got != "user-override.example.com" {
 		t.Errorf("ssh_host = %q, want user-override.example.com (request value should win)", got)
-	}
-}
-
-func TestExtractSandboxID(t *testing.T) {
-	tests := []struct {
-		name     string
-		metadata map[string]interface{}
-		want     string
-	}{
-		{"nil metadata", nil, ""},
-		{"no sprite_name", map[string]interface{}{"other": "val"}, ""},
-		{"with sprite_name", map[string]interface{}{"sprite_name": "kandev-abc"}, "kandev-abc"},
-		{"non-string sprite_name", map[string]interface{}{"sprite_name": 42}, ""},
-		{"empty sprite_name", map[string]interface{}{"sprite_name": ""}, ""},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := extractSandboxID(tt.metadata)
-			if got != tt.want {
-				t.Errorf("extractSandboxID() = %q, want %q", got, tt.want)
-			}
-		})
 	}
 }
 

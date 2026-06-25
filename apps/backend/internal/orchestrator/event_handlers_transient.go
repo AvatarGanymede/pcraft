@@ -8,10 +8,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // transientMaxAttempts caps how many times a transient provider error (529
@@ -144,7 +144,7 @@ func (s *Service) handleTransientFailure(ctx context.Context, data watcher.Agent
 
 	// Park the session in WAITING_FOR_INPUT (a calm, banner-less state that
 	// also lets the yellow retry card render — ActionMessage hides itself while
-	// the session is RUNNING). Deliberately NOT FAILED and NOT task→REVIEW.
+	// the session is RUNNING). Deliberately NOT FAILED and NOT task→IN_PROGRESS.
 	s.updateTaskSessionState(ctx, data.TaskID, data.SessionID, models.TaskSessionStateWaitingForInput, "", false)
 
 	s.scheduleTransientRetry(data.TaskID, data.SessionID, data.AgentExecutionID, attempt, delay)

@@ -10,11 +10,11 @@ import {
   IconCheck,
   IconLoader2,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Separator } from "@kandev/ui/separator";
-import { ScrollArea } from "@kandev/ui/scroll-area";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Separator } from "@pcraft/ui/separator";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useActiveTaskPR, useTaskPR } from "@/hooks/domains/github/use-task-pr";
 import { prPanelLabel } from "@/components/github/pr-utils";

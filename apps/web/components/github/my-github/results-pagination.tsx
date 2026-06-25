@@ -9,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@kandev/ui/pagination";
+} from "@pcraft/ui/pagination";
 
 // GitHub's search API caps total_count at 1000 regardless of actual results.
 const GITHUB_MAX_RESULTS = 1000;

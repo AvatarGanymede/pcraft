@@ -6,7 +6,7 @@ import { DebugOverlay } from "@/components/debug-overlay";
 import { type Repository, type RepositoryScript, type Task } from "@/lib/types/http";
 import type { Terminal } from "@/hooks/domains/session/use-terminals";
 import { isDebugUI } from "@/lib/config";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import type { UseEnsureTaskSessionResult } from "@/hooks/domains/session/use-ensure-task-session";
 import { EnsureSessionErrorBanner } from "@/components/task/ensure-session-error";

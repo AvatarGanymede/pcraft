@@ -3,8 +3,8 @@
 import { useEffect, useMemo } from "react";
 import { IconPlus, IconX, IconCode, IconGitBranch, IconGitFork } from "@tabler/icons-react";
 import { cn, formatUserHomePath } from "@/lib/utils";
-import { Badge } from "@kandev/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useBranches, type BranchSource } from "@/hooks/domains/workspace/use-repository-branches";
 import type { LocalRepository, Repository } from "@/lib/types/http";
 import type { DialogFormState, TaskRepoRow } from "@/components/task-create-dialog-types";

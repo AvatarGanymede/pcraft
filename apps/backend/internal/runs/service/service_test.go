@@ -8,11 +8,11 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	runsservice "github.com/kandev/kandev/internal/runs/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	runsservice "github.com/AvatarGanymede/pcraft/internal/runs/service"
 )
 
 // newTestService spins up an in-memory SQLite, builds the office repo

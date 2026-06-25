@@ -3,8 +3,8 @@ package lifecycle
 import (
 	"os/exec"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
 )
 
 // MetadataKeyNativeBinary, when present in a launch's metadata, names the
@@ -16,16 +16,12 @@ import (
 const MetadataKeyNativeBinary = "native_binary"
 
 // preferNativeBinary reports whether agentConfig's standalone CLI should be
-// used instead of `npx -y <pkg>` for this launch. It honours the same
-// "is the binary actually present in the execution environment?" check the SSH
-// preflight already performs, applied per runtime:
+// used instead of `npx -y <pkg>` for this launch.
 //
-//   - standalone (local_pc / worktree): the agent subprocess runs directly on
-//     this host, so the backend's PATH is the execution environment — probe it
-//     with exec.LookPath.
-//   - ssh: the remote preflight probed the binary and recorded a hit in meta.
-//   - docker / sprites / remote_docker: a controlled image that pulls npx from
-//     the public registry — keep npx.
+//   - standalone: the agent subprocess runs directly on this host, so the
+//     backend's PATH is the execution environment — probe it with
+//     exec.LookPath.
+//   - All other runtimes keep `npx`.
 func (m *Manager) preferNativeBinary(agentConfig agents.Agent, runtime agentruntime.Runtime, meta map[string]interface{}) bool {
 	nb, ok := agentConfig.(agents.NativeBinaryAgent)
 	if !ok {
@@ -39,8 +35,6 @@ func (m *Manager) preferNativeBinary(agentConfig agents.Agent, runtime agentrunt
 	case agentruntime.RuntimeStandalone:
 		_, err := exec.LookPath(name)
 		return err == nil
-	case agentruntime.RuntimeSSH:
-		return getMetadataString(meta, MetadataKeyNativeBinary) == name
 	default:
 		return false
 	}

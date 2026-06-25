@@ -13,11 +13,11 @@ import {
   IconPlugConnectedX,
   IconInfoCircle,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Badge } from "@kandev/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@kandev/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Badge } from "@pcraft/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@pcraft/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { listPorts, listTunnels, type ListeningPort } from "@/lib/api/domains/port-api";
 import { useTunnelActions } from "./use-tunnel-actions";
 import { getBackendConfig } from "@/lib/config";

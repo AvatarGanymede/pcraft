@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 )
 
 func newTestService(t *testing.T, logDir string) *Service {

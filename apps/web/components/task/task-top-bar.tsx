@@ -3,9 +3,9 @@
 import { memo, type ReactNode } from "react";
 import Link from "@/components/routing/app-link";
 import { IconBug, IconCircleDot } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@kandev/ui/breadcrumb";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@pcraft/ui/breadcrumb";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { EditorsMenu } from "@/components/task/editors-menu";
 import { LayoutPresetSelector } from "@/components/task/layout-preset-selector";
 import { DocumentControls } from "@/components/task/document/document-controls";
@@ -19,7 +19,6 @@ import { useJiraAvailable } from "@/hooks/domains/jira/use-jira-availability";
 import { useLinearAvailable } from "@/hooks/domains/linear/use-linear-availability";
 import { PortForwardButton } from "@/components/task/port-forward-dialog";
 import { ExecutorSettingsButton } from "@/components/task/executor-settings-button";
-import { WorkflowStepper, type WorkflowStepperStep } from "@/components/task/workflow-stepper";
 import { TopbarMetrics } from "@/components/system-metrics/topbar-metrics";
 import { isDebugUI } from "@/lib/config";
 
@@ -33,9 +32,6 @@ type TaskTopBarProps = {
   isAgentLoading?: boolean;
   showDebugOverlay?: boolean;
   onToggleDebugOverlay?: () => void;
-  workflowSteps?: WorkflowStepperStep[];
-  currentStepId?: string | null;
-  workflowId?: string | null;
   workspaceId?: string | null;
   issueUrl?: string;
   issueNumber?: number;
@@ -60,9 +56,6 @@ const TaskTopBar = memo(function TaskTopBar({
   taskTitle,
   showDebugOverlay,
   onToggleDebugOverlay,
-  workflowSteps,
-  currentStepId,
-  workflowId,
   workspaceId,
   isArchived,
   isRemoteExecutor,
@@ -84,17 +77,7 @@ const TaskTopBar = memo(function TaskTopBar({
         remoteExecutorType={remoteExecutorType}
         isArchived={isArchived}
       />
-      <div className="min-w-0 justify-self-stretch overflow-hidden">
-        {workflowSteps && workflowSteps.length > 0 && (
-          <WorkflowStepper
-            steps={workflowSteps}
-            currentStepId={currentStepId ?? null}
-            taskId={taskId ?? null}
-            workflowId={workflowId ?? null}
-            isArchived={isArchived}
-          />
-        )}
-      </div>
+      <div className="min-w-0 justify-self-stretch overflow-hidden" />
       <TopBarRight
         taskId={taskId}
         activeSessionId={activeSessionId}

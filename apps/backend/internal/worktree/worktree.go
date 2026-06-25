@@ -170,7 +170,7 @@ type CreateRequest struct {
 
 	// TaskDirName is the semantic directory name for the task (e.g. "fix-bug_ab12").
 	// When set together with RepoName, the worktree is placed at
-	// ~/.kandev/tasks/{TaskDirName}/{RepoName}/ instead of ~/.kandev/worktrees/.
+	// ~/.pcraft/tasks/{TaskDirName}/{RepoName}/ instead of ~/.pcraft/worktrees/.
 	TaskDirName string
 
 	// RepoName is the repository name used as subdirectory inside the task directory.
@@ -179,7 +179,7 @@ type CreateRequest struct {
 
 	// BranchSlug, when non-empty, suffixes the per-repo sibling directory so
 	// the same repo can host multiple branches inside one task. Path becomes
-	// ~/.kandev/tasks/{TaskDirName}/{RepoName}-{BranchSlug}/ — a sibling of
+	// ~/.pcraft/tasks/{TaskDirName}/{RepoName}-{BranchSlug}/ — a sibling of
 	// the primary {RepoName}/ entry, NOT nested under it (nesting would
 	// break agentctl's sibling-based multi-repo detection). Callers must
 	// derive a deterministic, filesystem-safe slug (see SanitizeBranchSlug).

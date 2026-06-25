@@ -11,11 +11,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@kandev/ui/alert-dialog";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Spinner } from "@kandev/ui/spinner";
+} from "@pcraft/ui/alert-dialog";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconDownload, IconExternalLink, IconRefresh } from "@tabler/icons-react";
 import { useSelfUpdate } from "@/hooks/domains/system/use-self-update";
 import { useUpdates } from "@/hooks/domains/system/use-updates";

@@ -2,10 +2,10 @@
 
 import { useState, useCallback } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Textarea } from "@kandev/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { toast } from "sonner";
 import { updateProject } from "@/lib/api/domains/office-api";
 import { useAppStore } from "@/components/state-provider";

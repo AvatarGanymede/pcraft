@@ -6,15 +6,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/orchestrator/scheduler"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/scheduler"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestPendingMove_ReviewToInProgress_OneTransitionOnly reproduces the production bug

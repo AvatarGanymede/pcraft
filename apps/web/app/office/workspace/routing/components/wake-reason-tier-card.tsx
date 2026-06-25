@@ -1,9 +1,9 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Badge } from "@kandev/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
 import { IconInfoCircle, IconAlertTriangle } from "@tabler/icons-react";
 import type {
   Tier,

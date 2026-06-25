@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
 // SavedAttachment represents an attachment saved to the workspace.
 type SavedAttachment struct {
-	// RelPath is the path relative to workDir (e.g. ".kandev/attachments/{sid}/file.pdf").
+	// RelPath is the path relative to workDir (e.g. ".pcraft/attachments/{sid}/file.pdf").
 	RelPath string
 	// AbsPath is the absolute path to the saved file.
 	AbsPath string
@@ -27,7 +27,7 @@ type SavedAttachment struct {
 }
 
 // AttachmentManager saves attachments to session-scoped directories and cleans up.
-// Each session gets its own subdirectory under .kandev/attachments/{sessionID}/
+// Each session gets its own subdirectory under .pcraft/attachments/{sessionID}/
 // so concurrent agents sharing a workspace don't interfere with each other.
 type AttachmentManager struct {
 	workDir   string
@@ -49,7 +49,7 @@ func (m *AttachmentManager) SetSessionID(id string) {
 	m.sessionID = id
 }
 
-// SaveAttachments saves all attachments to .kandev/attachments/{sessionID}/.
+// SaveAttachments saves all attachments to .pcraft/attachments/{sessionID}/.
 // Returns saved attachment metadata so the caller can decide how to reference them.
 func (m *AttachmentManager) SaveAttachments(attachments []v1.MessageAttachment) ([]SavedAttachment, error) {
 	if len(attachments) == 0 {
@@ -59,7 +59,7 @@ func (m *AttachmentManager) SaveAttachments(attachments []v1.MessageAttachment) 
 		return nil, fmt.Errorf("workDir or sessionID not set")
 	}
 
-	dir := filepath.Join(m.workDir, ".kandev", "attachments", m.sessionID)
+	dir := filepath.Join(m.workDir, ".pcraft", "attachments", m.sessionID)
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return nil, fmt.Errorf("create attachments dir: %w", err)
 	}
@@ -90,7 +90,7 @@ func (m *AttachmentManager) SaveAttachments(attachments []v1.MessageAttachment) 
 		}
 		usedNames[name] = true
 
-		relPath := filepath.Join(".kandev", "attachments", m.sessionID, name)
+		relPath := filepath.Join(".pcraft", "attachments", m.sessionID, name)
 		saved = append(saved, SavedAttachment{
 			RelPath:  relPath,
 			AbsPath:  absPath,
@@ -111,7 +111,7 @@ func (m *AttachmentManager) Cleanup() {
 	if m.sessionID == "" || m.workDir == "" {
 		return
 	}
-	dir := filepath.Join(m.workDir, ".kandev", "attachments", m.sessionID)
+	dir := filepath.Join(m.workDir, ".pcraft", "attachments", m.sessionID)
 	if err := os.RemoveAll(dir); err != nil {
 		m.logger.Debug("failed to clean attachments dir", zap.String("dir", dir), zap.Error(err))
 	}

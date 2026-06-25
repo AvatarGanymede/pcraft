@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { ApiError } from "@/lib/api/client";
 import { useWorkspaceRouting } from "@/hooks/domains/office/use-workspace-routing";

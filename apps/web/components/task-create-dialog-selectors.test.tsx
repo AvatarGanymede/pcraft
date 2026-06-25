@@ -1,7 +1,7 @@
 import { createRef, type ReactNode } from "react";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { TaskFormInputs } from "./task-create-dialog-selectors";
 import type { TaskFormInputsHandle } from "./task-create-dialog-types";
 

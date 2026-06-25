@@ -2,15 +2,15 @@
 
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { IconCheck, IconChevronDown } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useAvailableAgents } from "@/hooks/domains/settings/use-available-agents";
 import { useSettingsData } from "@/hooks/domains/settings/use-settings-data";

@@ -5,7 +5,7 @@ package e2e
 import (
 	"testing"
 
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // openCodeACPCommand is the CLI command for OpenCode in ACP mode (JSON-RPC over stdin/stdout).

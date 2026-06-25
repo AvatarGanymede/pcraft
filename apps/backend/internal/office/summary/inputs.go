@@ -9,7 +9,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // Repo is the minimal repository surface LoadInputs needs. Mirrored

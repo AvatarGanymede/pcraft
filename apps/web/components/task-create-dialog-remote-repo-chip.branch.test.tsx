@@ -3,7 +3,7 @@ import { useState } from "react";
 import { render, cleanup } from "@testing-library/react";
 import type { Branch } from "@/lib/types/http";
 import type { TaskRemoteRepoRow } from "./task-create-dialog-types";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import type { UseAccessibleReposResult } from "@/hooks/domains/github/use-accessible-repos";
 import type { PRInfo } from "@/hooks/domains/github/use-pr-info-by-url";
 import { RemoteRepoChip } from "./task-create-dialog-remote-repo-chip";

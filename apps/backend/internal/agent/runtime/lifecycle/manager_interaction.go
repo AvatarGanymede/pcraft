@@ -8,15 +8,14 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctlclient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctlclient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // WasSessionInitialized reports whether the execution completed ACP session setup.
@@ -554,7 +553,7 @@ func (m *Manager) StopAgentWithReason(ctx context.Context, executionID string, r
 	// End session trace span
 	execution.EndSessionSpan()
 
-	m.RemoveExecution(executionID)
+	// m.RemoveExecution(executionID) // Stubbed: Docker removed
 	m.clearRemoteStatus(execution.SessionID)
 
 	m.logger.Info("agent stopped and removed from tracking",
@@ -796,15 +795,12 @@ func (m *Manager) ResolveTaskEnvironmentID(ctx context.Context, sessionID string
 }
 
 // IsRemoteSession checks whether a session is associated with a remote executor
-// (e.g., sprites). It first checks the in-memory execution store, then falls back
-// to the database via WorkspaceInfoProvider. This is useful when the execution
-// hasn't been recreated yet after a backend restart.
+// (mock_remote). It first checks the in-memory execution store for the metadata
+// flag, then falls back to the database via WorkspaceInfoProvider. This is useful
+// when the execution hasn't been recreated yet after a backend restart.
 func (m *Manager) IsRemoteSession(ctx context.Context, sessionID string) bool {
 	// Check in-memory execution first (fast path).
 	if execution, exists := m.executionStore.GetBySessionID(sessionID); exists {
-		if execution.RuntimeName == executor.NameSprites {
-			return true
-		}
 		if execution.Metadata != nil {
 			if isRemote, ok := execution.Metadata[MetadataKeyIsRemote].(bool); ok && isRemote {
 				return true
@@ -821,47 +817,12 @@ func (m *Manager) IsRemoteSession(ctx context.Context, sessionID string) bool {
 	if err != nil || info == nil {
 		return false
 	}
-	if models.IsRemoteExecutorType(models.ExecutorType(info.ExecutorType)) {
-		return true
-	}
-	// Backwards compatibility: old records may only have RuntimeName set.
-	return info.RuntimeName == executor.NameSprites || info.RuntimeName == executor.NameRemoteDocker
+	return models.IsRemoteExecutorType(models.ExecutorType(info.ExecutorType))
 }
 
-// ShouldUseContainerShell checks whether a session's shell should run inside a container/sandbox
-// (via agentctl) rather than on the host. This is true for Docker, Sprites, and remote executors.
-// It first checks the in-memory execution store, then falls back to the database.
+// ShouldUseContainerShell always returns false since no runtime types are containerized.
 func (m *Manager) ShouldUseContainerShell(ctx context.Context, sessionID string) bool {
-	// Check in-memory execution first (fast path).
-	if execution, exists := m.executionStore.GetBySessionID(sessionID); exists {
-		// Docker and Sprites executors run shells inside the container/sandbox
-		if execution.RuntimeName == executor.NameDocker ||
-			execution.RuntimeName == executor.NameSprites {
-			return true
-		}
-		if execution.Metadata != nil {
-			if isRemote, ok := execution.Metadata[MetadataKeyIsRemote].(bool); ok && isRemote {
-				return true
-			}
-		}
-		return false
-	}
-
-	// Fall back to database records (post-restart, execution not yet recreated).
-	if m.workspaceInfoProvider == nil {
-		return false
-	}
-	info, err := m.workspaceInfoProvider.GetWorkspaceInfoForSession(ctx, "", sessionID)
-	if err != nil || info == nil {
-		return false
-	}
-	if models.IsContainerizedExecutorType(models.ExecutorType(info.ExecutorType)) {
-		return true
-	}
-	// Backwards compatibility: old records may only have RuntimeName set.
-	return info.RuntimeName == executor.NameDocker ||
-		info.RuntimeName == executor.NameSprites ||
-		info.RuntimeName == executor.NameRemoteDocker
+	return false
 }
 
 // GetAvailableCommandsForSession returns the available slash commands for a session.
@@ -1344,9 +1305,7 @@ func (m *Manager) buildFreshAgentCommand(ctx context.Context, execution *AgentEx
 		SessionID:        "", // Fresh start — no resume flags
 		AutoApprove:      autoApprove,
 		PermissionValues: permissionValues,
-		// Runtime is "standalone" / "docker" / "sprites" — MockAgent
-		// reads this to pick a bare name (container PATH lookup) vs.
-		// an absolute host path.
+		// Runtime is always standalone.
 		Runtime: execution.RuntimeName,
 	}
 	return m.commandBuilder.BuildCommandString(agentConfig, opts),

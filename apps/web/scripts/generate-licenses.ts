@@ -11,7 +11,7 @@
  * Go side   -> `go-licenses report ./...` from `apps/backend/` with a custom
  *              template so we can read each module's local LICENSE file.
  *
- * Run with: `pnpm --filter @kandev/web licenses:gen`
+ * Run with: `pnpm --filter @pcraft/web licenses:gen`
  */
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -193,7 +193,7 @@ function collectGoEntries(): LicenseEntry[] {
     process.stderr.write(
       "[licenses] error: `go-licenses` not found on PATH.\n" +
         "  Install it with:  go install github.com/google/go-licenses@latest\n" +
-        "  Then re-run:      pnpm --filter @kandev/web licenses:gen\n",
+        "  Then re-run:      pnpm --filter @pcraft/web licenses:gen\n",
     );
     throw new Error("go-licenses is required");
   }

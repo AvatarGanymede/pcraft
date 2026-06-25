@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // seedStepCompleteTarget seeds a workspace, task (with WorkflowStepID), and

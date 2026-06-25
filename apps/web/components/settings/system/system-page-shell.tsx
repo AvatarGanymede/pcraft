@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Separator } from "@kandev/ui/separator";
+import { Separator } from "@pcraft/ui/separator";
 
 type SystemPageShellProps = {
   title: string;

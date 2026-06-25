@@ -9,7 +9,7 @@ import (
 	gorillaws "github.com/gorilla/websocket"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 )
 
 // wsWriter wraps a gorilla WebSocket to implement process.DirectOutputWriter.

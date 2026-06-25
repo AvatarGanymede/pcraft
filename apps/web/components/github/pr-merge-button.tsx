@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { IconChevronDown, IconGitMerge } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useToast } from "@/components/toast-provider";
 import { useRepoMergeMethods } from "@/hooks/domains/github/use-repo-merge-methods";
 import { mergePR } from "@/lib/api/domains/github-api";

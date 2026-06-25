@@ -5,7 +5,7 @@ package e2e
 import (
 	"testing"
 
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // ampCommand is the CLI command for Amp in stream-json mode.

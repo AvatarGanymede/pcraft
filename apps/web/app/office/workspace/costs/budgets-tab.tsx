@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconPlus } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { listBudgets, deleteBudget } from "@/lib/api/domains/office-api";

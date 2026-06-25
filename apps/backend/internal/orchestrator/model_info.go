@@ -3,7 +3,7 @@ package orchestrator
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/costs/modelsdev"
+	"github.com/AvatarGanymede/pcraft/internal/office/costs/modelsdev"
 )
 
 // ModelInfoLookup resolves optional model metadata from the existing

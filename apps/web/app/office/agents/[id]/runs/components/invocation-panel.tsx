@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import type { RunInvocationDetail } from "@/lib/api/domains/office-extended-api";
 
 type Props = {

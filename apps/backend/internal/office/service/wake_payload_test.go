@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 func TestBuildWakePayload_WithTaskAndComments(t *testing.T) {

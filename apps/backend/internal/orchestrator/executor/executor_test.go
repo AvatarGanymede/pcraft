@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Tests
@@ -933,8 +933,6 @@ func TestShouldUseWorktree(t *testing.T) {
 	}{
 		{"worktree", true},
 		{"local", false},
-		{"local_docker", false},
-		{"remote_docker", false},
 		{"", false},
 	}
 	for _, tt := range tests {
@@ -956,16 +954,6 @@ func TestApplyPreferredShellEnv(t *testing.T) {
 		}
 		if got["SHELL"] != "/bin/bash" {
 			t.Fatalf("expected SHELL=/bin/bash, got %q", got["SHELL"])
-		}
-	})
-
-	t.Run("sprites executor does not inject shell env", func(t *testing.T) {
-		got := executor.applyPreferredShellEnv(context.Background(), string(models.ExecutorTypeSprites), map[string]string{})
-		if _, ok := got["AGENTCTL_SHELL_COMMAND"]; ok {
-			t.Fatal("did not expect AGENTCTL_SHELL_COMMAND for sprites executor")
-		}
-		if _, ok := got["SHELL"]; ok {
-			t.Fatal("did not expect SHELL for sprites executor")
 		}
 	})
 }

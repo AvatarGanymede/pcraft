@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/prompts/dto"
-	"github.com/kandev/kandev/internal/prompts/service"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/dto"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/service"
 )
 
 type Controller struct {

@@ -12,7 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/system/jobs"
+	"github.com/AvatarGanymede/pcraft/internal/system/jobs"
 )
 
 func TestFactoryReset_WrongConfirm_ReturnsError(t *testing.T) {

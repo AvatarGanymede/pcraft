@@ -1,12 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Spinner } from "@kandev/ui/spinner";
-import { Badge } from "@kandev/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Spinner } from "@pcraft/ui/spinner";
+import { Badge } from "@pcraft/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { IconDatabase, IconRefresh, IconAlertTriangle, IconFolderOpen } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useDiskUsage } from "@/hooks/domains/system/use-disk-usage";
 import { openDataFolder } from "@/lib/api/domains/system-api";
 import { useActionFeedback } from "@/hooks/use-action-feedback";

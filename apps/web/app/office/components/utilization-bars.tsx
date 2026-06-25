@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { ProviderUsage } from "@/lib/state/slices/office/types";
 
 type Props = {

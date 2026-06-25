@@ -15,10 +15,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/terminal/models"
-	"github.com/kandev/kandev/internal/terminal/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/terminal/models"
+	"github.com/AvatarGanymede/pcraft/internal/terminal/repository"
 )
 
 // BottomPanelID is the fixed terminal id used by the cmd+J panel. Never

@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Note: testAgent is defined in manager_test.go (same package)

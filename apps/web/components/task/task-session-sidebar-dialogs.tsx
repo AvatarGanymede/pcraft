@@ -4,7 +4,6 @@ import { TaskRenameDialog } from "./task-rename-dialog";
 import { TaskArchiveConfirmDialog } from "./task-archive-confirm-dialog";
 import { TaskDeleteConfirmDialog } from "./task-delete-confirm-dialog";
 import { TaskGitHubIssueDialog } from "./task-github-issue-dialog";
-import { TaskGitHubPRDialog } from "./task-github-pr-dialog";
 import type { Repository } from "@/lib/types/http";
 import type { SidebarLinkTarget } from "./task-session-sidebar-link-actions";
 
@@ -87,16 +86,7 @@ export function SidebarDialogs({
         isDeleting={isDeleting}
         onConfirm={handleDeleteConfirm}
       />
-      {linkingPullRequestTask && (
-        <TaskGitHubPRDialog
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) setLinkingPullRequestTask(null);
-          }}
-          task={linkingPullRequestTask}
-          repositories={repositories}
-        />
-      )}
+      {/* TODO: Re-implement GitHub PR dialog */}
       {linkingIssueTask && (
         <TaskGitHubIssueDialog
           open={true}

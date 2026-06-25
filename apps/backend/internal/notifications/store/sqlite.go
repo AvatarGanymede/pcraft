@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/notifications/models"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/models"
 )
 
 type sqliteRepository struct {

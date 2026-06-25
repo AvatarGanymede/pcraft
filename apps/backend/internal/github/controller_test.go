@@ -16,9 +16,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // stubClient implements Client with no-op defaults; override fields as needed.

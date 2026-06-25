@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Button } from "@kandev/ui/button";
-import { Spinner } from "@kandev/ui/spinner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
-import { Badge } from "@kandev/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Button } from "@pcraft/ui/button";
+import { Spinner } from "@pcraft/ui/spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
+import { Badge } from "@pcraft/ui/badge";
 import { IconCopy, IconDownload, IconFileText, IconRefresh } from "@tabler/icons-react";
 import { useLogFiles } from "@/hooks/domains/system/use-log-files";
 import { useLogTail } from "@/hooks/domains/system/use-log-tail";

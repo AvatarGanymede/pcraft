@@ -7,10 +7,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	agentctlClient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/events"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	agentctlClient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // TestManager_CancelAgent_EscalatesWhenAgentHangs reproduces the stuck-turn bug:

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Card, CardContent } from "@pcraft/ui/card";
 import { useAppStore } from "@/components/state-provider";
 import { WorkspaceSwitcher } from "@/components/task/workspace-switcher";
 

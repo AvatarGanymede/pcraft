@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/coder/acp-go-sdk"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // derefStr safely dereferences a string pointer, returning empty string if nil.

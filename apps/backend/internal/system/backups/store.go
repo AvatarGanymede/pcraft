@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/persistence"
-	"github.com/kandev/kandev/internal/system/jobs"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/persistence"
+	"github.com/AvatarGanymede/pcraft/internal/system/jobs"
 )
 
 // Snapshot is the public representation of a backup file on disk.

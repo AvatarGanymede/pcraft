@@ -2,8 +2,8 @@
 
 import Link from "@/components/routing/app-link";
 import { useCallback, useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
 import { IconAlertTriangle, IconStethoscope, IconCheck } from "@tabler/icons-react";
 
 import { useToast } from "@/components/toast-provider";

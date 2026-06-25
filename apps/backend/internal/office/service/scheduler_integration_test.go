@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 func TestSchedulerIntegration_TickProcessesRun(t *testing.T) {

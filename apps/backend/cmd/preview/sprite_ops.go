@@ -123,15 +123,15 @@ pkill -f agentctl || true
 sleep 1
 cd /app
 
-export KANDEV_HOME_DIR=/data
-export KANDEV_DOCKER_ENABLED=false
-export KANDEV_LOG_LEVEL=info
-export KANDEV_WEB_DIST_DIR=/app/apps/web/dist
+export PCRAFT_HOME_DIR=/data
+export PCRAFT_DOCKER_ENABLED=false
+export PCRAFT_LOG_LEVEL=info
+export PCRAFT_WEB_DIST_DIR=/app/apps/web/dist
 # Preview mode: only register the mock agent, suppress real agent discovery.
-export KANDEV_MOCK_AGENT=only
+export PCRAFT_MOCK_AGENT=only
 # The preview service runs from /app, so the backend's relative dist probes do
 # not reach the packaged Vite build under /app/apps/web/dist.
-export KANDEV_WEB_DIST_DIR=/app/apps/web/dist
+export PCRAFT_WEB_DIST_DIR=/app/apps/web/dist
 
 # Launch through the CLI so the backend runs under the restart supervisor.
 exec kandev start \

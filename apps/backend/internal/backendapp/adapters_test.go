@@ -7,10 +7,10 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	githubsvc "github.com/kandev/kandev/internal/github"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	githubsvc "github.com/AvatarGanymede/pcraft/internal/github"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 func newTestLogger() *logger.Logger {

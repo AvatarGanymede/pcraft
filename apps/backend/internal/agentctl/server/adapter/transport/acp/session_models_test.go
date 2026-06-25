@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/sessionmodel"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/sessionmodel"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // findSessionModelsEvent returns the first session_models event in events,

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // RunActivityRow is a raw row from the run-activity aggregate query.

@@ -1,12 +1,12 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
-import { Tabs, TabsList, TabsTrigger } from "@kandev/ui/tabs";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
+import { Tabs, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   IconLoader2,
   IconAlertTriangle,

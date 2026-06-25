@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
 import { SidebarFilterPopover } from "@/components/task/sidebar-filter/sidebar-filter-popover";
 import { cn } from "@/lib/utils";

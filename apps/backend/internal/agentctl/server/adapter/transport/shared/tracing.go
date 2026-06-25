@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"go.opentelemetry.io/otel/trace/noop"
@@ -20,7 +20,7 @@ const (
 var noopTracer = noop.NewTracerProvider().Tracer(tracerName)
 
 // Tracer returns the package-level tracer for agent protocol tracing.
-// Requires KANDEV_DEBUG_AGENT_MESSAGES=true in addition to the OTel endpoint.
+// Requires PCRAFT_DEBUG_AGENT_MESSAGES=true in addition to the OTel endpoint.
 // Returns a no-op tracer when debug mode is off.
 func Tracer() trace.Tracer {
 	if !debugMode {

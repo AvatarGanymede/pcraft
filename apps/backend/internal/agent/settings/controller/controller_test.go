@@ -7,13 +7,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/discovery"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/modelfetcher"
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/discovery"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/modelfetcher"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // testAgent is a minimal implementation of agents.Agent for testing purposes.

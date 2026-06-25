@@ -3,7 +3,7 @@
 import Link from "@/components/routing/app-link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconTicket } from "@tabler/icons-react";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
 import { PageTopbar } from "@/components/page-topbar";
 import { getJiraConfig, listJiraProjects, searchJiraTickets } from "@/lib/api/domains/jira-api";
 import type { JiraProject, JiraTicket } from "@/lib/types/jira";

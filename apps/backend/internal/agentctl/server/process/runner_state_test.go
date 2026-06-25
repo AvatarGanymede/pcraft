@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 func TestInteractiveRunner_GetBuffer(t *testing.T) {

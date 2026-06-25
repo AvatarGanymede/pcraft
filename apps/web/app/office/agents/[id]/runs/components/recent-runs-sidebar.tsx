@@ -3,7 +3,7 @@
 import Link from "@/components/routing/app-link";
 import { usePathname } from "@/lib/routing/client-router";
 import { IconLoader2 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { cn } from "@/lib/utils";
 import type { AgentRunSummary } from "@/lib/api/domains/office-extended-api";
 import { timeAgo } from "@/lib/utils/time";

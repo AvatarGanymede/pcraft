@@ -7,12 +7,12 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // MockAgentResolver finds the path to a linux/amd64 mock-agent binary so it
 // can be bind-mounted into Docker containers for E2E tests. Resolution order:
-//  1. KANDEV_MOCK_AGENT_LINUX_BINARY env var
+//  1. PCRAFT_MOCK_AGENT_LINUX_BINARY env var
 //  2. build/mock-agent-linux-amd64 relative to the running binary (dev mode)
 //
 // Unlike AgentctlResolver, "not found" is not an error — only the Docker E2E
@@ -32,17 +32,17 @@ func NewMockAgentResolver(log *logger.Logger) *MockAgentResolver {
 // ("", nil) when none is configured. Returns an error only when an explicit
 // env var path is invalid.
 func (r *MockAgentResolver) ResolveLinuxBinary() (string, error) {
-	if envPath := os.Getenv("KANDEV_MOCK_AGENT_LINUX_BINARY"); envPath != "" {
+	if envPath := os.Getenv("PCRAFT_MOCK_AGENT_LINUX_BINARY"); envPath != "" {
 		info, err := os.Stat(envPath)
 		if err != nil {
-			return "", fmt.Errorf("KANDEV_MOCK_AGENT_LINUX_BINARY=%q does not exist", envPath)
+			return "", fmt.Errorf("PCRAFT_MOCK_AGENT_LINUX_BINARY=%q does not exist", envPath)
 		}
 		// Reject directories (and anything that isn't a regular file) up
 		// front. Otherwise the path slips through to the bind-mount + exec
 		// step and surfaces as a less actionable "permission denied" or
 		// "exec format error" deep inside container startup.
 		if !info.Mode().IsRegular() {
-			return "", fmt.Errorf("KANDEV_MOCK_AGENT_LINUX_BINARY=%q is not a regular file", envPath)
+			return "", fmt.Errorf("PCRAFT_MOCK_AGENT_LINUX_BINARY=%q is not a regular file", envPath)
 		}
 		r.logger.Debug("using mock-agent from env var", zap.String("path", envPath))
 		return envPath, nil

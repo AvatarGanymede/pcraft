@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/prompts/controller"
-	"github.com/kandev/kandev/internal/prompts/dto"
-	"github.com/kandev/kandev/internal/prompts/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/controller"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/dto"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/service"
 )
 
 type Handlers struct {

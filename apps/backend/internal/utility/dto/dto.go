@@ -3,8 +3,8 @@ package dto
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/utility/models"
-	"github.com/kandev/kandev/internal/utility/template"
+	"github.com/AvatarGanymede/pcraft/internal/utility/models"
+	"github.com/AvatarGanymede/pcraft/internal/utility/template"
 )
 
 // UtilityAgentDTO represents a utility agent for API responses.

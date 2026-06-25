@@ -10,13 +10,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/scripts"
-	terminalservice "github.com/kandev/kandev/internal/terminal/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/scripts"
+	terminalservice "github.com/AvatarGanymede/pcraft/internal/terminal/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 

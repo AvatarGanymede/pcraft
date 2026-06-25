@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 func TestMockAgent_BuildCommand_NoModelFlag(t *testing.T) {
@@ -31,34 +31,6 @@ func TestMockAgent_BuildCommand_NoResumeFlag(t *testing.T) {
 		if arg == "--resume" {
 			t.Errorf("--resume flag should not be present for ACP agent, got args %v", args)
 		}
-	}
-}
-
-// TestMockAgent_BuildCommand_ContainerizedUsesBareName pins the docker
-// branch of BuildCommand: when opts.Runtime is containerized (docker,
-// remote_docker, sprites) or SSH, MockAgent must emit the bare binary
-// name so PATH lookup on the remote resolves to the bind-mounted (or
-// pre-baked) linux/amd64 mock-agent at /usr/local/bin. Regressing this
-// would cause docker e2e to fail with `exec: "<host-abs-path>": not
-// found` (the bug commit `8518f65` fixed) and SSH e2e with the same
-// symptom on the remote host.
-func TestMockAgent_BuildCommand_ContainerizedUsesBareName(t *testing.T) {
-	a := NewMockAgent()
-	a.SetBinaryPath("/Users/dev/kandev/apps/backend/bin/mock-agent")
-	for _, rt := range []agentruntime.Runtime{
-		agentruntime.RuntimeDocker,
-		agentruntime.RuntimeRemoteDocker,
-		agentruntime.RuntimeSprites,
-		agentruntime.RuntimeSSH,
-	} {
-		t.Run(string(rt), func(t *testing.T) {
-			cmd := a.BuildCommand(CommandOptions{Runtime: rt})
-			args := cmd.Args()
-			if len(args) == 0 || args[0] != mockAgentDefaultID {
-				t.Errorf("containerized runtime %q: BuildCommand args = %v, want first arg %q (bare name for PATH lookup in container)",
-					rt, args, mockAgentDefaultID)
-			}
-		})
 	}
 }
 

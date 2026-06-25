@@ -10,7 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/system/jobs"
+	"github.com/AvatarGanymede/pcraft/internal/system/jobs"
 )
 
 // httpGet builds a GET request and is shared by stats/maintenance/reset tests.

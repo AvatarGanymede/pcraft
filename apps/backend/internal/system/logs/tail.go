@@ -10,7 +10,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 )
 
 // tailChunkSize is the read window stepped backward from the end of file.

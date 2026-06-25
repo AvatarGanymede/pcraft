@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 type stubMessageStore struct {

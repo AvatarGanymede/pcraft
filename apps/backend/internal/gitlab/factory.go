@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // SecretProvider is the interface the factory uses to look up a GitLab PAT.
@@ -34,7 +34,7 @@ func NewClient(ctx context.Context, host string, secrets SecretProvider, log *lo
 		host = DefaultHost
 	}
 
-	if os.Getenv("KANDEV_MOCK_GITLAB") == "true" {
+	if os.Getenv("PCRAFT_MOCK_GITLAB") == "true" {
 		log.Info("using mock client for GitLab integration")
 		return NewMockClient(host), "mock", nil
 	}

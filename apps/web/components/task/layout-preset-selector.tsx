@@ -11,10 +11,10 @@ import {
   IconBrandVscode,
   IconTrash,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,9 +31,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Badge } from "@kandev/ui/badge";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
 import { useDockviewStore, type BuiltInPreset } from "@/lib/state/dockview-store";
 import { useAppStore } from "@/components/state-provider";
 import { updateUserSettings } from "@/lib/api/domains/settings-api";

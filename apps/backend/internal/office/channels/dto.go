@@ -1,6 +1,6 @@
 package channels
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // CreateChannelRequest is the request body for creating a channel.
 type CreateChannelRequest struct {

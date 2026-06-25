@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, memo } from "react";
-import { SessionPanelContent } from "@kandev/ui/pannel-session";
+import { SessionPanelContent } from "@pcraft/ui/pannel-session";
 import { useDockviewStore } from "@/lib/state/dockview-store";
 import type { Message } from "@/lib/types/http";
 import { AgentStatus } from "@/components/task/chat/messages/agent-status";

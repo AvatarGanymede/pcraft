@@ -2,7 +2,7 @@
 package clarification
 
 import (
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 // ListPendingPermissions implements shared.PermissionLister.

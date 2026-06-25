@@ -1,15 +1,15 @@
 "use client";
 
 import { IconHistory, IconRefresh } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Kbd } from "@kandev/ui/kbd";
+} from "@pcraft/ui/dialog";
+import { Kbd } from "@pcraft/ui/kbd";
 import { cn } from "@/lib/utils";
 import {
   useRecentTaskSwitcherController,

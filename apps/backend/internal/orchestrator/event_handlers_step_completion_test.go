@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // TestProcessOnTurnComplete_ExplicitSignalGating verifies the ADR 0015

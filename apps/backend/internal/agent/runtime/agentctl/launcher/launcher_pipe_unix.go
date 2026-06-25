@@ -20,7 +20,7 @@ func setupLivenessPipe(cmd *exec.Cmd) (*os.File, error) {
 	}
 
 	cmd.ExtraFiles = []*os.File{pipeRead} // child FD 3
-	cmd.Env = append(cmd.Env, "KANDEV_PARENT_PIPE_FD=3")
+	cmd.Env = append(cmd.Env, "PCRAFT_PARENT_PIPE_FD=3")
 
 	return pipeWrite, nil
 }

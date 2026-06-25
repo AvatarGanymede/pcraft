@@ -6,7 +6,7 @@
 // helpers compiling without touching every legacy callsite.
 package service
 
-import officeskills "github.com/kandev/kandev/internal/office/skills"
+import officeskills "github.com/AvatarGanymede/pcraft/internal/office/skills"
 
 // AgentTypeResolver resolves an agent profile ID to its agent type ID.
 // Re-exported from skills.AgentTypeResolver so the office Service can

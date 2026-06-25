@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/summary"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/summary"
 )
 
 // summaryLoadInputs adapts the office sqlite repository to the slim

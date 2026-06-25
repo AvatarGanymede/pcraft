@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
 )
 
 // ErrInstallScriptEmpty is returned when the agent has no install script defined.

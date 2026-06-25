@@ -14,8 +14,8 @@ import {
 } from "@tabler/icons-react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Button } from "@kandev/ui";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui";
+import { Textarea } from "@pcraft/ui/textarea";
 import { cn } from "@/lib/utils";
 import { QueueEntryNotFoundError } from "@/lib/api/domains/queue-api";
 import { stripSystemTags } from "@/lib/utils/system-tags";

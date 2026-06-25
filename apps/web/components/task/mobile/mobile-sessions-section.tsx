@@ -2,14 +2,14 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import { IconDotsVertical, IconPlus, IconStar } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 import { AgentLogo } from "@/components/agent-logo";
 import { useAppStore } from "@/components/state-provider";
 import { useTaskSessions } from "@/hooks/use-task-sessions";

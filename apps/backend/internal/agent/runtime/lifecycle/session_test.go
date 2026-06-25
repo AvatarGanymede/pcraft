@@ -14,11 +14,11 @@ import (
 
 	"github.com/coder/acp-go-sdk"
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/pkg/agent"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 func newSessionTestLogger() *logger.Logger {

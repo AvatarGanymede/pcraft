@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // WorkspaceConfig holds the parsed configuration for a single workspace.
@@ -44,7 +44,7 @@ type ConfigLoader struct {
 	errors     map[string]*ConfigError
 }
 
-// NewConfigLoader creates a loader rooted at the given base path (e.g. ~/.kandev).
+// NewConfigLoader creates a loader rooted at the given base path (e.g. ~/.pcraft).
 func NewConfigLoader(basePath string) *ConfigLoader {
 	return &ConfigLoader{
 		basePath:   basePath,

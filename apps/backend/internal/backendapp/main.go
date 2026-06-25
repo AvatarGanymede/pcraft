@@ -1,4 +1,4 @@
-// Package backendapp runs the Kandev backend server.
+// Package backendapp runs the Pcraft backend server.
 //
 //revive:disable:file-length-limit
 package backendapp
@@ -17,103 +17,103 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/httpmw"
+	"github.com/AvatarGanymede/pcraft/internal/common/httpmw"
 	"go.uber.org/zap"
 
 	// Common packages
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 
 	// Event bus
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 
 	// GitHub integration
-	githubpkg "github.com/kandev/kandev/internal/github"
-	gitlabpkg "github.com/kandev/kandev/internal/gitlab"
+	githubpkg "github.com/AvatarGanymede/pcraft/internal/github"
+	gitlabpkg "github.com/AvatarGanymede/pcraft/internal/gitlab"
 
 	// JIRA integration
-	jirapkg "github.com/kandev/kandev/internal/jira"
-	linearpkg "github.com/kandev/kandev/internal/linear"
-	sentrypkg "github.com/kandev/kandev/internal/sentry"
-	slackpkg "github.com/kandev/kandev/internal/slack"
+	jirapkg "github.com/AvatarGanymede/pcraft/internal/jira"
+	linearpkg "github.com/AvatarGanymede/pcraft/internal/linear"
+	sentrypkg "github.com/AvatarGanymede/pcraft/internal/sentry"
+	slackpkg "github.com/AvatarGanymede/pcraft/internal/slack"
 
 	// Agent infrastructure
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/registry"
-	agentctlclient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	runtimeskill "github.com/kandev/kandev/internal/agent/runtime/lifecycle/skill"
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	agentctlclient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	runtimeskill "github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle/skill"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
 
 	// WebSocket gateway
-	gateways "github.com/kandev/kandev/internal/gateway/websocket"
+	gateways "github.com/AvatarGanymede/pcraft/internal/gateway/websocket"
 
-	editorcontroller "github.com/kandev/kandev/internal/editors/controller"
-	notificationcontroller "github.com/kandev/kandev/internal/notifications/controller"
-	promptcontroller "github.com/kandev/kandev/internal/prompts/controller"
-	usercontroller "github.com/kandev/kandev/internal/user/controller"
-	utilitycontroller "github.com/kandev/kandev/internal/utility/controller"
+	editorcontroller "github.com/AvatarGanymede/pcraft/internal/editors/controller"
+	notificationcontroller "github.com/AvatarGanymede/pcraft/internal/notifications/controller"
+	promptcontroller "github.com/AvatarGanymede/pcraft/internal/prompts/controller"
+	usercontroller "github.com/AvatarGanymede/pcraft/internal/user/controller"
+	utilitycontroller "github.com/AvatarGanymede/pcraft/internal/utility/controller"
 
 	// Orchestrator
-	"github.com/kandev/kandev/internal/office/configloader"
-	officeservice "github.com/kandev/kandev/internal/office/service"
-	"github.com/kandev/kandev/internal/orchestrator"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
+	officeservice "github.com/AvatarGanymede/pcraft/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
 	// Office feature packages
-	office "github.com/kandev/kandev/internal/office"
-	officeagents "github.com/kandev/kandev/internal/office/agents"
-	officeapprovals "github.com/kandev/kandev/internal/office/approvals"
-	officechannels "github.com/kandev/kandev/internal/office/channels"
-	officeconfig "github.com/kandev/kandev/internal/office/config"
-	officecosts "github.com/kandev/kandev/internal/office/costs"
-	officemodelsdev "github.com/kandev/kandev/internal/office/costs/modelsdev"
-	officedashboard "github.com/kandev/kandev/internal/office/dashboard"
-	officeinfra "github.com/kandev/kandev/internal/office/infra"
-	officelabels "github.com/kandev/kandev/internal/office/labels"
-	officemodels "github.com/kandev/kandev/internal/office/models"
-	officeonboarding "github.com/kandev/kandev/internal/office/onboarding"
-	officeprojects "github.com/kandev/kandev/internal/office/projects"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	officeroutines "github.com/kandev/kandev/internal/office/routines"
-	"github.com/kandev/kandev/internal/office/routing"
-	officescheduler "github.com/kandev/kandev/internal/office/scheduler"
-	officeshared "github.com/kandev/kandev/internal/office/shared"
-	officeskills "github.com/kandev/kandev/internal/office/skills"
-	officewakeup "github.com/kandev/kandev/internal/office/wakeup"
-	orchexecutor "github.com/kandev/kandev/internal/orchestrator/executor"
+	office "github.com/AvatarGanymede/pcraft/internal/office"
+	officeagents "github.com/AvatarGanymede/pcraft/internal/office/agents"
+	officeapprovals "github.com/AvatarGanymede/pcraft/internal/office/approvals"
+	officechannels "github.com/AvatarGanymede/pcraft/internal/office/channels"
+	officeconfig "github.com/AvatarGanymede/pcraft/internal/office/config"
+	officecosts "github.com/AvatarGanymede/pcraft/internal/office/costs"
+	officemodelsdev "github.com/AvatarGanymede/pcraft/internal/office/costs/modelsdev"
+	officedashboard "github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	officeinfra "github.com/AvatarGanymede/pcraft/internal/office/infra"
+	officelabels "github.com/AvatarGanymede/pcraft/internal/office/labels"
+	officemodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	officeonboarding "github.com/AvatarGanymede/pcraft/internal/office/onboarding"
+	officeprojects "github.com/AvatarGanymede/pcraft/internal/office/projects"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	officeroutines "github.com/AvatarGanymede/pcraft/internal/office/routines"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
+	officescheduler "github.com/AvatarGanymede/pcraft/internal/office/scheduler"
+	officeshared "github.com/AvatarGanymede/pcraft/internal/office/shared"
+	officeskills "github.com/AvatarGanymede/pcraft/internal/office/skills"
+	officewakeup "github.com/AvatarGanymede/pcraft/internal/office/wakeup"
+	orchexecutor "github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
 
 	// Runs queue (Phase 3 of task-model-unification)
-	runsscheduler "github.com/kandev/kandev/internal/runs/scheduler"
-	runsservice "github.com/kandev/kandev/internal/runs/service"
+	runsscheduler "github.com/AvatarGanymede/pcraft/internal/runs/scheduler"
+	runsservice "github.com/AvatarGanymede/pcraft/internal/runs/service"
 
 	// Workflow engine adapters (Phase 3.2 of task-model-unification)
-	officeengineadapters "github.com/kandev/kandev/internal/office/engine_adapters"
-	officeenginedispatcher "github.com/kandev/kandev/internal/office/engine_dispatcher"
-	workflowadapters "github.com/kandev/kandev/internal/workflow/adapters"
-	workflowengine "github.com/kandev/kandev/internal/workflow/engine"
+	officeengineadapters "github.com/AvatarGanymede/pcraft/internal/office/engine_adapters"
+	officeenginedispatcher "github.com/AvatarGanymede/pcraft/internal/office/engine_dispatcher"
+	workflowadapters "github.com/AvatarGanymede/pcraft/internal/workflow/adapters"
+	workflowengine "github.com/AvatarGanymede/pcraft/internal/workflow/engine"
 
-	tasksqlite "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	workflowservice "github.com/kandev/kandev/internal/workflow/service"
+	tasksqlite "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	workflowservice "github.com/AvatarGanymede/pcraft/internal/workflow/service"
 
 	// Repository cloning
-	"github.com/kandev/kandev/internal/repoclone"
-	"github.com/kandev/kandev/internal/runtimeflags"
+	"github.com/AvatarGanymede/pcraft/internal/repoclone"
+	"github.com/AvatarGanymede/pcraft/internal/runtimeflags"
 
 	// Secrets
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 
 	// System pages (status / database / backups / logs / updates / about)
-	systemsvc "github.com/kandev/kandev/internal/system"
+	systemsvc "github.com/AvatarGanymede/pcraft/internal/system"
 
 	// Database
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 
-	"github.com/kandev/kandev/internal/common/ports"
+	"github.com/AvatarGanymede/pcraft/internal/common/ports"
 )
 
 // Build-time variables are set by cmd/kandev before Run is called. Defaults
@@ -147,8 +147,8 @@ func parseBackendFlags(args []string) (backendFlags, func(), error) {
 	flags.BoolVar(&out.Help, "help", false, "Show help message")
 	flags.BoolVar(&out.Version, "version", false, "Show version information")
 	flags.Usage = func() {
-		_, _ = fmt.Fprintf(flags.Output(), "Usage: kandev __backend [options]\n\n")
-		_, _ = fmt.Fprintf(flags.Output(), "Kandev backend server. This mode is normally started by the launcher.\n\n")
+		_, _ = fmt.Fprintf(flags.Output(), "Usage: pcraft __backend [options]\n\n")
+		_, _ = fmt.Fprintf(flags.Output(), "Pcraft backend server. This mode is normally started by the launcher.\n\n")
 		_, _ = fmt.Fprintf(flags.Output(), "Options:\n")
 		flags.PrintDefaults()
 	}
@@ -234,7 +234,7 @@ func Run(args []string, build BuildInfo) int {
 	}()
 	logger.SetDefault(log)
 
-	log.Info("Starting Kandev (unified mode)...",
+	log.Info("Starting Pcraft (unified mode)...",
 		zap.String("db_path", cfg.Database.Path),
 	)
 
@@ -454,7 +454,7 @@ func startAgentInfrastructure(
 
 	// Let the task service treat the cloner's base path as an implicit
 	// allow-listed root. Without this, deploys that put the clone base
-	// outside HOME (e.g. KANDEV_REPOCLONE_BASEPATH=/data/repos in a
+	// outside HOME (e.g. PCRAFT_REPOCLONE_BASEPATH=/data/repos in a
 	// container) fail the discoveryRoots() allow-list check and local
 	// branch listing returns nothing.
 	services.Task.SetRepoCloneLocation(repoCloner)
@@ -1429,7 +1429,7 @@ func newAgentAuth(jwtSigningKey string, log *logger.Logger) *officeagents.AgentA
 	if jwtSigningKey == "" {
 		log.Warn("office.jwtSigningKey is empty; generating an ephemeral key. " +
 			"Agent JWTs will be invalidated on every backend restart. " +
-			"Set KANDEV_OFFICE_JWTSIGNINGKEY for stable tokens.")
+			"Set PCRAFT_OFFICE_JWTSIGNINGKEY for stable tokens.")
 	}
 	return officeagents.NewAgentAuth(jwtSigningKey)
 }

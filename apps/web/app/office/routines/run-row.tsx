@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { useAppStore } from "@/components/state-provider";
 import type { RoutineRun } from "@/lib/state/slices/office/types";
 

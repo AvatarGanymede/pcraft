@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@kandev/ui/card";
+import { Card } from "@pcraft/ui/card";
 import type { RunActivityDay } from "@/lib/state/slices/office/types";
 
 function formatDateLabel(dateStr: string): string {

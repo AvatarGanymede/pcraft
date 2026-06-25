@@ -3,12 +3,20 @@ package api
 import (
 	"context"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 	"go.uber.org/zap"
 )
+
+// safeBranchRefPattern mirrors the one in workspace_git_status.go so the
+// workspace base-branches handler can validate branch refs at the HTTP boundary.
+var safeBranchRefPattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9._/-]*$`)
+
+// queryParamTrue is the string value used to indicate a true boolean in query parameters.
+const queryParamTrue = "true"
 
 type startProcessResponse struct {
 	Process *process.ProcessInfo `json:"process,omitempty"`

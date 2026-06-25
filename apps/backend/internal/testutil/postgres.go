@@ -42,9 +42,9 @@ func OpenIsolatedPostgres(t testing.TB, dsn string) *sqlx.DB {
 
 func PostgresDSNFromEnv(t testing.TB) string {
 	t.Helper()
-	dsn := os.Getenv("KANDEV_TEST_POSTGRES_DSN")
+	dsn := os.Getenv("PCRAFT_TEST_POSTGRES_DSN")
 	if dsn == "" {
-		t.Skip("set KANDEV_TEST_POSTGRES_DSN to run Postgres tests")
+		t.Skip("set PCRAFT_TEST_POSTGRES_DSN to run Postgres tests")
 	}
 	return dsn
 }

@@ -4,8 +4,8 @@ import (
 	"context"
 	"runtime"
 
-	"github.com/kandev/kandev/internal/user/dto"
-	"github.com/kandev/kandev/internal/user/service"
+	"github.com/AvatarGanymede/pcraft/internal/user/dto"
+	"github.com/AvatarGanymede/pcraft/internal/user/service"
 )
 
 type Controller struct {

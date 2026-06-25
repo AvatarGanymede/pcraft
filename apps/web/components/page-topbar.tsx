@@ -9,8 +9,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@kandev/ui/breadcrumb";
-import { cn } from "@kandev/ui/lib/utils";
+} from "@pcraft/ui/breadcrumb";
+import { cn } from "@pcraft/ui/lib/utils";
 
 type PageTopbarProps = {
   /** Page title shown as the rightmost (current) breadcrumb */

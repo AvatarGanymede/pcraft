@@ -6,7 +6,7 @@ import (
 
 	"go.uber.org/zap"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // WorkspaceMaterializer is the office task-handoffs hook the

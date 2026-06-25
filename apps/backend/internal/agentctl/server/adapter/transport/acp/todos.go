@@ -1,7 +1,7 @@
 package acp
 
 import (
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 func planEntriesFromTodosResult(rawOutput any) ([]streams.PlanEntry, bool) {

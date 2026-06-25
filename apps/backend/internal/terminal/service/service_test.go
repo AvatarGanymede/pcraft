@@ -9,9 +9,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/terminal/models"
-	"github.com/kandev/kandev/internal/terminal/repository"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/terminal/models"
+	"github.com/AvatarGanymede/pcraft/internal/terminal/repository"
 )
 
 // fakeBackend records calls and answers IsAlive from a map keyed by terminalID.

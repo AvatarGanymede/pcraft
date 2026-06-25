@@ -12,10 +12,10 @@ import (
 
 	"github.com/google/uuid"
 
-	agentdto "github.com/kandev/kandev/internal/agent/dto"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/task/models"
+	agentdto "github.com/AvatarGanymede/pcraft/internal/agent/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 type taskSessionExecutor interface {
@@ -350,11 +350,11 @@ func (r *Repository) scanTaskSession(ctx context.Context, row *sql.Row, noRowsEr
 		return nil, err
 	}
 
-	worktrees, err := r.ListTaskSessionWorktrees(ctx, session.ID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load session worktrees: %w", err)
-	}
-	session.Worktrees = worktrees
+	// Worktrees are no longer supported (pcraft uses P4 workspaces).
+	// The task_session_worktrees table is dropped on startup.
+	session.Worktrees = nil
+
+	return session, nil
 
 	return session, nil
 }
@@ -794,26 +794,11 @@ func (r *Repository) ListActiveTaskSessionsByTaskID(ctx context.Context, taskID 
 	}
 	return r.loadWorktreesBatch(ctx, sessions)
 }
-
 // loadWorktreesBatch loads worktrees for multiple sessions in a single query.
+// Stub: worktrees are no longer supported (pcraft uses P4 workspaces).
 func (r *Repository) loadWorktreesBatch(ctx context.Context, sessions []*models.TaskSession) ([]*models.TaskSession, error) {
-	if len(sessions) == 0 {
-		return sessions, nil
-	}
-	sessionIDs := make([]string, len(sessions))
-	for i, s := range sessions {
-		sessionIDs[i] = s.ID
-	}
-	worktreeMap, err := r.ListWorktreesBySessionIDs(ctx, sessionIDs)
-	if err != nil {
-		return nil, fmt.Errorf("failed to batch-load session worktrees: %w", err)
-	}
-	for _, session := range sessions {
-		session.Worktrees = worktreeMap[session.ID]
-	}
 	return sessions, nil
 }
-
 // BatchGetSessionsByTaskIDs returns all task_sessions for the given task IDs,
 // grouped by task ID and ordered by started_at DESC within each task. The
 // returned sessions carry their associated worktrees (loaded in one extra
@@ -1060,157 +1045,36 @@ func (r *Repository) DeleteTaskSession(ctx context.Context, id string) error {
 }
 
 // Task Session Worktree operations
+//
+// All worktree operations are stubbed out: pcraft uses P4 workspaces,
+// not git worktrees. The task_session_worktrees table is dropped on startup.
+//
+// These stub implementations return nil (success with no-op) or empty results
+// so that existing callers (which still invoke these methods via the
+// SessionWorktreeRepository interface) do not break at the call site.
 
 func (r *Repository) CreateTaskSessionWorktree(ctx context.Context, sessionWorktree *models.TaskSessionWorktree) error {
-	if sessionWorktree.ID == "" {
-		sessionWorktree.ID = uuid.New().String()
-	}
-	now := time.Now().UTC()
-	sessionWorktree.CreatedAt = now
-	updatedAt := now
-
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`
-		INSERT INTO task_session_worktrees (
-			id, session_id, worktree_id, repository_id, position,
-			worktree_path, worktree_branch, created_at, updated_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-		ON CONFLICT(session_id, worktree_id) DO UPDATE SET
-			repository_id = excluded.repository_id,
-			position = excluded.position,
-			worktree_path = excluded.worktree_path,
-			worktree_branch = excluded.worktree_branch,
-			updated_at = excluded.updated_at
-	`),
-		sessionWorktree.ID,
-		sessionWorktree.SessionID,
-		sessionWorktree.WorktreeID,
-		sessionWorktree.RepositoryID,
-		sessionWorktree.Position,
-		sessionWorktree.WorktreePath,
-		sessionWorktree.WorktreeBranch,
-		sessionWorktree.CreatedAt,
-		updatedAt,
-	)
-	return err
+	return nil
 }
 
-// UpdateTaskSessionWorktreeBranch updates the cached worktree_branch for all
-// worktrees belonging to a session. Called when a branch switch or rename is
-// detected in the live workspace so downstream consumers (PR watch
-// reconciliation, branch listings) see the current branch rather than the
-// value captured at worktree creation.
 func (r *Repository) UpdateTaskSessionWorktreeBranch(ctx context.Context, sessionID, branch string) error {
-	now := time.Now().UTC()
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`
-		UPDATE task_session_worktrees SET worktree_branch = ?, updated_at = ? WHERE session_id = ?
-	`), branch, now, sessionID)
-	return err
+	return nil
 }
 
 func (r *Repository) ListTaskSessionWorktrees(ctx context.Context, sessionID string) ([]*models.TaskSessionWorktree, error) {
-	rows, err := r.ro.QueryContext(ctx, r.ro.Rebind(`
-		SELECT
-			tsw.id, tsw.session_id, tsw.worktree_id, tsw.repository_id, tsw.position,
-			tsw.worktree_path, tsw.worktree_branch, tsw.created_at
-		FROM task_session_worktrees tsw
-		WHERE tsw.session_id = ?
-		ORDER BY tsw.position ASC, tsw.created_at ASC
-	`), sessionID)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = rows.Close() }()
-
-	var worktrees []*models.TaskSessionWorktree
-	for rows.Next() {
-		var wt models.TaskSessionWorktree
-		err := rows.Scan(
-			&wt.ID,
-			&wt.SessionID,
-			&wt.WorktreeID,
-			&wt.RepositoryID,
-			&wt.Position,
-			&wt.WorktreePath,
-			&wt.WorktreeBranch,
-			&wt.CreatedAt,
-		)
-		if err != nil {
-			return nil, err
-		}
-		worktrees = append(worktrees, &wt)
-	}
-	return worktrees, rows.Err()
+	return nil, nil
 }
 
-// ListWorktreesBySessionIDs returns all worktrees for the given session IDs,
-// grouped by session ID. This eliminates N+1 queries when loading worktrees
-// for multiple sessions. Chunks input above sqliteMaxHostParams (500) because
-// callers like loadWorktreesBatch — invoked from BatchGetSessionsByTaskIDs —
-// can pass `chunk_size_tasks × avg_sessions_per_task` IDs, which crosses
-// SQLite's SQLITE_MAX_VARIABLE_NUMBER (999 on older builds) at modest task
-// volumes (500 tasks × 2 sessions = 1000 placeholders).
 func (r *Repository) ListWorktreesBySessionIDs(ctx context.Context, sessionIDs []string) (map[string][]*models.TaskSessionWorktree, error) {
-	result := make(map[string][]*models.TaskSessionWorktree, len(sessionIDs))
-	if len(sessionIDs) == 0 {
-		return result, nil
-	}
-	for _, chunk := range chunkIDs(sessionIDs, sqliteMaxHostParams) {
-		if err := r.appendWorktreesForSessionChunk(ctx, chunk, result); err != nil {
-			return nil, err
-		}
-	}
-	return result, nil
-}
-
-// appendWorktreesForSessionChunk runs the worktree SELECT for one chunk of
-// session IDs and merges the rows into result. Extracted from
-// ListWorktreesBySessionIDs so the public method stays inside the funlen cap
-// after the chunking loop was added.
-func (r *Repository) appendWorktreesForSessionChunk(
-	ctx context.Context,
-	sessionIDs []string,
-	result map[string][]*models.TaskSessionWorktree,
-) error {
-	placeholders, args := buildInPlaceholders(sessionIDs)
-	query := `SELECT tsw.id, tsw.session_id, tsw.worktree_id, tsw.repository_id, tsw.position,
-		tsw.worktree_path, tsw.worktree_branch, tsw.created_at
-		FROM task_session_worktrees tsw
-		WHERE tsw.session_id IN (` + placeholders + `)
-		ORDER BY tsw.position ASC, tsw.created_at ASC`
-
-	rows, err := r.ro.QueryContext(ctx, r.ro.Rebind(query), args...)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = rows.Close() }()
-
-	for rows.Next() {
-		var wt models.TaskSessionWorktree
-		if err := rows.Scan(&wt.ID, &wt.SessionID, &wt.WorktreeID, &wt.RepositoryID,
-			&wt.Position, &wt.WorktreePath, &wt.WorktreeBranch, &wt.CreatedAt); err != nil {
-			return err
-		}
-		result[wt.SessionID] = append(result[wt.SessionID], &wt)
-	}
-	return rows.Err()
+	return make(map[string][]*models.TaskSessionWorktree), nil
 }
 
 func (r *Repository) DeleteTaskSessionWorktree(ctx context.Context, id string) error {
-	result, err := r.db.ExecContext(ctx, r.db.Rebind(`DELETE FROM task_session_worktrees WHERE id = ?`), id)
-	if err != nil {
-		return err
-	}
-
-	rows, _ := result.RowsAffected()
-	if rows == 0 {
-		return fmt.Errorf("task session worktree not found: %s", id)
-	}
 	return nil
 }
 
 func (r *Repository) DeleteTaskSessionWorktreesBySession(ctx context.Context, sessionID string) error {
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`DELETE FROM task_session_worktrees WHERE session_id = ?`), sessionID)
-	return err
+	return nil
 }
 
 // GetPrimarySessionByTaskID retrieves the primary session for a task.

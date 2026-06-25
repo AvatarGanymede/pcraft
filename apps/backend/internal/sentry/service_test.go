@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // slowSecretStore wraps fakeSecretStore and calls a hook just before returning

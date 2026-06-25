@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	agentctlutil "github.com/kandev/kandev/internal/agentctl/server/utility"
-	"github.com/kandev/kandev/internal/common/logger"
-	utilitymodels "github.com/kandev/kandev/internal/utility/models"
-	utilityservice "github.com/kandev/kandev/internal/utility/service"
-	"github.com/kandev/kandev/internal/utility/template"
+	agentctlutil "github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	utilitymodels "github.com/AvatarGanymede/pcraft/internal/utility/models"
+	utilityservice "github.com/AvatarGanymede/pcraft/internal/utility/service"
+	"github.com/AvatarGanymede/pcraft/internal/utility/template"
 )
 
 // agentSystemPrompt is the persona used when a utility agent's prompt template

@@ -4,7 +4,7 @@ import Link from "@/components/routing/app-link";
 import { IconChevronRight } from "@tabler/icons-react";
 import type { Icon as TablerIcon } from "@tabler/icons-react";
 import { useState, type ReactNode } from "react";
-import { Collapsible, CollapsibleContent } from "@kandev/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "@pcraft/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_ITEM_ACTIVE, SIDEBAR_ITEM_INACTIVE } from "../../app-sidebar-constants";
 

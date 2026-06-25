@@ -3,8 +3,8 @@
 import { memo } from "react";
 import Link from "@/components/routing/app-link";
 import { IconBrandGitlab, IconCheck, IconClock, IconGitMerge, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useTaskMRs } from "@/hooks/domains/gitlab/use-task-mr";
 import { useAppStore } from "@/components/state-provider";
 import type { TaskMR } from "@/lib/types/gitlab";

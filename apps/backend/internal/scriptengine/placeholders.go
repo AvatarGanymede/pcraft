@@ -73,13 +73,13 @@ var DefaultPlaceholders = []PlaceholderInfo{
 	{
 		Key:           "worktree.base_path",
 		Description:   "Base directory where worktrees are stored",
-		Example:       "/Users/dev/.kandev/worktrees",
+		Example:       "/Users/dev/.pcraft/worktrees",
 		ExecutorTypes: []string{"worktree"},
 	},
 	{
 		Key:           "worktree.path",
 		Description:   "Resolved worktree directory path for this session",
-		Example:       "/Users/dev/.kandev/worktrees/fix-bug_ab12cd34",
+		Example:       "/Users/dev/.pcraft/worktrees/fix-bug_ab12cd34",
 		ExecutorTypes: []string{"worktree"},
 	},
 	{

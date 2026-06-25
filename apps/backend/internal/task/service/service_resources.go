@@ -10,12 +10,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
-
-const spritesTokenEnvKey = "SPRITES_API_TOKEN"
 
 // Workspace operations
 
@@ -706,12 +704,8 @@ func (s *Service) CreateExecutorProfile(ctx context.Context, req *CreateExecutor
 		return nil, fmt.Errorf("executor_id is required")
 	}
 	// Verify executor exists
-	executor, err := s.executors.GetExecutor(ctx, req.ExecutorID)
-	if err != nil {
+	if _, err := s.executors.GetExecutor(ctx, req.ExecutorID); err != nil {
 		return nil, fmt.Errorf("executor not found: %w", err)
-	}
-	if executor.Type == models.ExecutorTypeSprites && !hasSpritesToken(req.EnvVars) {
-		return nil, fmt.Errorf("sprites profiles require %s env var", spritesTokenEnvKey)
 	}
 	profile := &models.ExecutorProfile{
 		ExecutorID:    req.ExecutorID,
@@ -738,10 +732,6 @@ func (s *Service) UpdateExecutorProfile(ctx context.Context, id string, req *Upd
 	if err != nil {
 		return nil, err
 	}
-	executor, err := s.executors.GetExecutor(ctx, profile.ExecutorID)
-	if err != nil {
-		return nil, err
-	}
 	if req.Name != nil {
 		profile.Name = *req.Name
 	}
@@ -758,9 +748,6 @@ func (s *Service) UpdateExecutorProfile(ctx context.Context, id string, req *Upd
 		profile.CleanupScript = *req.CleanupScript
 	}
 	if req.EnvVars != nil {
-		if executor.Type == models.ExecutorTypeSprites {
-			req.EnvVars = mergeSpritesTokenEnvVars(profile.EnvVars, req.EnvVars)
-		}
 		profile.EnvVars = req.EnvVars
 	}
 	if err := s.executors.UpdateExecutorProfile(ctx, profile); err != nil {
@@ -768,56 +755,6 @@ func (s *Service) UpdateExecutorProfile(ctx context.Context, id string, req *Upd
 	}
 	s.publishExecutorProfileEvent(ctx, events.ExecutorProfileUpdated, profile)
 	return profile, nil
-}
-
-func mergeSpritesTokenEnvVars(existing, incoming []models.ProfileEnvVar) []models.ProfileEnvVar {
-	merged := make([]models.ProfileEnvVar, 0, len(incoming)+1)
-	var existingToken models.ProfileEnvVar
-	hasExistingToken := false
-	hasIncomingToken := false
-	explicitRemove := false
-
-	for _, ev := range existing {
-		if strings.TrimSpace(ev.Key) != spritesTokenEnvKey {
-			continue
-		}
-		if strings.TrimSpace(ev.SecretID) == "" && strings.TrimSpace(ev.Value) == "" {
-			continue
-		}
-		existingToken = ev
-		hasExistingToken = true
-		break
-	}
-
-	for _, ev := range incoming {
-		if strings.TrimSpace(ev.Key) != spritesTokenEnvKey {
-			merged = append(merged, ev)
-			continue
-		}
-		if strings.TrimSpace(ev.SecretID) == "" && strings.TrimSpace(ev.Value) == "" {
-			explicitRemove = true
-			continue
-		}
-		hasIncomingToken = true
-		merged = append(merged, ev)
-	}
-
-	if !hasIncomingToken && !explicitRemove && hasExistingToken {
-		merged = append(merged, existingToken)
-	}
-	return merged
-}
-
-func hasSpritesToken(envVars []models.ProfileEnvVar) bool {
-	for _, ev := range envVars {
-		if strings.TrimSpace(ev.Key) != spritesTokenEnvKey {
-			continue
-		}
-		if strings.TrimSpace(ev.SecretID) != "" || strings.TrimSpace(ev.Value) != "" {
-			return true
-		}
-	}
-	return false
 }
 
 func (s *Service) DeleteExecutorProfile(ctx context.Context, id string) error {

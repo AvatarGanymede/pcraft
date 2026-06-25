@@ -7,13 +7,13 @@ import {
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import {
   DropdownMenuItem,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
 import { useRemoteAuthSpecs } from "@/hooks/domains/settings/use-remote-auth-specs";
 import { useTaskExecutorProfile } from "@/hooks/domains/session/use-task-executor-profile";

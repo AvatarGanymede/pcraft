@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
 import { type FormState, parseMaxInflightTasks } from "./sentry-issue-watch-form";
 
 // MaxInflightTasksField caps how many open tasks a watcher may hold at once.

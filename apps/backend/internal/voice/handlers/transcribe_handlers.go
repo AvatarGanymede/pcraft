@@ -12,8 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/voice/transcribe"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/voice/transcribe"
 )
 
 // maxAudioBytes caps the multipart audio payload. Whisper accepts up to 25 MB

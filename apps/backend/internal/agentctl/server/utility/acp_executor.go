@@ -15,8 +15,8 @@ import (
 	"time"
 
 	acp "github.com/coder/acp-go-sdk"
-	acpclient "github.com/kandev/kandev/internal/agentctl/server/acp"
-	"github.com/kandev/kandev/internal/agentctl/sessionmodel"
+	acpclient "github.com/AvatarGanymede/pcraft/internal/agentctl/server/acp"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/sessionmodel"
 	"go.uber.org/zap"
 )
 

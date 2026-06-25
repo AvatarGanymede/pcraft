@@ -2,7 +2,7 @@
 
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { IconChevronDown, IconLoader2 } from "@tabler/icons-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import { useAppStore } from "@/components/state-provider";
 import { selectCommandCount } from "@/lib/state/slices/session/selectors";
 import { AdvancedChatPanel } from "@/app/office/tasks/[id]/advanced-panels/chat-panel";

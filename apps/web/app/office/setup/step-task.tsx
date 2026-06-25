@@ -1,8 +1,8 @@
 "use client";
 
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
 
 type StepTaskProps = {
   agentName: string;

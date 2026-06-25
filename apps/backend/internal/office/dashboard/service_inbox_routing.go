@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // inboxProviderDegradedType is the InboxItem.Type the frontend reads to

@@ -20,7 +20,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 

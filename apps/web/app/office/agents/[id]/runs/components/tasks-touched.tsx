@@ -2,8 +2,8 @@
 
 import Link from "@/components/routing/app-link";
 import { useEffect, useMemo, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { getTask } from "@/lib/api/domains/office-extended-api";
 import type { OfficeTask } from "@/lib/state/slices/office/types";
 import { StatusIcon } from "@/app/office/tasks/status-icon";

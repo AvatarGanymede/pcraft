@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { StateProvider, useAppStore } from "@/components/state-provider";
 import { TaskOptimisticContextProvider } from "@/hooks/use-optimistic-task-mutation";
 import type { AgentProfile } from "@/lib/state/slices/office/types";

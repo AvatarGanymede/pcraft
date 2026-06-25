@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { IconSelector } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -11,7 +11,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
+} from "@pcraft/ui/command";
 import type { ModelEntry } from "@/lib/types/http";
 
 type ModelComboboxProps = {

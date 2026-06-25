@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // GetTaskContext composes the office task-handoffs DTO returned by

@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agentctl/server/shell"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/shell"
 	"go.uber.org/zap"
 )
 

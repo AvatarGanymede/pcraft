@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
 )
 
 func TestResolvePreparerSetupScript_LocalFallbackCommentOnly(t *testing.T) {

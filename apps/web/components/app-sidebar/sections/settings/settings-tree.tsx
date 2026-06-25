@@ -10,9 +10,7 @@ import {
   IconWand,
 } from "@tabler/icons-react";
 import { AgentsGroup } from "./agents-group";
-import { ExecutorsGroup } from "./executors-group";
 import { GeneralGroup } from "./general-group";
-import { IntegrationsGroup } from "./integrations-group";
 import { SettingsLeaf } from "./settings-nav-primitives";
 import { SystemGroup } from "./system-group";
 import { WorkspacesGroup } from "./workspaces-group";
@@ -30,9 +28,7 @@ const EXT_MCP_HREF = "/settings/external-mcp";
 const GROUP_ROUTES = [
   { id: "general", prefix: "/settings/general" },
   { id: "workspaces", prefix: "/settings/workspace" },
-  { id: "integrations", prefix: "/settings/integrations" },
   { id: "agents", prefix: "/settings/agents" },
-  { id: "executors", prefix: "/settings/executors" },
   { id: "system", prefix: "/settings/system" },
 ] as const;
 
@@ -67,13 +63,6 @@ export function SettingsTree({ pathname }: { pathname: string }) {
     <>
       <GeneralGroup pathname={pathname} {...groupProps("general")} />
       <WorkspacesGroup pathname={pathname} {...groupProps("workspaces")} />
-      <IntegrationsGroup pathname={pathname} {...groupProps("integrations")} />
-      <SettingsLeaf
-        href={AUTOMATIONS_HREF}
-        label="Automations"
-        icon={IconBolt}
-        isActive={pathname.startsWith(AUTOMATIONS_HREF)}
-      />
       <AgentsGroup pathname={pathname} {...groupProps("agents")} />
       <SettingsLeaf
         href={PROMPTS_HREF}
@@ -93,7 +82,6 @@ export function SettingsTree({ pathname }: { pathname: string }) {
         icon={IconWand}
         isActive={pathname === UTILITY_HREF}
       />
-      <ExecutorsGroup pathname={pathname} {...groupProps("executors")} />
       {/* Editors lives under General (see GeneralGroup) — no duplicate top-level leaf. */}
       <SettingsLeaf
         href={SECRETS_HREF}

@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // TestRunGitOutput_ReleasesThrottleOnTimeout is the regression test for the

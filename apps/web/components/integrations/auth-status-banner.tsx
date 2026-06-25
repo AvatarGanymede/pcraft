@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { IconAlertTriangle, IconCheck } from "@tabler/icons-react";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
 
 // AuthHealth captures everything every integration's config row tells us
 // about the most-recent backend health probe. Each integration's settings

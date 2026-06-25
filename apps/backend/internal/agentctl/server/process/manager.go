@@ -18,13 +18,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/shell"
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	tools "github.com/kandev/kandev/internal/tools/installer"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/shell"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	tools "github.com/AvatarGanymede/pcraft/internal/tools/installer"
 	"go.uber.org/zap"
 )
 
@@ -1758,7 +1758,7 @@ func codeServerInstallStrategy(log *logger.Logger) tools.Strategy {
 	if err != nil {
 		home = "."
 	}
-	installDir := filepath.Join(home, ".kandev", "tools", "code-server")
+	installDir := filepath.Join(home, ".pcraft", "tools", "code-server")
 
 	return tools.NewGithubTarballStrategy(installDir, "code-server", tools.GithubTarballConfig{
 		Owner:        "coder",

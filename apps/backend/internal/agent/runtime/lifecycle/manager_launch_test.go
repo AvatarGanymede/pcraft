@@ -16,13 +16,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // resumeTestAgent is a minimal agent with a BuildCommand that respects the
@@ -409,7 +409,7 @@ func TestLaunch_PublishesPrepareCompletedAfterRuntimeProgress(t *testing.T) {
 	entered := make(chan struct{}, 1)
 	barrier := make(chan struct{})
 	backend := &createInstanceExecutor{
-		MockExecutor: MockExecutor{name: executor.NameDocker},
+		MockExecutor: MockExecutor{name: executor.NameStandalone},
 		client:       newReadyAgentctlClient(t, log),
 		entered:      entered,
 		barrier:      barrier,
@@ -424,7 +424,7 @@ func TestLaunch_PublishesPrepareCompletedAfterRuntimeProgress(t *testing.T) {
 		ExecutorFallbackWarn, "", log,
 	)
 	mgr.preparerRegistry = NewPreparerRegistry(log)
-	mgr.preparerRegistry.Register(models.ExecutorTypeLocalDocker, &progressPreparer{})
+	mgr.preparerRegistry.Register(models.ExecutorTypeLocal, &progressPreparer{})
 	cleanupManagerStopCh(t, mgr)
 
 	errCh := make(chan error, 1)
@@ -433,7 +433,7 @@ func TestLaunch_PublishesPrepareCompletedAfterRuntimeProgress(t *testing.T) {
 			TaskID:         "task-1",
 			SessionID:      "session-1",
 			AgentProfileID: "profile-1",
-			ExecutorType:   "local_docker",
+			ExecutorType:   "local",
 			RepositoryPath: "/tmp/repo",
 			BaseBranch:     "main",
 		})
@@ -744,7 +744,7 @@ func TestLaunch_PersistsDockerRuntimeSecrets(t *testing.T) {
 	log, _ := logger.NewLogger(logger.LoggingConfig{Level: "error", Format: "json"})
 	execRegistry := NewExecutorRegistry(log)
 	backend := &createInstanceExecutor{
-		MockExecutor: MockExecutor{name: executor.NameDocker},
+		MockExecutor: MockExecutor{name: executor.NameStandalone},
 		client:       newReadyAgentctlClient(t, log),
 		authToken:    "agentctl-token",
 		nonce:        "bootstrap-nonce",
@@ -765,7 +765,7 @@ func TestLaunch_PersistsDockerRuntimeSecrets(t *testing.T) {
 		TaskID:         "task-1",
 		SessionID:      "session-1",
 		AgentProfileID: "profile-1",
-		ExecutorType:   "local_docker",
+		ExecutorType:   "local",
 		IsEphemeral:    true,
 	})
 	if err != nil {

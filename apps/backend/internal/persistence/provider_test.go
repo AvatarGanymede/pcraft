@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
 )
 
 func TestMigrateLegacyDBPath_MovesLegacyDB(t *testing.T) {

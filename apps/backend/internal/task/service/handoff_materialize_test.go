@@ -7,8 +7,8 @@ import (
 	"sync"
 	"testing"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // fakeSessionReader implements SessionWorktreeReader for the

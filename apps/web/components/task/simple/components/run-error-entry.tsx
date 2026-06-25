@@ -7,8 +7,8 @@ import {
   IconPlayerPlay,
   IconRefresh,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Button } from "@pcraft/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import { useAppStore } from "@/components/state-provider";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import { formatRelativeTime } from "@/lib/utils";

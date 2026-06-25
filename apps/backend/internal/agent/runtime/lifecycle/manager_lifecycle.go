@@ -3,16 +3,15 @@ package lifecycle
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 const (
@@ -223,138 +222,9 @@ func (m *Manager) StopAllAgents(ctx context.Context) error {
 	return errors.Join(errs...)
 }
 
-// cleanupExitedContainer handles cleanup for a single exited container.
-func (m *Manager) cleanupExitedContainer(ctx context.Context, containerID string) {
-	execution, tracked := m.executionStore.GetByContainerID(containerID)
-	if !tracked {
-		return
-	}
-
-	// Get the Docker executor's ContainerManager from the registry.
-	var containerMgr *ContainerManager
-	if m.executorRegistry != nil {
-		if backend, berr := m.executorRegistry.GetBackend(executor.NameDocker); berr == nil {
-			if dockerExec, ok := backend.(*DockerExecutor); ok {
-				containerMgr = dockerExec.ContainerMgr()
-			}
-		}
-	}
-	if containerMgr == nil {
-		m.logger.Warn("docker container manager unavailable, cannot clean up container",
-			zap.String("container_id", containerID))
-		return
-	}
-
-	// Get container info to get exit code
-	info, err := containerMgr.GetContainerInfo(ctx, containerID)
-	if err != nil {
-		m.logger.Warn("failed to get container info during cleanup",
-			zap.String("container_id", containerID),
-			zap.Error(err))
-		return
-	}
-
-	// Mark execution as completed
-	errorMsg := ""
-	if info.ExitCode != 0 {
-		errorMsg = fmt.Sprintf("container exited with code %d", info.ExitCode)
-	}
-	_ = m.MarkCompleted(execution.ID, info.ExitCode, errorMsg)
-
-	// Remove the container
-	if err := containerMgr.RemoveContainer(ctx, containerID, false); err != nil {
-		m.logger.Warn("failed to remove container during cleanup",
-			zap.String("container_id", containerID),
-			zap.Error(err))
-	}
-
-	// Remove the execution from tracking so new agents can be launched
-	m.RemoveExecution(execution.ID)
-}
-
-// CleanupStaleExecutionBySessionID cleans up a stale execution: stops the runtime
-// instance, closes the client connection, and removes it from tracking.
-//
-// A "stale" execution is one where the agent process has stopped externally (crashed, killed,
-// or terminated outside of our control) but the execution is still tracked in memory.
-//
-// When to use this:
-//   - After detecting the agentctl HTTP server is unreachable
-//   - When the agent container no longer exists (Docker runtime)
-//   - After server restart when recovering persisted state
-//   - When IsAgentRunningForSession returns false but execution exists
-//
-// This method performs cleanup:
-//  1. Stops the runtime instance (workspace tracker, shell, etc.) via the executor backend
-//  2. Closes the agentctl HTTP client connection
-//  3. Removes the execution from the in-memory tracking store
-//
-// What this does NOT do:
-//   - Clean up worktrees or containers (caller's responsibility)
-//   - Update database session state (caller's responsibility)
-//
-// Safe to call even if the process is already stopped — StopInstance is idempotent.
-//
-// Returns nil if no execution exists for the session (idempotent).
+// CleanupStaleExecutionBySessionID clears stale execution state for a session.
+// Stub: Docker executor removed in pcraft slim build.
 func (m *Manager) CleanupStaleExecutionBySessionID(ctx context.Context, sessionID string) error {
-	execution, exists := m.executionStore.GetBySessionID(sessionID)
-	if !exists {
-		return nil // No execution to clean up
-	}
-
-	m.logger.Info("cleaning up stale agent execution",
-		zap.String("session_id", sessionID),
-		zap.String("execution_id", execution.ID))
-
-	// End session trace span
-	execution.EndSessionSpan()
-
-	// Stop the runtime instance (workspace tracker, shell, etc.) to prevent leaked
-	// goroutines. Without this, the old agentctl instance keeps running when a new
-	// execution is created for the same session, causing git polling on deleted worktrees.
-	// This is idempotent — returns success if the instance is already gone.
-	m.stopAgentViaBackend(ctx, execution.ID, execution, "stale execution cleanup", false)
-
-	// Close agentctl connection if it exists
-	if execution.agentctl != nil {
-		execution.agentctl.Close()
-	}
-
-	// Remove from execution store
-	m.RemoveExecution(execution.ID)
-
-	// Delete the persistence row in lockstep with store removal so we never
-	// leave a phantom executors_running row pointing at a non-existent
-	// execution. Best-effort; "not found" is expected and silently swallowed.
-	m.deleteExecutorRunning(ctx, sessionID)
-
 	return nil
 }
 
-// RemoveExecution removes an execution from tracking.
-//
-// ⚠️  WARNING: This is a potentially dangerous operation that should only be called when:
-//  1. The agent process has been fully stopped (via StopAgent)
-//  2. All cleanup operations have completed (worktree cleanup, container removal)
-//  3. The execution is in a terminal state (Completed, Failed, or Cancelled)
-//
-// This method:
-//   - Removes the execution from the in-memory store
-//   - Makes the sessionID available for new executions
-//   - Does NOT stop the agent process (call StopAgent first)
-//   - Does NOT close the agentctl client (call execution.agentctl.Close() first)
-//   - Does NOT clean up resources (worktrees, containers, etc.)
-//
-// After calling this, the executionID and sessionID can no longer be used to query
-// or control the execution. Any references to this execution will become invalid.
-//
-// Typical usage: Called by cleanup loops or after successful StopAgent completion.
-// For stale/dead executions, use CleanupStaleExecutionBySessionID instead.
-func (m *Manager) RemoveExecution(executionID string) {
-	if execution, ok := m.executionStore.Get(executionID); ok {
-		m.cleanupPassthroughMCPConfig(execution)
-	}
-	m.executionStore.Remove(executionID)
-	m.logger.Debug("removed execution from tracking",
-		zap.String("execution_id", executionID))
-}

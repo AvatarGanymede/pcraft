@@ -8,12 +8,12 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/settings/cliflags"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/cliflags"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 	"go.uber.org/zap"
 )
 

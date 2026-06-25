@@ -4,7 +4,7 @@ import (
 	"context"
 	"os/exec"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // Why this throttle exists:

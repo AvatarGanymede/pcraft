@@ -10,16 +10,14 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sync/singleflight"
 
-	"github.com/kandev/kandev/internal/agent/docker"
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agent/registry"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // ExecutorFallbackPolicy controls behavior when a requested runtime is unavailable.
@@ -45,7 +43,7 @@ type Manager struct {
 	logger          *logger.Logger
 	// dataDir is the kandev root directory. Misnamed for historical reasons:
 	// cmd/kandev/agents.go passes cfg.ResolvedHomeDir() (the kandev root —
-	// typically ~/.kandev) here, not ResolvedDataDir(). Used for:
+	// typically ~/.pcraft) here, not ResolvedDataDir(). Used for:
 	// - Session history storage (SessionHistoryManager)
 	// - Ephemeral workspace creation (quick chat) at <root>/quick-chat/<sessionID>
 	// - Scratch workspaces for repo-less tasks at <root>/tasks/<workspaceID>/<taskID>
@@ -323,23 +321,4 @@ func (m *Manager) SetSkillDeployer(deployer SkillDeployer) {
 		return
 	}
 	m.skillDeployer = deployer
-}
-
-// DockerClientProvider returns a function that lazily resolves the Docker client
-// from the Docker executor in the registry. Returns nil if Docker is unavailable.
-func (m *Manager) DockerClientProvider() func() *docker.Client {
-	return func() *docker.Client {
-		if m.executorRegistry == nil {
-			return nil
-		}
-		backend, err := m.executorRegistry.GetBackend(executor.NameDocker)
-		if err != nil {
-			return nil
-		}
-		dockerExec, ok := backend.(*DockerExecutor)
-		if !ok {
-			return nil
-		}
-		return dockerExec.Client()
-	}
 }

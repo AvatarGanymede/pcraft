@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 func TestIsBinaryContent(t *testing.T) {

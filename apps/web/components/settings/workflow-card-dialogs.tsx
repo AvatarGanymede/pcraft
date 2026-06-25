@@ -1,5 +1,5 @@
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+} from "@pcraft/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import type { Workflow, WorkflowStep } from "@/lib/types/http";
 
 type WorkflowDeleteDialogProps = {

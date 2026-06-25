@@ -6,16 +6,10 @@ import "time"
 type TaskState string
 
 const (
-	TaskStateTODO            TaskState = "TODO"
-	TaskStateCreated         TaskState = "CREATED"
-	TaskStateScheduling      TaskState = "SCHEDULING"
-	TaskStateInProgress      TaskState = "IN_PROGRESS"
-	TaskStateReview          TaskState = "REVIEW"
-	TaskStateBlocked         TaskState = "BLOCKED"
-	TaskStateWaitingForInput TaskState = "WAITING_FOR_INPUT"
-	TaskStateCompleted       TaskState = "COMPLETED"
-	TaskStateFailed          TaskState = "FAILED"
-	TaskStateCancelled       TaskState = "CANCELLED"
+	TaskStateBacklog    TaskState = "BACKLOG"
+	TaskStateInProgress TaskState = "IN_PROGRESS"
+	TaskStateDone       TaskState = "DONE"
+	TaskStateClosed     TaskState = "CLOSED"
 )
 
 // TaskPRSummary is a compact view of a GitHub pull request associated with a

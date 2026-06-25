@@ -10,9 +10,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
+} from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
 import type { TaskPlanRevision } from "@/lib/types/http";
 import { formatPreciseTime } from "@/lib/utils";
 

@@ -3,8 +3,8 @@
 import { useState, useCallback } from "react";
 import { IconRotateClockwise2 } from "@tabler/icons-react";
 import { GridSpinner } from "@/components/grid-spinner";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +14,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 import { getWebSocketClient } from "@/lib/ws/connection";
 
 export function ResetContextButton({ sessionId }: { sessionId: string }) {

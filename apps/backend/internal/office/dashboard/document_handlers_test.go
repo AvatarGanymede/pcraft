@@ -13,12 +13,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/office/dashboard"
-	tasksqlite "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	tasksqlite "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // documentTestDeps wires a real task repo + DocumentService for HTTP handler tests.

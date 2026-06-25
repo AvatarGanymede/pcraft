@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/routing"
-	"github.com/kandev/kandev/internal/office/shared"
-	workflowmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
+	workflowmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 
 	"go.uber.org/zap"
 )

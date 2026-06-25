@@ -8,12 +8,12 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // CapabilityReader is the minimum surface of the host utility manager that

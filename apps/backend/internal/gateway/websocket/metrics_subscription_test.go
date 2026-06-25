@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 type metricsInterestRecorder struct {

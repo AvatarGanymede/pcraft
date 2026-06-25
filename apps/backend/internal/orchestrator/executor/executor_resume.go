@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/gitref"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/worktree"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/gitref"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -808,7 +808,7 @@ func (e *Executor) applyResumeWorktreeConfig(
 
 // resolveResumeTaskDirName returns the per-task directory name to use when
 // resuming. It prefers the value persisted on task_environments (so we reuse
-// the same ~/.kandev/tasks/{name}/ root the initial launch created) and falls
+// the same ~/.pcraft/tasks/{name}/ root the initial launch created) and falls
 // back to a fresh semantic name when the original launch failed before any
 // environment was stamped. That fallback is what lets a previously failed
 // session recover instead of looping on ErrTaskDirRequired.

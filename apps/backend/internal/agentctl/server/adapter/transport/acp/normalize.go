@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/readselector"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/readselector"
 )
 
 // Tool operation type constants.

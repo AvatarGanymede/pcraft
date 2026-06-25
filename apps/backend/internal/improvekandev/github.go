@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // GitHubInfo exposes the authenticated user's login, write-access status,

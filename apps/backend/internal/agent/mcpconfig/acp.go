@@ -1,6 +1,6 @@
 package mcpconfig
 
-import "github.com/kandev/kandev/internal/agentctl/types"
+import "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 
 // ToACPServers converts resolved MCP servers into ACP server list.
 // Supports stdio, SSE, HTTP, and streamable HTTP transports.

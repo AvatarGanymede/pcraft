@@ -3,8 +3,8 @@ package models
 import (
 	"time"
 
-	agentusage "github.com/kandev/kandev/internal/agent/usage"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	agentusage "github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // ProfileEnvVar is an environment variable entry on an agent profile.

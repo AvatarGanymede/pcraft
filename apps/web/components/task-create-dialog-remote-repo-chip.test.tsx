@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import type { Branch } from "@/lib/types/http";
 import type { TaskRemoteRepoRow } from "./task-create-dialog-types";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import type { UseAccessibleReposResult } from "@/hooks/domains/github/use-accessible-repos";
 
 // Each test passes a stubbed `accessibleRepos` prop to the chip. The hook

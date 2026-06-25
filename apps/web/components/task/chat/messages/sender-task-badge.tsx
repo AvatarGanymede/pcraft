@@ -2,7 +2,7 @@
 
 import Link from "@/components/routing/app-link";
 import { IconRobot } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTaskById } from "@/hooks/domains/kanban/use-task-by-id";
 import { linkToTask } from "@/lib/links";

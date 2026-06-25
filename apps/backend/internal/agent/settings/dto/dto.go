@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
 )
 
 type AgentProfileDTO struct {

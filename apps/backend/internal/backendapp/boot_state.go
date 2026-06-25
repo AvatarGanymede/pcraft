@@ -4,13 +4,13 @@ import (
 	"context"
 	"net/http"
 
-	agentsettingsdto "github.com/kandev/kandev/internal/agent/settings/dto"
-	taskdto "github.com/kandev/kandev/internal/task/dto"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	userdto "github.com/kandev/kandev/internal/user/dto"
-	"github.com/kandev/kandev/internal/webapp"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentsettingsdto "github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	taskdto "github.com/AvatarGanymede/pcraft/internal/task/dto"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	userdto "github.com/AvatarGanymede/pcraft/internal/user/dto"
+	"github.com/AvatarGanymede/pcraft/internal/webapp"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 const (

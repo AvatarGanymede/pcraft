@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Input } from "@kandev/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Input } from "@pcraft/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import type { JiraProject, JiraStatusCategory } from "@/lib/types/jira";
 import { STATUS_CATEGORY_OPTIONS, type AssigneeFilter } from "./filter-model";
 

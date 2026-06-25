@@ -5,8 +5,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "."),
-      "@kandev/ui": path.resolve(__dirname, "../packages/ui/src"),
-      "@kandev/theme": path.resolve(__dirname, "../packages/theme/src"),
+      "@pcraft/ui": path.resolve(__dirname, "../packages/ui/src"),
+      "@pcraft/theme": path.resolve(__dirname, "../packages/theme/src"),
     },
   },
   test: {

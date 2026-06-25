@@ -3,9 +3,9 @@
 import Link from "@/components/routing/app-link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconBrandGitlab, IconMenu2 } from "@tabler/icons-react";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
-import { Button } from "@kandev/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@kandev/ui/sheet";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
+import { Button } from "@pcraft/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@pcraft/ui/sheet";
 import { PageTopbar } from "@/components/page-topbar";
 import { fetchGitLabStatus } from "@/lib/api/domains/gitlab-api";
 import type { GitLabStatus, Issue, MR } from "@/lib/types/gitlab";

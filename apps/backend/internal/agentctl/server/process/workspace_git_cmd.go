@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // gitOptionalLocksOff is the env var git reads to skip "optional" locks, i.e.

@@ -2,9 +2,9 @@
 
 import type React from "react";
 import { useCallback, useRef, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Button } from "@kandev/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Button } from "@pcraft/ui/button";
 
 type TaskRenameDialogProps = {
   open: boolean;

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"go.uber.org/zap"

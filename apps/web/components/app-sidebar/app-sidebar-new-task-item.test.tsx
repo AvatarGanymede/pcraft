@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 const mocks = vi.hoisted(() => ({
   routerPush: vi.fn(),

@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // Verifies the Manager fans out subscriptions across per-repo trackers and

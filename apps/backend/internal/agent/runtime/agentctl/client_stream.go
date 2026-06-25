@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
 )

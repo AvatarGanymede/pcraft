@@ -8,8 +8,8 @@ import {
   IconCheck,
   IconClock,
 } from "@tabler/icons-react";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Spinner } from "@kandev/ui/spinner";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Spinner } from "@pcraft/ui/spinner";
 import { fetchGitHubStats } from "@/lib/api/domains/github-api";
 import type { PRStats } from "@/lib/types/github";
 

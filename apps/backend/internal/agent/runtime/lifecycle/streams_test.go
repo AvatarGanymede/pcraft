@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
 )
 
 // TestConnectWorkspaceStream_IdempotentWhenAlreadyAttached is the regression

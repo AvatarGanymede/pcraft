@@ -1,7 +1,7 @@
 "use client";
 
 import { IconLoader2, IconSearch, IconX } from "@tabler/icons-react";
-import { Input } from "@kandev/ui/input";
+import { Input } from "@pcraft/ui/input";
 import { PanelHeaderBar } from "./panel-primitives";
 
 type FileBrowserSearchHeaderProps = {

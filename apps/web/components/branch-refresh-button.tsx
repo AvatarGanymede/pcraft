@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconRefresh } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 type BranchRefreshButtonProps = {
   onRefresh: () => void;

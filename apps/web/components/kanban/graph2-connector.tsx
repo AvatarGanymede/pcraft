@@ -1,4 +1,4 @@
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 
 export type Graph2ConnectorProps = {
   type: "past" | "transition" | "future";

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
-import { Switch } from "@kandev/ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
+import { Switch } from "@pcraft/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { RepoFilterSelector } from "@/components/github/repo-filter-selector";
 import type { RepoFilter } from "@/lib/types/github";

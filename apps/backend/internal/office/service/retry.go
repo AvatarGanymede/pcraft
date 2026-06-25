@@ -8,7 +8,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // MaxRetryCount is the maximum number of retry attempts before marking failed.

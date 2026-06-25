@@ -2,18 +2,17 @@
 
 import { memo, useCallback, useState, useEffect, useMemo } from "react";
 import { IconCheck, IconChevronDown, IconX } from "@tabler/icons-react";
-import { TabsContent } from "@kandev/ui/tabs";
-import { Button } from "@kandev/ui/button";
+import { TabsContent } from "@pcraft/ui/tabs";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@kandev/ui/dropdown-menu";
-import { SessionPanel } from "@kandev/ui/pannel-session";
+} from "@pcraft/ui/dropdown-menu";
+import { SessionPanel } from "@pcraft/ui/pannel-session";
 import { TaskChatPanel } from "./task-chat-panel";
-import { TaskChangesPanel } from "./task-changes-panel";
 import { FileTabContent } from "./file-tab-content";
 import { PassthroughToolbar } from "./passthrough-toolbar";
 import type { OpenFileTab, FileContentResponse } from "@/lib/types/backend";
@@ -400,11 +399,9 @@ export const TaskCenterPanel = memo(function TaskCenterPanel(props: TaskCenterPa
         rightContent={approveContent}
       >
         <TabsContent value="changes" className="flex-1 min-h-0">
-          <TaskChangesPanel
-            selectedDiff={selectedDiff}
-            onClearSelected={() => setSelectedDiff(null)}
-            onOpenFile={handleOpenFileFromChat}
-          />
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Changes panel is being reworked.
+          </div>
         </TabsContent>
         <ChatTabContent
           activeTaskId={activeTaskId}

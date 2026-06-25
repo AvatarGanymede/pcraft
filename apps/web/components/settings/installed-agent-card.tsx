@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "@/components/routing/app-link";
 import { IconLoader2, IconLock, IconSettings } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { AgentLogo } from "@/components/agent-logo";
 import { AgentLoginDialog } from "@/components/settings/agent-login-dialog";
 import { HostShellDialog } from "@/components/settings/host-shell-dialog";

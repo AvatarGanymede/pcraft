@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { IconTrash, IconArchive, IconChevronRight, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { TaskDeleteConfirmDialog } from "@/components/task/task-delete-confirm-dialog";
 import { TaskArchiveConfirmDialog } from "@/components/task/task-archive-confirm-dialog";
 import { useAppStore } from "@/components/state-provider";
@@ -12,7 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import type { WorkflowStep } from "@/components/kanban-column";
 

@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // MockEventBus implements bus.EventBus for testing

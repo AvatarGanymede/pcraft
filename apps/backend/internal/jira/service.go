@@ -10,10 +10,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/watchreset"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/watchreset"
 )
 
 // SecretStore is the subset of the secrets store the service needs. Kept small
@@ -42,7 +42,7 @@ type Service struct {
 	// *task.HandoffService into NewService.
 	taskDeleter watchreset.TaskDeleter
 	// mockClient is non-nil only when Provide built the service with a MockClient
-	// (KANDEV_MOCK_JIRA=true). Exposed via MockClient() so the e2e control routes
+	// (PCRAFT_MOCK_JIRA=true). Exposed via MockClient() so the e2e control routes
 	// can drive the same instance the clientFn returns.
 	mockClient *MockClient
 }

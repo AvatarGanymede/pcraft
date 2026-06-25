@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
 	"go.uber.org/zap"
 )
 

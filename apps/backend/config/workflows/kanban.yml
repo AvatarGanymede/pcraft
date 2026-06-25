@@ -6,8 +6,10 @@
 id: simple
 name: Kanban
 description: >-
-  Classic board with automated agent work. Tasks start in In Progress
-  where the agent runs automatically, then move to Review when done.
+  Four-state task board: Backlog → In Progress → Done → Closed.
+  Tasks start in Backlog, move to In Progress when the agent runs,
+  advance to Done when the pipeline completes, and reach Closed
+  after P4 submit confirmation.
 
 steps:
   - id: backlog
@@ -18,10 +20,6 @@ steps:
     events:
       on_turn_start:
         - type: move_to_next
-      on_turn_complete:
-        - type: move_to_step
-          config:
-            step_id: review
 
   - id: in-progress
     name: In Progress
@@ -36,25 +34,20 @@ steps:
       on_turn_complete:
         - type: move_to_step
           config:
-            step_id: review
+            step_id: done
 
-  - id: review
-    name: Review
+  - id: done
+    name: Done
     position: 2
-    color: bg-yellow-500
+    color: bg-green-500
     show_in_command_panel: true
     allow_manual_move: true
     events:
       on_turn_start:
         - type: move_to_previous
 
-  - id: done
-    name: Done
+  - id: closed
+    name: Closed
     position: 3
-    color: bg-green-500
+    color: bg-purple-500
     allow_manual_move: true
-    events:
-      on_turn_start:
-        - type: move_to_step
-          config:
-            step_id: in-progress

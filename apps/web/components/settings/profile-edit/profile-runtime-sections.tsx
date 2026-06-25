@@ -2,53 +2,14 @@
 
 import type { ExecutorProfile } from "@/lib/types/http";
 import type { SecretListItem } from "@/lib/types/http-secrets";
-import type { NetworkPolicyRule } from "@/lib/api/domains/settings-api";
 import {
   RemoteCredentialsCard,
   type GitIdentityMode,
   type GitIdentityState,
 } from "@/components/settings/profile-edit/remote-credentials-card";
-import {
-  DockerfileBuildCard,
-  DockerContainersCard,
-} from "@/components/settings/profile-edit/docker-sections";
-import { NetworkPoliciesCard } from "@/components/settings/profile-edit/sprites-sections";
-import { SpritesInstancesCard } from "@/components/settings/sprites-settings";
 
-type DockerSectionsProps = {
-  profile: ExecutorProfile;
-  dockerfile: string;
-  onDockerfileChange: (v: string) => void;
-  imageTag: string;
-  onImageTagChange: (v: string) => void;
-};
-
-export function DockerSections({
-  profile,
-  dockerfile,
-  onDockerfileChange,
-  imageTag,
-  onImageTagChange,
-}: DockerSectionsProps) {
-  return (
-    <>
-      <DockerfileBuildCard
-        dockerfile={dockerfile}
-        onDockerfileChange={onDockerfileChange}
-        imageTag={imageTag}
-        onImageTagChange={onImageTagChange}
-      />
-      <DockerContainersCard profileId={profile.id} />
-    </>
-  );
-}
-
-type SpritesSectionsProps = {
+type RemoteSectionsProps = {
   isRemote: boolean;
-  isSprites: boolean;
-  secretId: string | null;
-  networkRules: NetworkPolicyRule[];
-  onNetworkRulesChange: (rules: NetworkPolicyRule[]) => void;
   remoteCredentials: string[];
   onRemoteCredentialsChange: (ids: string[]) => void;
   agentEnvVars: Record<string, string | null>;
@@ -63,12 +24,8 @@ type SpritesSectionsProps = {
   secrets: SecretListItem[];
 };
 
-export function SpritesSections({
+export function RemoteSections({
   isRemote,
-  isSprites,
-  secretId,
-  networkRules,
-  onNetworkRulesChange,
   remoteCredentials,
   onRemoteCredentialsChange,
   agentEnvVars,
@@ -81,28 +38,22 @@ export function SpritesSections({
   onGitUserEmailChange,
   localGitIdentity,
   secrets,
-}: SpritesSectionsProps) {
+}: RemoteSectionsProps) {
   return (
-    <>
-      {isSprites && secretId && <SpritesInstancesCard secretId={secretId} />}
-      <RemoteCredentialsCard
-        isRemote={isRemote}
-        selectedIds={remoteCredentials}
-        onChange={onRemoteCredentialsChange}
-        agentEnvVars={agentEnvVars}
-        onAgentEnvVarChange={onAgentEnvVarChange}
-        secrets={secrets}
-        gitIdentityMode={gitIdentityMode}
-        onGitIdentityModeChange={onGitIdentityModeChange}
-        gitUserName={gitUserName}
-        gitUserEmail={gitUserEmail}
-        onGitUserNameChange={onGitUserNameChange}
-        onGitUserEmailChange={onGitUserEmailChange}
-        localGitIdentity={localGitIdentity}
-      />
-      {isSprites && (
-        <NetworkPoliciesCard rules={networkRules} onRulesChange={onNetworkRulesChange} />
-      )}
-    </>
+    <RemoteCredentialsCard
+      isRemote={isRemote}
+      selectedIds={remoteCredentials}
+      onChange={onRemoteCredentialsChange}
+      agentEnvVars={agentEnvVars}
+      onAgentEnvVarChange={onAgentEnvVarChange}
+      secrets={secrets}
+      gitIdentityMode={gitIdentityMode}
+      onGitIdentityModeChange={onGitIdentityModeChange}
+      gitUserName={gitUserName}
+      gitUserEmail={gitUserEmail}
+      onGitUserNameChange={onGitUserNameChange}
+      onGitUserEmailChange={onGitUserEmailChange}
+      localGitIdentity={localGitIdentity}
+    />
   );
 }

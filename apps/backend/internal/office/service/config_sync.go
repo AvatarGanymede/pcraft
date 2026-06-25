@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
 )
 
 // ParseError describes a single file that failed to parse during a FS scan.

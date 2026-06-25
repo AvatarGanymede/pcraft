@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { IconRotate, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Kbd } from "@kandev/ui/kbd";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Kbd } from "@pcraft/ui/kbd";
 import type { Key, KeyboardShortcut } from "@/lib/keyboard/constants";
 import { formatShortcut } from "@/lib/keyboard/utils";
 import {

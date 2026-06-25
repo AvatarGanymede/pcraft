@@ -18,9 +18,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/common/readselector"
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/common/readselector"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 	"go.uber.org/zap"
 )
 
@@ -351,7 +351,7 @@ func (wt *WorkspaceTracker) readResolvedPath(reqPath string) (string, int64, boo
 }
 
 // expandHomePath expands a leading "~" or "~/" to the current user's home
-// directory. omp emits read paths like "~/.kandev/…"; a literal tilde is not a
+// directory. omp emits read paths like "~/.pcraft/…"; a literal tilde is not a
 // real filesystem path, so it must be expanded before stat/serve. Other paths
 // (absolute, workspace-relative) are returned unchanged.
 func expandHomePath(path string) string {
@@ -476,7 +476,7 @@ func (wt *WorkspaceTracker) ApplyFileDiff(ctx context.Context, reqPath, unifiedD
 	applyPath, unifiedDiff := wt.resolveSymlinkForDiff(reqPath, safePath, cleanWorkDir, unifiedDiff)
 
 	// Write diff to a temporary patch file
-	patchFile := filepath.Join(wt.workDir, ".kandev-patch.tmp")
+	patchFile := filepath.Join(wt.workDir, ".pcraft-patch.tmp")
 	err = os.WriteFile(patchFile, []byte(unifiedDiff), 0o644)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to write patch file: %w", err)

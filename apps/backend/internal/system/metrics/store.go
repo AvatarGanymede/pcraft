@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	systemsettings "github.com/kandev/kandev/internal/system/settings"
+	systemsettings "github.com/AvatarGanymede/pcraft/internal/system/settings"
 )
 
 const settingsKey = "system_metrics"

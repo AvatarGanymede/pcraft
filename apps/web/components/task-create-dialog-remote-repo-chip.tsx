@@ -5,10 +5,10 @@ import Link from "@/components/routing/app-link";
 import { IconBrandGithub, IconGitBranch, IconLink, IconX } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import type { Branch } from "@/lib/types/http";
-import { Badge } from "@kandev/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Spinner } from "@kandev/ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Spinner } from "@pcraft/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   Pill,
   branchToOption,

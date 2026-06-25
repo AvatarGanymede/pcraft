@@ -3,9 +3,9 @@ package backendapp
 import (
 	"fmt"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/system/metrics"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/system/metrics"
 )
 
 type lifecycleMetricProvider struct {
@@ -43,10 +43,5 @@ func (p lifecycleMetricProvider) MetricExecutions() []metrics.ExecutionSource {
 }
 
 func shouldCollectExecutionMetrics(runtime agentruntime.Runtime) bool {
-	switch runtime {
-	case agentruntime.RuntimeDocker, agentruntime.RuntimeRemoteDocker, agentruntime.RuntimeSprites, agentruntime.RuntimeSSH:
-		return true
-	default:
-		return false
-	}
+	return false
 }

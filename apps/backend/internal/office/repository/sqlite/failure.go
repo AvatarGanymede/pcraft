@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // GetRun fetches a single run row by id.

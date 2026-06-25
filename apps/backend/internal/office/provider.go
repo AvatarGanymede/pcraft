@@ -4,8 +4,8 @@ package office
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // Provide creates the office SQLite repository using separate writer and reader pools.

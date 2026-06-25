@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { IconEdit, IconInfoCircle, IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
-import { Textarea } from "@kandev/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dialog";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useToast } from "@/components/toast-provider";
 import { useTaskCIAutomationOptions } from "@/hooks/domains/github/use-task-ci-options";
 import type { TaskCIAutomationPatch, TaskPR } from "@/lib/types/github";

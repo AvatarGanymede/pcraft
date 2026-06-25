@@ -1,0 +1,124 @@
+"use client";
+
+import { memo } from "react";
+import type { Message } from "@/lib/types/http";
+import type { ToolCallMetadata } from "@/components/task/chat/types";
+import { extractPcraftStem, extractMcpResult } from "./pcraft/parse";
+import { getPcraftRenderer } from "./pcraft/registry";
+import { PermissionActionRow } from "./permission-action-row";
+import { parsePermission, usePermissionResponseHandlers } from "./use-permission-handlers";
+import { PcraftPermissionUIProvider, type PcraftPermissionUIState } from "./pcraft/shared";
+import type { PermissionRequestMetadata } from "./use-permission-handlers";
+
+// Approval falls through to `undefined` on purpose: the tool_call status
+// stays the source of truth so an approved-but-still-pending tool does not
+// render as complete and a later tool_call error is not masked.
+function derivePermissionUI(
+  permissionStatus: PermissionRequestMetadata["status"],
+  isPermissionPending: boolean,
+): PcraftPermissionUIState {
+  if (isPermissionPending) return "pending";
+  if (permissionStatus === "rejected") return "rejected";
+  return undefined;
+}
+
+type PcraftToolMessageProps = {
+  comment: Message;
+  permissionMessage?: Message;
+};
+
+// pcraftStemOf scans the several fields that may carry the raw MCP tool name
+// and returns the first one that parses to a known pcraft stem. The fields
+// disagree in practice:
+//   - `metadata.tool_name`     — not set by the orchestrator today (null).
+//   - `metadata.title`         — the raw `mcp__pcraft__<tool>_pcraft` string.
+//   - `comment.content`        — same raw string, redundant with title.
+//   - `metadata.normalized.generic.name` — the ACP adapter's *category*
+//     (often `"other"`) rather than the tool name, so it cannot be matched on.
+// We iterate candidates instead of picking a single "preferred" one because
+// the live data showed `generic.name = "other"`, which would short-circuit
+// any priority-based ordering on the wrong field.
+function pcraftStemOf(comment: Message): string | null {
+  const meta = comment.metadata as ToolCallMetadata | undefined;
+  const candidates: Array<string | undefined> = [
+    meta?.tool_name,
+    meta?.title,
+    comment.content || undefined,
+    meta?.normalized?.generic?.name,
+  ];
+  for (const candidate of candidates) {
+    const stem = extractPcraftStem(candidate);
+    if (stem) return stem;
+  }
+  return null;
+}
+
+// hasPcraftRenderer is the matcher used by the message dispatcher. It accepts
+// any `tool_call` whose tool name is recognised as a Pcraft MCP tool AND for
+// which a per-tool renderer is registered. We require both because we still
+// want unregistered Pcraft tools to fall through to the generic ToolCallMessage
+// (rather than rendering an empty row) until a dedicated renderer ships.
+export function hasPcraftRenderer(comment: Message): boolean {
+  if (comment.type !== "tool_call") return false;
+  return !!getPcraftRenderer(pcraftStemOf(comment));
+}
+
+// PcraftToolMessage is the rendered entry point for every Pcraft tool call.
+// It parses the metadata once, looks up the per-tool renderer, and hands the
+// renderer pre-parsed args + result. If the renderer lookup fails we render
+// nothing rather than crashing; the matcher above guards against this in
+// practice, but defensive nulling avoids a bad runtime error if the dispatcher
+// rules drift out of sync with the registry.
+export const PcraftToolMessage = memo(function PcraftToolMessage({
+  comment,
+  permissionMessage,
+}: PcraftToolMessageProps) {
+  const meta = comment.metadata as ToolCallMetadata | undefined;
+  const renderer = getPcraftRenderer(pcraftStemOf(comment));
+  const { permissionMetadata, permissionStatus, isPermissionPending } =
+    parsePermission(permissionMessage);
+  const { isResponding, handleApprove, handleAllowAlways, hasAllowAlways, handleReject } =
+    usePermissionResponseHandlers({
+      permissionMetadata,
+      permissionMessage,
+    });
+  if (!renderer) return null;
+
+  // The ACP normalizer stores MCP tool args/result inside the Generic payload:
+  // `generic.input` holds the call args, `generic.output` the MCP result. We
+  // also accept `metadata.args` / `metadata.result` as fallbacks so the
+  // component still works for any code path that hasn't routed through the
+  // normalizer yet.
+  const generic = meta?.normalized?.generic;
+  const argsCandidate = (generic?.input as Record<string, unknown> | undefined) ?? meta?.args;
+  const args = argsCandidate && typeof argsCandidate === "object" ? argsCandidate : undefined;
+  const rawResult = generic?.output ?? meta?.result;
+  const result = extractMcpResult(rawResult);
+
+  const permissionUI = derivePermissionUI(permissionStatus, isPermissionPending);
+
+  // Each renderer is a stable function-pointer pulled from the static
+  // registry, so invoking it like a function (rather than via JSX) is safe
+  // and avoids the lint rule against "components created during render".
+  const rendered = (
+    <PcraftPermissionUIProvider value={permissionUI}>
+      {renderer({ args, result, status: meta?.status })}
+    </PcraftPermissionUIProvider>
+  );
+
+  if (!isPermissionPending) return rendered;
+
+  return (
+    <>
+      {rendered}
+      <div className="mt-2 ml-7" data-testid="pcraft-tool-permission">
+        <PermissionActionRow
+          onApprove={handleApprove}
+          onReject={handleReject}
+          onAllowAlways={hasAllowAlways ? handleAllowAlways : undefined}
+          isResponding={isResponding}
+        />
+      </div>
+    </>
+  );
+});

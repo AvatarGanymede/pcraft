@@ -7,14 +7,14 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	officeenginedispatcher "github.com/kandev/kandev/internal/office/engine_dispatcher"
-	officemodels "github.com/kandev/kandev/internal/office/models"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	officeroutines "github.com/kandev/kandev/internal/office/routines"
-	schedulercron "github.com/kandev/kandev/internal/scheduler/cron"
-	tasksqlite "github.com/kandev/kandev/internal/task/repository/sqlite"
-	workflowrepo "github.com/kandev/kandev/internal/workflow/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	officeenginedispatcher "github.com/AvatarGanymede/pcraft/internal/office/engine_dispatcher"
+	officemodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	officeroutines "github.com/AvatarGanymede/pcraft/internal/office/routines"
+	schedulercron "github.com/AvatarGanymede/pcraft/internal/scheduler/cron"
+	tasksqlite "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	workflowrepo "github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 // startCronScheduler builds and starts the Phase 5 shared cron loop.

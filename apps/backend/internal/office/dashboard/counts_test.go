@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // stubSkillLister is a test double for dashboard.SkillLister.

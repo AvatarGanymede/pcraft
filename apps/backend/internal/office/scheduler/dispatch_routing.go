@@ -9,10 +9,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/office/models"
-	sqliterepo "github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // RouteAttemptOutcomeLaunched is the in-flight outcome string the
@@ -316,7 +316,7 @@ func (ss *SchedulerService) recordAttemptStart(
 // override. Returns ErrRoutingNotSupported as-is so the caller can
 // treat it as a configuration error rather than a provider failure.
 //
-// Honors KANDEV_PROVIDER_FAILURES (routingerr.InjectedCode) pre-launch
+// Honors PCRAFT_PROVIDER_FAILURES (routingerr.InjectedCode) pre-launch
 // so deterministic E2E specs can fail a specific provider without
 // requiring the agent binary itself to fail. The injected error is
 // returned as a *routingerr.Error wrapped via errors.As so

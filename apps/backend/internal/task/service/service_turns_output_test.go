@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // lastTurnCompletedHadOutput returns the had_output flag of the most recently

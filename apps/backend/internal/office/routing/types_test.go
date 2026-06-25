@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 var testKnown = []routing.ProviderID{

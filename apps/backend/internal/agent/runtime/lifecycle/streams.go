@@ -7,8 +7,8 @@ import (
 
 	"go.uber.org/zap"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/logger"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // StreamCallbacks defines callbacks for stream events

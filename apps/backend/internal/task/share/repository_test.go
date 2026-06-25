@@ -9,7 +9,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 )
 
 func newTestRepo(t *testing.T) *Repository {

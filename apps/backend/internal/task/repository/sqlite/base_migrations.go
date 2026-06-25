@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
 )
 
 // migrateExecutorProfiles adds mcp_policy column and drops is_default from executor_profiles.
@@ -767,15 +767,9 @@ func (r *Repository) backfillSingleTask(tx *sql.Tx, row backfillRow) error {
 		executorType = "local_pc"
 	}
 
-	// Look up worktree info from task_session_worktrees (best effort)
-	var wtID, wtPath, wtBranch string
-	_ = tx.QueryRow(`
-		SELECT w.worktree_id, w.worktree_path, w.worktree_branch
-		FROM task_session_worktrees w
-		JOIN task_sessions ts ON ts.id = w.session_id
-		WHERE ts.task_id = ?
-		LIMIT 1
-	`, row.taskID).Scan(&wtID, &wtPath, &wtBranch)
+		// Worktree info is no longer available (task_session_worktrees table dropped).
+		// pcraft uses P4 workspaces instead of git worktrees.
+		var wtID, wtPath, wtBranch string
 
 	// Insert task_environment with status "stopped" (historical, agentctl not running).
 	// Pre-refactor this also wrote agent_execution_id; that column is gone from

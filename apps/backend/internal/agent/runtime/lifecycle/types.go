@@ -8,14 +8,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/common/ports"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/common/ports"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -384,7 +384,7 @@ type LaunchRequest struct {
 	WorktreeBranchPrefix string // Branch prefix for worktree branches
 	PullBeforeWorktree   bool   // Whether to pull from remote before creating the worktree
 
-	// Task directory mode: place worktree at ~/.kandev/tasks/{TaskDirName}/{RepoName}/
+	// Task directory mode: place worktree at ~/.pcraft/tasks/{TaskDirName}/{RepoName}/
 	TaskDirName string // Semantic task directory name (e.g. "fix-bug_ab12")
 	RepoName    string // Repository name used as subdirectory inside the task directory
 	BranchSlug  string // Optional branch subdir for multi-branch tasks (legacy single-repo path)

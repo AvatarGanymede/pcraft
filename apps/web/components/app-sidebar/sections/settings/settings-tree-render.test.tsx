@@ -27,7 +27,7 @@ vi.mock("@/hooks/domains/settings/use-available-agents", () => ({
   useAvailableAgents: () => undefined,
 }));
 
-vi.mock("@kandev/ui/collapsible", async () => {
+vi.mock("@pcraft/ui/collapsible", async () => {
   const React = await vi.importActual<typeof import("react")>("react");
   const CollapsibleContext = React.createContext(false);
   return {

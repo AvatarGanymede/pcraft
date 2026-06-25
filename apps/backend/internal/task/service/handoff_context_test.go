@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func TestGetTaskContext_RootHasEmptySiblings(t *testing.T) {

@@ -3,8 +3,8 @@ package workflows
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/workflow/engine"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // TestOfficeDefault_TriggersCompileThroughEngine verifies that every step in

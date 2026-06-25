@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
 )
 
 // recordingTerminator captures TerminateOfficeSession calls so tests can

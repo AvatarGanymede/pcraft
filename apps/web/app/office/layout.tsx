@@ -1,5 +1,5 @@
 import { notFound } from "@/lib/routing/server-navigation";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { StateHydrator } from "@/components/state-hydrator";
 import { getFeatureFlagsAction } from "@/app/actions/features";
 import { listWorkspaces, fetchUserSettings } from "@/lib/api";

@@ -1,7 +1,7 @@
 "use client";
 
 import { IconBell } from "@tabler/icons-react";
-import { Separator } from "@kandev/ui/separator";
+import { Separator } from "@pcraft/ui/separator";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { ChangelogNotificationCard } from "@/components/settings/changelog-notification-card";
 import { ChangelogList } from "@/components/settings/changelog-list";

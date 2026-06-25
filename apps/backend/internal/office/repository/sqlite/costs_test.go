@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // seedTasksTable creates a minimal tasks table and inserts a task row so that

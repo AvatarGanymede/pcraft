@@ -115,7 +115,7 @@ vi.mock("./chat/chat-input-area", () => ({
   PRMergedBanner: () => null,
 }));
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({
     asChild: _asChild,

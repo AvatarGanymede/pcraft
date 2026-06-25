@@ -1,0 +1,542 @@
+﻿// Package service provides workflow business logic operations.
+package service
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/google/uuid"
+	"go.uber.org/zap"
+
+	workflowcfg "github.com/AvatarGanymede/pcraft/config/workflows"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+)
+
+// WorkflowProvider gives the workflow service access to workflows owned by the task domain.
+type WorkflowProvider interface {
+	ListWorkflows(ctx context.Context, workspaceID string, includeHidden bool) ([]*taskmodels.Workflow, error)
+	GetWorkflow(ctx context.Context, id string) (*taskmodels.Workflow, error)
+	CreateWorkflow(ctx context.Context, workspaceID, name, description string) (*taskmodels.Workflow, error)
+	UpdateWorkflow(ctx context.Context, workflow *taskmodels.Workflow) error
+}
+
+// WorkflowStepService provides workflow step and template business logic.
+type WorkflowStepService struct {
+	repo             *sqlite.Repository
+	logger           *logger.Logger
+	workflowProvider WorkflowProvider
+	resolveProfile   taskmodels.AgentProfileResolver
+	matchProfile     taskmodels.AgentProfileMatcher
+}
+
+// SetWorkflowProvider wires the workflow provider (set during service init to break circular deps).
+func (s *WorkflowStepService) SetWorkflowProvider(wp WorkflowProvider) {
+	s.workflowProvider = wp
+}
+
+// SetAgentProfileFuncs wires the agent profile resolver and matcher for export/import.
+func (s *WorkflowStepService) SetAgentProfileFuncs(resolve taskmodels.AgentProfileResolver, match taskmodels.AgentProfileMatcher) {
+	s.resolveProfile = resolve
+	s.matchProfile = match
+}
+
+// NewWorkflowStepService creates a workflow step service backed by the task repository.
+func NewWorkflowStepService(repo *sqlite.Repository, log *logger.Logger) *WorkflowStepService {
+	return &WorkflowStepService{
+		repo:   repo,
+		logger: log.WithFields(zap.String("component", "workflow-step-service")),
+	}
+}
+
+// ============================================================================
+// Template Operations
+// ============================================================================
+
+// ListTemplates returns user-pickable workflow templates. Templates marked
+// `hidden: true` in their embedded YAML (e.g. improve-kandev) are excluded
+// from the management UI and the create-workflow picker.
+func (s *WorkflowStepService) ListTemplates(ctx context.Context) ([]*taskmodels.WorkflowTemplate, error) {
+	templates, err := s.repo.ListTemplates(ctx)
+	if err != nil {
+		s.logger.Error("failed to list templates", zap.Error(err))
+		return nil, err
+	}
+	hidden, err := workflowcfg.HiddenTemplateIDs()
+	if err != nil {
+		s.logger.Error("failed to load embedded template visibility", zap.Error(err))
+		return nil, err
+	}
+	result := make([]*taskmodels.WorkflowTemplate, 0, len(templates))
+	for _, t := range templates {
+		if hidden[t.ID] {
+			continue
+		}
+		result = append(result, t)
+	}
+	return result, nil
+}
+
+// GetTemplate retrieves a workflow template by ID.
+func (s *WorkflowStepService) GetTemplate(ctx context.Context, id string) (*taskmodels.WorkflowTemplate, error) {
+	template, err := s.repo.GetTemplate(ctx, id)
+	if err != nil {
+		s.logger.Error("failed to get template", zap.String("template_id", id), zap.Error(err))
+		return nil, err
+	}
+	return template, nil
+}
+
+// GetSystemTemplates returns only system workflow templates.
+func (s *WorkflowStepService) GetSystemTemplates(ctx context.Context) ([]*taskmodels.WorkflowTemplate, error) {
+	templates, err := s.repo.GetSystemTemplates(ctx)
+	if err != nil {
+		s.logger.Error("failed to get system templates", zap.Error(err))
+		return nil, err
+	}
+	return templates, nil
+}
+
+// ============================================================================
+// Step Operations
+// ============================================================================
+
+// ListStepsByWorkflow returns all workflow steps for a workflow.
+func (s *WorkflowStepService) ListStepsByWorkflow(ctx context.Context, workflowID string) ([]*taskmodels.WorkflowStep, error) {
+	steps, err := s.repo.ListStepsByWorkflow(ctx, workflowID)
+	if err != nil {
+		s.logger.Error("failed to list steps by workflow", zap.String("workflow_id", workflowID), zap.Error(err))
+		return nil, err
+	}
+	return steps, nil
+}
+
+// ListStepsByWorkspaceID returns all workflow steps for all workflows in a workspace.
+func (s *WorkflowStepService) ListStepsByWorkspaceID(ctx context.Context, workspaceID string) ([]*taskmodels.WorkflowStep, error) {
+	steps, err := s.repo.ListStepsByWorkspaceID(ctx, workspaceID)
+	if err != nil {
+		s.logger.Error("failed to list steps by workspace", zap.String("workspace_id", workspaceID), zap.Error(err))
+		return nil, err
+	}
+	return steps, nil
+}
+
+// GetStep retrieves a workflow step by ID.
+func (s *WorkflowStepService) GetStep(ctx context.Context, stepID string) (*taskmodels.WorkflowStep, error) {
+	step, err := s.repo.GetStep(ctx, stepID)
+	if err != nil {
+		s.logger.Error("failed to get step", zap.String("step_id", stepID), zap.Error(err))
+		return nil, err
+	}
+	return step, nil
+}
+
+// GetNextStepByPosition returns the next step after the given position for a workflow.
+// Steps are ordered by position, so this finds the step with the next higher position.
+// Returns nil if there is no next step (i.e., current step is the last one).
+func (s *WorkflowStepService) GetNextStepByPosition(ctx context.Context, workflowID string, currentPosition int) (*taskmodels.WorkflowStep, error) {
+	steps, err := s.repo.ListStepsByWorkflow(ctx, workflowID)
+	if err != nil {
+		s.logger.Error("failed to list steps for next step lookup",
+			zap.String("workflow_id", workflowID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	// Steps are already ordered by position from ListStepsByWorkflow
+	for _, step := range steps {
+		if step.Position > currentPosition {
+			return step, nil
+		}
+	}
+
+	return nil, nil // No next step found (current step is the last one)
+}
+
+// GetWorkflowAgentProfileID returns the default agent profile ID for a workflow.
+func (s *WorkflowStepService) GetWorkflowAgentProfileID(ctx context.Context, workflowID string) (string, error) {
+	wf, err := s.workflowProvider.GetWorkflow(ctx, workflowID)
+	if err != nil {
+		return "", err
+	}
+	return wf.AgentProfileID, nil
+}
+
+// GetPreviousStepByPosition returns the previous step before the given position for a workflow.
+// Returns nil if there is no previous step (i.e., current step is the first one).
+func (s *WorkflowStepService) GetPreviousStepByPosition(ctx context.Context, workflowID string, currentPosition int) (*taskmodels.WorkflowStep, error) {
+	steps, err := s.repo.ListStepsByWorkflow(ctx, workflowID)
+	if err != nil {
+		s.logger.Error("failed to list steps for previous step lookup",
+			zap.String("workflow_id", workflowID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	// Steps are ordered by position ascending. Walk backwards to find the step just before current.
+	var prev *taskmodels.WorkflowStep
+	for _, step := range steps {
+		if step.Position >= currentPosition {
+			break
+		}
+		prev = step
+	}
+
+	return prev, nil
+}
+
+// CreateStepsFromTemplate creates workflow steps for a workflow from a template.
+func (s *WorkflowStepService) CreateStepsFromTemplate(ctx context.Context, workflowID, templateID string) error {
+	template, err := s.repo.GetTemplate(ctx, templateID)
+	if err != nil {
+		s.logger.Error("failed to get template for step creation",
+			zap.String("template_id", templateID),
+			zap.Error(err))
+		return fmt.Errorf("failed to get template: %w", err)
+	}
+
+	// Build mapping from template step ID to new UUID
+	idMap := make(map[string]string, len(template.Steps))
+	for _, stepDef := range template.Steps {
+		idMap[stepDef.ID] = uuid.New().String()
+	}
+
+	// Create each step from the template, remapping step_id references in events
+	for _, stepDef := range template.Steps {
+		events := taskmodels.RemapStepEvents(stepDef.Events, idMap)
+		step := &taskmodels.WorkflowStep{
+			ID:                    idMap[stepDef.ID],
+			WorkflowID:            workflowID,
+			Name:                  stepDef.Name,
+			Position:              stepDef.Position,
+			Color:                 stepDef.Color,
+			Prompt:                stepDef.Prompt,
+			Events:                events,
+			AllowManualMove:       stepDef.AllowManualMove,
+			IsStartStep:           stepDef.IsStartStep,
+			ShowInCommandPanel:    stepDef.ShowInCommandPanel,
+			AutoArchiveAfterHours: stepDef.AutoArchiveAfterHours,
+			AgentProfileID:        stepDef.AgentProfileID,
+			StageType:             stepDef.StageType,
+		}
+
+		if err := s.repo.CreateStep(ctx, step); err != nil {
+			s.logger.Error("failed to create step from template",
+				zap.String("workflow_id", workflowID),
+				zap.String("step_name", step.Name),
+				zap.Error(err))
+			return fmt.Errorf("failed to create step %s: %w", step.Name, err)
+		}
+	}
+
+	s.logger.Info("created workflow steps from template",
+		zap.String("workflow_id", workflowID),
+		zap.String("template_id", templateID),
+		zap.Int("step_count", len(template.Steps)))
+
+	return nil
+}
+
+// ResolveStartStep resolves which step a task should start in for a workflow.
+// Fallback chain: is_start_step=true → first step by position.
+func (s *WorkflowStepService) ResolveStartStep(ctx context.Context, workflowID string) (*taskmodels.WorkflowStep, error) {
+	startStep, err := s.repo.GetStartStep(ctx, workflowID)
+	if err != nil {
+		s.logger.Error("failed to get start step", zap.String("workflow_id", workflowID), zap.Error(err))
+		return nil, err
+	}
+	if startStep != nil {
+		return startStep, nil
+	}
+
+	// Fallback: first step by position
+	return s.ResolveFirstStep(ctx, workflowID)
+}
+
+// ResolveFirstStep always returns the first step by position, ignoring is_start_step.
+func (s *WorkflowStepService) ResolveFirstStep(ctx context.Context, workflowID string) (*taskmodels.WorkflowStep, error) {
+	steps, err := s.repo.ListStepsByWorkflow(ctx, workflowID)
+	if err != nil {
+		s.logger.Error("failed to list steps for first step resolution", zap.String("workflow_id", workflowID), zap.Error(err))
+		return nil, err
+	}
+	if len(steps) == 0 {
+		return nil, fmt.Errorf("workflow %s has no steps", workflowID)
+	}
+	return steps[0], nil
+}
+
+// CreateStep creates a new workflow step.
+func (s *WorkflowStepService) CreateStep(ctx context.Context, step *taskmodels.WorkflowStep) error {
+	step.ID = uuid.New().String()
+	if err := s.repo.CreateStep(ctx, step); err != nil {
+		s.logger.Error("failed to create step", zap.String("workflow_id", step.WorkflowID), zap.Error(err))
+		return err
+	}
+	s.logger.Info("created workflow step", zap.String("step_id", step.ID), zap.String("workflow_id", step.WorkflowID))
+	return nil
+}
+
+// UpdateStep updates an existing workflow step.
+func (s *WorkflowStepService) UpdateStep(ctx context.Context, step *taskmodels.WorkflowStep) error {
+	// If marking as start step, clear the flag on all other steps first
+	if step.IsStartStep {
+		if err := s.repo.ClearStartStepFlag(ctx, step.WorkflowID, step.ID); err != nil {
+			s.logger.Error("failed to clear start step flag", zap.String("workflow_id", step.WorkflowID), zap.Error(err))
+			return err
+		}
+	}
+	if err := s.repo.UpdateStep(ctx, step); err != nil {
+		s.logger.Error("failed to update step", zap.String("step_id", step.ID), zap.Error(err))
+		return err
+	}
+	s.logger.Info("updated workflow step", zap.String("step_id", step.ID))
+	return nil
+}
+
+// DeleteStep deletes a workflow step and clears any references to it from other steps.
+func (s *WorkflowStepService) DeleteStep(ctx context.Context, stepID string) error {
+	// First, get the step to find its workflow ID
+	step, err := s.repo.GetStep(ctx, stepID)
+	if err != nil {
+		s.logger.Error("failed to get step for deletion", zap.String("step_id", stepID), zap.Error(err))
+		return err
+	}
+
+	// Clear any move_to_step references to this step
+	if err := s.repo.ClearStepReferences(ctx, step.WorkflowID, stepID); err != nil {
+		s.logger.Error("failed to clear step references",
+			zap.String("step_id", stepID),
+			zap.String("workflow_id", step.WorkflowID),
+			zap.Error(err))
+		return err
+	}
+
+	// Now delete the step
+	if err := s.repo.DeleteStep(ctx, stepID); err != nil {
+		s.logger.Error("failed to delete step", zap.String("step_id", stepID), zap.Error(err))
+		return err
+	}
+
+	s.logger.Info("deleted workflow step and cleared references",
+		zap.String("step_id", stepID),
+		zap.String("workflow_id", step.WorkflowID))
+	return nil
+}
+
+// ReorderSteps reorders workflow steps for a workflow.
+func (s *WorkflowStepService) ReorderSteps(ctx context.Context, workflowID string, stepIDs []string) error {
+	for i, stepID := range stepIDs {
+		step, err := s.repo.GetStep(ctx, stepID)
+		if err != nil {
+			s.logger.Error("failed to get step for reorder", zap.String("step_id", stepID), zap.Error(err))
+			return err
+		}
+		step.Position = i
+		if err := s.repo.UpdateStep(ctx, step); err != nil {
+			s.logger.Error("failed to update step position", zap.String("step_id", stepID), zap.Error(err))
+			return err
+		}
+	}
+	s.logger.Info("reordered workflow steps", zap.String("workflow_id", workflowID), zap.Int("count", len(stepIDs)))
+	return nil
+}
+
+// ============================================================================
+// History Operations
+// ============================================================================
+
+// CreateStepTransition creates a new step transition history entry.
+func (s *WorkflowStepService) CreateStepTransition(ctx context.Context, sessionID string, fromStepID, toStepID string, trigger taskmodels.StepTransitionTrigger, actorID *string) error {
+	history := &taskmodels.SessionStepHistory{
+		SessionID: sessionID,
+		ToStepID:  toStepID,
+		Trigger:   trigger,
+		ActorID:   actorID,
+	}
+
+	if fromStepID != "" {
+		history.FromStepID = &fromStepID
+	}
+
+	if err := s.repo.CreateHistory(ctx, history); err != nil {
+		s.logger.Error("failed to create step transition",
+			zap.String("session_id", sessionID),
+			zap.String("to_step_id", toStepID),
+			zap.Error(err))
+		return err
+	}
+
+	s.logger.Info("step transition recorded",
+		zap.String("session_id", sessionID),
+		zap.Stringp("from_step_id", history.FromStepID),
+		zap.String("to_step_id", toStepID),
+		zap.String("trigger", string(trigger)))
+
+	return nil
+}
+
+// ListHistoryBySession returns all step history entries for a session.
+func (s *WorkflowStepService) ListHistoryBySession(ctx context.Context, sessionID string) ([]*taskmodels.SessionStepHistory, error) {
+	history, err := s.repo.ListHistoryBySession(ctx, sessionID)
+	if err != nil {
+		s.logger.Error("failed to list history by session", zap.String("session_id", sessionID), zap.Error(err))
+		return nil, err
+	}
+	return history, nil
+}
+
+// ============================================================================
+// Export/Import Operations
+// ============================================================================
+
+// ImportResult holds the outcome of an import operation.
+type ImportResult struct {
+	Created []string `json:"created"`
+	Skipped []string `json:"skipped"`
+}
+
+// ExportWorkflow exports a single workflow with its steps as portable JSON.
+func (s *WorkflowStepService) ExportWorkflow(ctx context.Context, workflowID string) (*taskmodels.WorkflowExport, error) {
+	wf, err := s.workflowProvider.GetWorkflow(ctx, workflowID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get workflow: %w", err)
+	}
+	steps, err := s.repo.ListStepsByWorkflow(ctx, workflowID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list steps: %w", err)
+	}
+	stepMap := map[string][]*taskmodels.WorkflowStep{wf.ID: steps}
+	return taskmodels.BuildWorkflowExport([]*taskmodels.Workflow{wf}, stepMap, s.resolveProfile), nil
+}
+
+// ExportWorkflows exports workflows for a workspace. When workflowIDs is nil,
+// every (non-hidden) workflow is exported (back-compat). When workflowIDs is
+// non-nil, only workflows whose ID is in the set are exported — an empty set
+// exports nothing. Filtering is by ID membership only: the backend MUST NOT
+// branch on a workflow's style (see internal/workflow/models/phase2.go), so the
+// frontend decides which workflows (e.g. kanban-only) to include and passes
+// their IDs.
+//
+// Hidden/system workflows (e.g. improve-kandev) are only listed when the caller
+// passes explicit IDs; the back-compat "export everything" path leaves them out
+// so a bare GET of the export endpoint can't leak system flows.
+func (s *WorkflowStepService) ExportWorkflows(ctx context.Context, workspaceID string, workflowIDs []string) (*taskmodels.WorkflowExport, error) {
+	includeHidden := workflowIDs != nil
+	workflows, err := s.workflowProvider.ListWorkflows(ctx, workspaceID, includeHidden)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list workflows: %w", err)
+	}
+	if workflowIDs != nil {
+		workflows = filterWorkflowsByID(workflows, workflowIDs)
+	}
+	stepMap := make(map[string][]*taskmodels.WorkflowStep, len(workflows))
+	for _, wf := range workflows {
+		steps, stepsErr := s.repo.ListStepsByWorkflow(ctx, wf.ID)
+		if stepsErr != nil {
+			return nil, fmt.Errorf("failed to list steps for workflow %s: %w", wf.ID, stepsErr)
+		}
+		stepMap[wf.ID] = steps
+	}
+	return taskmodels.BuildWorkflowExport(workflows, stepMap, s.resolveProfile), nil
+}
+
+// filterWorkflowsByID returns the subset of workflows whose ID is in ids,
+// preserving the input order.
+func filterWorkflowsByID(workflows []*taskmodels.Workflow, ids []string) []*taskmodels.Workflow {
+	want := make(map[string]bool, len(ids))
+	for _, id := range ids {
+		want[id] = true
+	}
+	filtered := make([]*taskmodels.Workflow, 0, len(workflows))
+	for _, wf := range workflows {
+		if want[wf.ID] {
+			filtered = append(filtered, wf)
+		}
+	}
+	return filtered
+}
+
+// ImportWorkflows imports workflows into a workspace. Deduplicates by name.
+func (s *WorkflowStepService) ImportWorkflows(ctx context.Context, workspaceID string, export *taskmodels.WorkflowExport) (*ImportResult, error) {
+	if err := export.Validate(); err != nil {
+		return nil, fmt.Errorf("invalid export data: %w", err)
+	}
+
+	existing, err := s.workflowProvider.ListWorkflows(ctx, workspaceID, true)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list existing workflows: %w", err)
+	}
+	existingNames := make(map[string]bool, len(existing))
+	for _, wf := range existing {
+		existingNames[wf.Name] = true
+	}
+
+	result := &ImportResult{}
+	for _, pw := range export.Workflows {
+		if existingNames[pw.Name] {
+			result.Skipped = append(result.Skipped, pw.Name)
+			continue
+		}
+		if err := s.importSingleWorkflow(ctx, workspaceID, pw); err != nil {
+			return nil, fmt.Errorf("failed to import workflow %q: %w", pw.Name, err)
+		}
+		result.Created = append(result.Created, pw.Name)
+	}
+
+	s.logger.Info("imported workflows",
+		zap.String("workspace_id", workspaceID),
+		zap.Int("created", len(result.Created)),
+		zap.Int("skipped", len(result.Skipped)))
+	return result, nil
+}
+
+func (s *WorkflowStepService) importSingleWorkflow(ctx context.Context, workspaceID string, pw taskmodels.WorkflowPortable) error {
+	wf, err := s.workflowProvider.CreateWorkflow(ctx, workspaceID, pw.Name, pw.Description)
+	if err != nil {
+		return fmt.Errorf("create workflow: %w", err)
+	}
+
+	// Match workflow-level agent profile if present.
+	if pw.AgentProfile != nil && s.matchProfile != nil {
+		if profileID := s.matchProfile(pw.AgentProfile.AgentName, pw.AgentProfile.Model, pw.AgentProfile.Mode); profileID != "" {
+			wf.AgentProfileID = profileID
+			if err := s.workflowProvider.UpdateWorkflow(ctx, wf); err != nil {
+				return fmt.Errorf("set workflow agent profile: %w", err)
+			}
+		}
+	}
+
+	// Generate UUIDs for all steps and build position→ID map.
+	posToID := make(map[int]string, len(pw.Steps))
+	for _, sp := range pw.Steps {
+		posToID[sp.Position] = uuid.New().String()
+	}
+
+	// Create each step with remapped events.
+	for _, sp := range pw.Steps {
+		step := &taskmodels.WorkflowStep{
+			ID:                        posToID[sp.Position],
+			WorkflowID:                wf.ID,
+			Name:                      sp.Name,
+			Position:                  sp.Position,
+			Color:                     sp.Color,
+			Prompt:                    sp.Prompt,
+			Events:                    taskmodels.ConvertPositionToStepID(sp.Events, posToID),
+			IsStartStep:               sp.IsStartStep,
+			ShowInCommandPanel:        sp.ShowInCommandPanel,
+			AllowManualMove:           sp.AllowManualMove,
+			AutoArchiveAfterHours:     sp.AutoArchiveAfterHours,
+			AutoAdvanceRequiresSignal: sp.AutoAdvanceRequiresSignal,
+		}
+		// Match step-level agent profile if present.
+		if sp.AgentProfile != nil && s.matchProfile != nil {
+			step.AgentProfileID = s.matchProfile(sp.AgentProfile.AgentName, sp.AgentProfile.Model, sp.AgentProfile.Mode)
+		}
+		if err := s.repo.CreateStep(ctx, step); err != nil {
+			return fmt.Errorf("create step %q: %w", sp.Name, err)
+		}
+	}
+	return nil
+}

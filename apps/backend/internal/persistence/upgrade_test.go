@@ -8,8 +8,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // seedV0DB creates a file-backed SQLite DB with a minimal v0-style schema

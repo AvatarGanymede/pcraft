@@ -1,7 +1,7 @@
 "use client";
 
 import { IconMessageCircle } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { KeyboardShortcutTooltip } from "@/components/keyboard-shortcut-tooltip";
 import { getShortcut } from "@/lib/keyboard/shortcut-overrides";
 import { useQuickChatLauncher } from "@/hooks/use-quick-chat-launcher";

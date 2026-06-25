@@ -11,11 +11,11 @@ import {
   IconTrash,
   IconPaperclip,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -23,7 +23,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@kandev/ui/breadcrumb";
+} from "@pcraft/ui/breadcrumb";
 import { useAppStore } from "@/components/state-provider";
 import { selectLiveSessionForTask } from "@/lib/state/slices/session/selectors";
 import { TaskProperties } from "./task-properties";

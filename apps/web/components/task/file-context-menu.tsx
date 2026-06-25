@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Input } from "@kandev/ui/input";
+import { Input } from "@pcraft/ui/input";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import {
   AlertDialog,
@@ -12,14 +12,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
+} from "@pcraft/ui/alert-dialog";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
   ContextMenuSeparator,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/toast-provider";
 import type { FileTreeNode } from "@/lib/types/backend";

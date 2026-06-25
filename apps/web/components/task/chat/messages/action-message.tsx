@@ -12,8 +12,8 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useArchiveAndSwitchTask } from "@/hooks/use-task-actions";

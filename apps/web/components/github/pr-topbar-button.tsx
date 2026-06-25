@@ -9,9 +9,9 @@ import {
   IconChevronDown,
   IconAlertTriangle,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverAnchor, PopoverContent } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverAnchor, PopoverContent } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useDockviewStore } from "@/lib/state/dockview-store";
 import { useTaskPR } from "@/hooks/domains/github/use-task-pr";
 import { useHoverPopover } from "@/hooks/domains/github/use-hover-popover";

@@ -9,11 +9,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 )
 
 var (
@@ -29,7 +29,7 @@ const (
 	createdByAgent             = "agent"
 	createdByUser              = "user"
 	defaultCoalesceWindow      = 5 * time.Minute
-	coalesceWindowEnvVar       = "KANDEV_PLAN_COALESCE_WINDOW_MS"
+	coalesceWindowEnvVar       = "PCRAFT_PLAN_COALESCE_WINDOW_MS"
 	defaultAgentAuthorFallback = "Agent"
 	defaultUserAuthorFallback  = "User"
 )

@@ -8,13 +8,13 @@ import {
   IconArrowUp,
 } from "@tabler/icons-react";
 
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { timeAgo } from "@/lib/utils/time";
 
 export type CommitItem = {

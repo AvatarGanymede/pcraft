@@ -3,8 +3,8 @@ package dashboard
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // RoutingConfigResponse is the GET /workspaces/:wsId/routing payload.

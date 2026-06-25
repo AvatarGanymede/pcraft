@@ -2,8 +2,8 @@
 
 import { IconChevronRight } from "@tabler/icons-react";
 import type { Icon as TablerIcon } from "@tabler/icons-react";
-import { Collapsible, CollapsibleContent } from "@kandev/ui/collapsible";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Collapsible, CollapsibleContent } from "@pcraft/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { cn } from "@/lib/utils";
 

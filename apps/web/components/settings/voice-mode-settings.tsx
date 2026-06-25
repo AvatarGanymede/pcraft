@@ -2,10 +2,10 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { IconAlertTriangle, IconMicrophone } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { RadioGroup, RadioGroupItem } from "@kandev/ui/radio-group";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { RadioGroup, RadioGroupItem } from "@pcraft/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -14,8 +14,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@kandev/ui/select";
-import { Switch } from "@kandev/ui/switch";
+} from "@pcraft/ui/select";
+import { Switch } from "@pcraft/ui/switch";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useToast } from "@/components/toast-provider";
 import { updateUserSettings } from "@/lib/api";

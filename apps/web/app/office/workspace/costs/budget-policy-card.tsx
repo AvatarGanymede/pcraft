@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import { IconTrash } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { BudgetPolicy } from "@/lib/state/slices/office/types";
 import { cn, formatDollars } from "@/lib/utils";
 

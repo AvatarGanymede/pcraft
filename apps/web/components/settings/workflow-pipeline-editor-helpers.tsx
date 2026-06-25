@@ -1,7 +1,7 @@
 "use client";
 
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { WorkflowStep } from "@/lib/types/http";
 
 export function HelpTip({

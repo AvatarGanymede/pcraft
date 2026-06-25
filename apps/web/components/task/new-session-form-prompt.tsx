@@ -1,7 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
-import { Textarea } from "@kandev/ui/textarea";
+import { Textarea } from "@pcraft/ui/textarea";
 import { IconLoader2 } from "@tabler/icons-react";
 import { EnhancePromptButton } from "@/components/enhance-prompt-button";
 import { ContextZone } from "./chat/context-items/context-zone";

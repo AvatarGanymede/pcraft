@@ -3,11 +3,11 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import { toast } from "sonner";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
-import { Separator } from "@kandev/ui/separator";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
+import { Separator } from "@pcraft/ui/separator";
 import { IconTrash } from "@tabler/icons-react";
 import { useAutomations } from "@/hooks/domains/settings/use-automations";
 import {

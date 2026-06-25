@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // WorkspaceCleaner is the disk-cleanup surface evaluateWorkspaceGroupCleanup

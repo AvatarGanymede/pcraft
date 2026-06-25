@@ -1,7 +1,7 @@
 "use client";
 
 import { IconGitPullRequest, IconLoader2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 export function MobilePRBranchSummary({
   displayBranch,

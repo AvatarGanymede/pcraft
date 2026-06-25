@@ -11,16 +11,16 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/events/bus"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/worktree"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // MockEventBus implements bus.EventBus for testing

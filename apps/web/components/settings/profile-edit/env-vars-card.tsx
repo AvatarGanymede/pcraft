@@ -2,11 +2,11 @@
 
 import { useCallback, useId, useState } from "react";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import type { ProfileEnvVar } from "@/lib/types/http";
 
 export type EnvVarRow = {

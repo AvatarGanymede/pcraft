@@ -2,8 +2,8 @@
 package executor
 
 import (
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Name identifies the execution backend. It aliases agentruntime.Runtime
@@ -12,31 +12,15 @@ import (
 type Name = agentruntime.Runtime
 
 const (
-	NameUnknown      Name = ""
-	NameDocker            = agentruntime.RuntimeDocker
-	NameStandalone        = agentruntime.RuntimeStandalone
-	NameLocal        Name = "local"
-	NameRemoteDocker      = agentruntime.RuntimeRemoteDocker
-	NameSprites           = agentruntime.RuntimeSprites
-	NameSSH               = agentruntime.RuntimeSSH
+	NameUnknown   Name = ""
+	NameStandalone     = agentruntime.RuntimeStandalone
+	NameLocal     Name = "local"
 )
 
 // ExecutorTypeToBackend maps an ExecutorType to its corresponding executor Name.
 func ExecutorTypeToBackend(execType models.ExecutorType) Name {
 	switch execType {
-	case models.ExecutorTypeLocal:
-		return NameStandalone
-	case models.ExecutorTypeWorktree:
-		return NameStandalone
-	case models.ExecutorTypeLocalDocker:
-		return NameDocker
-	case models.ExecutorTypeRemoteDocker:
-		return NameRemoteDocker
-	case models.ExecutorTypeSprites:
-		return NameSprites
-	case models.ExecutorTypeSSH:
-		return NameSSH
-	case models.ExecutorTypeMockRemote:
+	case models.ExecutorTypeLocal, models.ExecutorTypeWorktree, models.ExecutorTypeMockRemote:
 		return NameStandalone
 	default:
 		return NameStandalone

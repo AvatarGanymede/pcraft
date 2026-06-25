@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	EnvSupervisorSocket   = "KANDEV_SUPERVISOR_SOCKET"
-	EnvSupervisorManifest = "KANDEV_SUPERVISOR_MANIFEST"
-	EnvRestartAdapter     = "KANDEV_RESTART_ADAPTER"
+	EnvSupervisorSocket   = "PCRAFT_SUPERVISOR_SOCKET"
+	EnvSupervisorManifest = "PCRAFT_SUPERVISOR_MANIFEST"
+	EnvRestartAdapter     = "PCRAFT_RESTART_ADAPTER"
 
 	controlTimeout = 2 * time.Second
 )

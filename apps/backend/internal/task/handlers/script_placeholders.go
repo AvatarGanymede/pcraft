@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/kandev/kandev/internal/scriptengine"
+import "github.com/AvatarGanymede/pcraft/internal/scriptengine"
 
 // ScriptPlaceholder describes a template variable available in prepare/cleanup scripts.
 //

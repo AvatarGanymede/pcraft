@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
-import { ScrollOnOverflow } from "@kandev/ui/scroll-on-overflow";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { ScrollOnOverflow } from "@pcraft/ui/scroll-on-overflow";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   IconDeviceFloppy,
   IconLoader2,

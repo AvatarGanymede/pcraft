@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import {
   fetchSystemMetricsSettings,

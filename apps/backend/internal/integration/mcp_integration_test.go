@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	mcphandlers "github.com/kandev/kandev/internal/mcp/handlers"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	mcphandlers "github.com/AvatarGanymede/pcraft/internal/mcp/handlers"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // setupMCPTestServer creates a test server with MCP handlers registered

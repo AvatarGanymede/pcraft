@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@kandev/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@pcraft/ui/dialog";
 import { cn } from "@/lib/utils";
 
 type ImagePreviewDialogProps = {

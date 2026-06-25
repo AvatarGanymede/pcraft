@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import type { DialogFormState, TaskRemoteRepoRow } from "./task-create-dialog-types";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 // The chips-row now owns the single `useAccessibleRepos()` call. Stub it so
 // these tests don't hit the network layer; the chip stub below ignores the

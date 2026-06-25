@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

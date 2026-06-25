@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 )
 
 // repoTurnService is a minimal TurnService used by lifecycle tests. It mirrors

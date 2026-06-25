@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { IconAlertTriangle, IconCopy, IconExternalLink } from "@tabler/icons-react";
 
-import { Alert, AlertDescription } from "@kandev/ui/alert";
-import { Button } from "@kandev/ui/button";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 
 import {
   createShare,

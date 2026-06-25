@@ -9,13 +9,13 @@ import (
 
 	"go.uber.org/zap"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 const (

@@ -10,10 +10,10 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/workflow/controller"
-	"github.com/kandev/kandev/internal/workflow/models"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/controller"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // Handlers manages workflow HTTP and WebSocket handlers

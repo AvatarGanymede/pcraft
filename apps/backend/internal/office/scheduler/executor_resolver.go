@@ -3,7 +3,7 @@ package scheduler
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 // ExecutorConfig represents resolved executor configuration.

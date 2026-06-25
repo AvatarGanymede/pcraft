@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 func TestGetWorkspaceRouting_DefaultOnEmpty(t *testing.T) {

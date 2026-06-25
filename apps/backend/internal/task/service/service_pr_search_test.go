@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // fakePRResolver is a stand-in for the github service in PR-number search tests.

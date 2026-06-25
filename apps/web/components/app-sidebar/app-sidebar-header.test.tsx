@@ -1,5 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const state = {

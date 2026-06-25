@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // Concurrency policy values stored on office_routines.concurrency_policy.

@@ -7,8 +7,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/testutil"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/testutil"
 )
 
 func TestStoreSaveAndGet(t *testing.T) {

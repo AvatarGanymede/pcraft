@@ -8,11 +8,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // branchMaterializerRepo is the slim repo surface the mid-session worktree

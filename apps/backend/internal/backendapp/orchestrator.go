@@ -13,28 +13,28 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/events/bus"
-	githubpkg "github.com/kandev/kandev/internal/github"
-	jirapkg "github.com/kandev/kandev/internal/jira"
-	linearpkg "github.com/kandev/kandev/internal/linear"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/repoclone"
-	"github.com/kandev/kandev/internal/secrets"
-	sentrypkg "github.com/kandev/kandev/internal/sentry"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	userservice "github.com/kandev/kandev/internal/user/service"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	workflowservice "github.com/kandev/kandev/internal/workflow/service"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	githubpkg "github.com/AvatarGanymede/pcraft/internal/github"
+	jirapkg "github.com/AvatarGanymede/pcraft/internal/jira"
+	linearpkg "github.com/AvatarGanymede/pcraft/internal/linear"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/repoclone"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	sentrypkg "github.com/AvatarGanymede/pcraft/internal/sentry"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	userservice "github.com/AvatarGanymede/pcraft/internal/user/service"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	workflowservice "github.com/AvatarGanymede/pcraft/internal/workflow/service"
 )
 
 const defaultEventNamespace = "default"
@@ -142,18 +142,18 @@ func provideOrchestrator(
 	return orchestratorSvc, msgCreator, nil
 }
 
-// resolveQueueMaxPerSession honors the KANDEV_QUEUE_MAX_PER_SESSION env var,
+// resolveQueueMaxPerSession honors the PCRAFT_QUEUE_MAX_PER_SESSION env var,
 // falling back to messagequeue.DefaultMaxPerSession (10) when unset or invalid.
 // Values <= 0 disable the cap entirely (callers can still flood queues — only
 // useful in tests / specialized deployments).
 func resolveQueueMaxPerSession(log *logger.Logger) int {
-	raw := strings.TrimSpace(os.Getenv("KANDEV_QUEUE_MAX_PER_SESSION"))
+	raw := strings.TrimSpace(os.Getenv("PCRAFT_QUEUE_MAX_PER_SESSION"))
 	if raw == "" {
 		return messagequeue.DefaultMaxPerSession
 	}
 	n, err := strconv.Atoi(raw)
 	if err != nil {
-		log.Warn("KANDEV_QUEUE_MAX_PER_SESSION is not a number, using default",
+		log.Warn("PCRAFT_QUEUE_MAX_PER_SESSION is not a number, using default",
 			zap.String("value", raw),
 			zap.Int("default", messagequeue.DefaultMaxPerSession))
 		return messagequeue.DefaultMaxPerSession

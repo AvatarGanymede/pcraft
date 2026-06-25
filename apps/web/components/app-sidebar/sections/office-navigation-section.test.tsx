@@ -29,7 +29,7 @@ vi.mock("@/lib/routing/client-router", () => ({
   usePathname: () => pathname,
 }));
 
-vi.mock("@kandev/ui/collapsible", () => ({
+vi.mock("@pcraft/ui/collapsible", () => ({
   Collapsible: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   CollapsibleContent: ({
     children,

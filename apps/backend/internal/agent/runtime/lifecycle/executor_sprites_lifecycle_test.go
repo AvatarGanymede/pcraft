@@ -6,7 +6,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 // mockSecretStore implements secrets.SecretStore for testing resolveTokenFromMetadata.

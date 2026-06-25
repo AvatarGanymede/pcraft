@@ -6,8 +6,8 @@ import (
 
 	"go.uber.org/zap"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/common/logger"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // MetadataKeySkillManifestJSON mirrors lifecycle.MetadataKeySkillManifestJSON
@@ -24,7 +24,7 @@ const MetadataKeySkillManifestJSON = "skill_manifest_json"
 type Config struct {
 	Logger *logger.Logger
 
-	// BasePath is the kandev home directory (typically ~/.kandev).
+	// BasePath is the kandev home directory (typically ~/.pcraft).
 	// Files are written under <BasePath>/runtime/...
 	BasePath string
 

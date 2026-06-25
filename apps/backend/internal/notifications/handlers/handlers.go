@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/notifications/controller"
-	"github.com/kandev/kandev/internal/notifications/dto"
-	"github.com/kandev/kandev/internal/notifications/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/controller"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/dto"
+	"github.com/AvatarGanymede/pcraft/internal/notifications/service"
 	"go.uber.org/zap"
 )
 

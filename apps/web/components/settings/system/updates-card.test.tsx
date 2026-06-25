@@ -17,9 +17,9 @@ vi.mock("@/hooks/domains/system/use-self-update", () => ({
   useSelfUpdate: mocks.useSelfUpdate,
 }));
 
-// The @kandev/ui Spinner source trips the classic JSX runtime under vitest;
+// The @pcraft/ui Spinner source trips the classic JSX runtime under vitest;
 // stub it so the card (and progress block) can render in jsdom.
-vi.mock("@kandev/ui/spinner", () => ({
+vi.mock("@pcraft/ui/spinner", () => ({
   Spinner: () => null,
 }));
 

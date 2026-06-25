@@ -9,8 +9,8 @@ import (
 	gorillaws "github.com/gorilla/websocket"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 var upgrader = gorillaws.Upgrader{

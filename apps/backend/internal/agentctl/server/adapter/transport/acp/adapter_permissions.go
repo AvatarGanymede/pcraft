@@ -3,7 +3,7 @@ package acp
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 	"go.uber.org/zap"
 )
 

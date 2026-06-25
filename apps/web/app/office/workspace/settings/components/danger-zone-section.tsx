@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconTrash } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import {
   deleteWorkspace,
   getWorkspaceDeletionSummary,

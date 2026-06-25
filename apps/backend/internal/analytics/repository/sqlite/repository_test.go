@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 )
 
 // createTestDB sets up a SQLite database with all required schemas for analytics queries.

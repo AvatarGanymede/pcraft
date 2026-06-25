@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { Label } from "@kandev/ui/label";
+import { Label } from "@pcraft/ui/label";
 import { cn } from "@/lib/utils";
 
 export function RequiredFieldLabel({

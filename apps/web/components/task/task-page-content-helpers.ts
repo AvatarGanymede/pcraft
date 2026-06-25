@@ -90,7 +90,7 @@ export function deriveIsAgentWorking(
 ): boolean {
   if (taskSessionState !== null)
     return taskSessionState === "STARTING" || taskSessionState === "RUNNING";
-  return isAgentRunning && (taskState === "IN_PROGRESS" || taskState === "SCHEDULING");
+  return isAgentRunning && (taskState === "IN_PROGRESS" || taskState === "BACKLOG");
 }
 
 export function buildArchivedValue(task: Task | null, repository: Repository | null) {

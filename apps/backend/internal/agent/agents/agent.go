@@ -9,10 +9,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // ErrNotSupported is returned when an agent does not support an operation.

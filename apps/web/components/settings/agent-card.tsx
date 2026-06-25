@@ -2,8 +2,8 @@
 
 import Link from "@/components/routing/app-link";
 import { IconRobot, IconChevronRight } from "@tabler/icons-react";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
 import type { AgentProfile } from "@/lib/settings/types";
 
 type AgentCardProps = {

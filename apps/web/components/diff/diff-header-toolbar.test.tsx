@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeAll, afterEach } from "vitest";
 import { renderHook, render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import type { ReactElement } from "react";
 
 import { useDiffHeaderToolbar } from "./diff-header-toolbar";

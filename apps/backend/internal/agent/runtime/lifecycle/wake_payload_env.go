@@ -13,11 +13,11 @@ import (
 )
 
 const (
-	envWakePayloadJSON       = "KANDEV_WAKE_PAYLOAD_JSON"
-	envWakePayloadPath       = "KANDEV_WAKE_PAYLOAD_PATH"
+	envWakePayloadJSON       = "PCRAFT_WAKE_PAYLOAD_JSON"
+	envWakePayloadPath       = "PCRAFT_WAKE_PAYLOAD_PATH"
 	envWakePayloadInlineMax  = 64 * 1024
-	wakePayloadDirRel        = ".kandev/wake-payloads"
-	wakePayloadExcludeLine   = ".kandev/wake-payloads/"
+	wakePayloadDirRel        = ".pcraft/wake-payloads"
+	wakePayloadExcludeLine   = ".pcraft/wake-payloads/"
 	defaultWakePayloadFileID = "payload"
 )
 
@@ -26,9 +26,9 @@ func spillLargeWakePayloadEnv(env map[string]string, workspacePath string, log *
 	if payload == "" || len(payload) <= envWakePayloadInlineMax {
 		return nil
 	}
-	fileID := sanitizeWakePayloadFileID(env["KANDEV_RUN_ID"])
+	fileID := sanitizeWakePayloadFileID(env["PCRAFT_RUN_ID"])
 	if fileID == defaultWakePayloadFileID && log != nil {
-		log.Warn("KANDEV_RUN_ID is missing or empty; spill file may collide across runs",
+		log.Warn("PCRAFT_RUN_ID is missing or empty; spill file may collide across runs",
 			zap.String("payload_path", filepath.Join(wakePayloadDirRel, fileID+".json")))
 	}
 	if workspacePath == "" {

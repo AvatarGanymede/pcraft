@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Link from "@/components/routing/app-link";
 import { IconFolder, IconPlus, IconChevronRight } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Separator } from "@kandev/ui/separator";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Separator } from "@pcraft/ui/separator";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import { createWorkspaceAction } from "@/app/actions/workspaces";
 import { useRequest } from "@/lib/http/use-request";
 import { useToast } from "@/components/toast-provider";

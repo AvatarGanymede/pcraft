@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 
 type GitHubPushConfigProps = {
   config: Record<string, unknown>;

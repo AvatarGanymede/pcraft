@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "@/components/routing/app-link";
 import { IconPlus } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { NewTaskDialog } from "@/app/office/components/new-task-dialog";
 import { StatusIcon } from "@/app/office/tasks/[id]/status-icon";
 import type { Task } from "@/app/office/tasks/[id]/types";

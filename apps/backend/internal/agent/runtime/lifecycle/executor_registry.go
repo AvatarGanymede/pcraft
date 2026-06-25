@@ -8,8 +8,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // ErrExecutorNotFound is returned when a runtime doesn't exist in the registry.

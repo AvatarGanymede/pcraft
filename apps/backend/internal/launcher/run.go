@@ -28,7 +28,7 @@ func runInstalled(opts Options) int {
 	}
 
 	logLevel := resolveLogLevel(opts)
-	releaseTag := os.Getenv("KANDEV_VERSION")
+	releaseTag := os.Getenv("PCRAFT_VERSION")
 	if releaseTag == "" {
 		releaseTag = "(" + bundle.Source + ")"
 	}

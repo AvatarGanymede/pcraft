@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useState } from "react";
 import { IconPlus, IconTerminal2, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { stopUserShell } from "@/lib/api/domains/user-shell-api";
 import { shouldConfirmTerminalClose } from "@/lib/terminal/terminal-busy-registry";

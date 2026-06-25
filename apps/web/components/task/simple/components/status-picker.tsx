@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import { cn } from "@/lib/utils";
 import { useOptimisticTaskMutation } from "@/hooks/use-optimistic-task-mutation";
 import { ApiError } from "@/lib/api/client";

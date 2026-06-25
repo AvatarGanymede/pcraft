@@ -1,8 +1,8 @@
 "use client";
 
 import { IconPlus, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
 import type { KeyValue } from "@/lib/settings/types";
 import { generateUUID } from "@/lib/utils";
 

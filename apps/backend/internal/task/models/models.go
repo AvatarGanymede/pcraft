@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/sysprompt"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // ErrExecutorRunningNotFound is returned when no executor running record exists for a session.
@@ -350,6 +350,10 @@ type Task struct {
 	// tasks always come back false. UI callers gate office-only surfaces on
 	// this (e.g. the "Open in office view" topbar link).
 	IsFromOffice bool `json:"is_from_office,omitempty"`
+	// P4 integration fields (pcraft slim build).
+		P4WorkspaceID   string `json:"p4_workspace_id,omitempty"`
+		P4Changelist    string `json:"p4_changelist,omitempty"`
+		BlockedByTaskID string `json:"blocked_by_task_id,omitempty"`
 }
 
 // ChildCompletionRow is the compact active-child projection used to decide
@@ -365,7 +369,7 @@ type ChildCompletionRow struct {
 // is expected from that task.
 func IsTerminalTaskState(state v1.TaskState) bool {
 	switch state {
-	case v1.TaskStateCompleted, v1.TaskStateFailed, v1.TaskStateCancelled:
+	case v1.TaskStateDone, v1.TaskStateClosed:
 		return true
 	default:
 		return false
@@ -794,21 +798,16 @@ type RepositoryScript struct {
 type ExecutorType string
 
 const (
-	ExecutorTypeLocal        ExecutorType = "local"
-	ExecutorTypeWorktree     ExecutorType = "worktree"
-	ExecutorTypeLocalDocker  ExecutorType = "local_docker"
-	ExecutorTypeRemoteDocker ExecutorType = "remote_docker"
-	ExecutorTypeSprites      ExecutorType = "sprites"
-	ExecutorTypeSSH          ExecutorType = "ssh"
-	ExecutorTypeMockRemote   ExecutorType = "mock_remote"
+	ExecutorTypeLocal      ExecutorType = "local"
+	ExecutorTypeWorktree   ExecutorType = "worktree"
+	ExecutorTypeMockRemote ExecutorType = "mock_remote"
 )
 
 // IsRemoteExecutorType reports whether the given executor type represents
-// a remote execution environment (including containerized environments like Docker).
-// These environments run shells inside the container/VM, not on the host.
+// a remote execution environment. Only mock_remote is remote; it is used for testing.
 func IsRemoteExecutorType(t ExecutorType) bool {
 	switch t {
-	case ExecutorTypeSprites, ExecutorTypeRemoteDocker, ExecutorTypeLocalDocker, ExecutorTypeSSH, ExecutorTypeMockRemote:
+	case ExecutorTypeMockRemote:
 		return true
 	default:
 		return false
@@ -824,14 +823,6 @@ func (t ExecutorType) Runtime() agentruntime.Runtime {
 	switch t {
 	case ExecutorTypeLocal, ExecutorTypeWorktree, ExecutorTypeMockRemote:
 		return agentruntime.RuntimeStandalone
-	case ExecutorTypeLocalDocker:
-		return agentruntime.RuntimeDocker
-	case ExecutorTypeRemoteDocker:
-		return agentruntime.RuntimeRemoteDocker
-	case ExecutorTypeSprites:
-		return agentruntime.RuntimeSprites
-	case ExecutorTypeSSH:
-		return agentruntime.RuntimeSSH
 	default:
 		return agentruntime.RuntimeStandalone
 	}
@@ -848,15 +839,14 @@ func IsContainerizedExecutorType(t ExecutorType) bool {
 
 // IsAlwaysResumableRuntime reports whether the given runtime represents
 // an executor that can always be resumed even without an explicit resume token.
+// All supported runtimes are locally-attached and require a resume token.
 func IsAlwaysResumableRuntime(runtime agentruntime.Runtime) bool {
-	return runtime == agentruntime.RuntimeSprites || runtime == agentruntime.RuntimeSSH
+	return false
 }
 
 const (
-	ExecutorIDLocal       = "exec-local"
-	ExecutorIDWorktree    = "exec-worktree"
-	ExecutorIDLocalDocker = "exec-local-docker"
-	ExecutorIDSprites     = "exec-sprites"
+	ExecutorIDLocal    = "exec-local"
+	ExecutorIDWorktree = "exec-worktree"
 )
 
 // ExecutorStatus represents executor availability.
@@ -995,7 +985,7 @@ type TaskEnvironment struct {
 
 	// TaskDirName is the semantic directory name for the task (e.g. "fix-bug_ab12").
 	// Set when the task uses the multi-repo task-directory layout
-	// (~/.kandev/tasks/{TaskDirName}/{RepoName}/).
+	// (~/.pcraft/tasks/{TaskDirName}/{RepoName}/).
 	TaskDirName string `json:"task_dir_name,omitempty"`
 
 	// Repos contains one entry per repository associated with this environment.

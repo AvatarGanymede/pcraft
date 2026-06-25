@@ -8,7 +8,7 @@ import {
   IconGitBranch,
   IconGitPullRequest,
 } from "@tabler/icons-react";
-import { DropdownMenuItem } from "@kandev/ui/dropdown-menu";
+import { DropdownMenuItem } from "@pcraft/ui/dropdown-menu";
 import { prPanelLabel } from "@/components/github/pr-utils";
 import { prTaskKey } from "@/components/github/pr-detail-panel";
 import { useDockviewStore } from "@/lib/state/dockview-store";

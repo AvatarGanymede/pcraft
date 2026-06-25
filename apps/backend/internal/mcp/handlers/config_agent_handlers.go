@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 

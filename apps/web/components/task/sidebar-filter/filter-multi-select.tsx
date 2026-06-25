@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -11,7 +11,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@kandev/ui/command";
+} from "@pcraft/ui/command";
 import { cn } from "@/lib/utils";
 import { buildOptionGroups, hasGroupedOptions } from "./filter-option-groups";
 

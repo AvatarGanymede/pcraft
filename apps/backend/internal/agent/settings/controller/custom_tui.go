@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 var nonAlphanumeric = regexp.MustCompile(`[^a-z0-9]+`)

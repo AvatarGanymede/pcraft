@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // fakeGitHubInfo is a configurable GitHubInfo for unit tests. Each method

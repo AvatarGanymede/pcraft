@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger/buffer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
 )
 
 // bundlePrefix is the temp-dir prefix used by os.MkdirTemp.

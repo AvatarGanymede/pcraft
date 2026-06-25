@@ -1,6 +1,6 @@
 // Package testharness exposes test-only HTTP routes that seed task sessions
 // and messages directly in the database. The routes are gated behind the
-// KANDEV_E2E_MOCK env var and must NOT be enabled in production builds.
+// PCRAFT_E2E_MOCK env var and must NOT be enabled in production builds.
 //
 // They exist so the Playwright suite can drive the live-presence UI without
 // launching a real executor. Each route validates inputs (real task ID
@@ -20,20 +20,20 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/agents"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/agents"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // EnvVar gates registration of the test routes. Must be the literal string
-// "true" to enable — matches the convention used by KANDEV_MOCK_JIRA etc.
-const EnvVar = "KANDEV_E2E_MOCK"
+// "true" to enable — matches the convention used by PCRAFT_MOCK_JIRA etc.
+const EnvVar = "PCRAFT_E2E_MOCK"
 
 // errInvalidJSONPrefix is the shared 400 message for malformed request bodies.
 const errInvalidJSONPrefix = "invalid JSON: "
@@ -48,7 +48,7 @@ func errJSON(c *gin.Context, code int, msg string) {
 	c.JSON(code, gin.H{respKeyError: msg})
 }
 
-// Enabled reports whether KANDEV_E2E_MOCK is set to "true".
+// Enabled reports whether PCRAFT_E2E_MOCK is set to "true".
 func Enabled() bool {
 	return os.Getenv(EnvVar) == "true"
 }
@@ -149,7 +149,7 @@ func seedTaskHandler(repo *sqliterepo.Repository, log *logger.Logger) gin.Handle
 		}
 		state := req.State
 		if state == "" {
-			state = string(v1.TaskStateCreated)
+			state = string(v1.TaskStateBacklog)
 		}
 		task := &models.Task{
 			ID:             uuid.New().String(),

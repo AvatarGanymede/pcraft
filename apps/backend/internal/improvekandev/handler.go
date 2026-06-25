@@ -8,10 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/logger/buffer"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger/buffer"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // remoteResolver resolves a local repo's origin remote into provider/owner/name.
@@ -178,7 +178,7 @@ func (h *Handler) httpBootstrap(c *gin.Context) {
 
 // resolveOrCloneRepo returns the workspace's kandev repository, preferring an
 // existing entry — even one the user added themselves with no provider info —
-// over cloning a managed copy into ~/.kandev/repos. Order:
+// over cloning a managed copy into ~/.pcraft/repos. Order:
 //  1. Match by provider info (workspace + github + kdlbs + kandev).
 //  2. Match by scanning workspace repos whose origin remote resolves to
 //     kdlbs/kandev; backfill provider info on the match.

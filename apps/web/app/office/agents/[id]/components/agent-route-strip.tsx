@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { AgentRoutePreview } from "@/lib/state/slices/office/types";
 import { useAppStore } from "@/components/state-provider";
 import { useAgentRoute } from "@/hooks/domains/office/use-agent-route";

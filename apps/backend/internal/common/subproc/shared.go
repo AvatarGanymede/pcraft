@@ -34,8 +34,8 @@ const (
 	defaultGHMaxConcurrent  = 8
 	defaultGitMaxConcurrent = 12
 
-	ghMaxConcurrentEnv  = "KANDEV_GH_MAX_CONCURRENT"
-	gitMaxConcurrentEnv = "KANDEV_GIT_MAX_CONCURRENT"
+	ghMaxConcurrentEnv  = "PCRAFT_GH_MAX_CONCURRENT"
+	gitMaxConcurrentEnv = "PCRAFT_GIT_MAX_CONCURRENT"
 )
 
 var (

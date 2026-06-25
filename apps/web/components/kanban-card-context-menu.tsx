@@ -1,6 +1,6 @@
 "use client";
 
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@kandev/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@pcraft/ui/context-menu";
 import {
   KanbanCardContextMenuItems,
   type KanbanCardMenuEntry,

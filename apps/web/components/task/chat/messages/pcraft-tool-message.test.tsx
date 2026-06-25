@@ -1,0 +1,434 @@
+import { describe, expect, it } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
+import { PcraftToolMessage, hasPcraftRenderer } from "./pcraft-tool-message";
+import { sessionId as toSessionId, taskId as toTaskId, type Message } from "@/lib/types/http";
+
+// pcraftToolCall constructs the pcraft Message shape produced by the
+// orchestrator for an MCP tool_call. The shape mirrors live production data
+// observed on a real session:
+//   - `metadata.tool_name`    — NOT set
+//   - `metadata.title`        — raw tool name (`mcp__pcraft__list_*_pcraft`)
+//   - `comment.content`       — same raw tool name
+//   - `normalized.generic.name` — the ACP adapter's *category* ("other"),
+//                                 NOT the tool name
+// The matcher must therefore look at title/content, not generic.name —
+// matching on the wrong field is exactly the bug that shipped initially.
+function pcraftToolCall(opts: {
+  toolName: string;
+  input?: Record<string, unknown>;
+  resultJson?: unknown;
+  status?: "pending" | "running" | "complete" | "error";
+}): Message {
+  return {
+    id: "msg-1",
+    session_id: toSessionId("s1"),
+    task_id: toTaskId("t1"),
+    author_type: "agent",
+    content: opts.toolName,
+    type: "tool_call",
+    created_at: "2026-05-21T10:00:00Z",
+    metadata: {
+      tool_call_id: "tc-1",
+      title: opts.toolName,
+      status: opts.status ?? "complete",
+      normalized: {
+        kind: "generic",
+        generic: {
+          name: "other",
+          input: opts.input,
+          output:
+            opts.resultJson !== undefined
+              ? [{ type: "text", text: JSON.stringify(opts.resultJson) }]
+              : undefined,
+        },
+      },
+    },
+  };
+}
+
+describe("hasPcraftRenderer", () => {
+  it("matches a registered pcraft tool", () => {
+    expect(hasPcraftRenderer(pcraftToolCall({ toolName: "mcp__pcraft__list_tasks_pcraft" }))).toBe(
+      true,
+    );
+  });
+
+  it("does not match unrelated tools", () => {
+    expect(hasPcraftRenderer(pcraftToolCall({ toolName: "Edit" }))).toBe(false);
+    expect(hasPcraftRenderer(pcraftToolCall({ toolName: "mcp__github__list_issues" }))).toBe(false);
+  });
+
+  it("does not match pcraft tools with no registered renderer", () => {
+    expect(
+      hasPcraftRenderer(pcraftToolCall({ toolName: "mcp__pcraft__never_heard_of_it_pcraft" })),
+    ).toBe(false);
+  });
+});
+
+// State labels and titles reused across multiple tool-DTOs. Pulled to
+// constants to satisfy the "no duplicate string" lint rule.
+const COMPLETED = "COMPLETED";
+const FIX_LOGIN_BUG = "Fix login bug";
+
+// The expandable row only renders its body when expanded. For tests that
+// need to inspect the body, set status to "running" which auto-expands the
+// row — the same trigger we rely on at runtime to keep an in-progress tool
+// call visible to the user.
+
+describe("PcraftToolMessage list renderers", () => {
+  it("renders the workflow-steps list with structured fields, not raw JSON", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "mcp__pcraft__list_workflow_steps_pcraft",
+          input: { workflow_id: "f058586c-8a32-474b-ac02-eef47c938b41" },
+          resultJson: {
+            steps: [
+              { id: "4aad62c5", name: "Backlog", position: 0, color: "bg-neutral-400" },
+              {
+                id: "step-2",
+                name: "Doing",
+                position: 1,
+                color: "bg-blue-500",
+                is_start_step: true,
+              },
+            ],
+            total: 2,
+          },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: List Workflow Steps");
+    expect(html).toContain("Backlog");
+    expect(html).toContain("Doing");
+    expect(html).toContain("2 steps");
+    // The raw "\n" escape sequences from the broken JSON dump must not be
+    // present any more.
+    expect(html).not.toMatch(/\\n/);
+    expect(html).not.toContain('"steps":');
+  });
+
+  it("renders list_tasks with task state badges", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "list_tasks_pcraft",
+          input: { workflow_id: "wf-1" },
+          resultJson: {
+            tasks: [
+              { id: "t1", title: FIX_LOGIN_BUG, state: COMPLETED },
+              { id: "t2", title: "Add dashboard", state: "RUNNING" },
+            ],
+            total: 2,
+          },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: List Tasks");
+    expect(html).toContain(FIX_LOGIN_BUG);
+    expect(html).toContain("Add dashboard");
+    expect(html).toContain(COMPLETED);
+    expect(html).toContain("RUNNING");
+  });
+
+  it("renders list_workspaces with the count and item names", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+          resultJson: {
+            workspaces: [
+              { id: "w1", name: "Main" },
+              { id: "w2", name: "Side project" },
+            ],
+            total: 2,
+          },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: List Workspaces");
+    expect(html).toContain("2 workspaces");
+    expect(html).toContain("Main");
+    expect(html).toContain("Side project");
+  });
+});
+
+describe("PcraftToolMessage task renderers", () => {
+  it("shows the title argument inline for create_task", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "pcraft/create_task_pcraft",
+          input: { title: FIX_LOGIN_BUG, description: "..." },
+          resultJson: { id: "new-id", title: FIX_LOGIN_BUG, state: "CREATED" },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: Create Task");
+    expect(html).toContain(FIX_LOGIN_BUG);
+    expect(html).toContain("CREATED");
+  });
+
+  it("shows updated fields inline for update_task", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          toolName: "mcp__pcraft__update_task_pcraft",
+          input: { task_id: "t1", state: COMPLETED },
+          resultJson: { id: "t1", title: "Old title", state: COMPLETED },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: Update Task");
+    expect(html).toContain(`state=${COMPLETED}`);
+  });
+});
+
+describe("PcraftToolMessage document & question renderers", () => {
+  it("renders task plan markdown content for get_task_plan", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "mcp__pcraft__get_task_plan_pcraft",
+          input: { task_id: "t1" },
+          resultJson: {
+            id: "p1",
+            task_id: "t1",
+            title: "Migration plan",
+            content: "# Heading\n\nSome **bold** content.",
+          },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: Get Task Plan");
+    expect(html).toContain("Migration plan");
+    // Markdown is rendered through ReactMarkdown so the heading and bold
+    // mark up into proper HTML tags rather than raw text.
+    expect(html).toContain("<h1");
+    expect(html).toContain("<strong>bold</strong>");
+  });
+
+  it("renders ask_user_question with the prompt and options", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "mcp__pcraft__ask_user_question_pcraft",
+          input: {
+            questions: [
+              {
+                id: "q1",
+                prompt: "Which database should we use?",
+                options: [{ label: "Postgres" }, { label: "SQLite" }],
+              },
+            ],
+          },
+          resultJson: {
+            pending_id: "pend-1",
+            responses: { q1: { question_id: "q1", selected: "Postgres" } },
+          },
+        })}
+      />,
+    );
+    expect(html).toContain("Pcraft: Ask User Question");
+    expect(html).toContain("Which database should we use?");
+    expect(html).toContain("Postgres");
+    expect(html).toContain("SQLite");
+  });
+
+  // Regression guard for the array-shape response branch in
+  // matchAnswerForQuestion. Positional arrays come from older backends or
+  // single-question calls; the renderer must match the answer by index.
+  it("renders ask_user_question with positional array responses", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "running",
+          toolName: "mcp__pcraft__ask_user_question_pcraft",
+          input: {
+            questions: [
+              { id: "q1", prompt: "Pick one", options: [{ label: "A" }, { label: "B" }] },
+            ],
+          },
+          resultJson: { responses: [{ question_id: "q1", selected: "A" }] },
+        })}
+      />,
+    );
+    expect(html).toContain("Pick one");
+    // Selected option gets the "default" Badge variant; unselected stays "outline".
+    expect(html).toMatch(/data-variant="default"[^>]*>A<\/span>/);
+  });
+
+  it("does not render anything when the renderer is missing", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({ toolName: "mcp__pcraft__unknown_tool_pcraft" })}
+      />,
+    );
+    expect(html).toBe("");
+  });
+});
+
+// Unset status is treated as pending by parsePermission.
+function pendingPermissionMessage(toolCallId: string): Message {
+  return {
+    id: "perm-1",
+    session_id: toSessionId("s1"),
+    task_id: toTaskId("t1"),
+    author_type: "agent",
+    content: "permission",
+    type: "permission_request",
+    created_at: "2026-05-21T10:00:01Z",
+    metadata: {
+      pending_id: "pend-1",
+      tool_call_id: toolCallId,
+      action_type: "mcp_tool",
+      action_details: {},
+      options: [
+        { option_id: "allow", name: "Allow", kind: "allow_once" },
+        { option_id: "reject", name: "Reject", kind: "reject_once" },
+      ],
+    },
+  };
+}
+
+describe("PcraftToolMessage permission UI", () => {
+  it("renders Approve / Deny buttons when permissionMessage is pending", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={pendingPermissionMessage("tc-1")}
+      />,
+    );
+    expect(html).toContain('data-testid="permission-action-row"');
+    expect(html).toContain('data-testid="permission-approve"');
+    expect(html).toContain('data-testid="permission-reject"');
+  });
+
+  it("does not render permission row when permissionMessage is absent", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "complete",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+      />,
+    );
+    expect(html).not.toContain('data-testid="permission-action-row"');
+    expect(html).not.toContain('data-testid="permission-approve"');
+  });
+
+  it("renders an amber pending clock icon while waiting for approval", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={pendingPermissionMessage("tc-1")}
+      />,
+    );
+    expect(html).toContain("tabler-icon-clock");
+    expect(html).toContain("text-amber");
+  });
+
+  it("hides the result-count summary while pending (no misleading '0 workspaces')", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={pendingPermissionMessage("tc-1")}
+      />,
+    );
+    expect(html).not.toContain("0 workspaces");
+  });
+});
+
+describe("PcraftToolMessage resolved-permission overlay", () => {
+  function resolvedPermissionMessage(toolCallId: string, status: "approved" | "rejected"): Message {
+    const msg = pendingPermissionMessage(toolCallId);
+    return {
+      ...msg,
+      metadata: { ...(msg.metadata as object), status },
+    } as Message;
+  }
+
+  it("drops the amber pending clock once the permission resolves to approved", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
+      />,
+    );
+    expect(html).not.toContain("tabler-icon-clock");
+    expect(html).not.toContain('data-testid="permission-action-row"');
+  });
+
+  it("does NOT mark the tool complete just because the permission was approved", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
+      />,
+    );
+    expect(html).not.toContain("tabler-icon-check");
+  });
+
+  it("still renders an error when the tool_call errors after an approved permission", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "error",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
+      />,
+    );
+    expect(html).toContain("tabler-icon-x");
+  });
+
+  it("shows the result summary once permission resolves even if meta.status still pending", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+          resultJson: { workspaces: [{ id: "w1", name: "Main" }], total: 1 },
+        })}
+        permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
+      />,
+    );
+    expect(html).toContain("1 workspace");
+  });
+
+  it("renders a red X overlay when the permission is rejected", () => {
+    const html = renderToStaticMarkup(
+      <PcraftToolMessage
+        comment={pcraftToolCall({
+          status: "pending",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
+        })}
+        permissionMessage={resolvedPermissionMessage("tc-1", "rejected")}
+      />,
+    );
+    expect(html).toContain("tabler-icon-x");
+    expect(html).toContain("text-red-500");
+    expect(html).not.toContain("tabler-icon-clock");
+  });
+});

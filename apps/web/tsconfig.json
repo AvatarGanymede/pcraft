@@ -16,10 +16,10 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@kandev/ui": ["../packages/ui/src"],
-      "@kandev/ui/*": ["../packages/ui/src/*"],
-      "@kandev/theme": ["../packages/theme/src"],
-      "@kandev/types": ["../packages/types/src"]
+      "@pcraft/ui": ["../packages/ui/src"],
+      "@pcraft/ui/*": ["../packages/ui/src/*"],
+      "@pcraft/theme": ["../packages/theme/src"],
+      "@pcraft/types": ["../packages/types/src"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.mts"],

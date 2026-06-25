@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconSelector } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,8 +10,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+} from "@pcraft/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import type { ModeEntry } from "@/lib/types/http";
 
 type ModeComboboxProps = {

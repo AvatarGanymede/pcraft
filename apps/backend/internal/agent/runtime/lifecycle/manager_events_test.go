@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/events/bus"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // MockEventBusWithTracking provides detailed tracking of published events for testing

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 // ProvidedBus wraps the active event bus implementation.

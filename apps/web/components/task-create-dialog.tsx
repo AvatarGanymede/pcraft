@@ -3,7 +3,7 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import type { JiraTicket } from "@/lib/types/jira";
 import type { LinearIssue } from "@/lib/types/linear";
-import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@kandev/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@pcraft/ui/dialog";
 import type { Task, Repository } from "@/lib/types/http";
 import { SHORTCUTS } from "@/lib/keyboard/constants";
 import { useIsUtilityConfigured } from "@/hooks/use-is-utility-configured";
@@ -14,7 +14,6 @@ import { DiscardLocalChangesDialog } from "@/components/discard-local-changes-di
 import { DialogHeaderContent } from "@/components/task-create-dialog-header";
 import {
   SessionSelectors,
-  WorkflowSection,
   DialogPromptSection,
 } from "@/components/task-create-dialog-form-body";
 import {
@@ -23,8 +22,6 @@ import {
   InlineTaskName,
 } from "@/components/task-create-dialog-selectors";
 import { useTaskSubmitHandlers } from "@/components/task-create-dialog-submit";
-import { CreateModeSelectors } from "@/components/task-create-dialog-create-mode-selectors";
-import { RepoChipsRow } from "@/components/task-create-dialog-repo-chips";
 import { useToast } from "@/components/toast-provider";
 import {
   useDialogFormState,
@@ -44,6 +41,13 @@ import {
 } from "@/components/task-create-dialog-prop-builders";
 import { resetTaskCreateLastUsedSync } from "@/components/task-create-dialog-handlers";
 import { TaskCreateDialogPopoverContainerProvider } from "@/hooks/use-task-create-dialog-popover-container";
+import {
+  P4WorkspaceSelect,
+  P4TaskDetailFields,
+  P4TaskCreateFields,
+  isP4TaskFormValid,
+  type P4TaskFormValues,
+} from "@/components/task-create-dialog-p4-fields";
 
 export interface TaskCreateDialogProps {
   open: boolean;
@@ -104,91 +108,29 @@ export interface TaskCreateDialogProps {
 }
 
 function CreateModeBody(props: DialogFormBodyProps) {
-  const {
-    isCreateMode,
-    isEditMode,
-    isTaskStarted,
-    workspaceId,
-    onJiraImport,
-    onLinearImport,
-    agentProfileOptions,
-    executorProfileOptions,
-    agentProfiles,
-    agentProfilesLoading,
-    executorsLoading,
-    isCreatingSession,
-    fs,
-    onTaskNameChange,
-    onRowRepositoryChange,
-    onRowBranchChange,
-    onAgentProfileChange,
-    onExecutorProfileChange,
-    onToggleRemote,
-    onToggleFreshBranch,
-    workflowAgentLocked,
-    repositories,
-    freshBranchAvailable,
-    isLocalExecutor,
-  } = props;
+  const { isCreateMode, isEditMode, isTaskStarted, fs, onTaskNameChange } = props;
   const showTaskName = (isCreateMode || isEditMode) && !isTaskStarted;
-  const taskNameAutoFocus = !isEditMode && !fs.useRemote;
   return (
-    <>
-      <RepoChipsRow
-        fs={fs}
-        repositories={repositories}
-        isTaskStarted={isTaskStarted}
-        workspaceId={workspaceId}
-        onRowRepositoryChange={onRowRepositoryChange}
-        onRowBranchChange={onRowBranchChange}
-        onToggleRemote={onToggleRemote}
-        freshBranchAvailable={freshBranchAvailable}
-        freshBranchEnabled={fs.freshBranchEnabled}
-        onToggleFreshBranch={onToggleFreshBranch}
-        isLocalExecutor={isLocalExecutor}
-        onToggleNoRepository={props.onToggleNoRepository}
-        onWorkspacePathChange={props.onWorkspacePathChange}
+    <div className="grid gap-3" data-testid="p4-task-create-fields">
+      <P4WorkspaceSelect
+        values={props.p4Values}
+        onChange={props.onP4ValuesChange}
+        disabled={isTaskStarted}
       />
       {showTaskName && (
         <InlineTaskName
           value={fs.taskName}
           onChange={onTaskNameChange}
-          autoFocus={taskNameAutoFocus}
+          autoFocus
         />
       )}
-      <DialogPromptSection
-        isSessionMode={false}
-        isTaskStarted={isTaskStarted}
-        initialDescription={props.initialDescription}
-        fs={fs}
-        handleKeyDown={props.handleKeyDown}
-        enhance={props.enhance}
-        workspaceId={workspaceId}
-        onJiraImport={onJiraImport}
-        onLinearImport={onLinearImport}
-        descriptionPlaceholder={props.descriptionPlaceholder}
-        aboveDescriptionSlot={props.aboveDescriptionSlot}
-        extraFormSlot={props.extraFormSlot}
-        autoFocusDescription={!isTaskStarted && !(showTaskName && taskNameAutoFocus)}
-        onVoiceAutoSend={props.onVoiceAutoSend}
-      />
-      <CreateModeSelectors
-        isTaskStarted={isTaskStarted}
-        agentProfileOptions={agentProfileOptions}
-        executorProfileOptions={executorProfileOptions}
-        agentProfiles={agentProfiles}
-        agentProfilesLoading={agentProfilesLoading}
-        executorsLoading={executorsLoading}
-        isCreatingSession={isCreatingSession}
-        fs={fs}
-        onAgentProfileChange={onAgentProfileChange}
-        onExecutorProfileChange={onExecutorProfileChange}
-        workflowAgentLocked={workflowAgentLocked}
-        noCompatibleAgent={props.noCompatibleAgent}
-        executorProfileName={props.executorProfileName}
+      <P4TaskDetailFields
+        values={props.p4Values}
+        onChange={props.onP4ValuesChange}
+        disabled={isTaskStarted}
       />
       {props.bottomSlot}
-    </>
+    </div>
   );
 }
 
@@ -224,20 +166,10 @@ function SessionModeBody(props: DialogFormBodyProps) {
 }
 
 function DialogFormBody(props: DialogFormBodyProps) {
-  const { isSessionMode, isCreateMode, isTaskStarted, workflows, snapshots } = props;
+  const { isSessionMode } = props;
   return (
     <div className="flex-1 space-y-4 overflow-y-auto pr-1">
       {isSessionMode ? <SessionModeBody {...props} /> : <CreateModeBody {...props} />}
-      <WorkflowSection
-        isCreateMode={isCreateMode}
-        isTaskStarted={isTaskStarted}
-        workflows={workflows as Parameters<typeof WorkflowSection>[0]["workflows"]}
-        snapshots={snapshots as Parameters<typeof WorkflowSection>[0]["snapshots"]}
-        effectiveWorkflowId={props.effectiveWorkflowId}
-        onWorkflowChange={props.onWorkflowChange}
-        agentProfiles={props.agentProfiles}
-        workflowLocked={props.workflowLocked}
-      />
     </div>
   );
 }
@@ -299,6 +231,7 @@ type SubmitWiringArgs = {
   repositoryLocalPath: string;
   isSessionMode: boolean;
   isEditMode: boolean;
+  p4Values: P4TaskFormValues;
 };
 
 function useSubmitHandlersWiring({
@@ -309,6 +242,7 @@ function useSubmitHandlersWiring({
   repositoryLocalPath,
   isSessionMode,
   isEditMode,
+  p4Values,
 }: SubmitWiringArgs) {
   const { workspaceId, workflowId, editingTask, onSuccess, onCreateSession, onOpenChange } = props;
   const { parentTaskId } = props;
@@ -355,6 +289,10 @@ function useSubmitHandlersWiring({
     repositoryLocalPath,
     noRepository: fs.noRepository,
     workspacePath: fs.workspacePath,
+    p4WorkspaceId: p4Values.p4WorkspaceId,
+    panelId: p4Values.panelId,
+    requirement: p4Values.requirement,
+    prefabPath: p4Values.prefabPath,
   });
 }
 
@@ -381,6 +319,15 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
   const isCreateMode = mode === "create";
   const isTaskStarted = computeIsTaskStarted(isEditMode, editingTask);
   const fs = useDialogFormState(open, workspaceId, workflowId, initialValues);
+  const [p4Values, setP4Values] = useState<P4TaskFormValues>({
+    p4WorkspaceId: "",
+    panelId: "",
+    requirement: "",
+    prefabPath: "",
+  });
+  const onP4ValuesChange = useCallback((patch: Partial<P4TaskFormValues>) => {
+    setP4Values((prev) => ({ ...prev, ...patch }));
+  }, []);
   const { toast } = useToast();
   const sessionRepoName = useSessionRepoName(isSessionMode);
   const {
@@ -419,6 +366,7 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     repositoryLocalPath,
     isSessionMode,
     isEditMode,
+    p4Values,
   });
   const guardedHandleSubmit = useGuardedSubmit(
     submitHandlers.handleSubmit,
@@ -453,6 +401,8 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     enhance: useEnhanceForDialog(fs),
     handleJiraImport: useJiraImportHandler(fs),
     handleLinearImport: useLinearImportHandler(fs),
+    p4Values,
+    onP4ValuesChange,
   };
 }
 

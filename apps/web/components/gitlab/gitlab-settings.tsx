@@ -13,13 +13,13 @@ import {
   IconWorld,
   IconX,
 } from "@tabler/icons-react";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Separator } from "@kandev/ui/separator";
-import { Spinner } from "@kandev/ui/spinner";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Separator } from "@pcraft/ui/separator";
+import { Spinner } from "@pcraft/ui/spinner";
 import { useToast } from "@/components/toast-provider";
 import { SettingsSection } from "@/components/settings/settings-section";
 import {

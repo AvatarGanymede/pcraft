@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import type { Branch, Repository } from "@/lib/types/http";
 import type { DialogFormState, TaskRepoRow } from "./task-create-dialog-types";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 // One mocked branches hook now — id-based and path-based rows go through
 // the same loader. Tests can override the return value when they need

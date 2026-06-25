@@ -3,7 +3,7 @@ package secrets
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/agent/credentials"
+	"github.com/AvatarGanymede/pcraft/internal/agent/credentials"
 )
 
 // SecretStoreProvider bridges SecretStore into the credential provider chain.

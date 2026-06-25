@@ -8,7 +8,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
 )
 
 const (

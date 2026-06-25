@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent } from "@kandev/ui/card";
-import { Separator } from "@kandev/ui/separator";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Separator } from "@pcraft/ui/separator";
 import { UnsavedChangesBadge, UnsavedSaveButton } from "@/components/settings/unsaved-indicator";
 
 type SettingsPageTemplateProps = {

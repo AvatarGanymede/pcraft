@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // RegisterRoutes wires the Jira HTTP and WebSocket handlers.

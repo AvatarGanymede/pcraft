@@ -1,7 +1,7 @@
 "use client";
 
 import { IconGitPullRequest } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/components/state-provider";
 import type { TaskPR } from "@/lib/types/github";

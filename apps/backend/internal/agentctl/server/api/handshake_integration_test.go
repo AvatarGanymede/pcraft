@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/instance"
-	"github.com/kandev/kandev/internal/common/logger"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/instance"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // TestHandshakeIntegration_FullFlow exercises the complete client↔server

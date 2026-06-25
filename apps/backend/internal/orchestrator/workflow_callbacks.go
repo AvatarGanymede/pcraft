@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/workflow/engine"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
 )
 
 // buildWorkflowCallbacks creates the callback registry for the workflow engine.

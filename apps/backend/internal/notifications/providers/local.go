@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	gatewayws "github.com/kandev/kandev/internal/gateway/websocket"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	gatewayws "github.com/AvatarGanymede/pcraft/internal/gateway/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 type LocalProvider struct {

@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/utility/models"
-	"github.com/kandev/kandev/internal/utility/store"
-	"github.com/kandev/kandev/internal/utility/template"
+	"github.com/AvatarGanymede/pcraft/internal/utility/models"
+	"github.com/AvatarGanymede/pcraft/internal/utility/store"
+	"github.com/AvatarGanymede/pcraft/internal/utility/template"
 )
 
 var (

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/office/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // Health state strings recognised by the resolver. Kept as local constants

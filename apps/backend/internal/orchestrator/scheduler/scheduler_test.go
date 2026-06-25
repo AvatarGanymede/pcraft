@@ -10,16 +10,16 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/task/repository"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // mockAgentManager implements executor.AgentManagerClient for testing

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { useAppStore } from "@/components/state-provider";
 import { useSettingsData } from "@/hooks/domains/settings/use-settings-data";
 import { useWorkflows } from "@/hooks/use-workflows";

@@ -1,5 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -40,7 +40,7 @@ vi.mock("@/components/integrations/integrations-menu", () => ({
   useConfiguredIntegrationLinks: linksMock,
 }));
 
-vi.mock("@kandev/ui/collapsible", () => ({
+vi.mock("@pcraft/ui/collapsible", () => ({
   Collapsible: ({ children, open }: { children: ReactNode; open?: boolean }) => {
     collapsibleMock.open = !!open;
     return <div>{children}</div>;

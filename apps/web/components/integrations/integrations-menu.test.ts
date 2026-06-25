@@ -8,7 +8,7 @@ import {
   IntegrationsTopbarLinks,
 } from "./integrations-menu";
 import type { GitHubStatus } from "@/lib/types/github";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 const useGitHubStatusMock = vi.hoisted(() => vi.fn());
 const useGitLabAvailableMock = vi.hoisted(() => vi.fn());

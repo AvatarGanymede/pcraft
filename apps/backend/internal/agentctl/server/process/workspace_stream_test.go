@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // TestAttachWorkspaceStreamSubscriber_RefreshesBeforeReplay verifies that a

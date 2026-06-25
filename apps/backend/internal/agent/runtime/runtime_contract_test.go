@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	agentruntime "github.com/kandev/kandev/internal/agent/runtime"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentruntime "github.com/AvatarGanymede/pcraft/internal/agent/runtime"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // fakeBackend is the runtime contract test stand-in for *lifecycle.Manager.

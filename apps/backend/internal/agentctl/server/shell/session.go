@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/creack/pty"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 

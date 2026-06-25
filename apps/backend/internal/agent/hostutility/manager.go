@@ -15,12 +15,12 @@ import (
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/sync/singleflight"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/registry"
-	agentctlclient "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	agentctlutil "github.com/kandev/kandev/internal/agentctl/server/utility"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	agentctlclient "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	agentctlutil "github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // Manager owns the per-agent-type warm agentctl instances used for boot probes,

@@ -12,13 +12,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/gitref"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/common/gitref"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // defaultPriority is the default value for the task priority column.
@@ -227,7 +227,7 @@ func (s *Service) resolveWorkflowStep(ctx context.Context, req *CreateTaskReques
 
 // buildTask constructs a Task model from the CreateTaskRequest.
 func (s *Service) buildTask(req *CreateTaskRequest, workflowStepID string) *models.Task {
-	state := v1.TaskStateCreated
+	state := v1.TaskStateBacklog
 	if req.State != nil {
 		state = *req.State
 	}

@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/utility/models"
+	"github.com/AvatarGanymede/pcraft/internal/utility/models"
 )
 
 // Repository defines the interface for utility agent storage.

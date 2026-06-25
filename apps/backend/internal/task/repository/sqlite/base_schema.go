@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
 )
 
 // initSchema creates the database tables if they don't exist and applies
@@ -20,6 +20,7 @@ func (r *Repository) initSchema() error {
 		r.initDocumentsSchema,
 		r.initSessionSchema,
 		r.initGitSchema,
+			r.dropLegacyGitTables,
 		r.initReviewSchema,
 		r.migrateExecutorProfiles,
 		r.migrateTaskSessions,
@@ -662,6 +663,17 @@ func (r *Repository) initGitSchema() error {
 
 	CREATE INDEX IF NOT EXISTS idx_session_commits_session ON task_session_commits(session_id, committed_at DESC);
 	CREATE INDEX IF NOT EXISTS idx_session_commits_sha ON task_session_commits(commit_sha);
+	`)
+	return err
+}
+
+// dropLegacyGitTables removes git-related tables that are no longer used
+// (pcraft uses P4 workspaces instead of git worktrees/snapshots/commits).
+func (r *Repository) dropLegacyGitTables() error {
+	_, err := r.db.Exec(`
+	DROP TABLE IF EXISTS task_session_worktrees;
+	DROP TABLE IF EXISTS task_session_git_snapshots;
+	DROP TABLE IF EXISTS task_session_commits;
 	`)
 	return err
 }

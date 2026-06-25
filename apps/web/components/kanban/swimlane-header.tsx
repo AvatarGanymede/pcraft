@@ -1,10 +1,10 @@
 "use client";
 
 import type { HTMLAttributes } from "react";
-import { Badge } from "@kandev/ui/badge";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Badge } from "@pcraft/ui/badge";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import { IconChevronRight, IconGripVertical } from "@tabler/icons-react";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 
 export type SwimlaneHeaderProps = {
   workflowName: string;

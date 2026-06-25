@@ -8,14 +8,14 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	agentusage "github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/configloader"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/routing"
-	"github.com/kandev/kandev/internal/office/shared"
-	officeskills "github.com/kandev/kandev/internal/office/skills"
+	agentusage "github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
+	officeskills "github.com/AvatarGanymede/pcraft/internal/office/skills"
 
 	"go.uber.org/zap"
 )

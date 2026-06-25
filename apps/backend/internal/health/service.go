@@ -3,7 +3,7 @@ package health
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Service runs all registered health checks.

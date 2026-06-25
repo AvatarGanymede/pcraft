@@ -1,6 +1,6 @@
 import Link from "@/components/routing/app-link";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
 import type { AgentRecentTask } from "@/lib/api/domains/office-extended-api";
 import { formatShortDate } from "./format-date";
 

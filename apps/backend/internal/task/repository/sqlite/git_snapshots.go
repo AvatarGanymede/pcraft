@@ -3,363 +3,69 @@ package sqlite
 
 import (
 	"context"
-	"encoding/json"
+	"errors"
 	"fmt"
-	"time"
 
-	"github.com/google/uuid"
-
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
+
+// ErrGitSnapshotNotSupported indicates git snapshot functionality has been removed.
+var ErrGitSnapshotNotSupported = errors.New("git snapshots are not supported (pcraft uses P4 workspaces)")
+
+// ErrSessionCommitNotSupported indicates session commit functionality has been removed.
+var ErrSessionCommitNotSupported = errors.New("session commits are not supported (pcraft uses P4 workspaces)")
 
 // TriggeredByLiveMonitor identifies snapshots written by the orchestrator's live
 // git status persistence path. Used to scope the upsert in
 // UpsertLatestLiveGitSnapshot so we don't disturb archive/completion snapshots.
 const TriggeredByLiveMonitor = "live_monitor"
 
-// UpsertLatestLiveGitSnapshot keeps at most one cached "live monitor" snapshot
-// per session by deleting any previous live row and inserting the new one in a
-// single transaction. This is the cache that backs the sidebar diff badge for
-// tasks whose executor isn't currently running.
+// UpsertLatestLiveGitSnapshot is not supported (pcraft uses P4 workspaces).
 func (r *Repository) UpsertLatestLiveGitSnapshot(ctx context.Context, snapshot *models.GitSnapshot) error {
-	if snapshot == nil {
-		return fmt.Errorf("snapshot is nil")
-	}
-	snapshot.SnapshotType = models.SnapshotTypeStatusUpdate
-	snapshot.TriggeredBy = TriggeredByLiveMonitor
-	if snapshot.ID == "" {
-		snapshot.ID = uuid.New().String()
-	}
-	if snapshot.CreatedAt.IsZero() {
-		snapshot.CreatedAt = time.Now().UTC()
-	}
-
-	tx, err := r.db.BeginTxx(ctx, nil)
-	if err != nil {
-		return fmt.Errorf("begin tx: %w", err)
-	}
-	defer func() { _ = tx.Rollback() }()
-
-	if _, err := tx.ExecContext(ctx, r.db.Rebind(`
-		DELETE FROM task_session_git_snapshots
-		WHERE session_id = ? AND snapshot_type = ? AND triggered_by = ?
-	`), snapshot.SessionID, string(models.SnapshotTypeStatusUpdate), TriggeredByLiveMonitor); err != nil {
-		return fmt.Errorf("delete previous live snapshot: %w", err)
-	}
-
-	filesJSON, metadataJSON, err := serializeSnapshotJSON(snapshot)
-	if err != nil {
-		return err
-	}
-
-	if _, err := tx.ExecContext(ctx, r.db.Rebind(`
-		INSERT INTO task_session_git_snapshots (
-			id, session_id, snapshot_type, branch, remote_branch, head_commit, base_commit,
-			ahead, behind, files, triggered_by, metadata, created_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`), snapshot.ID, snapshot.SessionID, string(snapshot.SnapshotType), snapshot.Branch,
-		snapshot.RemoteBranch, snapshot.HeadCommit, snapshot.BaseCommit, snapshot.Ahead,
-		snapshot.Behind, filesJSON, snapshot.TriggeredBy, metadataJSON, snapshot.CreatedAt); err != nil {
-		return fmt.Errorf("insert live snapshot: %w", err)
-	}
-
-	return tx.Commit()
+	return ErrGitSnapshotNotSupported
 }
 
-func serializeSnapshotJSON(snapshot *models.GitSnapshot) (string, string, error) {
-	filesJSON := "{}"
-	if snapshot.Files != nil {
-		b, err := json.Marshal(snapshot.Files)
-		if err != nil {
-			return "", "", fmt.Errorf("failed to serialize git snapshot files: %w", err)
-		}
-		filesJSON = string(b)
-	}
-	metadataJSON := "{}"
-	if snapshot.Metadata != nil {
-		b, err := json.Marshal(snapshot.Metadata)
-		if err != nil {
-			return "", "", fmt.Errorf("failed to serialize git snapshot metadata: %w", err)
-		}
-		metadataJSON = string(b)
-	}
-	return filesJSON, metadataJSON, nil
-}
-
-// DeleteLiveMonitorSnapshots removes all live_monitor-triggered snapshots for a
-// session. Called after creating an agent_completed snapshot to prevent stale
-// live_monitor data from superseding the authoritative completion snapshot.
+// DeleteLiveMonitorSnapshots is not supported (pcraft uses P4 workspaces).
 func (r *Repository) DeleteLiveMonitorSnapshots(ctx context.Context, sessionID string) error {
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`
-		DELETE FROM task_session_git_snapshots
-		WHERE session_id = ? AND triggered_by = ?
-	`), sessionID, TriggeredByLiveMonitor)
-	return err
+	return fmt.Errorf("%w: %s", ErrGitSnapshotNotSupported, "DeleteLiveMonitorSnapshots is not supported (pcraft uses P4 workspaces)")
 }
 
-// CreateGitSnapshot inserts a new git snapshot into the database.
+// CreateGitSnapshot is not supported (pcraft uses P4 workspaces).
 func (r *Repository) CreateGitSnapshot(ctx context.Context, snapshot *models.GitSnapshot) error {
-	if snapshot.ID == "" {
-		snapshot.ID = uuid.New().String()
-	}
-	if snapshot.CreatedAt.IsZero() {
-		snapshot.CreatedAt = time.Now().UTC()
-	}
-
-	filesJSON, metadataJSON, err := serializeSnapshotJSON(snapshot)
-	if err != nil {
-		return err
-	}
-
-	_, err = r.db.ExecContext(ctx, r.db.Rebind(`
-		INSERT INTO task_session_git_snapshots (
-			id, session_id, snapshot_type, branch, remote_branch, head_commit, base_commit,
-			ahead, behind, files, triggered_by, metadata, created_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`), snapshot.ID, snapshot.SessionID, string(snapshot.SnapshotType), snapshot.Branch,
-		snapshot.RemoteBranch, snapshot.HeadCommit, snapshot.BaseCommit, snapshot.Ahead,
-		snapshot.Behind, filesJSON, snapshot.TriggeredBy, metadataJSON, snapshot.CreatedAt)
-
-	return err
+	return ErrGitSnapshotNotSupported
 }
 
-func (r *Repository) getGitSnapshotByOrder(ctx context.Context, sessionID, orderDir string) (*models.GitSnapshot, error) {
-	snapshot := &models.GitSnapshot{}
-	var snapshotType string
-	var filesJSON string
-	var metadataJSON string
-
-	query := fmt.Sprintf(`
-		SELECT id, session_id, snapshot_type, branch, remote_branch, head_commit, base_commit,
-		       ahead, behind, files, triggered_by, metadata, created_at
-		FROM task_session_git_snapshots
-		WHERE session_id = ?
-		ORDER BY created_at %s LIMIT 1
-	`, orderDir)
-	err := r.ro.QueryRowContext(ctx, r.ro.Rebind(query), sessionID).Scan(
-		&snapshot.ID, &snapshot.SessionID, &snapshotType, &snapshot.Branch,
-		&snapshot.RemoteBranch, &snapshot.HeadCommit, &snapshot.BaseCommit,
-		&snapshot.Ahead, &snapshot.Behind, &filesJSON, &snapshot.TriggeredBy,
-		&metadataJSON, &snapshot.CreatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	snapshot.SnapshotType = models.SnapshotType(snapshotType)
-	if filesJSON != "" && filesJSON != "{}" {
-		if err := json.Unmarshal([]byte(filesJSON), &snapshot.Files); err != nil {
-			return nil, fmt.Errorf("failed to deserialize git snapshot files: %w", err)
-		}
-	}
-	if metadataJSON != "" && metadataJSON != "{}" {
-		if err := json.Unmarshal([]byte(metadataJSON), &snapshot.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to deserialize git snapshot metadata: %w", err)
-		}
-	}
-
-	return snapshot, nil
-}
-
-// GetLatestGitSnapshot retrieves the best git snapshot for a session.
-// Prefers agent_completed snapshots (captured at exact completion time) over
-// live_monitor snapshots (periodic polls that may contain stale data if the
-// poll raced with agent completion). Falls back to most-recent-by-time when
-// no agent_completed snapshot exists.
-// Returns sql.ErrNoRows if no snapshot is found.
+// GetLatestGitSnapshot is not supported (pcraft uses P4 workspaces).
 func (r *Repository) GetLatestGitSnapshot(ctx context.Context, sessionID string) (*models.GitSnapshot, error) {
-	snapshot := &models.GitSnapshot{}
-	var snapshotType string
-	var filesJSON string
-	var metadataJSON string
-
-	query := `
-		SELECT id, session_id, snapshot_type, branch, remote_branch, head_commit, base_commit,
-		       ahead, behind, files, triggered_by, metadata, created_at
-		FROM task_session_git_snapshots
-		WHERE session_id = ?
-		ORDER BY
-			CASE WHEN triggered_by = 'agent_completed' THEN 0 ELSE 1 END,
-			created_at DESC
-		LIMIT 1
-	`
-	err := r.ro.QueryRowContext(ctx, r.ro.Rebind(query), sessionID).Scan(
-		&snapshot.ID, &snapshot.SessionID, &snapshotType, &snapshot.Branch,
-		&snapshot.RemoteBranch, &snapshot.HeadCommit, &snapshot.BaseCommit,
-		&snapshot.Ahead, &snapshot.Behind, &filesJSON, &snapshot.TriggeredBy,
-		&metadataJSON, &snapshot.CreatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	snapshot.SnapshotType = models.SnapshotType(snapshotType)
-	if filesJSON != "" && filesJSON != "{}" {
-		if err := json.Unmarshal([]byte(filesJSON), &snapshot.Files); err != nil {
-			return nil, fmt.Errorf("failed to deserialize git snapshot files: %w", err)
-		}
-	}
-	if metadataJSON != "" && metadataJSON != "{}" {
-		if err := json.Unmarshal([]byte(metadataJSON), &snapshot.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to deserialize git snapshot metadata: %w", err)
-		}
-	}
-
-	return snapshot, nil
+	return nil, ErrGitSnapshotNotSupported
 }
 
-// GetFirstGitSnapshot retrieves the oldest git snapshot for a session (first one created).
-// Returns sql.ErrNoRows if no snapshot is found.
+// GetFirstGitSnapshot is not supported (pcraft uses P4 workspaces).
 func (r *Repository) GetFirstGitSnapshot(ctx context.Context, sessionID string) (*models.GitSnapshot, error) {
-	return r.getGitSnapshotByOrder(ctx, sessionID, "ASC")
+	return nil, ErrGitSnapshotNotSupported
 }
 
-// GetGitSnapshotsBySession retrieves all git snapshots for a session, ordered by created_at descending.
-// If limit > 0, only that many snapshots are returned.
-// Returns an empty slice if no snapshots are found.
+// GetGitSnapshotsBySession is not supported (pcraft uses P4 workspaces).
 func (r *Repository) GetGitSnapshotsBySession(ctx context.Context, sessionID string, limit int) ([]*models.GitSnapshot, error) {
-	query := `
-		SELECT id, session_id, snapshot_type, branch, remote_branch, head_commit, base_commit,
-		       ahead, behind, files, triggered_by, metadata, created_at
-		FROM task_session_git_snapshots
-		WHERE session_id = ?
-		ORDER BY created_at DESC
-	`
-	if limit > 0 {
-		query += fmt.Sprintf(" LIMIT %d", limit)
-	}
-
-	rows, err := r.ro.QueryContext(ctx, r.ro.Rebind(query), sessionID)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = rows.Close() }()
-
-	var result []*models.GitSnapshot
-	for rows.Next() {
-		snapshot := &models.GitSnapshot{}
-		var snapshotType string
-		var filesJSON string
-		var metadataJSON string
-
-		err := rows.Scan(
-			&snapshot.ID, &snapshot.SessionID, &snapshotType, &snapshot.Branch,
-			&snapshot.RemoteBranch, &snapshot.HeadCommit, &snapshot.BaseCommit,
-			&snapshot.Ahead, &snapshot.Behind, &filesJSON, &snapshot.TriggeredBy,
-			&metadataJSON, &snapshot.CreatedAt,
-		)
-		if err != nil {
-			return nil, err
-		}
-
-		snapshot.SnapshotType = models.SnapshotType(snapshotType)
-		if filesJSON != "" && filesJSON != "{}" {
-			if err := json.Unmarshal([]byte(filesJSON), &snapshot.Files); err != nil {
-				return nil, fmt.Errorf("failed to deserialize git snapshot files: %w", err)
-			}
-		}
-		if metadataJSON != "" && metadataJSON != "{}" {
-			if err := json.Unmarshal([]byte(metadataJSON), &snapshot.Metadata); err != nil {
-				return nil, fmt.Errorf("failed to deserialize git snapshot metadata: %w", err)
-			}
-		}
-
-		result = append(result, snapshot)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return result, nil
+	return nil, ErrGitSnapshotNotSupported
 }
 
-// CreateSessionCommit inserts a new commit record into the database.
+// CreateSessionCommit is not supported (pcraft uses P4 workspaces).
 func (r *Repository) CreateSessionCommit(ctx context.Context, commit *models.SessionCommit) error {
-	if commit.ID == "" {
-		commit.ID = uuid.New().String()
-	}
-	if commit.CreatedAt.IsZero() {
-		commit.CreatedAt = time.Now().UTC()
-	}
-
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`
-		INSERT INTO task_session_commits (
-			id, session_id, commit_sha, parent_sha, author_name, author_email,
-			commit_message, committed_at, pre_commit_snapshot_id, post_commit_snapshot_id,
-			files_changed, insertions, deletions, created_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`), commit.ID, commit.SessionID, commit.CommitSHA, commit.ParentSHA,
-		commit.AuthorName, commit.AuthorEmail, commit.CommitMessage, commit.CommittedAt,
-		commit.PreCommitSnapshotID, commit.PostCommitSnapshotID, commit.FilesChanged,
-		commit.Insertions, commit.Deletions, commit.CreatedAt)
-
-	return err
+	return ErrSessionCommitNotSupported
 }
 
-// GetSessionCommits retrieves all commits for a session, ordered by committed_at descending.
-// Returns an empty slice if no commits are found.
+// GetSessionCommits is not supported (pcraft uses P4 workspaces).
 func (r *Repository) GetSessionCommits(ctx context.Context, sessionID string) ([]*models.SessionCommit, error) {
-	rows, err := r.ro.QueryContext(ctx, r.ro.Rebind(`
-		SELECT id, session_id, commit_sha, parent_sha, author_name, author_email,
-		       commit_message, committed_at, pre_commit_snapshot_id, post_commit_snapshot_id,
-		       files_changed, insertions, deletions, created_at
-		FROM task_session_commits
-		WHERE session_id = ?
-		ORDER BY committed_at DESC
-	`), sessionID)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = rows.Close() }()
-
-	var result []*models.SessionCommit
-	for rows.Next() {
-		commit := &models.SessionCommit{}
-		err := rows.Scan(
-			&commit.ID, &commit.SessionID, &commit.CommitSHA, &commit.ParentSHA,
-			&commit.AuthorName, &commit.AuthorEmail, &commit.CommitMessage,
-			&commit.CommittedAt, &commit.PreCommitSnapshotID, &commit.PostCommitSnapshotID,
-			&commit.FilesChanged, &commit.Insertions, &commit.Deletions, &commit.CreatedAt,
-		)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, commit)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return result, nil
+	return nil, ErrSessionCommitNotSupported
 }
 
-// GetLatestSessionCommit retrieves the most recent commit for a session.
-// Returns sql.ErrNoRows if no commit is found.
+// GetLatestSessionCommit is not supported (pcraft uses P4 workspaces).
 func (r *Repository) GetLatestSessionCommit(ctx context.Context, sessionID string) (*models.SessionCommit, error) {
-	commit := &models.SessionCommit{}
-
-	err := r.ro.QueryRowContext(ctx, r.ro.Rebind(`
-		SELECT id, session_id, commit_sha, parent_sha, author_name, author_email,
-		       commit_message, committed_at, pre_commit_snapshot_id, post_commit_snapshot_id,
-		       files_changed, insertions, deletions, created_at
-		FROM task_session_commits
-		WHERE session_id = ?
-		ORDER BY committed_at DESC LIMIT 1
-	`), sessionID).Scan(
-		&commit.ID, &commit.SessionID, &commit.CommitSHA, &commit.ParentSHA,
-		&commit.AuthorName, &commit.AuthorEmail, &commit.CommitMessage,
-		&commit.CommittedAt, &commit.PreCommitSnapshotID, &commit.PostCommitSnapshotID,
-		&commit.FilesChanged, &commit.Insertions, &commit.Deletions, &commit.CreatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return commit, nil
+	return nil, ErrSessionCommitNotSupported
 }
 
-// DeleteSessionCommit removes a commit record from the database.
+// DeleteSessionCommit is not supported (pcraft uses P4 workspaces).
 func (r *Repository) DeleteSessionCommit(ctx context.Context, id string) error {
-	_, err := r.db.ExecContext(ctx, r.db.Rebind(`DELETE FROM task_session_commits WHERE id = ?`), id)
-	return err
+	return ErrSessionCommitNotSupported
 }

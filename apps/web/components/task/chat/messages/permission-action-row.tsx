@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { IconCheck, IconChecks, IconX } from "@tabler/icons-react";
 import { GridSpinner } from "@/components/grid-spinner";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 type PermissionActionRowProps = {
   onApprove: () => void;

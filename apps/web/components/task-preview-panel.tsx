@@ -1,7 +1,7 @@
 "use client";
 
 import { IconArrowsMaximize, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import type { UseEnsureTaskSessionResult } from "@/hooks/domains/session/use-ensure-task-session";
 import type { Task } from "./kanban-card";

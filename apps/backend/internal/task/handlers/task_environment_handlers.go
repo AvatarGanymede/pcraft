@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 const responseKeySuccess = "success"
@@ -27,10 +27,8 @@ func (h *TaskHandlers) httpGetTaskEnvironment(c *gin.Context) {
 	c.JSON(http.StatusOK, env.ToAPI())
 }
 
-// httpGetTaskEnvironmentLive returns the recorded TaskEnvironment row plus a
-// real-time snapshot of the underlying container (when applicable). Designed
-// to be polled from the Executor Settings popover so users see state changes
-// without a page reload.
+// httpGetTaskEnvironmentLive returns the recorded TaskEnvironment row. Designed
+// to be polled from the Executor Settings popover.
 func (h *TaskHandlers) httpGetTaskEnvironmentLive(c *gin.Context) {
 	taskID := c.Param("id")
 	env, err := h.service.GetTaskEnvironmentByTaskID(c.Request.Context(), taskID)
@@ -42,28 +40,7 @@ func (h *TaskHandlers) httpGetTaskEnvironmentLive(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no environment for this task"})
 		return
 	}
-	live, err := h.service.GetTaskEnvironmentLiveStatus(c.Request.Context(), taskID)
-	if err != nil {
-		h.logger.Warn("failed to fetch live container status",
-			zap.String("task_id", taskID),
-			zap.Error(err))
-	}
-	resp := gin.H{"environment": env.ToAPI()}
-	if live != nil {
-		resp["container"] = live
-	}
-	// SSH-backed environments get a parallel `ssh` block with the runtime
-	// fields (host/user/workdir/forward ports) the popover surfaces. Service
-	// returns nil on non-SSH environments, so this is a no-op for the other
-	// executor types.
-	if ssh, err := h.service.GetSSHLiveStatus(c.Request.Context(), taskID); err != nil {
-		h.logger.Warn("failed to fetch live ssh status",
-			zap.String("task_id", taskID),
-			zap.Error(err))
-	} else if ssh != nil {
-		resp["ssh"] = ssh
-	}
-	c.JSON(http.StatusOK, resp)
+	c.JSON(http.StatusOK, gin.H{"environment": env.ToAPI()})
 }
 
 type resetEnvironmentRequest struct {

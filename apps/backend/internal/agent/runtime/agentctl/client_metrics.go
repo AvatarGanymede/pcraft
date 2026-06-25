@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/kandev/kandev/internal/system/metrics"
+	"github.com/AvatarGanymede/pcraft/internal/system/metrics"
 )
 
 func (c *Client) SystemMetrics(ctx context.Context, metricIDs []string, diskPath string) (*metrics.SourceSnapshot, error) {

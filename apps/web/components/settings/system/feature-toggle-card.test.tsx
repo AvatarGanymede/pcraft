@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import type { RuntimeFlagState } from "@/lib/types/runtime-flags";
 import { FeatureToggleCard } from "./feature-toggle-card";
 
-vi.mock("@kandev/ui/switch", () => ({
+vi.mock("@pcraft/ui/switch", () => ({
   Switch: ({
     checked,
     disabled,

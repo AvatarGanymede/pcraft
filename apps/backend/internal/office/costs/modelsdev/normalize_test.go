@@ -3,7 +3,7 @@ package modelsdev_test
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/costs/modelsdev"
+	"github.com/AvatarGanymede/pcraft/internal/office/costs/modelsdev"
 )
 
 // TestNormalize walks every distinct modelId observed across the

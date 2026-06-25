@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/logger"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 func newNopLogger(t *testing.T) *logger.Logger {

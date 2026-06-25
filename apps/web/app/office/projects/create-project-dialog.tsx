@@ -3,13 +3,13 @@
 import { useState, useCallback } from "react";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { useAppStore } from "@/components/state-provider";
 import { createProject } from "@/lib/api/domains/office-api";
 import type { AgentProfile } from "@/lib/state/slices/office/types";
@@ -119,23 +119,16 @@ function ReposField({
 
 const FALLBACK_EXECUTOR_TYPES = [
   { id: "local_pc", label: "Local (standalone)" },
-  { id: "local_docker", label: "Local Docker" },
-  { id: "sprites", label: "Sprites (remote sandbox)" },
-  { id: "remote_docker", label: "Remote Docker" },
 ];
 
 function ExecutorField({
   executorType,
-  dockerImage,
   executorTypes,
   onExecutorTypeChange,
-  onDockerImageChange,
 }: {
   executorType: string;
-  dockerImage: string;
   executorTypes: Array<{ id: string; label: string }>;
   onExecutorTypeChange: (v: string) => void;
-  onDockerImageChange: (v: string) => void;
 }) {
   return (
     <div className="space-y-2">
@@ -158,14 +151,6 @@ function ExecutorField({
           ))}
         </SelectContent>
       </Select>
-      {(executorType === "local_docker" || executorType === "remote_docker") && (
-        <Input
-          placeholder="Docker image (e.g. node:20-slim)"
-          value={dockerImage}
-          onChange={(e) => onDockerImageChange(e.target.value)}
-          className="mt-2"
-        />
-      )}
     </div>
   );
 }
@@ -178,7 +163,6 @@ type ProjectFormState = {
   repoInput: string;
   leadAgentId: string;
   executorType: string;
-  dockerImage: string;
 };
 
 const INITIAL_PROJECT_STATE: ProjectFormState = {
@@ -189,7 +173,7 @@ const INITIAL_PROJECT_STATE: ProjectFormState = {
   repoInput: "",
   leadAgentId: "",
   executorType: "",
-  dockerImage: "",
+  
 };
 
 function useProjectForm(workspaceId: string, onClose: () => void) {
@@ -225,7 +209,7 @@ function useProjectForm(workspaceId: string, onClose: () => void) {
         repositories: form.repos,
         leadAgentProfileId: form.leadAgentId || undefined,
         executorConfig: form.executorType
-          ? { type: form.executorType, image: form.dockerImage || undefined }
+          ? { type: form.executorType }
           : undefined,
       });
       if (result) addProject(result);
@@ -310,10 +294,8 @@ function ProjectFormBody({
       </div>
       <ExecutorField
         executorType={form.executorType}
-        dockerImage={form.dockerImage}
         executorTypes={executorTypes}
         onExecutorTypeChange={(v) => onUpdate({ executorType: v })}
-        onDockerImageChange={(v) => onUpdate({ dockerImage: v })}
       />
     </div>
   );

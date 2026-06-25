@@ -5,11 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 type fakeWorkflowStepGetter struct {

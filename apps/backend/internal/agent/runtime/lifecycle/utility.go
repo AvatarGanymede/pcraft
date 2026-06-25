@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
 )
 
 // ErrInferenceAgentIDRequired is returned when ExecuteInferencePrompt is called

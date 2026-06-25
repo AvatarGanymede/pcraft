@@ -3,8 +3,8 @@
 import dynamic from "@/lib/routing/client-dynamic";
 import Link from "@/components/routing/app-link";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Label } from "@kandev/ui/label";
-import { Switch } from "@kandev/ui/switch";
+import { Label } from "@pcraft/ui/label";
+import { Switch } from "@pcraft/ui/switch";
 import { StatusIcon } from "./status-icon";
 import { useAdvancedSession } from "./use-advanced-session";
 import { ExecutionIndicator } from "../../components/execution-indicator";

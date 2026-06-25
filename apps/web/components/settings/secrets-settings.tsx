@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { IconEdit, IconTrash, IconEye, IconEyeOff, IconKey } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Textarea } from "@kandev/ui/textarea";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
 import { SettingsPageTemplate } from "@/components/settings/settings-page-template";
 import { useSecrets } from "@/hooks/domains/settings/use-secrets";
 import { useAppStore } from "@/components/state-provider";

@@ -1,9 +1,9 @@
 "use client";
 
 import { memo, useCallback, useMemo, useRef, useState } from "react";
-import { cn } from "@kandev/ui/lib/utils";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@kandev/ui/hover-card";
-import { Button } from "@kandev/ui/button";
+import { cn } from "@pcraft/ui/lib/utils";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@pcraft/ui/hover-card";
+import { Button } from "@pcraft/ui/button";
 import { IconArrowRight } from "@tabler/icons-react";
 import { moveTask } from "@/lib/api";
 import { StepCapabilityIcons } from "@/components/step-capability-icons";

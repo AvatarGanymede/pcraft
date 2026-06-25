@@ -1,7 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
-import { Card } from "@kandev/ui/card";
+import { Card } from "@pcraft/ui/card";
 
 type Props = {
   icon: ComponentType<{ className?: string }>;

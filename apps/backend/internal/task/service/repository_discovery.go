@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/gitref"
+	"github.com/AvatarGanymede/pcraft/internal/common/gitref"
 )
 
 type RepositoryDiscoveryConfig struct {

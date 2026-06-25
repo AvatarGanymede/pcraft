@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 )
 
 // InteractiveRunnerBackend adapts *process.InteractiveRunner to the

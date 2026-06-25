@@ -1,8 +1,8 @@
 package acp
 
 import (
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 func enrichOpenCodePayload(payload *streams.NormalizedPayload, frame EnrichFrame) {

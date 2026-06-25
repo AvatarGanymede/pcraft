@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // TestRunEventBroadcaster_SubscribesToWildcard verifies that

@@ -5,9 +5,9 @@ import (
 	_ "embed"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/usage"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 //go:embed logos/claude_code_light.svg

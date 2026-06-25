@@ -170,7 +170,7 @@ func packageBundle(binDir, tarPath string) error {
 	}
 
 	// Add Vite SPA assets. `kandev start` resolves these from /app/apps/web/dist
-	// and passes KANDEV_WEB_DIST_DIR to the backend.
+	// and passes PCRAFT_WEB_DIST_DIR to the backend.
 	webDistDir := filepath.Join(appsDir, "web", "dist")
 	if err := validateViteWebDist(webDistDir); err != nil {
 		return err

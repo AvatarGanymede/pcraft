@@ -2,7 +2,7 @@
 // for the office domain.
 package costs
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // CostEvent is a type alias for models.CostEvent.
 type CostEvent = models.CostEvent

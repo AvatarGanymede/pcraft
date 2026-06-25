@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 type Repository interface {

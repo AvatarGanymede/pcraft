@@ -2,8 +2,8 @@
 
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { IconCode } from "@tabler/icons-react";
 import { remarkPlugins, markdownComponents } from "@/components/shared/markdown-components";
 import { toRelativePath } from "@/lib/utils";

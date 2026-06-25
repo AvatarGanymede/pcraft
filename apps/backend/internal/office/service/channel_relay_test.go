@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 func setupChannelForRelay(t *testing.T, svc *service.Service, platform, config string) (*models.Channel, string) {

@@ -3,7 +3,7 @@ package lifecycle
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle/skill"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle/skill"
 )
 
 // concreteDeployer is the actual deployer interface implemented by

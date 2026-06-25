@@ -7,11 +7,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // StandaloneExecutor implements Runtime for standalone agentctl execution.
@@ -85,8 +85,8 @@ func (r *StandaloneExecutor) CreateInstance(ctx context.Context, req *ExecutorCr
 	if env == nil {
 		env = make(map[string]string)
 	}
-	env["KANDEV_TASK_ID"] = req.TaskID
-	env["KANDEV_SESSION_ID"] = req.SessionID
+	env["PCRAFT_TASK_ID"] = req.TaskID
+	env["PCRAFT_SESSION_ID"] = req.SessionID
 
 	// Create instance via control API
 	// Agent command is NOT set - workspace access only. Agent is started explicitly via agentctl client.

@@ -19,9 +19,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Runtime is the public surface for launching, resuming, stopping, and

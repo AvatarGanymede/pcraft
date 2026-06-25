@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/linear"
+	"github.com/AvatarGanymede/pcraft/internal/linear"
 )
 
 func TestInterpolateLinearPrompt(t *testing.T) {

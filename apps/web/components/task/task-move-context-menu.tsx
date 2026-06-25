@@ -7,7 +7,7 @@ import {
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { cn } from "@/lib/utils";
 
 export type TaskMoveStep = {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // ChildTaskSpec captures the typed inputs for CreateChildTask.

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/kandev/kandev/internal/common/instructionrefs"
+	"github.com/AvatarGanymede/pcraft/internal/common/instructionrefs"
 )
 
 // runtimeSubdir is the on-host runtime tree root where the
@@ -21,7 +21,7 @@ const runtimeSubdir = "runtime"
 // spritesRuntimeBase is the on-sprite runtime tree root, mirroring
 // internal/agent/runtime/lifecycle/skill.SpritesRuntimeBase. Same
 // rationale as runtimeSubdir.
-const spritesRuntimeBase = "/root/.kandev/runtime"
+const spritesRuntimeBase = "/root/.pcraft/runtime"
 
 // resolveInstructionsForPrompt returns the path the agent will see at
 // instructionsDir (host or sprite-side, depending on executor) and
@@ -31,7 +31,7 @@ func (si *SchedulerIntegration) resolveInstructionsForPrompt(manifest *SkillMani
 	if manifest == nil {
 		return "", ""
 	}
-	dir := instructionsDirForExecutor(si.svc.kandevBasePath(), manifest.WorkspaceSlug, manifest.AgentID, executorType)
+	dir := instructionsDirForExecutor(si.svc.pcraftBasePath(), manifest.WorkspaceSlug, manifest.AgentID, executorType)
 	agentsMD := ""
 	for _, instr := range manifest.Instructions {
 		if instr.Filename == "AGENTS.md" {
@@ -49,7 +49,7 @@ func (si *SchedulerIntegration) resolveInstructionsForPrompt(manifest *SkillMani
 // instructionsDirForExecutor returns the path the runtime deployer
 // will materialise instruction files at, given an executor type.
 //
-//   - sprites          → /root/.kandev/runtime/<ws>/instructions/<agent>
+//   - sprites          → /root/.pcraft/runtime/<ws>/instructions/<agent>
 //   - local_pc/docker  → <basePath>/runtime/<ws>/instructions/<agent>
 //
 // The returned path is used both by office's prompt builder (embeds

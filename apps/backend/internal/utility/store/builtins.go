@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	utilcfg "github.com/kandev/kandev/config/utilityagents"
-	"github.com/kandev/kandev/internal/utility/models"
+	utilcfg "github.com/AvatarGanymede/pcraft/config/utilityagents"
+	"github.com/AvatarGanymede/pcraft/internal/utility/models"
 )
 
 // seedBuiltinAgents inserts the default built-in utility agents on first run.

@@ -7,20 +7,20 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/runtime/routingerr"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"go.uber.org/zap"
 )
 
 // Provide creates and loads the agent registry.
 //
-// KANDEV_MOCK_AGENT controls mock-agent availability:
+// PCRAFT_MOCK_AGENT controls mock-agent availability:
 //   - "only"  → E2E mode: only register mock agent, skip all others
 //   - "true"  → Dev mode: load all agents AND enable mock agent
 //   - unset   → Production: load all agents, mock agent disabled
 //
-// KANDEV_MOCK_PROVIDERS is a comma-separated list of canonical routing
+// PCRAFT_MOCK_PROVIDERS is a comma-separated list of canonical routing
 // provider IDs registered as additional MockAgent instances. This
 // unblocks coverage of the office provider-routing feature: routing
 // config validation requires real-looking provider IDs to be present
@@ -30,13 +30,13 @@ import (
 // E2E modes, and is never honoured in production.
 //
 // For the routing UI without real CLIs installed, set
-// `KANDEV_MOCK_PROVIDERS=claude-acp,codex-acp,opencode-acp` when
+// `PCRAFT_MOCK_PROVIDERS=claude-acp,codex-acp,opencode-acp` when
 // launching `make dev`.
 func Provide(log *logger.Logger) (*Registry, func() error, error) {
 	reg := NewRegistry(log)
 
-	mockMode := os.Getenv("KANDEV_MOCK_AGENT")
-	mockProviders := os.Getenv("KANDEV_MOCK_PROVIDERS")
+	mockMode := os.Getenv("PCRAFT_MOCK_AGENT")
+	mockProviders := os.Getenv("PCRAFT_MOCK_PROVIDERS")
 	if mockMode == "only" {
 		// E2E mode: only register mock agent — skip agent discovery for all others
 		_ = reg.Register(agents.NewMockAgent())
@@ -47,7 +47,7 @@ func Provide(log *logger.Logger) (*Registry, func() error, error) {
 		reg.LoadDefaults()
 		if mockMode == "true" {
 			// Dev mode: enable the base mock agent alongside the real
-			// agents. KANDEV_MOCK_PROVIDERS is opt-in — when set, the
+			// agents. PCRAFT_MOCK_PROVIDERS is opt-in — when set, the
 			// listed canonicals are replaced with MockAgent aliases so
 			// the routing UI is exercisable without the real CLIs.
 			configureMockAgent(reg, "mock-agent", log)
@@ -76,7 +76,7 @@ func validateMockProviders(reg *Registry, raw string, log *logger.Logger) {
 			continue
 		}
 		if !reg.Exists(id) {
-			log.Error("KANDEV_MOCK_PROVIDERS: provider missing from registry after registration — routing catalogue will be empty",
+			log.Error("PCRAFT_MOCK_PROVIDERS: provider missing from registry after registration — routing catalogue will be empty",
 				zap.String("id", id))
 		}
 	}
@@ -125,9 +125,9 @@ func registerRealProvidersProber(reg *Registry, log *logger.Logger) {
 // of provider IDs and registers each accepted entry as a MockAgent
 // alias under that canonical provider ID.
 //
-// In KANDEV_MOCK_AGENT=only (E2E) mode the canonicals are not loaded by
+// In PCRAFT_MOCK_AGENT=only (E2E) mode the canonicals are not loaded by
 // LoadDefaults so each entry is a fresh registration. In
-// KANDEV_MOCK_AGENT=true (dev) mode the real agents were just loaded —
+// PCRAFT_MOCK_AGENT=true (dev) mode the real agents were just loaded —
 // we Replace the entry with a MockAgent so the routing UI exercises
 // the mock binary instead of requiring the real CLI to be installed
 // on the developer's machine.
@@ -141,7 +141,7 @@ func registerExtraMockProviders(reg *Registry, log *logger.Logger, raw string) {
 			continue
 		}
 		if !IsRoutableProviderID(id) {
-			log.Warn("KANDEV_MOCK_PROVIDERS: skipping unknown provider id",
+			log.Warn("PCRAFT_MOCK_PROVIDERS: skipping unknown provider id",
 				zap.String("id", id),
 				zap.Strings("allowed", RoutableProviderIDs))
 			continue
@@ -149,14 +149,14 @@ func registerExtraMockProviders(reg *Registry, log *logger.Logger, raw string) {
 		displayName := mockDisplayNameFor(id)
 		ag := agents.NewMockAgentWithID(id, displayName, displayName)
 		if err := reg.Replace(ag); err != nil {
-			log.Warn("KANDEV_MOCK_PROVIDERS: register failed",
+			log.Warn("PCRAFT_MOCK_PROVIDERS: register failed",
 				zap.String("id", id), zap.Error(err))
 			continue
 		}
 		configureMockAgent(reg, id, log)
 		// Register an E2E-only prober so /routing/retry can mark the
 		// provider healthy without depending on a follow-up launch.
-		// The prober consults the live injection map: if KANDEV_PROVIDER_
+		// The prober consults the live injection map: if PCRAFT_PROVIDER_
 		// FAILURES still names this provider, the probe fails with that
 		// code; otherwise it succeeds (provider flips healthy).
 		routingerr.RegisterProber(id, &mockProvProber{providerID: id})
@@ -201,7 +201,7 @@ func mockDisplayNameFor(id string) string {
 }
 
 // configureMockAgent enables and configures the mock agent binary path and capabilities.
-// KANDEV_MOCK_AGENT_MCP=false disables MCP support (defaults to enabled).
+// PCRAFT_MOCK_AGENT_MCP=false disables MCP support (defaults to enabled).
 func configureMockAgent(reg *Registry, id string, log *logger.Logger) {
 	ag, ok := reg.Get(id)
 	if !ok {
@@ -212,7 +212,7 @@ func configureMockAgent(reg *Registry, id string, log *logger.Logger) {
 		return
 	}
 	mock.SetEnabled(true)
-	if os.Getenv("KANDEV_MOCK_AGENT_MCP") == "false" {
+	if os.Getenv("PCRAFT_MOCK_AGENT_MCP") == "false" {
 		mock.SetSupportsMCP(false)
 	}
 	// Resolve binary path: same directory as the running executable.

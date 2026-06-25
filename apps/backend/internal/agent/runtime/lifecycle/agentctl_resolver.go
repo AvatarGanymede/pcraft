@@ -8,12 +8,12 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // AgentctlResolver finds the path to a linux/amd64 agentctl binary for remote executors.
 // Resolution order:
-//  1. KANDEV_AGENTCTL_LINUX_BINARY env var
+//  1. PCRAFT_AGENTCTL_LINUX_BINARY env var
 //  2. build/agentctl-linux-amd64 relative to the running binary (dev mode)
 //  3. bin/agentctl-linux-amd64 relative to the running binary
 type AgentctlResolver struct {
@@ -30,12 +30,12 @@ func NewAgentctlResolver(log *logger.Logger) *AgentctlResolver {
 // ResolveLinuxBinary returns the path to a linux/amd64 agentctl binary.
 func (r *AgentctlResolver) ResolveLinuxBinary() (string, error) {
 	// 1. Env var override
-	if envPath := os.Getenv("KANDEV_AGENTCTL_LINUX_BINARY"); envPath != "" {
+	if envPath := os.Getenv("PCRAFT_AGENTCTL_LINUX_BINARY"); envPath != "" {
 		if _, err := os.Stat(envPath); err == nil {
 			r.logger.Debug("using agentctl from env var", zap.String("path", envPath))
 			return envPath, nil
 		}
-		return "", fmt.Errorf("KANDEV_AGENTCTL_LINUX_BINARY=%q does not exist", envPath)
+		return "", fmt.Errorf("PCRAFT_AGENTCTL_LINUX_BINARY=%q does not exist", envPath)
 	}
 
 	// 2. Relative to the running binary (dev mode: build/agentctl-linux-amd64)
@@ -58,7 +58,7 @@ func (r *AgentctlResolver) ResolveLinuxBinary() (string, error) {
 
 	return "", fmt.Errorf(
 		"agentctl linux binary not found; build it with 'make build-agentctl-linux' "+
-			"or set KANDEV_AGENTCTL_LINUX_BINARY (os=%s arch=%s)",
+			"or set PCRAFT_AGENTCTL_LINUX_BINARY (os=%s arch=%s)",
 		runtime.GOOS, runtime.GOARCH,
 	)
 }

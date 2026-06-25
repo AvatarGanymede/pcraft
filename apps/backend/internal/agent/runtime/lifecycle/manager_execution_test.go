@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/common/logger"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func TestErrSessionWorkspaceNotReady_ErrorsIs(t *testing.T) {

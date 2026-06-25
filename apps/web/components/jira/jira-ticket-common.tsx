@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage } from "@kandev/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@pcraft/ui/avatar";
 import { getJiraTicket, transitionJiraTicket } from "@/lib/api/domains/jira-api";
 import type { JiraStatusCategory, JiraTicket } from "@/lib/types/jira";
 import { IntegrationAuthErrorMessage } from "@/components/integrations/auth-error-message";

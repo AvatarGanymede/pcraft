@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/summary"
+	"github.com/AvatarGanymede/pcraft/internal/office/summary"
 )
 
 func TestBuildSummary_Sections(t *testing.T) {

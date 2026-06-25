@@ -7,8 +7,8 @@ import (
 	"io/fs"
 )
 
-const bootPayloadGlobal = "window.__KANDEV_BOOT_PAYLOAD__"
-const debugGlobalAssignment = "window.__KANDEV_DEBUG=true;"
+const bootPayloadGlobal = "window.__PCRAFT_BOOT_PAYLOAD__"
+const debugGlobalAssignment = "window.__PCRAFT_DEBUG=true;"
 const maxInt = int(^uint(0) >> 1)
 
 var headCloseTag = []byte("</head>")

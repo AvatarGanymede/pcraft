@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 func dispatchWorkspaceShellMessages(msg types.WorkspaceStreamMessage, callbacks WorkspaceStreamCallbacks) bool {

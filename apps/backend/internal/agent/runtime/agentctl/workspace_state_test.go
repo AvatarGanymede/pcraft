@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // newHTTPOnlyClient builds a Client wired to a custom HTTP base URL without

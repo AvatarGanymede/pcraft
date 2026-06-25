@@ -12,14 +12,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/agentctl/server/utility"
-	"github.com/kandev/kandev/internal/common/httpmw"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/mcp/server"
-	"github.com/kandev/kandev/internal/system/metrics"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/common/httpmw"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/mcp/server"
+	"github.com/AvatarGanymede/pcraft/internal/system/metrics"
 	"go.uber.org/zap"
 )
 
@@ -167,26 +167,6 @@ func (s *Server) setupRoutes() {
 
 		// Port listener detection
 		api.GET("/ports", s.handleListPorts)
-
-		// Git operations
-		api.POST("/git/pull", s.handleGitPull)
-		api.POST("/git/push", s.handleGitPush)
-		api.POST("/git/rebase", s.handleGitRebase)
-		api.POST("/git/merge", s.handleGitMerge)
-		api.POST("/git/abort", s.handleGitAbort)
-		api.POST("/git/commit", s.handleGitCommit)
-		api.POST("/git/stage", s.handleGitStage)
-		api.POST("/git/unstage", s.handleGitUnstage)
-		api.POST("/git/discard", s.handleGitDiscard)
-		api.POST("/git/create-pr", s.handleGitCreatePR)
-		api.POST("/git/revert-commit", s.handleGitRevertCommit)
-		api.POST("/git/rename-branch", s.handleGitRenameBranch)
-		api.POST("/git/reset", s.handleGitReset)
-		api.GET("/git/commit/:sha", s.handleGitShowCommit)
-		api.GET("/git/log", s.handleGitLog)
-		api.GET("/git/cumulative-diff", s.handleGitCumulativeDiff)
-		api.GET("/git/status", s.handleGitStatus)
-		api.GET("/git/status/multi", s.handleGitStatusMulti)
 	}
 
 	// Utility agent routes
@@ -199,8 +179,8 @@ func (s *Server) setupRoutes() {
 		api.PUT("/mcp/mode", s.handleSetMcpMode)
 	}
 
-	// pprof + memory stats (enabled via KANDEV_DEBUG_PPROF_ENABLED=true)
-	if os.Getenv("KANDEV_DEBUG_PPROF_ENABLED") == "true" { //nolint:goconst // env-var check, not a query param
+	// pprof + memory stats (enabled via PCRAFT_DEBUG_PPROF_ENABLED=true)
+	if os.Getenv("PCRAFT_DEBUG_PPROF_ENABLED") == "true" { //nolint:goconst // env-var check, not a query param
 		s.registerPprofRoutes()
 	}
 
@@ -218,8 +198,8 @@ func (s *Server) setupRoutes() {
 // acpDebugTailEnabled gates the ACP live-tail endpoint on both ACP frame
 // logging and dev mode. Read live (like the pprof gate) so it is testable.
 func acpDebugTailEnabled() bool {
-	return os.Getenv("KANDEV_DEBUG_AGENT_MESSAGES") == "true" && //nolint:goconst // env-var values, not query params
-		os.Getenv("KANDEV_DEBUG_DEV_MODE") == "true"
+	return os.Getenv("PCRAFT_DEBUG_AGENT_MESSAGES") == "true" && //nolint:goconst // env-var values, not query params
+		os.Getenv("PCRAFT_DEBUG_DEV_MODE") == "true"
 }
 
 // handleACPRingTail returns the most recent normalized ACP events for a

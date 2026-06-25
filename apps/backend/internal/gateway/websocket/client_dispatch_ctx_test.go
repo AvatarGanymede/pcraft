@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // TestHub_DispatchContextFallsBackBeforeRun guards the test-setup path:

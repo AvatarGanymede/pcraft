@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // TestComputeRoutineMissed_HappyPath: NextRunAt == now, no backlog —

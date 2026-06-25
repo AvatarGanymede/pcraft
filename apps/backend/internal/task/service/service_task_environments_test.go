@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 type stubEnvRepo struct {
@@ -53,24 +53,12 @@ func (s *stubEnvRepo) DeleteTaskEnvironment(context.Context, string) error {
 func (s *stubEnvRepo) DeleteTaskEnvironmentsByTask(context.Context, string) error { return nil }
 
 type stubDestroyer struct {
-	containerCalls []string
-	sandboxCalls   []string
-	worktreeCalls  []string
-	pushCalls      int
-	containerErr   error
-	sandboxErr     error
-	worktreeErr    error
-	pushErr        error
+	worktreeCalls []string
+	pushCalls     int
+	worktreeErr   error
+	pushErr       error
 }
 
-func (s *stubDestroyer) DestroyContainer(_ context.Context, id string) error {
-	s.containerCalls = append(s.containerCalls, id)
-	return s.containerErr
-}
-func (s *stubDestroyer) DestroySandbox(_ context.Context, id, _ string) error {
-	s.sandboxCalls = append(s.sandboxCalls, id)
-	return s.sandboxErr
-}
 func (s *stubDestroyer) DestroyWorktree(_ context.Context, id string) error {
 	s.worktreeCalls = append(s.worktreeCalls, id)
 	return s.worktreeErr
@@ -78,9 +66,6 @@ func (s *stubDestroyer) DestroyWorktree(_ context.Context, id string) error {
 func (s *stubDestroyer) PushEnvironmentBranch(context.Context, *models.TaskEnvironment) error {
 	s.pushCalls++
 	return s.pushErr
-}
-func (s *stubDestroyer) GetContainerLiveStatus(context.Context, string) (*ContainerLiveStatus, error) {
-	return nil, nil
 }
 
 type stubRunningChecker struct {
@@ -113,7 +98,7 @@ func TestResetTaskEnvironment_NoEnvironment(t *testing.T) {
 }
 
 func TestResetTaskEnvironment_SessionRunningBlocks(t *testing.T) {
-	repo := &stubEnvRepo{env: &models.TaskEnvironment{ID: "env-1", TaskID: "task-1", ContainerID: "c"}}
+	repo := &stubEnvRepo{env: &models.TaskEnvironment{ID: "env-1", TaskID: "task-1", WorktreeID: "wt-1"}}
 	svc := newResetTestService(t, repo)
 	svc.SetSessionRunningChecker(&stubRunningChecker{running: true})
 	svc.SetEnvironmentDestroyer(&stubDestroyer{})
@@ -148,13 +133,11 @@ func TestSessionBlocksEnvironmentReset(t *testing.T) {
 	}
 }
 
-func TestResetTaskEnvironment_DestroysEachResourceTypeAndDeletesRow(t *testing.T) {
+func TestResetTaskEnvironment_DestroysWorktreeAndDeletesRow(t *testing.T) {
 	repo := &stubEnvRepo{env: &models.TaskEnvironment{
-		ID:          "env-1",
-		TaskID:      "task-1",
-		ContainerID: "container-abc",
-		SandboxID:   "sandbox-xyz",
-		WorktreeID:  "wt-1",
+		ID:         "env-1",
+		TaskID:     "task-1",
+		WorktreeID: "wt-1",
 	}}
 	destroyer := &stubDestroyer{}
 	svc := newResetTestService(t, repo)
@@ -167,31 +150,25 @@ func TestResetTaskEnvironment_DestroysEachResourceTypeAndDeletesRow(t *testing.T
 	if !repo.deleted {
 		t.Error("expected environment row to be deleted")
 	}
-	if len(destroyer.containerCalls) != 1 || destroyer.containerCalls[0] != "container-abc" {
-		t.Errorf("expected 1 container destroy call, got %v", destroyer.containerCalls)
-	}
-	if len(destroyer.sandboxCalls) != 1 || destroyer.sandboxCalls[0] != "sandbox-xyz" {
-		t.Errorf("expected 1 sandbox destroy call, got %v", destroyer.sandboxCalls)
-	}
 	if len(destroyer.worktreeCalls) != 1 || destroyer.worktreeCalls[0] != "wt-1" {
 		t.Errorf("expected 1 worktree destroy call, got %v", destroyer.worktreeCalls)
 	}
 }
 
-func TestResetTaskEnvironment_ContainerDestroyFailurePreservesRow(t *testing.T) {
+func TestResetTaskEnvironment_WorktreeDestroyFailurePreservesRow(t *testing.T) {
 	repo := &stubEnvRepo{env: &models.TaskEnvironment{
-		ID:          "env-1",
-		TaskID:      "task-1",
-		ContainerID: "container-abc",
+		ID:         "env-1",
+		TaskID:     "task-1",
+		WorktreeID: "wt-1",
 	}}
-	destroyer := &stubDestroyer{containerErr: errors.New("docker unreachable")}
+	destroyer := &stubDestroyer{worktreeErr: errors.New("worktree cleanup failed")}
 	svc := newResetTestService(t, repo)
 	svc.SetSessionRunningChecker(&stubRunningChecker{running: false})
 	svc.SetEnvironmentDestroyer(destroyer)
 
 	err := svc.ResetTaskEnvironment(context.Background(), "task-1", ResetOptions{})
 	if err == nil {
-		t.Fatal("expected error when container destroy fails")
+		t.Fatal("expected error when worktree destroy fails")
 	}
 	if repo.deleted {
 		t.Error("expected environment row to be preserved when destroy fails")
@@ -200,9 +177,9 @@ func TestResetTaskEnvironment_ContainerDestroyFailurePreservesRow(t *testing.T) 
 
 func TestResetTaskEnvironment_RunningCheckErrorFailsClosed(t *testing.T) {
 	repo := &stubEnvRepo{env: &models.TaskEnvironment{
-		ID:          "env-1",
-		TaskID:      "task-1",
-		ContainerID: "container-abc",
+		ID:         "env-1",
+		TaskID:     "task-1",
+		WorktreeID: "wt-1",
 	}}
 	destroyer := &stubDestroyer{}
 	svc := newResetTestService(t, repo)
@@ -213,38 +190,11 @@ func TestResetTaskEnvironment_RunningCheckErrorFailsClosed(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error when running-session check fails")
 	}
-	if len(destroyer.containerCalls) != 0 {
-		t.Errorf("expected teardown to be skipped when guard errors, got %v", destroyer.containerCalls)
+	if len(destroyer.worktreeCalls) != 0 {
+		t.Errorf("expected teardown to be skipped when guard errors, got %v", destroyer.worktreeCalls)
 	}
 	if repo.deleted {
 		t.Error("expected environment row to be preserved when guard errors")
-	}
-}
-
-func TestResetTaskEnvironment_TeardownIsBestEffortAcrossResources(t *testing.T) {
-	repo := &stubEnvRepo{env: &models.TaskEnvironment{
-		ID:          "env-1",
-		TaskID:      "task-1",
-		ContainerID: "container-abc",
-		WorktreeID:  "wt-1",
-	}}
-	destroyer := &stubDestroyer{containerErr: errors.New("docker unreachable")}
-	svc := newResetTestService(t, repo)
-	svc.SetSessionRunningChecker(&stubRunningChecker{running: false})
-	svc.SetEnvironmentDestroyer(destroyer)
-
-	err := svc.ResetTaskEnvironment(context.Background(), "task-1", ResetOptions{})
-	if err == nil {
-		t.Fatal("expected joined error when container destroy fails")
-	}
-	if len(destroyer.containerCalls) != 1 {
-		t.Errorf("expected container destroy attempted, got %v", destroyer.containerCalls)
-	}
-	if len(destroyer.worktreeCalls) != 1 {
-		t.Errorf("expected worktree destroy attempted even when container failed, got %v", destroyer.worktreeCalls)
-	}
-	if repo.deleted {
-		t.Error("expected environment row to be preserved when any destroy fails")
 	}
 }
 
@@ -277,9 +227,9 @@ func TestResetTaskEnvironment_PushBranchFailureAbortsResetBeforeTeardown(t *test
 
 func TestPerformTaskCleanup_TearsDownTaskEnvironmentAndDeletesRow(t *testing.T) {
 	env := &models.TaskEnvironment{
-		ID:          "env-1",
-		TaskID:      "task-1",
-		ContainerID: "container-abc",
+		ID:         "env-1",
+		TaskID:     "task-1",
+		WorktreeID: "wt-1",
 	}
 	repo := &stubEnvRepo{env: env}
 	destroyer := &stubDestroyer{}
@@ -294,77 +244,10 @@ func TestPerformTaskCleanup_TearsDownTaskEnvironmentAndDeletesRow(t *testing.T) 
 	if len(errs) != 0 {
 		t.Fatalf("unexpected cleanup errors: %v", errs)
 	}
-	if len(destroyer.containerCalls) != 1 || destroyer.containerCalls[0] != "container-abc" {
-		t.Fatalf("expected container teardown, got %v", destroyer.containerCalls)
+	if len(destroyer.worktreeCalls) != 1 || destroyer.worktreeCalls[0] != "wt-1" {
+		t.Fatalf("expected worktree teardown, got %v", destroyer.worktreeCalls)
 	}
 	if !repo.deleted {
 		t.Fatal("expected task environment row to be deleted")
-	}
-}
-
-// TestBuildSSHLiveStatus_StringsAndStringEncodedInts pins the projection
-// from ExecutorRunning.Metadata into the popover-shaped SSHLiveStatus. The
-// SSH executor writes its numeric metadata as strings (strconv.Itoa) so
-// the projection must accept both "41001" and 41001 — every JSON
-// round-trip through SQLite blob storage gives us strings, but direct
-// in-memory writes give us ints.
-func TestBuildSSHLiveStatus_StringsAndStringEncodedInts(t *testing.T) {
-	got := buildSSHLiveStatus(map[string]interface{}{
-		"ssh_host":                 "koi.zeval.local",
-		"ssh_port":                 "2222",
-		"ssh_user":                 "zeval",
-		"ssh_remote_task_dir":      "/home/zeval/.kandev/tasks/task-1",
-		"ssh_remote_agentctl_pid":  "4732",
-		"ssh_remote_agentctl_port": "41001",
-		"ssh_local_forward_port":   "59123",
-		"ssh_host_fingerprint":     "SHA256:abc",
-	})
-	if got.Host != "koi.zeval.local" || got.Port != 2222 || got.User != "zeval" {
-		t.Errorf("connection fields = %+v, want host/port/user", got)
-	}
-	if got.RemoteTaskDir != "/home/zeval/.kandev/tasks/task-1" {
-		t.Errorf("RemoteTaskDir = %q", got.RemoteTaskDir)
-	}
-	if got.RemoteAgentctlPID != 4732 || got.RemoteAgentctlPort != 41001 || got.LocalForwardPort != 59123 {
-		t.Errorf("agentctl fields = %+v", got)
-	}
-	if got.Fingerprint != "SHA256:abc" {
-		t.Errorf("Fingerprint = %q", got.Fingerprint)
-	}
-}
-
-func TestBuildSSHLiveStatus_NativeIntsAlsoAccepted(t *testing.T) {
-	got := buildSSHLiveStatus(map[string]interface{}{
-		"ssh_host":                 "h",
-		"ssh_port":                 22,
-		"ssh_remote_agentctl_pid":  int64(99),
-		"ssh_remote_agentctl_port": float64(41001),
-	})
-	if got.Port != 22 || got.RemoteAgentctlPID != 99 || got.RemoteAgentctlPort != 41001 {
-		t.Errorf("native int projection failed: %+v", got)
-	}
-}
-
-func TestBuildSSHLiveStatus_EmptyMetadataReturnsZeroValueStruct(t *testing.T) {
-	got := buildSSHLiveStatus(map[string]interface{}{})
-	if got == nil {
-		t.Fatal("expected non-nil status (zero value), got nil")
-	}
-	if got.Host != "" || got.Port != 0 || got.RemoteAgentctlPID != 0 {
-		t.Errorf("expected zero-value fields, got %+v", got)
-	}
-}
-
-func TestBuildSSHLiveStatus_InvalidPortString_NoCrash(t *testing.T) {
-	// SSH executor only emits Itoa'd ports, but be defensive in case
-	// something else writes the metadata (e.g. a future migration or
-	// import path). Don't want a stray non-numeric value to panic the
-	// popover endpoint for every other field too.
-	got := buildSSHLiveStatus(map[string]interface{}{
-		"ssh_host": "h",
-		"ssh_port": "not-a-port",
-	})
-	if got.Host != "h" || got.Port != 0 {
-		t.Errorf("expected host preserved, port=0 on bad input, got %+v", got)
 	}
 }

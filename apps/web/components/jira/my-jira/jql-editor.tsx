@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Textarea } from "@pcraft/ui/textarea";
 
 type JqlEditorProps = {
   composedJql: string;

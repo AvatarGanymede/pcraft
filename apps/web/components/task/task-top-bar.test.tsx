@@ -5,7 +5,7 @@ import { TaskTopBar } from "./task-top-bar";
 
 afterEach(() => cleanup());
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -63,10 +63,6 @@ vi.mock("@/hooks/domains/jira/use-jira-availability", () => ({
 
 vi.mock("@/hooks/domains/linear/use-linear-availability", () => ({
   useLinearAvailable: () => false,
-}));
-
-vi.mock("@/components/task/workflow-stepper", () => ({
-  WorkflowStepper: () => null,
 }));
 
 vi.mock("@/components/task/layout-preset-selector", () => ({

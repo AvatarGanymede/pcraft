@@ -71,6 +71,8 @@ export function buildDialogFormBodyProps(
     bottomSlot: props.bottomSlot,
     descriptionPlaceholder: props.descriptionPlaceholder,
     workflowLocked: props.lockedFields?.workflow,
+    p4Values: setup.p4Values,
+    onP4ValuesChange: setup.onP4ValuesChange,
   };
 }
 

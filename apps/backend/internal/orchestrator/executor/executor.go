@@ -7,15 +7,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/agentruntime"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -308,7 +308,7 @@ type LaunchAgentRequest struct {
 	WorktreeBranchPrefix string // Branch prefix for worktree branches
 	PullBeforeWorktree   bool   // Whether to pull from remote before creating the worktree
 
-	// Task directory mode: place worktree at ~/.kandev/tasks/{TaskDirName}/{RepoName}/
+	// Task directory mode: place worktree at ~/.pcraft/tasks/{TaskDirName}/{RepoName}/
 	TaskDirName string // Semantic task directory name (e.g. "fix-bug_ab12")
 	RepoName    string // Repository name used as subdirectory inside the task directory
 
@@ -356,7 +356,7 @@ const McpModeConfig = "config"
 
 // McpModeOffice restricts the MCP toolset for office (autonomous) agents to
 // interaction + plan tools. Office agents manage tasks via the kandev CLI
-// (exposed through agentctl + $KANDEV_CLI), not MCP — see
+// (exposed through agentctl + $PCRAFT_CLI), not MCP — see
 // docs/specs/office-agent-cli/spec.md.
 const McpModeOffice = "office"
 

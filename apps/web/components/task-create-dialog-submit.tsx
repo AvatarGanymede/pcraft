@@ -67,6 +67,10 @@ export function useTaskSubmitHandlers({
   noRepository,
   workspacePath,
   transformDescriptionBeforeSubmit,
+  p4WorkspaceId,
+  panelId,
+  requirement,
+  prefabPath,
 }: SubmitHandlersDeps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -96,6 +100,9 @@ export function useTaskSubmitHandlers({
         remoteRepos: useRemote ? remoteRepos : undefined,
         agentProfileId,
         noRepository,
+        p4WorkspaceId,
+        panelId,
+        requirement,
       }),
     [
       workspaceId,
@@ -105,6 +112,9 @@ export function useTaskSubmitHandlers({
       remoteRepos,
       agentProfileId,
       noRepository,
+      p4WorkspaceId,
+      panelId,
+      requirement,
     ],
   );
 
@@ -335,6 +345,10 @@ export function useTaskSubmitHandlers({
           // case and keeps "no path provided" semantically distinct from
           // "empty path string" on the wire.
           workspacePath: noRepository ? workspacePath.trim() || undefined : undefined,
+          p4WorkspaceId,
+          panelId,
+          requirement,
+          prefabPath,
         });
       const taskResponse = await createTaskWithFreshBranchRetry(buildPayload, opts.consented);
       if (!taskResponse) return;
@@ -551,6 +565,10 @@ export function useTaskSubmitHandlers({
           executorProfileId,
           withAgent: false,
           workspacePath: noRepository ? workspacePath.trim() || undefined : undefined,
+          p4WorkspaceId,
+          panelId,
+          requirement,
+          prefabPath,
         });
         p.workflow_step_id = effectiveDefaultStepId;
         return p;

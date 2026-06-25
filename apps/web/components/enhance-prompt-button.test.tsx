@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { EnhancePromptButton } from "./enhance-prompt-button";
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({
     open,
     onOpenChange,

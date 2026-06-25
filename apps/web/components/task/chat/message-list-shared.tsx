@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconAlertCircle, IconX } from "@tabler/icons-react";
 import { GridSpinner } from "@/components/grid-spinner";
 import type { Message, TaskSessionState } from "@/lib/types/http";

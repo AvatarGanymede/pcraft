@@ -2,8 +2,8 @@
 
 import { useMemo } from "react";
 import { IconPlus } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Button } from "@kandev/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import type {
   FilterClause,

@@ -3,7 +3,7 @@ package engine
 import (
 	"testing"
 
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 func TestCompileStep_CompilesLegacyActionsToTypedActions(t *testing.T) {

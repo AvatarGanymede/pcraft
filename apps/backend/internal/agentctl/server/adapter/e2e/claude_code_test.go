@@ -5,8 +5,8 @@ package e2e
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 )
 
 // https://www.npmjs.com/package/@anthropic-ai/claude-code

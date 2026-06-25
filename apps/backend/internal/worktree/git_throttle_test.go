@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // TestRunGitCmd_SaturatedThrottleBlocks verifies that runGitCmd routes

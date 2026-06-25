@@ -2,10 +2,10 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { toast } from "sonner";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
 import { IconCopy, IconCheck, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { revealWebhookSecret } from "@/lib/api/domains/automation-api";
 

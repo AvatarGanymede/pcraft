@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 func TestGetInbox_IncludesPermissionRequestItems(t *testing.T) {

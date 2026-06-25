@@ -1,7 +1,7 @@
 // Package routines provides the routines feature for the office domain.
 package routines
 
-import "github.com/kandev/kandev/internal/office/models"
+import "github.com/AvatarGanymede/pcraft/internal/office/models"
 
 // Routine is a type alias for models.Routine.
 type Routine = models.Routine

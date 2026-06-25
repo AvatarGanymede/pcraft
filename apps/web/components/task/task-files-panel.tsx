@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { SessionPanel, SessionPanelContent } from "@kandev/ui/pannel-session";
+import { SessionPanel, SessionPanelContent } from "@pcraft/ui/pannel-session";
 import { FileBrowser } from "@/components/task/file-browser";
 import type { OpenFileTab } from "@/lib/types/backend";
 import { useFilesPanelData } from "./task-files-panel-hooks";

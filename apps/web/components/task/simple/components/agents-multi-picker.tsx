@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { IconCheck, IconCircleDashed, IconX } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useOptimisticTaskMutation } from "@/hooks/use-optimistic-task-mutation";
 import { formatRelativeTime } from "@/lib/utils";

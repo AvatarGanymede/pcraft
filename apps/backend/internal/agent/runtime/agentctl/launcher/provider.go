@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Provide starts the agentctl launcher and returns a cleanup to stop it.

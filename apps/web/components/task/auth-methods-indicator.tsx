@@ -2,8 +2,8 @@
 
 import { memo, useCallback } from "react";
 import { IconKey, IconTerminal2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import { useAppStore } from "@/components/state-provider";
 import { authenticateSession } from "@/lib/api/domains/session-api";
 

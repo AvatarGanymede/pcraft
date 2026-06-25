@@ -10,11 +10,11 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/common/logger"
-	officemodels "github.com/kandev/kandev/internal/office/models"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/wakeup"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	officemodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/wakeup"
 )
 
 // testHarness packages the dispatcher with its dependencies. Keeps each

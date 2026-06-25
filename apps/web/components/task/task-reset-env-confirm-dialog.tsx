@@ -11,8 +11,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@kandev/ui/alert-dialog";
-import { Checkbox } from "@kandev/ui/checkbox";
+} from "@pcraft/ui/alert-dialog";
+import { Checkbox } from "@pcraft/ui/checkbox";
 
 export type TaskResetEnvConfirmDialogProps = {
   open: boolean;

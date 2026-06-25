@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	envRunningAsService = "KANDEV_RUNNING_AS_SERVICE"
-	envServiceMode      = "KANDEV_SERVICE_MODE"
-	envServiceManager   = "KANDEV_SERVICE_MANAGER"
-	envInstallKind      = "KANDEV_INSTALL_KIND"
-	envServiceMetadata  = "KANDEV_SERVICE_METADATA"
+	envRunningAsService = "PCRAFT_RUNNING_AS_SERVICE"
+	envServiceMode      = "PCRAFT_SERVICE_MODE"
+	envServiceManager   = "PCRAFT_SERVICE_MANAGER"
+	envInstallKind      = "PCRAFT_INSTALL_KIND"
+	envServiceMetadata  = "PCRAFT_SERVICE_METADATA"
 
 	serviceMetadataVersion = 1
 	managedMarkerText      = "managed by kandev"

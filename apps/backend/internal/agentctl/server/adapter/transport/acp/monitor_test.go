@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	acp "github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // monitorMeta builds the `_meta.claudeCode.toolName=Monitor` payload Claude-acp

@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	tools "github.com/kandev/kandev/internal/tools/installer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	tools "github.com/AvatarGanymede/pcraft/internal/tools/installer"
 	"go.uber.org/zap"
 )
 
@@ -432,7 +432,7 @@ func (v *VscodeManager) userDataDir() string {
 	if err != nil {
 		home = "."
 	}
-	return filepath.Join(home, ".kandev", "tools", "code-server-data")
+	return filepath.Join(home, ".pcraft", "tools", "code-server-data")
 }
 
 // writeThemeSettings ensures VS Code settings.json contains our managed settings.

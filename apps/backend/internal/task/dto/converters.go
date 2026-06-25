@@ -1,8 +1,8 @@
 package dto
 
 import (
-	"github.com/kandev/kandev/internal/task/service"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // FromWorkflowStep converts a workflow step model to a WorkflowStepDTO.

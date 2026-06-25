@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/pkg/acp/protocol"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/pkg/acp/protocol"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 func TestOrchestratorConcurrentTasks(t *testing.T) {

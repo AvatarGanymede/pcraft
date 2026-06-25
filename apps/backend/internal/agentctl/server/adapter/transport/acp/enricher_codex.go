@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 func enrichCodexPayload(payload *streams.NormalizedPayload, frame EnrichFrame) {

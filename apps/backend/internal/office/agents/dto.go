@@ -1,8 +1,8 @@
 package agents
 
 import (
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // CreateAgentRequest is the request body for creating an agent instance.

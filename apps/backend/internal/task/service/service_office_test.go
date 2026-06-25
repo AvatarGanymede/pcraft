@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 )
 
 // dbStepResolver resolves the start step from the DB for testing.

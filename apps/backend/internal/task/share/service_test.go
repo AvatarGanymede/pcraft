@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // mockBackend records uploads and supports configurable upload/delete errors.

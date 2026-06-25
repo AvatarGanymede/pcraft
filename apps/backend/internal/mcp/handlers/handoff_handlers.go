@@ -7,8 +7,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/task/service"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // SetHandoffService wires the cross-task handoff service used to back the

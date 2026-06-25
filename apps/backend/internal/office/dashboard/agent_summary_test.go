@@ -11,7 +11,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
 )
 
 // summaryFixtureAgent is the agent id every test in this file uses

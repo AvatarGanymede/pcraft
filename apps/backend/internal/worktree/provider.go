@@ -3,8 +3,8 @@ package worktree
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Provide creates the worktree manager using separate writer and reader pools.

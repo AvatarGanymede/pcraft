@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // ghSearchReposPath is the GitHub REST search-repositories path that gh CLI

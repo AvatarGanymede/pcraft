@@ -10,13 +10,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/common/constants"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	"github.com/kandev/kandev/internal/worktree"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/constants"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -854,8 +854,8 @@ func (h *TaskHandlers) startAgentForNewTask(
 	}
 	sessionID := prepResp.SessionID
 	response.TaskSessionID = sessionID
-	if updatedTask, updateErr := h.service.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); updateErr != nil {
-		h.logger.Warn("failed to mark task scheduling after preparing start session",
+	if updatedTask, updateErr := h.service.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); updateErr != nil {
+		h.logger.Warn("failed to mark task backlog after preparing start session",
 			zap.Error(updateErr),
 			zap.String("task_id", taskID),
 			zap.String("session_id", sessionID))

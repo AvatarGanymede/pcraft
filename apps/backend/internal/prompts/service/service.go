@@ -6,8 +6,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/kandev/kandev/internal/prompts/models"
-	promptstore "github.com/kandev/kandev/internal/prompts/store"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/models"
+	promptstore "github.com/AvatarGanymede/pcraft/internal/prompts/store"
 )
 
 var (

@@ -6,14 +6,14 @@ import (
 	"testing"
 	"time"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/orchestrator/scheduler"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/scheduler"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 func TestResolveStepAgentProfile(t *testing.T) {

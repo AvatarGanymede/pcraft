@@ -7,9 +7,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { cn } from "@kandev/ui/lib/utils";
+} from "@pcraft/ui/dropdown-menu";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { cn } from "@pcraft/ui/lib/utils";
 import { TaskDeleteConfirmDialog } from "@/components/task/task-delete-confirm-dialog";
 import { TaskArchiveConfirmDialog } from "@/components/task/task-archive-confirm-dialog";
 import { needsAction } from "@/lib/utils/needs-action";

@@ -5,8 +5,8 @@ import (
 
 	"github.com/coder/acp-go-sdk"
 
-	acpclient "github.com/kandev/kandev/internal/agentctl/server/acp"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	acpclient "github.com/AvatarGanymede/pcraft/internal/agentctl/server/acp"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // convertAuthMethods converts ACP auth methods to stream types,

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // ProtocolSSH is the SSH git protocol.

@@ -9,14 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/constants"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/task/models"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/constants"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // taskServiceAdapter adapts the task service to the worktree.TaskService interface.
@@ -73,12 +73,9 @@ func provideWorktreeManager(dbPool *db.Pool, cfg *config.Config, log *logger.Log
 		lifecycleMgr.SetBootMessageService(&bootMsgAdapter{svc: taskSvc})
 	}
 	taskSvc.SetWorktreeCleanup(manager)
-	if lifecycleMgr != nil {
-		taskSvc.SetEnvironmentDestroyer(&environmentDestroyerAdapter{
-			lifecycle: lifecycleMgr,
-			worktrees: manager,
-		})
-	}
+	taskSvc.SetEnvironmentDestroyer(&environmentDestroyerAdapter{
+		worktrees: manager,
+	})
 
 	// Wire script message handler with adapters
 	taskSvcAdapter := &taskServiceAdapter{svc: taskSvc}
@@ -100,47 +97,15 @@ func provideWorktreeManager(dbPool *db.Pool, cfg *config.Config, log *logger.Log
 }
 
 // environmentDestroyerAdapter implements taskservice.EnvironmentDestroyer by
-// delegating to the lifecycle Manager (for containers/sandboxes) and the worktree
-// Manager (for worktrees). Branch is preserved on worktree removal so unpushed
-// work is never silently dropped.
+// delegating to the worktree Manager. Branch is preserved on worktree removal
+// so unpushed work is never silently dropped.
 type environmentDestroyerAdapter struct {
-	lifecycle *lifecycle.Manager
 	worktrees *worktree.Manager
-}
-
-func (a *environmentDestroyerAdapter) DestroyContainer(ctx context.Context, containerID string) error {
-	return a.lifecycle.DestroyContainer(ctx, containerID)
-}
-
-func (a *environmentDestroyerAdapter) DestroySandbox(ctx context.Context, sandboxID, executionID string) error {
-	return a.lifecycle.DestroySandbox(ctx, sandboxID, executionID)
 }
 
 func (a *environmentDestroyerAdapter) DestroyWorktree(ctx context.Context, worktreeID string) error {
 	// removeBranch=false: preserve the branch so unpushed work isn't lost.
 	return a.worktrees.RemoveByID(ctx, worktreeID, false)
-}
-
-func (a *environmentDestroyerAdapter) GetContainerLiveStatus(ctx context.Context, containerID string) (*taskservice.ContainerLiveStatus, error) {
-	live, err := a.lifecycle.GetContainerLiveStatus(ctx, containerID)
-	if err != nil || live == nil {
-		return nil, err
-	}
-	out := &taskservice.ContainerLiveStatus{
-		ContainerID: live.ContainerID,
-		State:       live.State,
-		Status:      live.Status,
-		ExitCode:    live.ExitCode,
-		Health:      live.Health,
-		Missing:     live.Missing,
-	}
-	if live.StartedAt != nil {
-		out.StartedAt = live.StartedAt.Format(time.RFC3339)
-	}
-	if live.FinishedAt != nil {
-		out.FinishedAt = live.FinishedAt.Format(time.RFC3339)
-	}
-	return out, nil
 }
 
 // pushBranchTimeout caps how long we'll wait for `git push` before treating

@@ -1,6 +1,6 @@
 package orchestrator
 
-import v1 "github.com/kandev/kandev/pkg/api/v1"
+import v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
 // UserMessageMeta holds metadata fields for a user message.
 // Use NewUserMessageMeta to construct and ToMap to serialize.

@@ -9,7 +9,7 @@ import (
 )
 
 // MockClient is an in-memory GitLab client used by E2E tests.
-// Activated when KANDEV_MOCK_GITLAB=true. It serves a small fixed set of
+// Activated when PCRAFT_MOCK_GITLAB=true. It serves a small fixed set of
 // MRs/issues/discussions plus accepts dynamic seeding via mock_controller.
 //
 // The mock intentionally implements the full Client interface but covers

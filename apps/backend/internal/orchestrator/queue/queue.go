@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 var (

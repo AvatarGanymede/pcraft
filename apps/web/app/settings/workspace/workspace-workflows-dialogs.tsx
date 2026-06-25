@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
-import { RadioGroup, RadioGroupItem } from "@kandev/ui/radio-group";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
+import { RadioGroup, RadioGroupItem } from "@pcraft/ui/radio-group";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
+import { Textarea } from "@pcraft/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { WorkflowTemplate } from "@/lib/types/http";
 

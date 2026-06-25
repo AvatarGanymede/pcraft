@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // installScriptAgent extends testAgent so we can set a non-empty install script.

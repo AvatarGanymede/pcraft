@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kandev/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
 import { useAppStore } from "@/components/state-provider";
 import type { CostSummary } from "@/lib/state/slices/office/types";
 import { CostOverview } from "./cost-overview";

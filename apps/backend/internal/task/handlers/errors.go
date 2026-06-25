@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
 	"go.uber.org/zap"
 )
 

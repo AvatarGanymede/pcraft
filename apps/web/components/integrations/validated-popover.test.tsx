@@ -9,7 +9,7 @@ afterEach(() => {
 // (no portal, no measurement gymnastics) and the popover's open/close is
 // driven by ValidatedPopover's own onOpenChange callback that we surface via
 // a parent-controlled close button.
-vi.mock("@kandev/ui/popover", () => {
+vi.mock("@pcraft/ui/popover", () => {
   return {
     Popover: ({
       open,
@@ -32,7 +32,7 @@ vi.mock("@kandev/ui/popover", () => {
   };
 });
 
-vi.mock("@kandev/ui/tooltip", () => ({
+vi.mock("@pcraft/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,

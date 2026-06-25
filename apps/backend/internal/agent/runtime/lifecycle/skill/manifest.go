@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // buildManifest resolves a profile's desired skills + instruction files

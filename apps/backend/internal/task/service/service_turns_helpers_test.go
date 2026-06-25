@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestIsExecutorRunningNotFoundError(t *testing.T) {

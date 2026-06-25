@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
 )
 
 // TestErrorsAreClassifiable verifies that the orchestrator's error

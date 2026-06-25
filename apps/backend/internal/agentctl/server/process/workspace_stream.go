@@ -3,7 +3,7 @@ package process
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 	"go.uber.org/zap"
 )
 

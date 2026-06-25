@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/discovery"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/discovery"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 func (c *Controller) GetAgent(ctx context.Context, id string) (*dto.AgentDTO, error) {

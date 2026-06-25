@@ -10,9 +10,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/dashboard"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // agentCallerStubReader returns a configurable AgentInstance for permission tests.

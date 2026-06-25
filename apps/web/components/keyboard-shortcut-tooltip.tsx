@@ -2,8 +2,8 @@
  * Reusable tooltip component for displaying keyboard shortcuts
  */
 
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Kbd, KbdGroup } from "@kandev/ui/kbd";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Kbd, KbdGroup } from "@pcraft/ui/kbd";
 import type { KeyboardShortcut } from "@/lib/keyboard/constants";
 import { formatShortcut, detectPlatform } from "@/lib/keyboard/utils";
 

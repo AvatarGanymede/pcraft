@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/service"
-	workflowctrl "github.com/kandev/kandev/internal/workflow/controller"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	workflowctrl "github.com/AvatarGanymede/pcraft/internal/workflow/controller"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )

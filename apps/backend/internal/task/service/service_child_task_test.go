@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestCreateChildTask_HappyPath_InheritsWorkflow(t *testing.T) {

@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "@/lib/routing/client-router";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Switch } from "@kandev/ui/switch";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Switch } from "@pcraft/ui/switch";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { IconPlayerPlay, IconTrash } from "@tabler/icons-react";
 import type { Automation, TriggerType } from "@/lib/types/automation";
 import { formatRelativeTime } from "./format-utils";

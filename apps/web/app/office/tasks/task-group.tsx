@@ -1,9 +1,9 @@
 "use client";
 
 import { IconLayoutRows } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { TaskGroupBy } from "@/lib/state/slices/office/types";
 

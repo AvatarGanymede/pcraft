@@ -18,11 +18,11 @@ type portConfig struct {
 func resolvePorts(opts Options) (int, error) {
 	backend := opts.BackendPort
 	if backend == 0 {
-		if p, err := envPort("KANDEV_BACKEND_PORT"); err != nil {
+		if p, err := envPort("PCRAFT_BACKEND_PORT"); err != nil {
 			return 0, err
 		} else if p != 0 {
 			backend = p
-		} else if p, err := envPort("KANDEV_PORT"); err != nil {
+		} else if p, err := envPort("PCRAFT_PORT"); err != nil {
 			return 0, err
 		} else {
 			backend = p

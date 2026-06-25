@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 	"gopkg.in/yaml.v3"
 )
 

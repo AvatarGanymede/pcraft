@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 
@@ -267,10 +267,8 @@ func (h *Handlers) handleUpdateTaskState(ctx context.Context, msg *ws.Message) (
 	}
 	state := normalizeTaskState(req.State)
 	switch state {
-	case v1.TaskStateTODO, v1.TaskStateCreated, v1.TaskStateScheduling,
-		v1.TaskStateInProgress, v1.TaskStateReview, v1.TaskStateBlocked,
-		v1.TaskStateWaitingForInput, v1.TaskStateCompleted,
-		v1.TaskStateFailed, v1.TaskStateCancelled:
+	case v1.TaskStateBacklog, v1.TaskStateInProgress,
+		v1.TaskStateDone, v1.TaskStateClosed:
 		// valid
 	default:
 		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "invalid task state: "+req.State, nil)
@@ -294,26 +292,14 @@ func normalizeTaskState(raw string) v1.TaskState {
 	}
 	upper := strings.ToUpper(trimmed)
 	switch upper {
-	case "OPEN", "TODO":
-		return v1.TaskStateTODO
-	case "IN_PROGRESS", "INPROGRESS", "ACTIVE":
+	case "OPEN", "TODO", "CREATED", "SCHEDULING", "BLOCKED", "FAILED":
+		return v1.TaskStateBacklog
+	case "IN_PROGRESS", "INPROGRESS", "ACTIVE", "REVIEW", "WAITING_FOR_INPUT", "WAITING":
 		return v1.TaskStateInProgress
 	case "COMPLETE", "COMPLETED", "DONE":
-		return v1.TaskStateCompleted
-	case "BLOCKED":
-		return v1.TaskStateBlocked
+		return v1.TaskStateDone
 	case "CANCELLED", "CANCELED":
-		return v1.TaskStateCancelled
-	case "REVIEW":
-		return v1.TaskStateReview
-	case "FAILED":
-		return v1.TaskStateFailed
-	case "CREATED":
-		return v1.TaskStateCreated
-	case "SCHEDULING":
-		return v1.TaskStateScheduling
-	case "WAITING_FOR_INPUT", "WAITING":
-		return v1.TaskStateWaitingForInput
+		return v1.TaskStateClosed
 	default:
 		return v1.TaskState(trimmed)
 	}

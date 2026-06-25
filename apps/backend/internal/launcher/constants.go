@@ -16,14 +16,14 @@ const (
 )
 
 func resolveHomeDir() string {
-	if v := strings.TrimSpace(os.Getenv("KANDEV_HOME_DIR")); v != "" {
+	if v := strings.TrimSpace(os.Getenv("PCRAFT_HOME_DIR")); v != "" {
 		return v
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ".kandev"
+		return ".pcraft"
 	}
-	return filepath.Join(home, ".kandev")
+	return filepath.Join(home, ".pcraft")
 }
 
 func resolveDataDir() string {
@@ -31,8 +31,8 @@ func resolveDataDir() string {
 }
 
 func resolveDatabasePath() string {
-	if v := strings.TrimSpace(os.Getenv("KANDEV_DATABASE_PATH")); v != "" {
+	if v := strings.TrimSpace(os.Getenv("PCRAFT_DATABASE_PATH")); v != "" {
 		return v
 	}
-	return filepath.Join(resolveDataDir(), "kandev.db")
+	return filepath.Join(resolveDataDir(), "pcraft.db")
 }

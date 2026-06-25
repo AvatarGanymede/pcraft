@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 const (

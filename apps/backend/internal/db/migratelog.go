@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // MigrateLogger wraps a DB connection with per-statement migration logging.

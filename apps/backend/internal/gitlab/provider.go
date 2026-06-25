@@ -3,7 +3,7 @@ package gitlab
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Provide builds the GitLab service stack: discovers a host (via the

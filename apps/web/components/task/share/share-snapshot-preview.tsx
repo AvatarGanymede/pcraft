@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { ScrollArea } from "@kandev/ui/scroll-area";
+import { Badge } from "@pcraft/ui/badge";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
 
 import type { SnapshotPreview, SnapshotPreviewMessage } from "@/lib/api/domains/share-api";
 

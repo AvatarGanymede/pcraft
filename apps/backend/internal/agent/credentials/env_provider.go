@@ -32,7 +32,7 @@ var knownAPIKeyPatterns = []string{
 
 // EnvProvider provides credentials from environment variables
 type EnvProvider struct {
-	prefix string // Optional prefix filter (e.g., "KANDEV_")
+	prefix string // Optional prefix filter (e.g., "PCRAFT_")
 }
 
 // NewEnvProvider creates a new environment provider

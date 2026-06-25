@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/prompts/models"
-	promptstore "github.com/kandev/kandev/internal/prompts/store"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/models"
+	promptstore "github.com/AvatarGanymede/pcraft/internal/prompts/store"
 )
 
 func createService(t *testing.T) (*Service, func()) {

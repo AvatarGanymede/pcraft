@@ -2,8 +2,8 @@
 
 import Link from "@/components/routing/app-link";
 import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
-import { Alert, AlertDescription, AlertTitle } from "@kandev/ui/alert";
-import { Button } from "@kandev/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@pcraft/ui/alert";
+import { Button } from "@pcraft/ui/button";
 
 // EnsureSessionErrorInfo wraps a parsed ensure error so UI can offer a targeted action for the missing-agent-profile case.
 export type EnsureSessionErrorInfo = {

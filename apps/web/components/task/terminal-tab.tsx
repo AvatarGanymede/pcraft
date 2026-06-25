@@ -8,7 +8,7 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@kandev/ui/context-menu";
+} from "@pcraft/ui/context-menu";
 import { useAppStore } from "@/components/state-provider";
 import { destroyUserShell, renameUserShell } from "@/lib/api/domains/user-shell-api";
 import { shouldConfirmTerminalClose } from "@/lib/terminal/terminal-busy-registry";

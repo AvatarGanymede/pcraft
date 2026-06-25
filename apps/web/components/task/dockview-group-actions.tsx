@@ -10,13 +10,13 @@ import {
   IconLayoutRows,
   IconX,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 
 const ACTION_BTN =
   "h-5 w-5 inline-flex items-center justify-center rounded-[5px] text-muted-foreground/50 hover:text-foreground transition-colors cursor-pointer";

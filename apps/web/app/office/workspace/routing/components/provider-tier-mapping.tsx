@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Button } from "@kandev/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
+import { Badge } from "@pcraft/ui/badge";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
 import type { ProviderProfile, Tier, TierMap } from "@/lib/state/slices/office/types";
 import { providerLabel } from "./provider-order-editor";
 

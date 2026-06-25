@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // TestResolveBaseBranch_StoredOverridesFallback verifies the task-recorded

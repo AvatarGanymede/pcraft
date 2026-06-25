@@ -3,7 +3,7 @@ package worktree
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Repository contains repository information needed for script execution.

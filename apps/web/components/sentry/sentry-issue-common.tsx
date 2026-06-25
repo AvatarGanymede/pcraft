@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import type { SentryIssue, SentryLevel, SentryStatus } from "@/lib/types/sentry";
 import { IntegrationAuthErrorMessage } from "@/components/integrations/auth-error-message";
 

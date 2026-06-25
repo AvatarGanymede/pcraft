@@ -1,7 +1,7 @@
-# Kandev Makefile
+# Pcraft Makefile
 
 # Variables
-BINARY_NAME := kandev
+BINARY_NAME := pcraft
 BUILD_DIR := bin
 GO := go
 GOFLAGS := -v
@@ -131,12 +131,12 @@ run: build
 ## Run in development mode (with pprof enabled)
 dev: build
 	@echo "Running $(BINARY_NAME) in development mode..."
-	@KANDEV_DEBUG_PPROF_ENABLED=true exec ./$(BUILD_DIR)/$(BINARY_NAME)$(EXE) __backend
+	@PCRAFT_DEBUG_PPROF_ENABLED=true exec ./$(BUILD_DIR)/$(BINARY_NAME)$(EXE) __backend
 
 ## Run in debug mode (pprof + debug logging)
 start-debug: build
 	@echo "Running $(BINARY_NAME) in debug mode (pprof + debug logging)..."
-	@KANDEV_DEBUG_PPROF_ENABLED=true KANDEV_LOG_LEVEL=debug exec ./$(BUILD_DIR)/$(BINARY_NAME)$(EXE) __backend
+	@PCRAFT_DEBUG_PPROF_ENABLED=true PCRAFT_LOG_LEVEL=debug exec ./$(BUILD_DIR)/$(BINARY_NAME)$(EXE) __backend
 
 ## Run tests
 test:
@@ -155,7 +155,7 @@ test-windows:
 
 ## Run E2E tests (real agents, costs money — manual only)
 ## Set agent commands via env vars: E2E_CLAUDE_CODE_COMMAND, E2E_AMP_COMMAND
-## Enable debug: KANDEV_DEBUG_AGENT_MESSAGES=true KANDEV_DEBUG_LOG_DIR=/tmp/e2e-debug
+## Enable debug: PCRAFT_DEBUG_AGENT_MESSAGES=true PCRAFT_DEBUG_LOG_DIR=/tmp/e2e-debug
 test-e2e:
 	@echo "Running E2E adapter tests..."
 	$(GO) test -tags e2e -v -timeout 10m ./internal/agentctl/server/adapter/e2e/
@@ -164,7 +164,7 @@ test-e2e:
 ## Sprites VMs are always x86_64/amd64 regardless of host architecture.
 test-sprites-e2e: build-agentctl-linux
 	@echo "Running sprites e2e test..."
-	KANDEV_AGENTCTL_LINUX_BINARY=$(CURDIR)/$(BUILD_DIR)/agentctl-linux-amd64 \
+	PCRAFT_AGENTCTL_LINUX_BINARY=$(CURDIR)/$(BUILD_DIR)/agentctl-linux-amd64 \
 		$(GO) test -v -count=1 -tags sprites_e2e -run TestSpritesE2E -timeout 10m ./internal/agent/runtime/lifecycle/
 
 ## Stress-run the lifecycle goleak suite — repro target for the CI-only flake

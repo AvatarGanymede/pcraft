@@ -8,13 +8,13 @@ import {
   IconExternalLink,
   IconInfoCircle,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Separator } from "@kandev/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Switch } from "@kandev/ui/switch";
-import { Textarea } from "@kandev/ui/textarea";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Separator } from "@pcraft/ui/separator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Switch } from "@pcraft/ui/switch";
+import { Textarea } from "@pcraft/ui/textarea";
 import { SettingsPageTemplate } from "@/components/settings/settings-page-template";
 import { Combobox, type ComboboxOption } from "@/components/combobox";
 import { EditableCard } from "@/components/settings/editable-card";

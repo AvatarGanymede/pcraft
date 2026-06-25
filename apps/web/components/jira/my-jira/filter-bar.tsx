@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import type { JiraProject } from "@/lib/types/jira";
 import { AssigneePill, ProjectPill, StatusPill } from "./filter-pills";
 import type { FilterState } from "./filter-model";

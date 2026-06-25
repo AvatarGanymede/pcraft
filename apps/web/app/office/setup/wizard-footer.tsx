@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconArrowLeft, IconArrowRight, IconRocket } from "@tabler/icons-react";
 
 const STEP_COUNT = 4;

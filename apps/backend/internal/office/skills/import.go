@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 const sourceTypeLocalPath = "local_path"
@@ -433,5 +433,5 @@ func (s *SkillService) basePath() string {
 		return s.cfgLoader.BasePath()
 	}
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".kandev")
+	return filepath.Join(home, ".pcraft")
 }

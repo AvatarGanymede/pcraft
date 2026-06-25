@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
 import { useDockviewStore } from "@/lib/state/dockview-store";
 import type { UserShellInfo } from "@/lib/state/slices";

@@ -1,4 +1,4 @@
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import type { SubagentTaskPayload } from "@/components/task/chat/types";
 import { subagentMetaChips } from "@/components/task/chat/messages/subagent-meta";
 

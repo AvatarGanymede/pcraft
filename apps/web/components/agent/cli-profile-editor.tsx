@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
-import { Switch } from "@kandev/ui/switch";
-import { Button } from "@kandev/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
+import { Switch } from "@pcraft/ui/switch";
+import { Button } from "@pcraft/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { useAppStore } from "@/components/state-provider";
 import { useAvailableAgents } from "@/hooks/domains/settings/use-available-agents";
 import { ModelCombobox } from "@/components/settings/model-combobox";

@@ -3,7 +3,7 @@
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
-import { SessionPanelContent } from "@kandev/ui/pannel-session";
+import { SessionPanelContent } from "@pcraft/ui/pannel-session";
 import type { RenderItem } from "@/hooks/use-processed-messages";
 import type { Message, TaskSessionState } from "@/lib/types/http";
 import { AgentStatus } from "@/components/task/chat/messages/agent-status";

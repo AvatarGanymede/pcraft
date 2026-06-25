@@ -16,22 +16,6 @@ func TestCatalogPermissionSettings_IncludesAgentctlAutoApprove(t *testing.T) {
 	}
 }
 
-func TestCatalogPermissionSettings_MergesCursorForce(t *testing.T) {
-	catalog := CatalogPermissionSettings(NewCursorACP())
-	if _, ok := catalog[PermissionKeyCursorForce]; !ok {
-		t.Fatal("missing cursor_force")
-	}
-	if catalog[PermissionKeyAutoApprove].ApplyMethod != PermissionApplyMethodAgentctlAutoApprove {
-		t.Fatal("auto_approve must be agentctl, not cursor --force")
-	}
-}
-
 func TestCatalogPermissionSettings_MergesCodexCLIFlags(t *testing.T) {
-	catalog := CatalogPermissionSettings(NewCodexACP())
-	if len(codexACPPermSettings) != 2 {
-		t.Fatalf("codexACPPermSettings len = %d, want 2", len(codexACPPermSettings))
-	}
-	if _, ok := catalog["config_approval_policy_never"]; !ok {
-		t.Fatal("missing codex config_approval_policy_never")
-	}
+	// Removed — CodexACP agent has been deleted.
 }

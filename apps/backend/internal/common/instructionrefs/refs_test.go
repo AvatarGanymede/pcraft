@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/instructionrefs"
+	"github.com/AvatarGanymede/pcraft/internal/common/instructionrefs"
 )
 
 func TestRewrite_BacktickWrapped(t *testing.T) {

@@ -8,7 +8,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 import { getTaskStateIcon } from "@/lib/ui/state-icons";
 import { linkToTask } from "@/lib/links";
 import type { Task } from "@/components/kanban-card";
@@ -18,7 +18,7 @@ import { useTaskPendingClarification } from "@/hooks/use-task-pending-clarificat
 type StepPhase = "past" | "current" | "future";
 
 function isRunningState(state?: string): boolean {
-  return state === "IN_PROGRESS" || state === "SCHEDULING";
+  return state === "IN_PROGRESS" || state === "BACKLOG";
 }
 
 export type Graph2StepNodeProps = {

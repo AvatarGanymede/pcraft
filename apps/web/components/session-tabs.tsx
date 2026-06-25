@@ -2,7 +2,7 @@
 
 import type { ReactNode, MouseEvent } from "react";
 import { Fragment } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@kandev/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
 
 export type SessionTab = {
   id: string;

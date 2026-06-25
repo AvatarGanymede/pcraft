@@ -2,8 +2,8 @@
 
 import { memo, useState, useEffect, useMemo, useRef } from "react";
 import { IconRefresh, IconExternalLink } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
 import { PanelRoot, PanelBody, PanelHeaderBar } from "./panel-primitives";
 import { useAppStore } from "@/components/state-provider";
 import { detectPreviewUrlFromOutput, rewritePreviewUrlForProxy } from "@/lib/preview-url-detector";

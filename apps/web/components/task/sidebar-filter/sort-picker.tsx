@@ -1,8 +1,8 @@
 "use client";
 
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Button } from "@kandev/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Button } from "@pcraft/ui/button";
 import type { SortKey, SortSpec } from "@/lib/state/slices/ui/sidebar-view-types";
 
 const SORT_OPTIONS: Array<{ key: SortKey; label: string }> = [

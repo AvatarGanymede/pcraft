@@ -1,9 +1,9 @@
 "use client";
 
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
-import { Separator } from "@kandev/ui/separator";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
+import { Separator } from "@pcraft/ui/separator";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@kandev/ui/select";
+} from "@pcraft/ui/select";
 import {
   configOptionToModelOptions,
   isModelConfigOption,

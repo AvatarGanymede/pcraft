@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { Spinner } from "@kandev/ui/spinner";
+import { Badge } from "@pcraft/ui/badge";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconCheck, IconAlertTriangle } from "@tabler/icons-react";
 import { useSystemJob, useSystemJobs } from "@/hooks/domains/system/use-system-jobs";
 import type { SystemJob, SystemJobKind } from "@/lib/types/system";

@@ -18,8 +18,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // Resetter is the per-watch surface watchreset needs. Implementations

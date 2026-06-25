@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"

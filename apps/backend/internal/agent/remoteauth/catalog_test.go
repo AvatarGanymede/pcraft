@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 // Agents that declare RemoteAuth with no Methods (e.g. mock) must still

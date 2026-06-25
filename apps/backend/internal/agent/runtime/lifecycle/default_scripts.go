@@ -7,10 +7,6 @@ func DefaultPrepareScript(executorType string) string {
 		return defaultLocalPrepareScript
 	case "worktree":
 		return defaultWorktreePrepareScript
-	case "local_docker", "remote_docker":
-		return defaultDockerPrepareScript
-	case "sprites":
-		return defaultSpritesPrepareScript
 	default:
 		return ""
 	}
@@ -78,91 +74,4 @@ const defaultWorktreePrepareScript = `#!/bin/bash
 
 # ---- Repository setup (if configured) ----
 {{repository.setup_script}}
-`
-
-const defaultDockerPrepareScript = `#!/bin/sh
-# Prepare Docker container environment (kandev/multi-agent image)
-# git, node, and agentctl are already installed in the image
-
-set -eu
-
-# ---- Git identity (optional) ----
-{{git.identity_setup}}
-
-# Mounted local remotes and workspaces can be owned by a host UID that does
-# not match the container user.
-git config --global --add safe.directory '*'
-
-# ---- Configure git/gh for HTTPS auth ----
-git config --global url."https://github.com/".insteadOf "git@github.com:"
-git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
-
-# Configure GitHub token for gh CLI and git operations
-{{github.auth_setup}}
-
-# ---- Clone repository ----
-# The kandev-managed feature-branch checkout is appended as an invariant
-# postlude (see KandevBranchCheckoutPostlude) — keep it out of the default
-# so old profiles snapshotting this script and the postlude never disagree.
-git clone --depth=1 --branch {{repository.branch}} {{repository.clone_url}} {{workspace.path}}
-cd {{workspace.path}}
-
-# Strip embedded token from remote URL to avoid persisting credentials in .git/config
-git remote set-url origin "$(git remote get-url origin | sed 's|https://[^@]*@github.com/|https://github.com/|')" 2>/dev/null || true
-
-# ---- Repository setup (if configured) ----
-{{repository.setup_script}}
-`
-
-const defaultSpritesPrepareScript = `#!/bin/bash
-# Prepare Sprites.dev cloud sandbox
-#
-# Pre-installed tools (no need to install):
-#   git, curl, wget, gh (GitHub CLI), node, python, go,
-#   build-essential, openssh-client, ca-certificates
-
-set -euo pipefail
-
-# ---- Add SSH host keys (prevent "Host key verification failed") ----
-mkdir -p ~/.ssh
-ssh-keyscan -t ed25519 github.com gitlab.com bitbucket.org >> ~/.ssh/known_hosts 2>/dev/null
-
-# ---- Configure git/gh for HTTPS auth (token-based, no SSH keys needed) ----
-# Rewrite SSH URLs to HTTPS so git clone git@github.com:... works via token auth
-git config --global url."https://github.com/".insteadOf "git@github.com:"
-git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
-
-# Configure GitHub token for gh CLI and git operations
-# GH_TOKEN is the primary env var for gh CLI authentication
-{{github.auth_setup}}
-
-# ---- Install pnpm globally ----
-curl -fsSL https://github.com/pnpm/pnpm/releases/download/v10.32.1/pnpm-linux-x64 -o /usr/local/bin/pnpm
-chmod +x /usr/local/bin/pnpm
-
-# ---- Git identity ----
-{{git.identity_setup}}
-
-# ---- Clone repository ----
-# The kandev-managed feature-branch checkout is appended as an invariant
-# postlude (see KandevBranchCheckoutPostlude) — keep it out of the default
-# so old profiles snapshotting this script and the postlude never disagree.
-echo "Cloning {{repository.clone_url}} (branch: {{repository.branch}})..."
-git clone --depth=1 --quiet --branch {{repository.branch}} {{repository.clone_url}} {{workspace.path}}
-cd {{workspace.path}}
-
-# Strip embedded token from remote URL to avoid persisting credentials in .git/config
-git remote set-url origin "$(git remote get-url origin | sed 's|https://[^@]*@github.com/|https://github.com/|')" 2>/dev/null || true
-
-# ---- Repository setup (if configured) ----
-{{repository.setup_script}}
-
-# ---- Pre-install agent CLI(s) ----
-{{kandev.agents.install}}
-
-# ---- Install and start Kandev agent controller ----
-echo "Starting agent controller..."
-{{kandev.agentctl.install}}
-{{kandev.agentctl.start}}
-echo "Prepare complete."
 `

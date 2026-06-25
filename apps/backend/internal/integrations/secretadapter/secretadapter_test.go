@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
 )
 
 // fakeStore is a minimal in-memory secrets.SecretStore for adapter tests. We

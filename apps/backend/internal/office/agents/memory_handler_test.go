@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // newMemoryRouter returns a gin engine with the agent auth middleware

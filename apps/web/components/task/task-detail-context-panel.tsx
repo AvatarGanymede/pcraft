@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { IconAlertTriangle, IconFileText, IconUsersGroup } from "@tabler/icons-react";
 import type { TaskContextDTO, TaskRefDTO } from "@/lib/api/domains/office-task-context-api";
 

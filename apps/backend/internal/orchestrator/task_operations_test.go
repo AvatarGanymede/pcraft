@@ -8,20 +8,20 @@ import (
 	"testing"
 	"time"
 
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/orchestrator/dto"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/orchestrator/scheduler"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/dto"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/scheduler"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // seedTaskAndSession inserts a workspace, workflow, task, and session with the given state.
@@ -1701,49 +1701,9 @@ func TestGetTaskSessionStatus_HealsStuckStartingSession(t *testing.T) {
 // mismatch this test simulated cannot occur, and the band-aid was removed
 // (see shouldHealStuckStartingSession in task_operations.go).
 
-func TestGetTaskSessionStatus_UsesTaskEnvironmentBranchForDocker(t *testing.T) {
-	ctx := context.Background()
-	repo := setupTestRepo(t)
-	seedTaskAndSession(t, repo, "task1", "session1", models.TaskSessionStateWaitingForInput)
-
-	session, err := repo.GetTaskSession(ctx, "session1")
-	if err != nil {
-		t.Fatalf("failed to load session: %v", err)
-	}
-	session.TaskEnvironmentID = "env1"
-	if err := repo.UpdateTaskSession(ctx, session); err != nil {
-		t.Fatalf("failed to update session: %v", err)
-	}
-
-	now := time.Now().UTC()
-	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
-		ID:             "env1",
-		TaskID:         "task1",
-		ExecutorType:   string(models.ExecutorTypeLocalDocker),
-		WorktreePath:   "/workspace",
-		WorktreeBranch: "feature/test-task-abc",
-		WorkspacePath:  "/workspace",
-		Status:         models.TaskEnvironmentStatusReady,
-		CreatedAt:      now,
-		UpdatedAt:      now,
-	}); err != nil {
-		t.Fatalf("failed to create task environment: %v", err)
-	}
-
-	agentMgr := &mockAgentManager{}
-	svc := createTestServiceWithAgent(repo, newMockStepGetter(), newMockTaskRepo(), agentMgr)
-	svc.executor = executor.NewExecutor(agentMgr, repo, testLogger(), executor.ExecutorConfig{})
-	resp, err := svc.GetTaskSessionStatus(ctx, "task1", "session1")
-	if err != nil {
-		t.Fatalf("GetTaskSessionStatus returned error: %v", err)
-	}
-	if resp.WorktreeBranch == nil || *resp.WorktreeBranch != "feature/test-task-abc" {
-		t.Fatalf("worktree_branch = %v, want feature/test-task-abc", resp.WorktreeBranch)
-	}
-	if resp.WorktreePath == nil || *resp.WorktreePath != "/workspace" {
-		t.Fatalf("worktree_path = %v, want /workspace", resp.WorktreePath)
-	}
-}
+// TestGetTaskSessionStatus_UsesTaskEnvironmentBranchForDocker was removed:
+// it tested Docker executor-specific branch retrieval. Docker executors have
+// been removed.
 
 // --- ReconcileSessionsOnStartup ---
 

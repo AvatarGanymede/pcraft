@@ -3,7 +3,7 @@
 import type { ReactNode, MouseEvent } from "react";
 import type { Layout } from "react-resizable-panels";
 import { memo, useEffect, useCallback, useState, useMemo } from "react";
-import { SessionPanel } from "@kandev/ui/pannel-session";
+import { SessionPanel } from "@pcraft/ui/pannel-session";
 import { Group, Panel } from "react-resizable-panels";
 import {
   getLocalStorage,

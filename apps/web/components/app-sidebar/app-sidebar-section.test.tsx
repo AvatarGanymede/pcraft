@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { IconCircleDot } from "@tabler/icons-react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 const storeState = {
   appSidebar: {

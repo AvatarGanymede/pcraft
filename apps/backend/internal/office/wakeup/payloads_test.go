@@ -3,7 +3,7 @@ package wakeup_test
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/wakeup"
+	"github.com/AvatarGanymede/pcraft/internal/office/wakeup"
 )
 
 func TestMarshalUnmarshal_Comment(t *testing.T) {

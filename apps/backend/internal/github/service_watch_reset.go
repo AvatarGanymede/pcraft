@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/kandev/kandev/internal/watchreset"
+	"github.com/AvatarGanymede/pcraft/internal/watchreset"
 )
 
 // --- Issue watch reset ---

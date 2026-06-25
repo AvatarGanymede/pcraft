@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
-import { Switch } from "@kandev/ui/switch";
-import { Badge } from "@kandev/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
+import { Switch } from "@pcraft/ui/switch";
+import { Badge } from "@pcraft/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { IconChevronDown, IconAlertTriangle } from "@tabler/icons-react";
 import type {
   AgentRoutingOverrides,

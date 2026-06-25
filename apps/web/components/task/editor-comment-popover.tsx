@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { IconPlus, IconGripHorizontal, IconPlayerPlay } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Textarea } from "@kandev/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 type EditorCommentPopoverProps = {

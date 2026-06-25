@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { IconPlus } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { DialogFormState, TaskRemoteRepoRow } from "@/components/task-create-dialog-types";
 import {
   RemoteRepoChip,

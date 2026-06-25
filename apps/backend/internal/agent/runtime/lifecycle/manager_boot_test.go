@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // MockBootMessageService implements BootMessageService for testing

@@ -176,16 +176,10 @@ const NOT_STARTED_STATE_GROUP_KEY = "__not_started__";
 
 const STATE_GROUP_ORDER: Record<string, number> = {
   [NOT_STARTED_STATE_GROUP_KEY]: 0,
-  CREATED: 1,
-  SCHEDULING: 2,
-  TODO: 3,
-  IN_PROGRESS: 4,
-  WAITING_FOR_INPUT: 5,
-  REVIEW: 6,
-  BLOCKED: 7,
-  FAILED: 8,
-  COMPLETED: 9,
-  CANCELLED: 10,
+  BACKLOG: 1,
+  IN_PROGRESS: 2,
+  DONE: 3,
+  CLOSED: 4,
 };
 
 type GroupExtractor = (task: TaskSwitcherItem) => { key: string; label: string };

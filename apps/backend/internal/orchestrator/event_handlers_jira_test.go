@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/jira"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/jira"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // mockJiraService records dedup calls so tests can assert on the

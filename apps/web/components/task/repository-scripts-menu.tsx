@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useAppStore } from "@/components/state-provider";
 import { useRepositoryScripts } from "@/hooks/domains/workspace/use-repository-scripts";
 

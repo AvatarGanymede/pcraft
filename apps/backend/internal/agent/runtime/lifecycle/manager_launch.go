@@ -14,11 +14,11 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agent/settings/cliflags"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/cliflags"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // resolveAgentProfile resolves the agent profile and returns the agent type name and profile info.
@@ -224,7 +224,7 @@ func (m *Manager) buildAgentCommand(req *LaunchRequest, profileInfo *AgentProfil
 
 // launchResolveWorkspacePath resolves the effective workspace path for non-worktree executors.
 // For worktree executors, workspace resolution is handled by the WorktreePreparer.
-// For tasks without repositories, creates a workspace directory in ~/.kandev/quick-chat/.
+// For tasks without repositories, creates a workspace directory in ~/.pcraft/quick-chat/.
 // Returns workspacePath, mainRepoGitDir, worktreeID, worktreeBranch.
 // resolveResumeWorktreePath resolves workspace path for worktree resume using the provider.
 func (m *Manager) resolveResumeWorktreePath(ctx context.Context, req *LaunchRequest) (string, string, string, string) {
@@ -345,7 +345,7 @@ func (m *Manager) scratchWorkspacePath(req *LaunchRequest) string {
 		return ""
 	}
 	// m.dataDir is misnamed — cmd/kandev/agents.go passes cfg.ResolvedHomeDir()
-	// (the kandev root, e.g. ~/.kandev), not ResolvedDataDir(). So scratch
+	// (the kandev root, e.g. ~/.pcraft), not ResolvedDataDir(). So scratch
 	// workspaces live alongside the existing repo-bound worktree task dirs
 	// at <kandevHome>/tasks/<workspaceID>/<taskID>/.
 	return filepath.Join(m.dataDir, "tasks", req.WorkspaceID, req.TaskID)

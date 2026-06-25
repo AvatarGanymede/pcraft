@@ -11,7 +11,7 @@
  * office Task DTO (app/office/tasks/[id]/types).
  */
 
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 
 export type TaskHeaderProps = {
   identifier?: string | null;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Button } from "@kandev/ui/button";
-import { Switch } from "@kandev/ui/switch";
-import { Label } from "@kandev/ui/label";
-import { Input } from "@kandev/ui/input";
+import { Button } from "@pcraft/ui/button";
+import { Switch } from "@pcraft/ui/switch";
+import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +12,11 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@kandev/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Textarea } from "@kandev/ui/textarea";
+} from "@pcraft/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Textarea } from "@pcraft/ui/textarea";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { CliModeIcon } from "@/components/cli-mode-icon";
 import { useAppStore } from "@/components/state-provider";
 import { useSettingsData } from "@/hooks/domains/settings/use-settings-data";

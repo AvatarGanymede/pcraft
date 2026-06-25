@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kandev/kandev/internal/common/ports"
+	"github.com/AvatarGanymede/pcraft/internal/common/ports"
 	sprites "github.com/superfly/sprites-go"
 )
 

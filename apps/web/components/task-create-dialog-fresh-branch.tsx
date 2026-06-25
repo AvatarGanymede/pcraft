@@ -1,8 +1,8 @@
 "use client";
 
 import { IconGitFork } from "@tabler/icons-react";
-import { Toggle } from "@kandev/ui/toggle";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Toggle } from "@pcraft/ui/toggle";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 const FRESH_BRANCH_TOOLTIP =
   "Create a new branch from the selected base. Any uncommitted changes in your local clone will be discarded; you'll be asked to confirm if there are any.";

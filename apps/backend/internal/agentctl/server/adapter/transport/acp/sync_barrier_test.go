@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // TestSyncNotifQueue_BlocksUntilQueueDrained verifies the barrier-sync

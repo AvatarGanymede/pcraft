@@ -11,9 +11,9 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
 )
 
 // seedWorkspaceWithFrontierTier writes a workspace routing config that

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // AgentDashboardSummary is the JSON shape served at

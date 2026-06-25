@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 func TestContinuationSummary_UpsertAndRead(t *testing.T) {

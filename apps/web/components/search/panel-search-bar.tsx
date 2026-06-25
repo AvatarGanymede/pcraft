@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "@kandev/ui/input";
-import { Button } from "@kandev/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Button } from "@pcraft/ui/button";
 import {
   IconSearch,
   IconX,

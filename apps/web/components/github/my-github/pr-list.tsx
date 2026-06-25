@@ -9,14 +9,14 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import type { Icon } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Spinner } from "@kandev/ui/spinner";
+} from "@pcraft/ui/dropdown-menu";
+import { Spinner } from "@pcraft/ui/spinner";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import type { GitHubPR, GitHubPRStatus, TaskPR } from "@/lib/types/github";
 import type { LaunchPayload, TaskPreset } from "./quick-task-launcher";

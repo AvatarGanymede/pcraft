@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { IconHistory, IconUser, IconRestore, IconLoader2 } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +12,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import { toast } from "sonner";
 import type { TaskPlanRevision } from "@/lib/types/http";
 import { formatPreciseTime } from "@/lib/utils";
 import { AgentLogo } from "@/components/agent-logo";
 import { useAppStore } from "@/components/state-provider";
 import { PlanRevisionPreviewDialog } from "./task-plan-preview-dialog";
-import { PlanRevisionDiffDialog } from "./task-plan-diff-dialog";
+
+// TODO: Re-implement plan diff dialog
 
 type ComparePair = [string | null, string | null];
 
@@ -274,17 +275,7 @@ function RevisionsDialogStack({
         onCompareWithCurrent={onCompareWithCurrent}
         isCurrent={isPreviewCurrent}
       />
-      <PlanRevisionDiffDialog
-        // Remount on pair change so the diff loader resets cleanly.
-        key={`diff-${compareRevisions[0]?.id ?? ""}-${compareRevisions[1]?.id ?? ""}`}
-        pair={diffOpen ? compareRevisions : [null, null]}
-        loadContent={loadRevisionContent}
-        onClose={() => setDiffOpen(false)}
-        onRestoreOlder={(revisionId) => {
-          const rev = revisions.find((r) => r.id === revisionId);
-          if (rev) setConfirmTarget(rev);
-        }}
-      />
+      {/* TODO: Re-implement plan diff dialog */}
       <RevertConfirmDialog
         target={confirmTarget}
         isSaving={isSaving}

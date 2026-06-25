@@ -13,7 +13,7 @@ import {
   IconLoader2,
   IconAlertTriangle,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,11 +31,11 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from "@kandev/ui/dropdown-menu";
-import { Input } from "@kandev/ui/input";
-import { Textarea } from "@kandev/ui/textarea";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Label } from "@kandev/ui/label";
+} from "@pcraft/ui/dropdown-menu";
+import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Label } from "@pcraft/ui/label";
 import { useGitOperations } from "@/hooks/use-git-operations";
 import { useSessionGit } from "@/hooks/domains/session/use-session-git";
 import type { FileInfo } from "@/lib/state/slices";

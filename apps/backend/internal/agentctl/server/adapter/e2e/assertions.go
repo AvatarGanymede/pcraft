@@ -5,7 +5,7 @@ package e2e
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter"
 )
 
 // AssertTurnCompleted checks the core structural invariants:

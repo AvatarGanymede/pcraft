@@ -8,7 +8,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // TestResolveTaskRepoInfo_BackfillsDefaultBranchAfterClone is the regression

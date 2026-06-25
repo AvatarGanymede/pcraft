@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 type fakeStore struct {

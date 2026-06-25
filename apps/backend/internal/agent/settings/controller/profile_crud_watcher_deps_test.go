@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentdto "github.com/kandev/kandev/internal/agent/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentdto "github.com/AvatarGanymede/pcraft/internal/agent/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 // fakeSessionChecker stubs the active-session lookup so the watcher-deps

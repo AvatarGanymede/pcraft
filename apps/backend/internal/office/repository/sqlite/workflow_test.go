@@ -7,8 +7,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	workflowrepo "github.com/kandev/kandev/internal/workflow/repository"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	workflowrepo "github.com/AvatarGanymede/pcraft/internal/workflow/repository"
 )
 
 // TestEnsureOfficeWorkflow asserts that EnsureOfficeWorkflow materialises

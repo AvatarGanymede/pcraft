@@ -14,14 +14,14 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 type restartMockAgentctlServer struct {
@@ -942,18 +942,6 @@ func (m *mockWorkspaceInfoProvider) GetWorkspaceInfoForEnvironment(_ context.Con
 }
 
 func TestIsRemoteSession(t *testing.T) {
-	t.Run("in-memory execution with sprites runtime", func(t *testing.T) {
-		store := NewExecutionStore()
-		store.Add(&AgentExecution{
-			ID:          "exec-1",
-			SessionID:   "session-1",
-			RuntimeName: executor.NameSprites,
-			Status:      v1.AgentStatusRunning,
-		})
-		mgr := &Manager{executionStore: store}
-		require.True(t, mgr.IsRemoteSession(context.Background(), "session-1"))
-	})
-
 	t.Run("in-memory execution with is_remote metadata", func(t *testing.T) {
 		store := NewExecutionStore()
 		store.Add(&AgentExecution{
@@ -977,39 +965,6 @@ func TestIsRemoteSession(t *testing.T) {
 		})
 		mgr := &Manager{executionStore: store}
 		require.False(t, mgr.IsRemoteSession(context.Background(), "session-3"))
-	})
-
-	t.Run("not in memory, DB returns sprites executor type", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-4": {ExecutorType: string(models.ExecutorTypeSprites)},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.IsRemoteSession(context.Background(), "session-4"))
-	})
-
-	t.Run("not in memory, DB returns remote_docker executor type", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-5": {ExecutorType: string(models.ExecutorTypeRemoteDocker)},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.IsRemoteSession(context.Background(), "session-5"))
-	})
-
-	t.Run("not in memory, DB returns sprites runtime name", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-6": {RuntimeName: executor.NameSprites},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.IsRemoteSession(context.Background(), "session-6"))
 	})
 
 	t.Run("not in memory, DB returns local type", func(t *testing.T) {
@@ -1038,30 +993,6 @@ func TestIsRemoteSession(t *testing.T) {
 }
 
 func TestShouldUseContainerShell(t *testing.T) {
-	t.Run("in-memory execution with docker runtime", func(t *testing.T) {
-		store := NewExecutionStore()
-		store.Add(&AgentExecution{
-			ID:          "exec-1",
-			SessionID:   "session-1",
-			RuntimeName: executor.NameDocker,
-			Status:      v1.AgentStatusRunning,
-		})
-		mgr := &Manager{executionStore: store}
-		require.True(t, mgr.ShouldUseContainerShell(context.Background(), "session-1"))
-	})
-
-	t.Run("in-memory execution with sprites runtime", func(t *testing.T) {
-		store := NewExecutionStore()
-		store.Add(&AgentExecution{
-			ID:          "exec-2",
-			SessionID:   "session-2",
-			RuntimeName: executor.NameSprites,
-			Status:      v1.AgentStatusRunning,
-		})
-		mgr := &Manager{executionStore: store}
-		require.True(t, mgr.ShouldUseContainerShell(context.Background(), "session-2"))
-	})
-
 	t.Run("in-memory execution with is_remote metadata", func(t *testing.T) {
 		store := NewExecutionStore()
 		store.Add(&AgentExecution{
@@ -1085,39 +1016,6 @@ func TestShouldUseContainerShell(t *testing.T) {
 		})
 		mgr := &Manager{executionStore: store}
 		require.False(t, mgr.ShouldUseContainerShell(context.Background(), "session-4"))
-	})
-
-	t.Run("not in memory, DB returns local_docker executor type", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-5": {ExecutorType: string(models.ExecutorTypeLocalDocker)},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.ShouldUseContainerShell(context.Background(), "session-5"))
-	})
-
-	t.Run("not in memory, DB returns sprites executor type", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-6": {ExecutorType: string(models.ExecutorTypeSprites)},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.ShouldUseContainerShell(context.Background(), "session-6"))
-	})
-
-	t.Run("not in memory, DB returns docker runtime name", func(t *testing.T) {
-		store := NewExecutionStore()
-		provider := &mockWorkspaceInfoProvider{
-			infos: map[string]*WorkspaceInfo{
-				"session-7": {RuntimeName: executor.NameDocker},
-			},
-		}
-		mgr := &Manager{executionStore: store, workspaceInfoProvider: provider}
-		require.True(t, mgr.ShouldUseContainerShell(context.Background(), "session-7"))
 	})
 
 	t.Run("not in memory, DB returns local type", func(t *testing.T) {

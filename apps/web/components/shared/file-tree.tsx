@@ -8,7 +8,7 @@ import {
   IconFolderOpen,
   IconFileText,
 } from "@tabler/icons-react";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useTree, type VisibleRow } from "@/hooks/use-tree";
 import { useTreeKeyboardNav } from "@/hooks/use-tree-keyboard-nav";

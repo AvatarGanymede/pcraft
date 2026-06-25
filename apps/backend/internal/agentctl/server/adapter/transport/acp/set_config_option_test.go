@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // TestSetConfigOption_WithoutConnectionReturnsError pins the precondition

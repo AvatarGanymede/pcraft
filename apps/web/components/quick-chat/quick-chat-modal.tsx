@@ -2,8 +2,8 @@
 
 import { memo } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { Dialog, DialogContent, DialogTitle } from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
 import { IconLoader2, IconMessageCircle, IconPlus } from "@tabler/icons-react";
 import { useAppStore } from "@/components/state-provider";
 import { PassthroughTerminal } from "@/components/task/passthrough-terminal";

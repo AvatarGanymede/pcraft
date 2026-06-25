@@ -1,7 +1,7 @@
 // Package dto provides Data Transfer Objects for the orchestrator module.
 package dto
 
-import "github.com/kandev/kandev/internal/agentruntime"
+import "github.com/AvatarGanymede/pcraft/internal/agentruntime"
 
 // GetStatusRequest is the request for orchestrator.status
 type GetStatusRequest struct{}

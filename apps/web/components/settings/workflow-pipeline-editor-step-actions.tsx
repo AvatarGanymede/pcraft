@@ -1,8 +1,8 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Label } from "@kandev/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Label } from "@pcraft/ui/label";
 import type {
   WorkflowStep,
   OnEnterAction,

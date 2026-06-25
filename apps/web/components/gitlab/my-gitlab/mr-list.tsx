@@ -8,7 +8,7 @@ import {
   IconExternalLink,
 } from "@tabler/icons-react";
 import type { Icon } from "@tabler/icons-react";
-import { Spinner } from "@kandev/ui/spinner";
+import { Spinner } from "@pcraft/ui/spinner";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import type { MR } from "@/lib/types/gitlab";
 

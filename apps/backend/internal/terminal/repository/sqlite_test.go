@@ -11,7 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/terminal/models"
+	"github.com/AvatarGanymede/pcraft/internal/terminal/models"
 )
 
 func setupTestRepo(t *testing.T) *Repository {

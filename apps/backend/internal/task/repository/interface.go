@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	agentdto "github.com/kandev/kandev/internal/agent/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentdto "github.com/AvatarGanymede/pcraft/internal/agent/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // WorkspaceRepository handles workspace CRUD.

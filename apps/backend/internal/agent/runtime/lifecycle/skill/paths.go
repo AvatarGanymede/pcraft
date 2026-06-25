@@ -30,19 +30,8 @@ func isValidPathComponent(s string) bool {
 	return true
 }
 
-// SpritesRuntimeBase is the on-sprite path where runtime instruction
-// files are uploaded. Skills no longer live under this tree; they go
-// directly into the sprite's worktree (/workspace/<projectSkillDir>).
-const SpritesRuntimeBase = "/root/.kandev/runtime"
-
 // instructionsDirHost returns the on-host directory where a manifest's
 // instruction files are written.
 func instructionsDirHost(kandevBase, workspaceSlug, agentID string) string {
 	return filepath.Join(kandevBase, "runtime", workspaceSlug, "instructions", agentID)
-}
-
-// spritesInstructionsDir returns the on-sprite directory where a
-// manifest's instruction files are uploaded.
-func spritesInstructionsDir(workspaceSlug, agentID string) string {
-	return SpritesRuntimeBase + "/" + workspaceSlug + "/instructions/" + agentID
 }

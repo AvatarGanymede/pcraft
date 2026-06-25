@@ -9,9 +9,9 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // publishUpdatedTask re-reads the task row and forwards it to the event

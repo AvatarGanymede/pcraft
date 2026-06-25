@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import type { ImportDiff, SyncDiff } from "@/lib/api/domains/office-api";
 
 type SyncDiffPaneProps = {

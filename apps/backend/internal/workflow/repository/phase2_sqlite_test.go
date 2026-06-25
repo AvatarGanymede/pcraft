@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 func newPhase2TestStep(t *testing.T, repo *Repository, name string) *models.WorkflowStep {

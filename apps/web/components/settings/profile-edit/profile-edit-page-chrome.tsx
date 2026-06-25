@@ -1,13 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconTrash } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Label } from "@kandev/ui/label";
-import { Separator } from "@kandev/ui/separator";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Separator } from "@pcraft/ui/separator";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import { EXECUTOR_ICON_MAP, getExecutorLabel } from "@/lib/executor-icons";
 import { RequestIndicator } from "@/components/request-indicator";
 import type { Executor, ExecutorProfile } from "@/lib/types/http";
@@ -139,57 +136,26 @@ export function DeleteProfileDialog({
   onOpenChange,
   onDelete,
   deleting,
-  relatedDockerContainerCount = 0,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onDelete: (options?: { removeRelatedDockerContainers?: boolean }) => void;
   deleting: boolean;
-  relatedDockerContainerCount?: number;
 }) {
-  const [removeRelatedContainers, setRemoveRelatedContainers] = useState<boolean | null>(null);
-  const hasRelatedContainers = relatedDockerContainerCount > 0;
-  const shouldRemoveRelatedContainers = hasRelatedContainers && (removeRelatedContainers ?? true);
-
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) setRemoveRelatedContainers(null);
-    onOpenChange(nextOpen);
-  };
-
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete Profile</DialogTitle>
           <DialogDescription>Are you sure? This action cannot be undone.</DialogDescription>
         </DialogHeader>
-        {hasRelatedContainers && (
-          <div className="space-y-3 rounded-md border p-3">
-            <p className="text-sm text-muted-foreground">
-              {relatedDockerContainerCount} related Docker{" "}
-              {relatedDockerContainerCount === 1 ? "container" : "containers"} will also be removed.
-            </p>
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="remove-related-docker-containers"
-                checked={shouldRemoveRelatedContainers}
-                onCheckedChange={(checked) => setRemoveRelatedContainers(checked === true)}
-              />
-              <Label htmlFor="remove-related-docker-containers" className="cursor-pointer text-sm">
-                Remove related Docker containers
-              </Label>
-            </div>
-          </div>
-        )}
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} className="cursor-pointer">
             Cancel
           </Button>
           <Button
             variant="destructive"
-            onClick={() =>
-              onDelete({ removeRelatedDockerContainers: shouldRemoveRelatedContainers })
-            }
+            onClick={() => onDelete()}
             disabled={deleting}
             className="cursor-pointer"
           >

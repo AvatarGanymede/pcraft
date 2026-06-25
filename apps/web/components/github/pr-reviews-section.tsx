@@ -1,5 +1,5 @@
 import { IconCheck, IconX, IconClock } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import type { PRReview, RequestedReviewer } from "@/lib/types/github";
 import { CollapsibleSection, FeedbackItemRow } from "./pr-shared";
 

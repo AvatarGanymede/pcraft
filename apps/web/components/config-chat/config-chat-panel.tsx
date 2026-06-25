@@ -9,10 +9,10 @@ import {
   IconSparkles,
   IconX,
 } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Textarea } from "@kandev/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Textarea } from "@pcraft/ui/textarea";
 import { QuickChatContent } from "@/components/quick-chat/quick-chat-content";
 import { useAppStore } from "@/components/state-provider";
 import { useConfigChat } from "./use-config-chat";

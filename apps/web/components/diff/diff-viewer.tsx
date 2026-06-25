@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, memo, useEffect } from "react";
 import { FileDiff } from "@pierre/diffs/react";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 import type { FileDiffData, DiffComment } from "@/lib/diff/types";
 import { useHunkHover } from "./use-hunk-hover";
 import { useAnnotationRenderer } from "./use-diff-annotation-renderer";

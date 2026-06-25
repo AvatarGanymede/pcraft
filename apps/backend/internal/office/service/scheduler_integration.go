@@ -9,10 +9,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
-	officeruntime "github.com/kandev/kandev/internal/office/runtime"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	officeruntime "github.com/AvatarGanymede/pcraft/internal/office/runtime"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // DefaultTickInterval is the default run processing interval.
@@ -22,11 +22,11 @@ const DefaultTickInterval = 5 * time.Second
 // if no agent lifecycle event returned it to a terminal queue state.
 const staleClaimedRunAge = 30 * time.Minute
 
-// TickIntervalFromEnv reads KANDEV_OFFICE_SCHEDULER_TICK_MS and returns the
+// TickIntervalFromEnv reads PCRAFT_OFFICE_SCHEDULER_TICK_MS and returns the
 // corresponding duration. Falls back to DefaultTickInterval when the variable
 // is unset or invalid.
 func TickIntervalFromEnv() time.Duration {
-	raw := os.Getenv("KANDEV_OFFICE_SCHEDULER_TICK_MS")
+	raw := os.Getenv("PCRAFT_OFFICE_SCHEDULER_TICK_MS")
 	if raw == "" {
 		return DefaultTickInterval
 	}
@@ -284,7 +284,7 @@ func (si *SchedulerIntegration) prepareAndLaunch(
 	if payload, pErr := si.svc.BuildWakePayload(ctx, &RunPayloadInput{
 		Payload: run.Payload,
 	}); pErr == nil && payload != "" {
-		env["KANDEV_WAKE_PAYLOAD_JSON"] = payload
+		env["PCRAFT_WAKE_PAYLOAD_JSON"] = payload
 	}
 
 	prompt := si.assembleAgentPrompt(ctx, run, agent, taskID, runCtx, instructionsDir, agentsMD)

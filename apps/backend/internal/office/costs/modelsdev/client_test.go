@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/costs/modelsdev"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/costs/modelsdev"
 )
 
 // sampleDataset mimics the models.dev /api.json shape: provider keys

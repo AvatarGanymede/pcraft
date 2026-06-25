@@ -1,6 +1,6 @@
 import Link from "@/components/routing/app-link";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import type { AgentCostAggregate, AgentRunCost } from "@/lib/api/domains/office-extended-api";
 import { formatSubcents, formatShortDate } from "./format-date";
 

@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { IconListCheck, IconFile, IconFolder, IconSearch, IconAt } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Input } from "@kandev/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Input } from "@pcraft/ui/input";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import { searchWorkspaceFiles } from "@/lib/ws/workspace-files";
 import { useCustomPrompts } from "@/hooks/domains/settings/use-custom-prompts";

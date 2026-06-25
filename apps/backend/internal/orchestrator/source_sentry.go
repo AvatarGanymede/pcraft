@@ -9,9 +9,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/sentry"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/sentry"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // maxSentryTitleRunes bounds the issue-title portion of a generated task

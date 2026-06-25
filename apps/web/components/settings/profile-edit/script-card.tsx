@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@kandev/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@pcraft/ui/card";
 import { ScriptEditor } from "@/components/settings/profile-edit/script-editor";
 import type { ScriptPlaceholder } from "@/lib/api/domains/settings-api";
 

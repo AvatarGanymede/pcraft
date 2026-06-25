@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -8,8 +8,8 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-} from "@kandev/ui/drawer";
-import { Badge } from "@kandev/ui/badge";
+} from "@pcraft/ui/drawer";
+import { Badge } from "@pcraft/ui/badge";
 import { IconArrowRight, IconEdit, IconTrash } from "@tabler/icons-react";
 import type { Task } from "@/components/kanban-card";
 import { formatTaskStateLabel } from "@/lib/ui/state-labels";

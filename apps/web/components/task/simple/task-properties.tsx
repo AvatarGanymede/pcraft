@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Separator } from "@kandev/ui/separator";
+import { Separator } from "@pcraft/ui/separator";
 import { formatRelativeTime } from "@/lib/utils";
 import { getTreeCostSummary, type TreeCostSummary } from "@/lib/api/domains/tree-api";
 import type { Task } from "@/app/office/tasks/[id]/types";

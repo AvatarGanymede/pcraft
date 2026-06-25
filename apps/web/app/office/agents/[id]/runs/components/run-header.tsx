@@ -8,8 +8,8 @@ import {
   IconRefresh,
   IconPlayerPlay,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import type { RunDetail } from "@/lib/api/domains/office-extended-api";
 import { formatDollars } from "@/lib/utils";

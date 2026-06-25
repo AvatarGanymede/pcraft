@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/system/metrics"
+	"github.com/AvatarGanymede/pcraft/internal/system/metrics"
 )
 
 func (s *Server) handleSystemMetrics(c *gin.Context) {

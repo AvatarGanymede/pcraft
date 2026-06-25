@@ -8,10 +8,10 @@ import (
 
 	"go.uber.org/zap"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/sentry"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/sentry"
 )
 
 // SentryService is the subset of sentry.Service the orchestrator needs to

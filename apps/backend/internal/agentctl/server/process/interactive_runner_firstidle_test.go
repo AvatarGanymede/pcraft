@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // newRunnerWithProcess installs a bare interactiveProcess into the runner's

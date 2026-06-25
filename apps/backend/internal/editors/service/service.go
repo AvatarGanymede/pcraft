@@ -14,11 +14,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/kandev/kandev/internal/common/securityutil"
-	"github.com/kandev/kandev/internal/editors/models"
-	"github.com/kandev/kandev/internal/editors/store"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	usermodels "github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/securityutil"
+	"github.com/AvatarGanymede/pcraft/internal/editors/models"
+	"github.com/AvatarGanymede/pcraft/internal/editors/store"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	usermodels "github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 // taskSessionReader is the minimal task repository interface required by the editors service.

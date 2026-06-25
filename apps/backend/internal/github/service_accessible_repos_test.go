@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // accessibleReposStubClient lets each test wire its own ListAccessibleRepos

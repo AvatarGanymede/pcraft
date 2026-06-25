@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Card, CardContent } from "@pcraft/ui/card";
 import { KanbanCardBody } from "@/components/kanban-card-content";
 import { resolveTaskRepositoryNames, type Task } from "@/components/kanban-card";
 import { useAppStore } from "@/components/state-provider";

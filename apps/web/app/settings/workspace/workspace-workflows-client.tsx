@@ -25,8 +25,8 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button } from "@kandev/ui/button";
-import { Separator } from "@kandev/ui/separator";
+import { Button } from "@pcraft/ui/button";
+import { Separator } from "@pcraft/ui/separator";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { WorkflowCard } from "@/components/settings/workflow-card";
 import { WorkflowExportDialog } from "@/components/settings/workflow-export-dialog";

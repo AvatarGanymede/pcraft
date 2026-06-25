@@ -10,9 +10,9 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // mockExecutionLookup implements ExecutionLookup for testing.

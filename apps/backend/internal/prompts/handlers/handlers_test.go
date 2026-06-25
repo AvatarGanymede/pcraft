@@ -11,11 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/prompts/controller"
-	"github.com/kandev/kandev/internal/prompts/service"
-	promptstore "github.com/kandev/kandev/internal/prompts/store"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/controller"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/service"
+	promptstore "github.com/AvatarGanymede/pcraft/internal/prompts/store"
 )
 
 func newTestRouter(t *testing.T) (*gin.Engine, func()) {

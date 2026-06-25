@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 // ValidatedPopover is the shared trigger+popover+input+submit skeleton both
 // integrations need for "paste a key/URL → fetch the entity → do something

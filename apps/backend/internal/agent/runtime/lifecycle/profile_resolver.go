@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
 )
 
 // DeletedProfileError carries the soft-deleted profile's ID and name so the

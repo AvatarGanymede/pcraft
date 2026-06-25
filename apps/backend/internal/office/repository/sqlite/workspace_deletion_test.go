@@ -8,8 +8,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 func TestDeleteWorkspaceDataDeletesOwnedOfficeRows(t *testing.T) {

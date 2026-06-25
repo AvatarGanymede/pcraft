@@ -8,17 +8,17 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // processOnTurnComplete processes the on_turn_complete events for the current step.
@@ -518,7 +518,7 @@ func (s *Service) switchSessionForStep(ctx context.Context, taskID string, curre
 		zap.String("new_profile", newAgentProfileID))
 
 	// Signal to the frontend that the task is preparing a new agent.
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); err != nil {
 		s.logger.Warn("failed to set task SCHEDULING during agent switch",
 			zap.String("task_id", taskID), zap.Error(err))
 	}
@@ -1617,7 +1617,7 @@ func (s *Service) flipStaleRunningToWaiting(ctx context.Context, taskID string, 
 //     next (the agent is actively processing, not idle).
 //
 // Uses updateTaskSessionState directly rather than setSessionWaitingForInput
-// because the helper would also flip the task to TaskStateReview, which would
+// because the helper would also flip the task to TaskStateInProgress, which would
 // be wrong here — auto_start_agent runs next and should leave the task as
 // IN_PROGRESS.
 func (s *Service) markIdleAfterReset(

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/kandev/kandev/internal/sentry"
+	"github.com/AvatarGanymede/pcraft/internal/sentry"
 )
 
 type fakeSentryService struct {

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/github"
 )
 
 func sampleSnapshot() *Snapshot {

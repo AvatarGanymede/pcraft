@@ -12,8 +12,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Button } from "@kandev/ui/button";
+} from "@pcraft/ui/dialog";
+import { Button } from "@pcraft/ui/button";
 import {
   agentLoginStreamUrl,
   resizeAgentLogin,

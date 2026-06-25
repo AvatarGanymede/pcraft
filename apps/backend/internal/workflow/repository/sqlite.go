@@ -12,11 +12,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	workflowcfg "github.com/kandev/kandev/config/workflows"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/workflow/models"
+	workflowcfg "github.com/AvatarGanymede/pcraft/config/workflows"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // Repository provides SQLite-based workflow storage operations.

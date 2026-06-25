@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/agents"
+	"github.com/AvatarGanymede/pcraft/internal/office/agents"
 )
 
 func TestAgentAuth_MintAndValidate(t *testing.T) {

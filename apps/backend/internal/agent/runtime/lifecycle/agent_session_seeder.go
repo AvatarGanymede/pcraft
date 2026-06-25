@@ -10,13 +10,13 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/remoteauth"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/remoteauth"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // agentSessionsRootSubdir is the subdirectory under the kandev home where
-// per-container agent session dirs live. e.g. ~/.kandev/agent-sessions/.
+// per-container agent session dirs live. e.g. ~/.pcraft/agent-sessions/.
 const agentSessionsRootSubdir = "agent-sessions"
 
 // authMethodTypeFiles selects RemoteAuthMethod entries that copy local files
@@ -29,7 +29,7 @@ const (
 )
 
 // AgentSessionsRoot returns the directory under the kandev home where
-// per-container session dirs are created (e.g. ~/.kandev/agent-sessions/).
+// per-container session dirs are created (e.g. ~/.pcraft/agent-sessions/).
 func AgentSessionsRoot(kandevHomeDir string) string {
 	if kandevHomeDir == "" {
 		return ""
@@ -38,7 +38,7 @@ func AgentSessionsRoot(kandevHomeDir string) string {
 }
 
 // InstanceSessionRoot returns the per-container parent dir that mimics the
-// agent's home (e.g. ~/.kandev/agent-sessions/<instance_id>/). Files seeded
+// agent's home (e.g. ~/.pcraft/agent-sessions/<instance_id>/). Files seeded
 // from the host land under this path keyed by their RemoteAuth.TargetRelDir,
 // matching the tree the bind-mount target expects inside the container.
 func InstanceSessionRoot(kandevHomeDir, instanceID string) string {

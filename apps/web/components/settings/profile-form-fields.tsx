@@ -8,7 +8,7 @@ import {
   IconTerminal2,
 } from "@tabler/icons-react";
 import { NoAuthPanel, ProbingPanel } from "@/components/settings/profile-status-panels";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -16,12 +16,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Skeleton } from "@kandev/ui/skeleton";
-import { Switch } from "@kandev/ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Skeleton } from "@pcraft/ui/skeleton";
+import { Switch } from "@pcraft/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { ModeCombobox } from "@/components/settings/mode-combobox";
 import {
   configOptionToModelOptions,

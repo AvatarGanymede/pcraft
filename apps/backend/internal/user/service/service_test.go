@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 func ptr[T any](v T) *T { return &v }

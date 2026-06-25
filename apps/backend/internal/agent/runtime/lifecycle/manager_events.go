@@ -8,10 +8,10 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.uber.org/zap"
 
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	"github.com/kandev/kandev/internal/events"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 const toolStatusComplete = "complete"

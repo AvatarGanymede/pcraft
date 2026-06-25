@@ -3,9 +3,9 @@ package utility
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // TestProbeAllowlist_CoversEveryEnabledInferenceAgent guards against the

@@ -20,21 +20,21 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/gitlab"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	"github.com/kandev/kandev/internal/orchestrator/scheduler"
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/worktree"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/gitlab"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/scheduler"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Common errors
@@ -1090,7 +1090,7 @@ func (s *Service) reconcileOneSessionOnStartup(ctx context.Context, running *mod
 	if running.TaskID != "" {
 		task, taskErr := s.taskRepo.GetTask(ctx, running.TaskID)
 		if taskErr == nil && task != nil && task.State == v1.TaskStateInProgress {
-			if updateErr := s.taskRepo.UpdateTaskState(ctx, running.TaskID, v1.TaskStateReview); updateErr != nil {
+			if updateErr := s.taskRepo.UpdateTaskState(ctx, running.TaskID, v1.TaskStateInProgress); updateErr != nil {
 				s.logger.Warn("failed to update task to REVIEW on startup",
 					zap.String("task_id", running.TaskID),
 					zap.Error(updateErr))
@@ -1181,7 +1181,7 @@ func (s *Service) handleFailedSessionOnStartup(ctx context.Context, session *mod
 			s.logger.Info("fixing task state: session failed but task still IN_PROGRESS",
 				zap.String("task_id", session.TaskID),
 				zap.String("session_id", sessionID))
-			if updateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateReview); updateErr != nil {
+			if updateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateInProgress); updateErr != nil {
 				s.logger.Warn("failed to update task state to REVIEW",
 					zap.String("task_id", session.TaskID),
 					zap.Error(updateErr))

@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
 )
 
 // appendDeletions adds names of DB rows missing from the bundle to preview.*.Deleted.

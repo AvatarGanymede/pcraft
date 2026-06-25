@@ -14,12 +14,12 @@ import {
   IconEyeOff,
   IconTerminal2,
 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@kandev/ui/collapsible";
-import { Input } from "@kandev/ui/input";
-import { Spinner } from "@kandev/ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@pcraft/ui/collapsible";
+import { Input } from "@pcraft/ui/input";
+import { Spinner } from "@pcraft/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useGitHubStatus } from "@/hooks/domains/github/use-github-status";
 import { useToast } from "@/components/toast-provider";

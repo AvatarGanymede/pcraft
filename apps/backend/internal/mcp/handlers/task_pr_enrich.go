@@ -6,9 +6,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TaskPRInfo is the decoupled view of a task↔PR association consumed by the

@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/common/subproc"
+	"github.com/AvatarGanymede/pcraft/internal/common/subproc"
 )
 
 // Why this throttle exists:
@@ -18,7 +18,7 @@ import (
 // then hit their 30s ctx deadline and were killed, causing a feedback
 // loop that effectively froze the host.
 //
-// The cap, env var (KANDEV_GH_MAX_CONCURRENT), and singleton live in
+// The cap, env var (PCRAFT_GH_MAX_CONCURRENT), and singleton live in
 // internal/common/subproc so all gh callers across the backend share
 // one pool. This file only wraps the package-local accessors so existing
 // call sites keep their short names and so the test seam stays here.

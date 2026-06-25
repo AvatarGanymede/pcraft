@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentctlutil "github.com/kandev/kandev/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctlutil "github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
 )
 
 // GetAll returns a snapshot of every probed agent type's capabilities.

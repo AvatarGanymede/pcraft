@@ -16,9 +16,9 @@ if ! command -v codex &> /dev/null; then
 fi
 
 # Run prepare script if provided (e.g., clone repo, configure git)
-if [ -n "$KANDEV_PREPARE_SCRIPT" ]; then
+if [ -n "$PCRAFT_PREPARE_SCRIPT" ]; then
     echo "Running prepare script..."
-    eval "$KANDEV_PREPARE_SCRIPT"
+    eval "$PCRAFT_PREPARE_SCRIPT"
     echo "Prepare script completed."
 fi
 

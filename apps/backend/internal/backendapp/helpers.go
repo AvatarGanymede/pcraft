@@ -14,73 +14,70 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	agentcapabilities "github.com/kandev/kandev/internal/agent/capabilities/handlers"
-	"github.com/kandev/kandev/internal/agent/docker"
-	agenthandlers "github.com/kandev/kandev/internal/agent/handlers"
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/loginpty"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/registry"
-	client "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	agentsettingshandlers "github.com/kandev/kandev/internal/agent/settings/handlers"
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/agentctl/tracing"
-	analyticshandlers "github.com/kandev/kandev/internal/analytics/handlers"
-	analyticsrepository "github.com/kandev/kandev/internal/analytics/repository"
-	"github.com/kandev/kandev/internal/automation"
-	"github.com/kandev/kandev/internal/clarification"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/ports"
-	debughandlers "github.com/kandev/kandev/internal/debug"
-	editorcontroller "github.com/kandev/kandev/internal/editors/controller"
-	editorhandlers "github.com/kandev/kandev/internal/editors/handlers"
-	"github.com/kandev/kandev/internal/events/bus"
-	gateways "github.com/kandev/kandev/internal/gateway/websocket"
-	"github.com/kandev/kandev/internal/github"
-	"github.com/kandev/kandev/internal/gitlab"
-	"github.com/kandev/kandev/internal/health"
-	"github.com/kandev/kandev/internal/health/oslimits"
-	"github.com/kandev/kandev/internal/improvekandev"
-	"github.com/kandev/kandev/internal/jira"
-	"github.com/kandev/kandev/internal/linear"
-	mcphandlers "github.com/kandev/kandev/internal/mcp/handlers"
-	mcpserver "github.com/kandev/kandev/internal/mcp/server"
-	notificationcontroller "github.com/kandev/kandev/internal/notifications/controller"
-	notificationhandlers "github.com/kandev/kandev/internal/notifications/handlers"
-	"github.com/kandev/kandev/internal/office"
-	officeagents "github.com/kandev/kandev/internal/office/agents"
-	officesqlite "github.com/kandev/kandev/internal/office/repository/sqlite"
-	officetestharness "github.com/kandev/kandev/internal/office/testharness"
-	"github.com/kandev/kandev/internal/orchestrator"
-	promptcontroller "github.com/kandev/kandev/internal/prompts/controller"
-	prompthandlers "github.com/kandev/kandev/internal/prompts/handlers"
-	"github.com/kandev/kandev/internal/repoclone"
-	"github.com/kandev/kandev/internal/runtimeflags"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/sentry"
-	"github.com/kandev/kandev/internal/slack"
-	spriteshandlers "github.com/kandev/kandev/internal/sprites"
-	sshhandlers "github.com/kandev/kandev/internal/ssh"
-	systemsvc "github.com/kandev/kandev/internal/system"
-	taskhandlers "github.com/kandev/kandev/internal/task/handlers"
-	"github.com/kandev/kandev/internal/task/models"
-	sqliterepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	taskservice "github.com/kandev/kandev/internal/task/service"
-	usercontroller "github.com/kandev/kandev/internal/user/controller"
-	userhandlers "github.com/kandev/kandev/internal/user/handlers"
-	utilitycontroller "github.com/kandev/kandev/internal/utility/controller"
-	utilityhandlers "github.com/kandev/kandev/internal/utility/handlers"
-	voicehandlers "github.com/kandev/kandev/internal/voice/handlers"
-	"github.com/kandev/kandev/internal/voice/transcribe"
-	"github.com/kandev/kandev/internal/webapp"
-	webembedded "github.com/kandev/kandev/internal/webapp/embedded"
-	workflowcontroller "github.com/kandev/kandev/internal/workflow/controller"
-	workflowhandlers "github.com/kandev/kandev/internal/workflow/handlers"
-	"github.com/kandev/kandev/internal/worktree"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	agentcapabilities "github.com/AvatarGanymede/pcraft/internal/agent/capabilities/handlers"
+	agenthandlers "github.com/AvatarGanymede/pcraft/internal/agent/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/loginpty"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	client "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	agentsettingshandlers "github.com/AvatarGanymede/pcraft/internal/agent/settings/handlers"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/tracing"
+	analyticshandlers "github.com/AvatarGanymede/pcraft/internal/analytics/handlers"
+	analyticsrepository "github.com/AvatarGanymede/pcraft/internal/analytics/repository"
+	"github.com/AvatarGanymede/pcraft/internal/automation"
+	"github.com/AvatarGanymede/pcraft/internal/clarification"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/ports"
+	debughandlers "github.com/AvatarGanymede/pcraft/internal/debug"
+	editorcontroller "github.com/AvatarGanymede/pcraft/internal/editors/controller"
+	editorhandlers "github.com/AvatarGanymede/pcraft/internal/editors/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	gateways "github.com/AvatarGanymede/pcraft/internal/gateway/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/gitlab"
+	"github.com/AvatarGanymede/pcraft/internal/health"
+	"github.com/AvatarGanymede/pcraft/internal/health/oslimits"
+	"github.com/AvatarGanymede/pcraft/internal/improvekandev"
+	"github.com/AvatarGanymede/pcraft/internal/jira"
+	"github.com/AvatarGanymede/pcraft/internal/linear"
+	mcphandlers "github.com/AvatarGanymede/pcraft/internal/mcp/handlers"
+	mcpserver "github.com/AvatarGanymede/pcraft/internal/mcp/server"
+	notificationcontroller "github.com/AvatarGanymede/pcraft/internal/notifications/controller"
+	notificationhandlers "github.com/AvatarGanymede/pcraft/internal/notifications/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/office"
+	officeagents "github.com/AvatarGanymede/pcraft/internal/office/agents"
+	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	officetestharness "github.com/AvatarGanymede/pcraft/internal/office/testharness"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	promptcontroller "github.com/AvatarGanymede/pcraft/internal/prompts/controller"
+	prompthandlers "github.com/AvatarGanymede/pcraft/internal/prompts/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/repoclone"
+	"github.com/AvatarGanymede/pcraft/internal/runtimeflags"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/sentry"
+	"github.com/AvatarGanymede/pcraft/internal/slack"
+	systemsvc "github.com/AvatarGanymede/pcraft/internal/system"
+	taskhandlers "github.com/AvatarGanymede/pcraft/internal/task/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
+	usercontroller "github.com/AvatarGanymede/pcraft/internal/user/controller"
+	userhandlers "github.com/AvatarGanymede/pcraft/internal/user/handlers"
+	utilitycontroller "github.com/AvatarGanymede/pcraft/internal/utility/controller"
+	utilityhandlers "github.com/AvatarGanymede/pcraft/internal/utility/handlers"
+	voicehandlers "github.com/AvatarGanymede/pcraft/internal/voice/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/voice/transcribe"
+	"github.com/AvatarGanymede/pcraft/internal/webapp"
+	webembedded "github.com/AvatarGanymede/pcraft/internal/webapp/embedded"
+	workflowcontroller "github.com/AvatarGanymede/pcraft/internal/workflow/controller"
+	workflowhandlers "github.com/AvatarGanymede/pcraft/internal/workflow/handlers"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // buildSessionDataProvider constructs the session data provider function used by the WebSocket hub
@@ -542,7 +539,7 @@ func registerRoutes(p routeParams) {
 	// returns 200 after main has flipped the package-level `ready`
 	// flag — which happens after route registration, agent-registry
 	// seeding, the HTTP listener accepting connections, and (when
-	// KANDEV_E2E_MOCK is set) the testharness routes being mounted.
+	// PCRAFT_E2E_MOCK is set) the testharness routes being mounted.
 	// Before that, return 503 so callers (including the e2e fixture's
 	// waitForHealth) keep polling instead of racing ahead and hitting
 	// 404s on routes that aren't wired yet.
@@ -647,7 +644,7 @@ func bootPayload(ctx context.Context, req *http.Request, p routeParams, route we
 }
 
 func webAssetsFS() (fs.FS, string, bool) {
-	distDir := os.Getenv("KANDEV_WEB_DIST_DIR")
+	distDir := os.Getenv("PCRAFT_WEB_DIST_DIR")
 	if distDir == "" {
 		distDir = firstExistingDir("apps/web/dist", "../web/dist", "../../apps/web/dist")
 	}
@@ -812,23 +809,6 @@ func registerSecondaryRoutes(
 		p.log.Debug("Registered Secrets handlers (HTTP + WebSocket)")
 	}
 
-	if p.secretStore != nil {
-		spriteshandlers.RegisterRoutes(p.router, p.gateway.Dispatcher, p.secretStore, p.log)
-		p.log.Debug("Registered Sprites handlers (HTTP + WebSocket)")
-	}
-
-	if p.taskRepo != nil {
-		sshhandlers.RegisterRoutes(
-			p.router,
-			p.gateway.Dispatcher,
-			p.taskRepo,
-			p.services.Task,
-			p.agentRegistry,
-			lifecycle.NewAgentctlResolver(p.log),
-			p.log,
-		)
-		p.log.Debug("Registered SSH handlers (HTTP + WebSocket)")
-	}
 
 	if p.services.GitHub != nil {
 		github.RegisterRoutes(p.router, p.gateway.Dispatcher, p.services.GitHub, p.log)
@@ -870,7 +850,7 @@ func registerSecondaryRoutes(
 		p.log.Debug("Registered Automation handlers (HTTP + WebSocket)")
 	}
 
-	docker.RegisterDockerRoutes(p.router, p.lifecycleMgr.DockerClientProvider(), dockerTaskTitleProvider(p.taskRepo, p.log), p.log)
+//	docker.RegisterDockerRoutes(p.router, p.lifecycleMgr.DockerClientProvider(), dockerTaskTitleProvider(p.taskRepo, p.log), p.log)
 	p.log.Debug("Registered Docker management handlers (HTTP)")
 
 	registerHealthRoutes(p)
@@ -919,21 +899,6 @@ func registerSecondaryRoutes(
 		api.Use(officeagents.AgentAuthMiddleware(p.services.OfficeSvcs.Agents))
 		office.RegisterAllRoutes(api, p.services.OfficeSvcs, p.log)
 		p.log.Debug("Registered Office handlers (HTTP)")
-	}
-}
-
-func dockerTaskTitleProvider(taskRepo *sqliterepo.Repository, log *logger.Logger) docker.TaskTitleProvider {
-	return func(ctx context.Context, taskID string) (string, bool) {
-		if taskRepo == nil || taskID == "" {
-			return "", false
-		}
-		task, err := taskRepo.GetTask(ctx, taskID)
-		if err != nil {
-			log.Debug("docker container task title lookup failed",
-				zap.String("task_id", taskID), zap.Error(err))
-			return "", false
-		}
-		return task.Title, task.Title != ""
 	}
 }
 

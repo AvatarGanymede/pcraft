@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import { getExecutorStatusIcon } from "@/lib/executor-icons";
 import { formatRelativeTime } from "@/lib/utils";

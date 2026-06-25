@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import type { WorkflowStep } from "../kanban-column";
 
 type MobileColumnTabsProps = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { levelBadgeClass, statusBadgeClass } from "./sentry-issue-common";
 import { LEVEL_OPTIONS, STATUS_OPTIONS } from "./sentry-issue-watch-form";
 import type { SentryLevel, SentryStatus } from "@/lib/types/sentry";

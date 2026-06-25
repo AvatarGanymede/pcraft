@@ -6,13 +6,13 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	tools "github.com/kandev/kandev/internal/tools/installer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	tools "github.com/AvatarGanymede/pcraft/internal/tools/installer"
 	"go.uber.org/zap"
 )
 
 // DefaultBinDir is where LSP binaries installed by Kandev are placed.
-const DefaultBinDir = ".kandev/lsp-servers"
+const DefaultBinDir = ".pcraft/lsp-servers"
 
 // languageConfig holds the binary name and CLI arguments for a language server.
 type languageConfig struct {
@@ -69,7 +69,7 @@ type Registry struct {
 
 // NewRegistry creates a new installer registry.
 // If dataDir is non-empty, LSP binaries are stored under dataDir+"/lsp-servers".
-// Otherwise falls back to ~/.kandev/lsp-servers.
+// Otherwise falls back to ~/.pcraft/lsp-servers.
 func NewRegistry(dataDir string, log *logger.Logger) *Registry {
 	var binDir string
 	if dataDir != "" {

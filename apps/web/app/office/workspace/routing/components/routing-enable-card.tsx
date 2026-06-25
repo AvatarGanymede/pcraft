@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@kandev/ui/switch";
+import { Switch } from "@pcraft/ui/switch";
 
 type Props = {
   enabled: boolean;

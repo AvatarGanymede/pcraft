@@ -11,9 +11,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/common/shellexec"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/shellexec"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // ScriptExecutionRequest contains parameters for executing a setup or cleanup script.

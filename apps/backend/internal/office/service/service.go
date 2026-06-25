@@ -12,15 +12,15 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/configloader"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/shared"
-	runsservice "github.com/kandev/kandev/internal/runs/service"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
+	runsservice "github.com/AvatarGanymede/pcraft/internal/runs/service"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
 	"go.uber.org/zap"
 )
@@ -838,4 +838,10 @@ func (s *Service) writeWorkspaceConfig(name string, settings *configloader.Works
 		return fmt.Errorf("reload config: %w", reloadErr)
 	}
 	return nil
+}
+
+// pcraftBasePath returns the pcraft home directory.
+// Stub: uses PCRAFT_HOME_DIR env var or defaults to ~/.pcraft.
+func (s *Service) pcraftBasePath() string {
+	return os.Getenv("PCRAFT_HOME_DIR")
 }

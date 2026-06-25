@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // TestWorktreePreparer_SetupScriptFailure_KeepsCreateWorktreeStepCompleted

@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
 
 type SavePresetDialogProps = {
   open: boolean;

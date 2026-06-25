@@ -11,24 +11,24 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	agentsettingscontroller "github.com/kandev/kandev/internal/agent/settings/controller"
-	"github.com/kandev/kandev/internal/clarification"
-	"github.com/kandev/kandev/internal/common/constants"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/messagequeue"
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/service"
-	workflowctrl "github.com/kandev/kandev/internal/workflow/controller"
-	workflowsvc "github.com/kandev/kandev/internal/workflow/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	agentsettingscontroller "github.com/AvatarGanymede/pcraft/internal/agent/settings/controller"
+	"github.com/AvatarGanymede/pcraft/internal/clarification"
+	"github.com/AvatarGanymede/pcraft/internal/common/constants"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/messagequeue"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	workflowctrl "github.com/AvatarGanymede/pcraft/internal/workflow/controller"
+	workflowsvc "github.com/AvatarGanymede/pcraft/internal/workflow/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 
@@ -1636,10 +1636,10 @@ func (h *Handlers) setSessionWaitingForInput(ctx context.Context, taskID, sessio
 		return
 	}
 
-	// Update task state to REVIEW
+	// Update task state to IN_PROGRESS
 	if taskID != "" {
-		if err := h.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateReview); err != nil {
-			h.logger.Warn("failed to update task state to REVIEW",
+		if err := h.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress); err != nil {
+			h.logger.Warn("failed to update task state to IN_PROGRESS",
 				zap.String("task_id", taskID),
 				zap.Error(err))
 		}

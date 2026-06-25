@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@kandev/ui/dialog";
+import { Button } from "@pcraft/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@pcraft/ui/dialog";
 import { ScriptEditor } from "@/components/settings/profile-edit/script-editor";
 import type { InstructionFile } from "./agent-instructions-tab";
 import { createInstructionFileCompletionProvider } from "./instruction-file-completions";

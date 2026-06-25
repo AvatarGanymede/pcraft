@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/kandev/kandev/internal/office/configloader"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // missingNames returns names present in `existing` but not in `incoming`.

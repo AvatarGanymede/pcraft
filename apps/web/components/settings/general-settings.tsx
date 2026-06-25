@@ -10,10 +10,10 @@ import {
   IconKeyboard,
   IconGitBranch,
 } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Separator } from "@kandev/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Separator } from "@pcraft/ui/separator";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { KeyboardShortcutsCard } from "@/components/settings/keyboard-shortcuts-card";
 import { SystemMetricsSettingsCard } from "@/components/settings/system-metrics-settings-card";

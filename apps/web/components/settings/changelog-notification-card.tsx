@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Separator } from "@kandev/ui/separator";
-import { Switch } from "@kandev/ui/switch";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Separator } from "@pcraft/ui/separator";
+import { Switch } from "@pcraft/ui/switch";
 import { useAppStore } from "@/components/state-provider";
 import { updateUserSettings } from "@/lib/api";
 

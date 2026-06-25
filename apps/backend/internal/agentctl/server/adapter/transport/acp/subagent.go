@@ -3,7 +3,7 @@ package acp
 import (
 	"strings"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // Subagent (Task) tool detection constants. These are the wire-level tool

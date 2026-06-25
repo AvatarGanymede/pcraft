@@ -1,6 +1,6 @@
 "use client";
 
-import { Spinner } from "@kandev/ui/spinner";
+import { Spinner } from "@pcraft/ui/spinner";
 import { IconAlertTriangle, IconCheck } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import type { ActionFeedbackState } from "@/hooks/use-action-feedback";

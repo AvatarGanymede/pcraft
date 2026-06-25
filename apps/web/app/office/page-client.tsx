@@ -9,7 +9,7 @@ import {
   IconShieldCheck,
   IconChartBar,
 } from "@tabler/icons-react";
-import { Card } from "@kandev/ui/card";
+import { Card } from "@pcraft/ui/card";
 import { useAppStore } from "@/components/state-provider";
 import { useOfficeRefetch } from "@/hooks/use-office-refetch";
 import * as officeApi from "@/lib/api/domains/office-api";

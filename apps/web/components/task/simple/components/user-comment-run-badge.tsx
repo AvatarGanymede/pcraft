@@ -1,7 +1,7 @@
 "use client";
 
 import { IconAlertCircle, IconLoader2 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { TaskRunStatus } from "@/app/office/tasks/[id]/types";
 
 type UserCommentRunBadgeProps = {

@@ -9,14 +9,14 @@ import (
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 // mockEnvVar gates the in-memory mock client used in E2E tests.
-const mockEnvVar = "KANDEV_MOCK_LINEAR"
+const mockEnvVar = "PCRAFT_MOCK_LINEAR"
 
-// MockEnabled reports whether KANDEV_MOCK_LINEAR is set to "true".
+// MockEnabled reports whether PCRAFT_MOCK_LINEAR is set to "true".
 func MockEnabled() bool {
 	return os.Getenv(mockEnvVar) == "true"
 }
@@ -27,7 +27,7 @@ func MockEnabled() bool {
 // in-memory client caches — but the signature mirrors other integration
 // providers so callers can register it uniformly.
 //
-// When KANDEV_MOCK_LINEAR=true, the service is wired to a process-wide
+// When PCRAFT_MOCK_LINEAR=true, the service is wired to a process-wide
 // MockClient and the same instance is exposed via Service.MockClient() so the
 // E2E mock controller can drive it.
 func Provide(writer, reader *sqlx.DB, secrets SecretStore, eventBus bus.EventBus, log *logger.Logger) (*Service, func() error, error) {
@@ -41,7 +41,7 @@ func Provide(writer, reader *sqlx.DB, secrets SecretStore, eventBus bus.EventBus
 	if MockEnabled() {
 		mock = NewMockClient()
 		clientFn = MockClientFactory(mock)
-		log.Info("linear: using in-memory mock client (KANDEV_MOCK_LINEAR=true)")
+		log.Info("linear: using in-memory mock client (PCRAFT_MOCK_LINEAR=true)")
 	}
 	svc := NewService(store, secrets, clientFn, log)
 	svc.mockClient = mock

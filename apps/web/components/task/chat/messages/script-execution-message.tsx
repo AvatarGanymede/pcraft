@@ -5,7 +5,7 @@ import { IconCheck, IconX, IconTerminal } from "@tabler/icons-react";
 import { GridSpinner } from "@/components/grid-spinner";
 import type { Message } from "@/lib/types/http";
 import { stripAnsi } from "@/lib/utils/ansi";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { ExpandableRow } from "./expandable-row";
 import { useExpandState } from "./use-expand-state";
 

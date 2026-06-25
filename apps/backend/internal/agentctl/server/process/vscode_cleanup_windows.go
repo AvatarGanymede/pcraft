@@ -3,7 +3,7 @@
 package process
 
 import (
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // logChildProcesses is a no-op on Windows.

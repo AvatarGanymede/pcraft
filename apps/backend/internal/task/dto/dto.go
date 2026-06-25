@@ -3,9 +3,9 @@ package dto
 import (
 	"time"
 
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 type WorkflowDTO struct {

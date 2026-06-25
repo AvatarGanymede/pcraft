@@ -12,7 +12,6 @@ import { useAppStore } from "@/components/state-provider";
 import { TaskArchiveConfirmDialog } from "@/components/task/task-archive-confirm-dialog";
 import { TaskDeleteConfirmDialog } from "@/components/task/task-delete-confirm-dialog";
 import { TaskGitHubIssueDialog } from "@/components/task/task-github-issue-dialog";
-import { TaskGitHubPRDialog } from "@/components/task/task-github-pr-dialog";
 import { useTaskWorkflowMove } from "@/hooks/use-task-workflow-move";
 import { getRepositoryDisplayName } from "@/lib/utils";
 import { repositoryId as toRepositoryId, type Repository, type TaskState } from "@/lib/types/http";
@@ -229,12 +228,7 @@ function KanbanCardDialogs({
         isArchiving={isArchiving}
         onConfirm={({ cascade }) => onArchive?.(task, { cascade })}
       />
-      <TaskGitHubPRDialog
-        open={showPRDialog}
-        onOpenChange={setShowPRDialog}
-        task={task}
-        repositories={repositories}
-      />
+      {/* TODO: Re-implement GitHub PR dialog */}
       <TaskGitHubIssueDialog
         open={showIssueDialog}
         onOpenChange={setShowIssueDialog}

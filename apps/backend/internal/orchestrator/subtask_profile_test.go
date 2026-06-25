@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func TestInheritFromParentSession_InheritsFromPrimary(t *testing.T) {

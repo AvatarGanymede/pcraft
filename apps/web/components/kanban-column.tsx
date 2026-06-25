@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { KanbanCard, resolveTaskRepositoryNames, Task } from "./kanban-card";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/components/state-provider";
 import type { Repository } from "@/lib/types/http";

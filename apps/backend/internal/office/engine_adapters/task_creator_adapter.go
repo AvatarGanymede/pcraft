@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
 )
 
 // ParentTaskRepo captures the subset of the kanban tasks repo the

@@ -3,7 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { StateProvider } from "@/components/state-provider";
 import { TaskItem } from "./task-item";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 
 const REVIEW_ICON_TEST_ID = "task-state-review";
 const RUNNING_ICON_TEST_ID = "task-state-running";

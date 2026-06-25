@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { StateProvider } from "@/components/state-provider";
 import { ToastProvider } from "@/components/toast-provider";
 import type { TaskCIAutomationOptions, TaskPR } from "@/lib/types/github";

@@ -7,9 +7,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/linear"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/linear"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // linearWatchMetadataKey is the task-metadata key a Linear watcher-created

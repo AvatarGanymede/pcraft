@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kandev/kandev/internal/launcher/cli"
+	"github.com/AvatarGanymede/pcraft/internal/launcher/cli"
 )
 
 type BuildInfo struct {

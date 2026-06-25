@@ -6,8 +6,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	settingsmodels "github.com/kandev/kandev/internal/agent/settings/models"
-	"github.com/kandev/kandev/internal/common/logger"
+	settingsmodels "github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // fakeProfileReader returns a canned profile (or error) so we can drive the

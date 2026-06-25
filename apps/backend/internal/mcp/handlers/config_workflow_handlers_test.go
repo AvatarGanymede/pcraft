@@ -12,11 +12,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	workflowsvc "github.com/kandev/kandev/internal/workflow/service"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	workflowsvc "github.com/AvatarGanymede/pcraft/internal/workflow/service"
 
-	"github.com/kandev/kandev/internal/workflow/repository"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/repository"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // memWorkflowProvider is a minimal in-memory WorkflowProvider for import tests.

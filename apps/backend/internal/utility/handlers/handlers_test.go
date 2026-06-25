@@ -12,10 +12,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	agentctlutil "github.com/kandev/kandev/internal/agentctl/server/utility"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	agentctlutil "github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 type stubInferenceExecutor struct {

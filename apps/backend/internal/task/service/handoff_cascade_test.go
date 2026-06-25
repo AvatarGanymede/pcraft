@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/task/models"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // fakeCascadeRepo extends phase4TaskRepo with archive/unarchive support

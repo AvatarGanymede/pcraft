@@ -9,14 +9,14 @@ import {
   IconPlayerPlay,
   IconLayoutSidebarRightCollapse,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import { useDockviewStore, performLayoutSwitch } from "@/lib/state/dockview-store";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useEnvironmentId } from "@/hooks/use-environment-session-id";

@@ -3,8 +3,8 @@ package repository
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 )
 
 // Provide creates the SQLite repository using separate writer and reader pools.

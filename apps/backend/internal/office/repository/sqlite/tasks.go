@@ -9,7 +9,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 )
 
 // ErrTaskNotFound is returned (wrapped) by repository task lookups when the

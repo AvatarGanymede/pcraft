@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import { IconTrash, IconGripHorizontal } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { cn } from "@/lib/utils";
 import type { DiffComment } from "@/lib/diff/types";
 

@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kandev/kandev/internal/db/dialect"
-	"github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 // initPhase2Schema creates the workflow_step_participants and

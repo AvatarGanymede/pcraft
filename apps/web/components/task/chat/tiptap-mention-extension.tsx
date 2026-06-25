@@ -11,7 +11,7 @@ import {
   IconListCheck,
   IconClipboardList,
 } from "@tabler/icons-react";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@kandev/ui/hover-card";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@pcraft/ui/hover-card";
 import { isDirectory } from "@/lib/utils/file-path";
 import { usePanelActions } from "@/hooks/use-panel-actions";
 import { useEditorContext } from "./editor-context";

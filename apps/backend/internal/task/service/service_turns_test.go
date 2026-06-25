@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 )
 
 type nilTaskSessionRepo struct {
@@ -223,8 +223,8 @@ func TestGetWorkspaceInfoForSession_ExecutorInfo(t *testing.T) {
 	// Create executor
 	exec := &models.Executor{
 		ID:        "exec-1",
-		Name:      "My Sprites Executor",
-		Type:      models.ExecutorTypeSprites,
+		Name:      "My Local Executor",
+		Type:      models.ExecutorTypeLocal,
 		Status:    "active",
 		CreatedAt: now,
 		UpdatedAt: now,
@@ -255,7 +255,7 @@ func TestGetWorkspaceInfoForSession_ExecutorInfo(t *testing.T) {
 		SessionID:        "session-1",
 		TaskID:           "task-123",
 		ExecutorID:       "exec-1",
-		Runtime:          "sprites",
+		Runtime:          "standalone",
 		AgentExecutionID: "agent-exec-abc123",
 		CreatedAt:        now,
 		UpdatedAt:        now,
@@ -268,11 +268,11 @@ func TestGetWorkspaceInfoForSession_ExecutorInfo(t *testing.T) {
 		t.Fatalf("GetWorkspaceInfoForSession returned error: %v", err)
 	}
 
-	if info.ExecutorType != "sprites" {
-		t.Errorf("expected ExecutorType 'sprites', got %q", info.ExecutorType)
+	if info.ExecutorType != "local" {
+		t.Errorf("expected ExecutorType 'local', got %q", info.ExecutorType)
 	}
-	if info.RuntimeName != "sprites" {
-		t.Errorf("expected RuntimeName 'sprites', got %q", info.RuntimeName)
+	if info.RuntimeName != "standalone" {
+		t.Errorf("expected RuntimeName 'standalone', got %q", info.RuntimeName)
 	}
 	if info.AgentExecutionID != "agent-exec-abc123" {
 		t.Errorf("expected AgentExecutionID 'agent-exec-abc123', got %q", info.AgentExecutionID)
@@ -288,8 +288,8 @@ func TestGetWorkspaceInfoForSession_IncludesEnvironmentReconnectMetadata(t *test
 
 	if err := repo.CreateExecutor(ctx, &models.Executor{
 		ID:        "exec-1",
-		Name:      "Docker",
-		Type:      models.ExecutorTypeLocalDocker,
+		Name:      "Local",
+		Type:      models.ExecutorTypeLocal,
 		Status:    "active",
 		CreatedAt: now,
 		UpdatedAt: now,
@@ -300,7 +300,7 @@ func TestGetWorkspaceInfoForSession_IncludesEnvironmentReconnectMetadata(t *test
 	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
 		ID:            "env-123",
 		TaskID:        "task-123",
-		ExecutorType:  string(models.ExecutorTypeLocalDocker),
+		ExecutorType:  string(models.ExecutorTypeLocal),
 		Status:        models.TaskEnvironmentStatusReady,
 		WorkspacePath: "/host/repo",
 		ContainerID:   "container-from-env",
@@ -331,7 +331,7 @@ func TestGetWorkspaceInfoForSession_IncludesEnvironmentReconnectMetadata(t *test
 		SessionID:        "session-1",
 		TaskID:           "task-123",
 		ExecutorID:       "exec-1",
-		Runtime:          "docker",
+		Runtime:          "standalone",
 		AgentExecutionID: "running-exec",
 		ContainerID:      "container-from-running",
 		Metadata: map[string]interface{}{

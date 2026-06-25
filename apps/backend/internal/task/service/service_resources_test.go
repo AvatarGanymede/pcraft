@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 )
 
 // errWorkspaceRepo is a WorkspaceRepository that always returns an error from

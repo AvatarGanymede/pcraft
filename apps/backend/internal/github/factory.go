@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // SecretProvider is the interface the factory uses to look up a GitHub PAT.
@@ -27,7 +27,7 @@ type SecretListItem struct {
 // It tries the gh CLI first, then falls back to a PAT from the secret store.
 func NewClient(ctx context.Context, secrets SecretProvider, log *logger.Logger) (Client, string, error) {
 	// Mock client for E2E testing
-	if os.Getenv("KANDEV_MOCK_GITHUB") == "true" {
+	if os.Getenv("PCRAFT_MOCK_GITHUB") == "true" {
 		log.Info("using mock client for GitHub integration")
 		return NewMockClient(), "mock", nil
 	}

@@ -1,8 +1,8 @@
 "use client";
 
 import { IconPlus, IconMinus, IconArrowsMaximize, IconDownload } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 
 type OrgZoomControlsProps = {
   onZoomIn: () => void;

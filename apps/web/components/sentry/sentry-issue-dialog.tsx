@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IconRefresh, IconSearch } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { listSentryProjects, searchSentryIssues } from "@/lib/api/domains/sentry-api";
 import type {
   SentryIssue,

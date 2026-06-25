@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // Workspace mode values for the office task-handoffs HTTP path.

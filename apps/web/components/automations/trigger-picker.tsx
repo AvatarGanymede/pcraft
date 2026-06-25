@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Command, CommandInput, CommandList, CommandGroup, CommandItem } from "@kandev/ui/command";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Command, CommandInput, CommandList, CommandGroup, CommandItem } from "@pcraft/ui/command";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { IconPlus, IconBrandGithub, IconWebhook, IconInfoCircle } from "@tabler/icons-react";
 import type { TriggerType, TriggerTypeInfo } from "@/lib/types/automation";
 

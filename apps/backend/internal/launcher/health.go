@@ -13,7 +13,7 @@ type childState interface {
 }
 
 func healthTimeout(defaultMS int) time.Duration {
-	raw := os.Getenv("KANDEV_HEALTH_TIMEOUT_MS")
+	raw := os.Getenv("PCRAFT_HEALTH_TIMEOUT_MS")
 	if raw == "" {
 		return time.Duration(defaultMS) * time.Millisecond
 	}

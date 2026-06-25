@@ -7,8 +7,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/db"
-	"github.com/kandev/kandev/internal/db/dialect"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/db/dialect"
 )
 
 // Store persists install-wide Kandev settings that are not scoped to a user,

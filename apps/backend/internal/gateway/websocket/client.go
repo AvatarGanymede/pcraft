@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/user/store"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/user/store"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
 

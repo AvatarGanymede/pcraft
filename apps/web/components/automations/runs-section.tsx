@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "@/lib/routing/client-router";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { IconChevronDown, IconChevronUp, IconRefresh } from "@tabler/icons-react";
 import { useAutomationRuns } from "@/hooks/domains/settings/use-automation-runs";
 import type { ExecutionMode, RunStatus } from "@/lib/types/automation";

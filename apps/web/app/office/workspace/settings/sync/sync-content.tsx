@@ -1,7 +1,7 @@
 "use client";
 
 import { IconArrowDown, IconArrowUp, IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { useAppStore } from "@/components/state-provider";
 import { SyncDiffPane } from "./sync-diff-pane";
 import { useSyncState } from "./use-sync-state";

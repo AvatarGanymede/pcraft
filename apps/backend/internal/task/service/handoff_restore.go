@@ -8,7 +8,7 @@ import (
 
 	"go.uber.org/zap"
 
-	orchmodels "github.com/kandev/kandev/internal/office/models"
+	orchmodels "github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // restoreCleanedGroups walks the workspace groups affected by an

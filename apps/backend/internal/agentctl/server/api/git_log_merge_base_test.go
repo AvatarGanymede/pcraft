@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // TestComputeMergeBase_PrefersOriginOverStaleLocalBranch reproduces the bug

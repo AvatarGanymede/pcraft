@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { useTheme } from "@/components/theme/app-theme";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { IconMessagePlus } from "@tabler/icons-react";
 import { getMonacoLanguage } from "@/lib/editor/language-map";
 import { EDITOR_FONT_FAMILY, EDITOR_FONT_SIZE } from "@/lib/theme/editor-theme";

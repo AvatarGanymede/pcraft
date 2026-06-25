@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 func TestIdleTimeout_TerminalTaskStartsTimer(t *testing.T) {

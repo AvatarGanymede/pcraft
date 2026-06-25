@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"go.uber.org/zap"
@@ -346,7 +346,7 @@ func (s *Server) registerTools() {
 		//   - related-tasks     — discover parent/child/sibling IDs
 		//   - task-document tools — parent/child coordination docs
 		// delegate_task was removed in favour of
-		// `agentctl kandev tasks create --parent $KANDEV_TASK_ID …`.
+		// `agentctl kandev tasks create --parent $PCRAFT_TASK_ID …`.
 		if !s.disableAskQuestion {
 			s.registerInteractionTools()
 			count++

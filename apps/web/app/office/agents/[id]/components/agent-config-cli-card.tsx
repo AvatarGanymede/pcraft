@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Label } from "@kandev/ui/label";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Label } from "@pcraft/ui/label";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import { useAppStore } from "@/components/state-provider";
 import { useHealthyAgentProfiles } from "@/hooks/domains/settings/use-healthy-agent-profiles";
 import { CliProfileEditor } from "@/components/agent/cli-profile-editor";

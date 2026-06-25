@@ -9,9 +9,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
-	runssqlite "github.com/kandev/kandev/internal/runs/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
+	runssqlite "github.com/AvatarGanymede/pcraft/internal/runs/repository/sqlite"
 )
 
 // newParticipantUUID is a thin wrapper over uuid.New so the migration

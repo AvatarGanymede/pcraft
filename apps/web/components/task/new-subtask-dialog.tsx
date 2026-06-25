@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@kandev/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@pcraft/ui/dialog";
 import { useAppStore } from "@/components/state-provider";
 import { useToast } from "@/components/toast-provider";
 

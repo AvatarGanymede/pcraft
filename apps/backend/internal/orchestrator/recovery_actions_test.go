@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/orchestrator/watcher"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/watcher"
 )
 
 // thinkingBlocks400 is the resume-corrupted signature surfaced by the

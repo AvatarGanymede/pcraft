@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { StateProvider } from "@/components/state-provider";
 import { ToastProvider } from "@/components/toast-provider";
 import { PRStatusChip, aggregateChipStatus } from "./pr-status-chip";

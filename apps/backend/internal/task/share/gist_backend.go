@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/kandev/kandev/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/github"
 )
 
 // GistMaxBytes is a conservative cap on a single snapshot.json file. GitHub

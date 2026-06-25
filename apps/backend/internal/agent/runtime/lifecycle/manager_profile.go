@@ -8,10 +8,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 // ResolveAgentProfile resolves an agent profile ID to profile information.

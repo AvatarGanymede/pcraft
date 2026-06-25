@@ -9,15 +9,15 @@ import {
   IconLayoutRows,
   IconTextWrap,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { Checkbox } from "@kandev/ui/checkbox";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import type { DiffComment } from "@/lib/diff/types";
 import { useAppStore } from "@/components/state-provider";
 import { getWebSocketClient } from "@/lib/ws/connection";

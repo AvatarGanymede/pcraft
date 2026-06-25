@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // TestBuildPrompt_AppendsHandoffSection_OnActiveBuilder is the

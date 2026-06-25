@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kandev/kandev/config/prompts"
+	"github.com/AvatarGanymede/pcraft/config/prompts"
 )
 
 // System tag constants for marking system-injected content.

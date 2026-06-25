@@ -2,9 +2,9 @@
 
 import Link from "@/components/routing/app-link";
 import { IconGitBranch } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
-import { Progress } from "@kandev/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
+import { Progress } from "@pcraft/ui/progress";
 import { useAppStore } from "@/components/state-provider";
 import type { Project } from "@/lib/state/slices/office/types";
 import { normalizeRepos } from "./normalize-repos";

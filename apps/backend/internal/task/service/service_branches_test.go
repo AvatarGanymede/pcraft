@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // TestAddBranchToTask_HappyPath attaches a second branch to a task that
@@ -169,12 +169,12 @@ func TestAddBranchToTask_RejectsNonWorktreeExecutor(t *testing.T) {
 		t.Fatalf("CreateTask: %v", err)
 	}
 
-	// Seed a task_environments row with a containerized executor type.
+	// Seed a task_environments row with a non-worktree executor type.
 	now := time.Now().UTC()
 	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
 		ID:           "env-1",
 		TaskID:       task.ID,
-		ExecutorType: string(models.ExecutorTypeLocalDocker),
+		ExecutorType: string(models.ExecutorTypeLocal),
 		Status:       "ready",
 		CreatedAt:    now,
 		UpdatedAt:    now,
@@ -569,12 +569,12 @@ func TestAddBranchToTask_RejectsNonWorktreeExecutor_NoOrphanRepo(t *testing.T) {
 		t.Fatalf("CreateTask: %v", err)
 	}
 
-	// Seed a docker executor — add_branch must reject.
+	// Seed a non-worktree executor — add_branch must reject.
 	now := time.Now().UTC()
 	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
 		ID:           "env-1",
 		TaskID:       task.ID,
-		ExecutorType: string(models.ExecutorTypeLocalDocker),
+		ExecutorType: string(models.ExecutorTypeLocal),
 		Status:       "ready",
 		CreatedAt:    now,
 		UpdatedAt:    now,

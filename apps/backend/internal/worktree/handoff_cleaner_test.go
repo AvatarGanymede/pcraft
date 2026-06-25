@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // newCleanerWithTasksRoot constructs a HandoffCleaner whose managed

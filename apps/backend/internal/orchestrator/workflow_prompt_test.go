@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 func TestBuildWorkflowPrompt_ReplacesTaskPromptPlaceholder(t *testing.T) {

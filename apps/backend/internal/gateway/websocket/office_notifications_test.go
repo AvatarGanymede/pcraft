@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 // TestOfficeEventBroadcaster_SubscriptionCount verifies that

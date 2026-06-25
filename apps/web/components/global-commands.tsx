@@ -11,7 +11,6 @@ import {
   IconSun,
   IconMoon,
   IconRobot,
-  IconCpu,
   IconServer,
   IconFolder,
   IconMessageCircle,
@@ -76,14 +75,6 @@ function buildNavigationCommands(push: PushFn): CommandItem[] {
       icon: <IconRobot className="size-3.5" />,
       keywords: ["agents", "ai", "claude"],
       action: () => push("/settings/agents"),
-    },
-    {
-      id: "settings-executors",
-      label: "Executors Settings",
-      group: "Settings",
-      icon: <IconCpu className="size-3.5" />,
-      keywords: ["executors", "compute", "run"],
-      action: () => push("/settings/executors"),
     },
     {
       id: "settings-environments",

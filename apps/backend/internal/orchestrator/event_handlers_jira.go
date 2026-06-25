@@ -6,10 +6,10 @@ import (
 
 	"go.uber.org/zap"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/jira"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/jira"
 )
 
 // JiraService is the subset of jira.Service the orchestrator needs to

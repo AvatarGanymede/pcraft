@@ -1,14 +1,14 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Switch } from "@kandev/ui/switch";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Switch } from "@pcraft/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
+} from "@pcraft/ui/dropdown-menu";
 import {
   IconDots,
   IconPlayerPlay,
@@ -17,7 +17,7 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import Link from "@/components/routing/app-link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { Routine, AgentProfile, RoutineTrigger } from "@/lib/state/slices/office/types";
 import { timeAgo } from "@/lib/utils/time";
 

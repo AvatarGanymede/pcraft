@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
 )
 
 // TestProjectSkillDir_AllAgentTypes verifies that every registered agent type
@@ -14,12 +14,6 @@ import (
 func TestProjectSkillDir_AllAgentTypes(t *testing.T) {
 	allAgents := []Agent{
 		NewClaudeACP(),
-		NewCodexACP(),
-		NewOpenCodeACP(),
-		NewGemini(),
-		NewCopilotACP(),
-		NewAuggie(),
-		NewAmpACP(),
 		NewMockAgent(),
 	}
 
@@ -47,27 +41,6 @@ func TestProjectSkillDir_ClaudeUsesClaudeDir(t *testing.T) {
 	}
 }
 
-// TestProjectSkillDir_OthersUseAgentsDir verifies that non-Claude agents use
-// .agents/skills as their project skill directory.
-func TestProjectSkillDir_OthersUseAgentsDir(t *testing.T) {
-	others := []Agent{
-		NewCodexACP(),
-		NewOpenCodeACP(),
-		NewGemini(),
-		NewCopilotACP(),
-		NewAuggie(),
-		NewAmpACP(),
-	}
-	for _, a := range others {
-		t.Run(a.ID(), func(t *testing.T) {
-			dir := ProjectSkillDirFromRuntime(a)
-			if dir != DefaultProjectSkillDir {
-				t.Errorf("%s ProjectSkillDir = %q, want %q", a.ID(), dir, DefaultProjectSkillDir)
-			}
-		})
-	}
-}
-
 // TestProjectSkillDirFromRuntime_Fallback verifies that an agent with empty
 // ProjectSkillDir in RuntimeConfig falls back to DefaultProjectSkillDir.
 func TestProjectSkillDirFromRuntime_Fallback(t *testing.T) {
@@ -86,9 +59,6 @@ func TestUserSkillDir_KnownProviders(t *testing.T) {
 		want string
 	}{
 		{"claude", NewClaudeACP(), ".claude/skills"},
-		{"codex", NewCodexACP(), ".codex/skills"},
-		{"opencode", NewOpenCodeACP(), ".config/opencode/skills"},
-		{"copilot", NewCopilotACP(), ".copilot/skills"},
 		{"mock-agent", NewMockAgent(), ".mock-agent/skills"},
 	}
 	for _, tt := range tests {

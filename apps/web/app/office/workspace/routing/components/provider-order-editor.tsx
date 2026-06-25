@@ -2,8 +2,8 @@
 
 import { useMemo } from "react";
 import { IconArrowUp, IconArrowDown, IconPlus, IconX } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Button } from "@pcraft/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 
 type Props = {
   order: string[];

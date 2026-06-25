@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import type { ReactNode } from "react";
 import type { Branch } from "@/lib/types/http";
 
-vi.mock("@kandev/ui/tooltip", async () => {
+vi.mock("@pcraft/ui/tooltip", async () => {
   const React = await import("react");
   return {
     Tooltip: ({

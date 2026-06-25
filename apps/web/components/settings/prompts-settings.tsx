@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { IconEdit, IconTrash, IconLock } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Badge } from "@kandev/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Textarea } from "@kandev/ui/textarea";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
 import { SettingsPageTemplate } from "@/components/settings/settings-page-template";
 import { useToast } from "@/components/toast-provider";
 import { useCustomPrompts } from "@/hooks/domains/settings/use-custom-prompts";

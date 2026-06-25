@@ -1,7 +1,7 @@
 "use client";
 
 import { IconCheck, IconCopy } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 
 type WebhookCreatedDialogProps = {

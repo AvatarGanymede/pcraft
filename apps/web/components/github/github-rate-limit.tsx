@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
 import type { GitHubRateLimitInfo, GitHubRateLimitSnapshot } from "@/lib/types/github";
 
 const RESOURCE_LABELS: Record<string, string> = {

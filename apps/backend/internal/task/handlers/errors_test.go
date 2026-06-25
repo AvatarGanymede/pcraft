@@ -7,9 +7,9 @@ import (
 	"net"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	"github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 // TestErrorsAreClassifiable verifies that the package's error-classification

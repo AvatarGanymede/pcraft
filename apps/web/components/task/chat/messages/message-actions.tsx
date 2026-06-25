@@ -20,7 +20,7 @@ import {
   buildMessageDebugEntries,
   hasMessageDebugMetadata,
 } from "@/components/task/chat/messages/message-debug-metadata";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@kandev/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@pcraft/ui/dialog";
 
 const ACTION_BUTTON_SIZE = "h-5 w-5 p-1";
 const ACTION_BUTTON_HOVER = "hover:bg-muted rounded";

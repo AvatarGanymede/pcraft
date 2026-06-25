@@ -10,11 +10,11 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/discovery"
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/settings/dto"
-	"github.com/kandev/kandev/internal/agent/settings/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/discovery"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/dto"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/models"
 )
 
 func (c *Controller) ListDiscovery(ctx context.Context) (*dto.ListDiscoveryResponse, error) {
@@ -324,7 +324,7 @@ func (c *Controller) updateExistingProfiles(ctx context.Context, profiles []*mod
 func (c *Controller) syncAgentFromDiscovery(ctx context.Context, result discovery.Availability) error {
 	agentConfig, ok := c.agentRegistry.Get(result.Name)
 	if !ok {
-		// Agent detected on filesystem but not in registry (e.g. KANDEV_MOCK_AGENT=only
+		// Agent detected on filesystem but not in registry (e.g. PCRAFT_MOCK_AGENT=only
 		// suppresses real agents). Skip silently rather than aborting the entire sync.
 		return nil
 	}
@@ -491,12 +491,12 @@ func (c *Controller) detectTools() []dto.ToolStatusDTO {
 
 // detectAgents runs discovery and forces mock-agent available when enabled.
 //
-// In E2E mock mode (KANDEV_E2E_MOCK=true) the filesystem discovery walk is
+// In E2E mock mode (PCRAFT_E2E_MOCK=true) the filesystem discovery walk is
 // skipped entirely: all enabled agents are synthesised as available. This
 // avoids the 15-second detectAll timeout under CPU contention and prevents
 // the "seedData fixture timeout: listAgents returned 0 agents" flake.
 func (c *Controller) detectAgents(ctx context.Context) ([]discovery.Availability, error) {
-	if os.Getenv("KANDEV_E2E_MOCK") == "true" {
+	if os.Getenv("PCRAFT_E2E_MOCK") == "true" {
 		return c.synthAvailabilityFromRegistry(), nil
 	}
 	results, err := c.discovery.Detect(ctx)

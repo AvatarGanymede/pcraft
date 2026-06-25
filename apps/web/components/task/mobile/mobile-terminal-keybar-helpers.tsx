@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { cn } from "@/lib/utils";
 import { KEY_SEQUENCES } from "@/lib/terminal/key-sequences";
 import { isActive } from "@/lib/terminal/shell-modifiers";

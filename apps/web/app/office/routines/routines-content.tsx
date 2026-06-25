@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Button } from "@kandev/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kandev/ui/tabs";
+import { Button } from "@pcraft/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
 import { IconPlus } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { useAppStore } from "@/components/state-provider";

@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { Button } from "@kandev/ui/button";
-import { Label } from "@kandev/ui/label";
+import { Button } from "@pcraft/ui/button";
+import { Label } from "@pcraft/ui/label";
 import type { AutomationTrigger, TriggerType, TriggerTypeInfo } from "@/lib/types/automation";
 import { ScheduleSelector } from "./schedule-selector";
 import { TriggerCard } from "./trigger-card";

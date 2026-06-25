@@ -3,7 +3,7 @@ package lifecycle
 import (
 	"testing"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 // TestPromptForPassthroughCommand asserts the gating used by passthroughAgentCommand:

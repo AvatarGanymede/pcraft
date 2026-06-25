@@ -9,7 +9,7 @@ import {
   IconRobot,
   IconUserCog,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { KanbanStepEvents } from "@/lib/state/slices/kanban/types";
 
 type StepCapabilityIconsProps = {

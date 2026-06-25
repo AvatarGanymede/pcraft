@@ -9,7 +9,7 @@ import {
   IconTerminal2,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@kandev/ui/badge";
+import { Badge } from "@pcraft/ui/badge";
 import type { MobileSessionPanel } from "@/lib/state/slices/ui/types";
 
 type SessionMobileBottomNavProps = {

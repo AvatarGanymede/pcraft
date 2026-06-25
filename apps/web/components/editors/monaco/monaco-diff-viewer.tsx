@@ -3,7 +3,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
 import { useTheme } from "@/components/theme/app-theme";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 import type { FileDiffData, DiffComment } from "@/lib/diff/types";
 import { getMonacoLanguage } from "@/lib/editor/language-map";
 import { useCommandPanelOpen } from "@/lib/commands/command-registry";

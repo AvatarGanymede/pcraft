@@ -6,18 +6,18 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/credentials"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	"github.com/kandev/kandev/internal/agent/registry"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	settingsstore "github.com/kandev/kandev/internal/agent/settings/store"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/secrets"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/credentials"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	settingsstore "github.com/AvatarGanymede/pcraft/internal/agent/settings/store"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/secrets"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 func provideLifecycleManager(
@@ -58,36 +58,13 @@ func provideLifecycleManager(
 		zap.String("host", cfg.Agent.StandaloneHost),
 		zap.Int("port", cfg.Agent.StandalonePort))
 
-	// Register Docker runtime if enabled (client is created lazily on first use)
-	if cfg.Docker.Enabled {
-		dockerExec := lifecycle.NewDockerExecutor(cfg.Docker, cfg.ResolvedHomeDir(), log)
-		executorRegistry.Register(dockerExec)
-		log.Info("Docker runtime registered (lazy initialization)")
-	}
-
-	// Register Remote Docker runtime (always available, instances are created lazily per host)
-	remoteDockerExec := lifecycle.NewRemoteDockerExecutor(log)
-	executorRegistry.Register(remoteDockerExec)
-	log.Info("Remote Docker runtime registered")
-
-	// Register Sprites runtime (remote sandboxes via Sprites.dev)
-	agentctlResolver := lifecycle.NewAgentctlResolver(log)
-	spritesExec := lifecycle.NewSpritesExecutor(secretStore, agentRegistry, agentctlResolver, 8765, log)
-	executorRegistry.Register(spritesExec)
-	log.Info("Sprites runtime registered")
-
-	// Register SSH runtime (run an agent on any Linux box reachable over SSH).
-	sshExec := lifecycle.NewSSHExecutor(secretStore, agentRegistry, agentctlResolver, log)
-	executorRegistry.Register(sshExec)
-	log.Info("SSH runtime registered")
-
 	credsMgr := credentials.NewManager(log)
 	if secretStore != nil {
 		credsMgr.AddProvider(secrets.NewSecretStoreProvider(secretStore))
 	}
-	credsMgr.AddProvider(credentials.NewEnvProvider("KANDEV_"))
+	credsMgr.AddProvider(credentials.NewEnvProvider("PCRAFT_"))
 	credsMgr.AddProvider(credentials.NewAugmentSessionProvider())
-	if credsFile := os.Getenv("KANDEV_CREDENTIALS_FILE"); credsFile != "" {
+	if credsFile := os.Getenv("PCRAFT_CREDENTIALS_FILE"); credsFile != "" {
 		credsMgr.AddProvider(credentials.NewFileProvider(credsFile))
 	}
 
@@ -107,16 +84,13 @@ func provideLifecycleManager(
 	)
 
 	// Register environment preparers (keyed by ExecutorType — the
-	// "local"/"worktree"/"local_docker"/"sprites" taxonomy, not Runtime).
+	// "local"/"worktree" taxonomy, not Runtime).
 	// The Worktree preparer is registered separately in
 	// Manager.SetWorktreeManager once a worktree.Manager is wired.
 	preparerRegistry := lifecycle.NewPreparerRegistry(log)
 	localPreparer := lifecycle.NewLocalPreparer(log)
 	preparerRegistry.Register(models.ExecutorTypeLocal, localPreparer)
 	preparerRegistry.Register(models.ExecutorTypeMockRemote, localPreparer)
-	preparerRegistry.Register(models.ExecutorTypeLocalDocker, lifecycle.NewDockerPreparer(log))
-	preparerRegistry.Register(models.ExecutorTypeSprites, lifecycle.NewSpritesPreparer(log))
-	preparerRegistry.Register(models.ExecutorTypeSSH, lifecycle.NewSSHPreparer(log))
 	lifecycleMgr.SetPreparerRegistry(preparerRegistry)
 	lifecycleMgr.SetSecretStore(secretStore)
 	// Wire the agent_profiles reader so the launch-prep skill deploy hook

@@ -1,8 +1,8 @@
 "use client";
 
-import { Badge } from "@kandev/ui/badge";
-import { SessionPanelContent } from "@kandev/ui/pannel-session";
-import { TabsContent } from "@kandev/ui/tabs";
+import { Badge } from "@pcraft/ui/badge";
+import { SessionPanelContent } from "@pcraft/ui/pannel-session";
+import { TabsContent } from "@pcraft/ui/tabs";
 import { ShellTerminal } from "@/components/task/shell-terminal";
 import { PassthroughTerminal } from "@/components/task/passthrough-terminal";
 import type { RepositoryScript } from "@/lib/types/http";

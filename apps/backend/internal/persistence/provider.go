@@ -11,9 +11,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/db"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/db"
 )
 
 // Provide creates the database connection pool used by repositories.
@@ -54,7 +54,7 @@ func provideSQLite(cfg *config.Config, log *logger.Logger, version string) (*db.
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to open sqlite writer: %w", err)
 	}
-	writer := sqlx.NewDb(writerConn, "sqlite3")
+	writer := sqlx.NewDb(writerConn, "sqlite")
 
 	// Reader: multiple read-only connections for concurrent SELECTs.
 	readerConn, err := db.OpenSQLiteReader(dbPath)
@@ -62,7 +62,7 @@ func provideSQLite(cfg *config.Config, log *logger.Logger, version string) (*db.
 		_ = writer.Close()
 		return nil, nil, fmt.Errorf("failed to open sqlite reader: %w", err)
 	}
-	reader := sqlx.NewDb(readerConn, "sqlite3")
+	reader := sqlx.NewDb(readerConn, "sqlite")
 
 	pool := db.NewPool(writer, reader)
 
@@ -132,13 +132,13 @@ func provideSQLite(cfg *config.Config, log *logger.Logger, version string) (*db.
 	return pool, cleanup, nil
 }
 
-// migrateLegacyDBPath moves a pre-KANDEV_HOME_DIR SQLite DB from
+// migrateLegacyDBPath moves a pre-PCRAFT_HOME_DIR SQLite DB from
 // <HomeDir>/kandev.db into the new derived location at <HomeDir>/data/kandev.db
 // on first boot after an upgrade, so `docker pull && docker restart` doesn't
 // silently start against an empty DB.
 //
 // Runs only when:
-//   - KANDEV_DATABASE_PATH is not explicitly set (caller checks this).
+//   - PCRAFT_DATABASE_PATH is not explicitly set (caller checks this).
 //   - The new derived path does not exist yet.
 //   - A legacy file exists at <HomeDir>/kandev.db.
 //   - The legacy path differs from the new path (skip when HomeDir == DataDir).
@@ -168,7 +168,7 @@ func migrateLegacyDBPath(cfg *config.Config, newPath string, log *logger.Logger)
 		_ = os.Rename(legacyPath+suffix, newPath+suffix)
 	}
 	if log != nil {
-		log.Info("Migrated SQLite database from pre-KANDEV_HOME_DIR location",
+		log.Info("Migrated SQLite database from pre-PCRAFT_HOME_DIR location",
 			zap.String("legacy_path", legacyPath),
 			zap.String("new_path", newPath),
 		)

@@ -13,12 +13,12 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
-	"github.com/kandev/kandev/internal/office/routing"
-	"github.com/kandev/kandev/internal/office/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/routing"
+	"github.com/AvatarGanymede/pcraft/internal/office/service"
 )
 
 // ErrRoutingNotSupported is returned by TaskStarter.StartTaskWithRoute
@@ -200,7 +200,7 @@ func (ss *SchedulerService) Resolver() *routing.Resolver { return ss.resolver }
 // holding an independent handle.
 func (ss *SchedulerService) Repo() *sqlite.Repository { return ss.repo }
 
-// SetAPIBaseURL sets the base URL injected into KANDEV_API_URL.
+// SetAPIBaseURL sets the base URL injected into PCRAFT_API_URL.
 func (ss *SchedulerService) SetAPIBaseURL(url string) {
 	ss.apiBaseURL = url
 }

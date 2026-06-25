@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/configloader"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // ListInstructions returns all instruction files for an agent.

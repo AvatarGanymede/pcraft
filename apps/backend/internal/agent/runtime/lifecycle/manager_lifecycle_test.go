@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func TestManager_MarkCompleted_Success(t *testing.T) {

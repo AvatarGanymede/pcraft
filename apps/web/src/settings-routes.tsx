@@ -4,20 +4,7 @@ import AgentsSettingsPage from "@/app/settings/agents/page";
 import AgentSetupPage from "@/app/settings/agents/[agentId]/page";
 import AgentProfileRoute from "@/app/settings/agents/[agentId]/profiles/[profileId]/page";
 import AutomationsTopLevelPage from "@/app/settings/automations/page";
-import ExecutorEditPage from "@/app/settings/executor/[id]/page";
-import ProfileDetailPage from "@/app/settings/executor/[id]/profile/[profileId]/page";
-import ExecutorCreatePage from "@/app/settings/executor/new/page";
-import ExecutorsPage from "@/app/settings/executors/page";
-import ProfileEditPage from "@/app/settings/executors/[profileId]/page";
-import CreateProfilePage from "@/app/settings/executors/new/[type]/page";
-import SSHExecutorPage from "@/app/settings/executors/ssh/[executorId]/page";
 import ExternalMcpPage from "@/app/settings/external-mcp/page";
-import IntegrationsIndexPage from "@/app/settings/integrations/page";
-import IntegrationsGitLabPage from "@/app/settings/integrations/gitlab/page";
-import IntegrationsJiraPage from "@/app/settings/integrations/jira/page";
-import IntegrationsLinearPage from "@/app/settings/integrations/linear/page";
-import IntegrationsSentryPage from "@/app/settings/integrations/sentry/page";
-import IntegrationsSlackPage from "@/app/settings/integrations/slack/page";
 import UtilityAgentsSettingsPage from "@/app/settings/utility-agents/page";
 import AutomationsPage from "@/app/settings/workspace/[id]/automations/page";
 import AutomationEditorPage from "@/app/settings/workspace/[id]/automations/[automationId]/page";
@@ -26,7 +13,6 @@ import WorkspaceEditPage from "@/app/settings/workspace/[id]/page";
 import { WorkspaceRepositoriesClient } from "@/app/settings/workspace/workspace-repositories-client";
 import { WorkspaceWorkflowsClient } from "@/app/settings/workspace/workspace-workflows-client";
 import WorkspacesPage from "@/app/settings/workspace/page";
-import { GitHubIntegrationPage } from "@/components/github/github-settings";
 import { useAppStoreApi } from "@/components/state-provider";
 import { EditorsSettings } from "@/components/settings/editors-settings";
 import {
@@ -38,7 +24,6 @@ import { NotificationsSettings } from "@/components/settings/notifications-setti
 import { PromptsSettings } from "@/components/settings/prompts-settings";
 import { SecretsSettings } from "@/components/settings/secrets-settings";
 import { SettingsLayoutClient } from "@/components/settings/settings-layout-client";
-import { SpritesSettings } from "@/components/settings/sprites-settings";
 import { AboutCard } from "@/components/settings/system/about-card";
 import { BackupsTable } from "@/components/settings/system/backups-table";
 import { DatabaseStatsCard } from "@/components/settings/system/database-stats-card";
@@ -109,7 +94,6 @@ const SETTINGS_ROUTES: Record<string, RouteRenderer> = {
   "/settings": () => <GeneralSettings />,
   "/settings/general": () => <GeneralSettings />,
   "/settings/general/appearance": () => <AppearanceSettings />,
-  "/settings/general/changes-panel": () => <SettingsRedirect to="/settings/general/appearance" />,
   "/settings/general/chat-input": () => (
     <SettingsRedirect to="/settings/general/keyboard-shortcuts" />
   ),
@@ -120,25 +104,14 @@ const SETTINGS_ROUTES: Record<string, RouteRenderer> = {
     <SettingsRedirect to="/settings/general/appearance" />
   ),
   "/settings/general/secrets": () => <SecretsSettings />,
-  "/settings/general/shell": () => <SettingsRedirect to="/settings/general/terminal" />,
-  "/settings/general/sprites": () => <SpritesSettings />,
   "/settings/general/terminal": () => <TerminalSettings />,
   "/settings/workspace": () => <WorkspacesPage />,
   "/settings/agents": () => <AgentsSettingsPage />,
   "/settings/automations": () => <AutomationsTopLevelPage />,
-  "/settings/executors": () => <ExecutorsPage />,
-  "/settings/executor/new": () => <ExecutorCreatePage />,
   "/settings/utility-agents": () => <UtilityAgentsSettingsPage />,
   "/settings/external-mcp": () => <ExternalMcpPage />,
   "/settings/prompts": () => <PromptsSettings />,
   "/settings/voice-mode": () => <VoiceModeSettings />,
-  "/settings/integrations": () => <IntegrationsIndexPage />,
-  "/settings/integrations/github": () => <GitHubIntegrationPage />,
-  "/settings/integrations/gitlab": () => <IntegrationsGitLabPage />,
-  "/settings/integrations/jira": () => <IntegrationsJiraPage />,
-  "/settings/integrations/linear": () => <IntegrationsLinearPage />,
-  "/settings/integrations/sentry": () => <IntegrationsSentryPage />,
-  "/settings/integrations/slack": () => <IntegrationsSlackPage />,
   "/settings/system": () => <SettingsRedirect to="/settings/system/status" />,
   "/settings/system/about": () => (
     <SystemPageShell title="About" description="Version, build metadata, and links.">
@@ -261,35 +234,6 @@ function renderDynamicSettingsRoute(pathname: string) {
   const agentId = matchSingle(pathname, /^\/settings\/agents\/([^/]+)$/);
   if (agentId) {
     return <AgentSetupPage />;
-  }
-
-  const executorProfile = matchDouble(
-    pathname,
-    /^\/settings\/executor\/([^/]+)\/profile\/([^/]+)$/,
-  );
-  if (executorProfile) {
-    const [id, profileId] = executorProfile;
-    return <ProfileDetailPage params={Promise.resolve({ id, profileId })} />;
-  }
-
-  const executorId = matchSingle(pathname, /^\/settings\/executor\/([^/]+)$/);
-  if (executorId) {
-    return <ExecutorEditPage params={Promise.resolve({ id: executorId })} />;
-  }
-
-  const profileId = matchSingle(pathname, /^\/settings\/executors\/([^/]+)$/);
-  if (profileId) {
-    return <ProfileEditPage params={Promise.resolve({ profileId })} />;
-  }
-
-  const executorType = matchSingle(pathname, /^\/settings\/executors\/new\/([^/]+)$/);
-  if (executorType) {
-    return <CreateProfilePage params={Promise.resolve({ type: executorType })} />;
-  }
-
-  const sshExecutorId = matchSingle(pathname, /^\/settings\/executors\/ssh\/([^/]+)$/);
-  if (sshExecutorId) {
-    return <SSHExecutorPage params={Promise.resolve({ executorId: sshExecutorId })} />;
   }
 
   return null;

@@ -13,10 +13,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // Turn operations
@@ -352,7 +352,7 @@ func (s *Service) GetWorkspaceInfoForSession(ctx context.Context, taskID, sessio
 
 	// Get workspace path from the session's worktree(s).
 	// Multi-repo: every per-repo worktree sits as a sibling under the task root
-	// (~/.kandev/tasks/{taskDirName}/{repoName}/), so the workspace path agentctl
+	// (~/.pcraft/tasks/{taskDirName}/{repoName}/), so the workspace path agentctl
 	// needs is the parent of any one of them. Picking the first repo's path here
 	// would point agentctl at a single repo subdir and disable the per-repo
 	// tracker fan-out that scanRepositorySubdirs relies on.

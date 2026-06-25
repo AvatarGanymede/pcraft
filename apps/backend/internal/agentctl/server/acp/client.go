@@ -10,8 +10,8 @@ import (
 	"sync"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 	"go.opentelemetry.io/otel/attribute"
 	"go.uber.org/zap"
 )

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/repository"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 )
 
 // ancestorWalkHopCap bounds the parent-chain walk so corrupt parent_id

@@ -13,8 +13,8 @@ import {
   useDraggable,
   type Modifier,
 } from "@dnd-kit/core";
-import { cn } from "@kandev/ui/lib/utils";
-import { Badge } from "@kandev/ui/badge";
+import { cn } from "@pcraft/ui/lib/utils";
+import { Badge } from "@pcraft/ui/badge";
 import { getTaskStateIcon } from "@/lib/ui/state-icons";
 import { needsAction } from "@/lib/utils/needs-action";
 import { useTaskActions } from "@/hooks/use-task-actions";

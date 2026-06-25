@@ -3,12 +3,12 @@
 import { useEffect, useState, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import { IconLoader2 } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { RadioGroup, RadioGroupItem } from "@kandev/ui/radio-group";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@kandev/ui/accordion";
+import { Badge } from "@pcraft/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { RadioGroup, RadioGroupItem } from "@pcraft/ui/radio-group";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@pcraft/ui/accordion";
 import { AgentLogo } from "@/components/agent-logo";
 import { InlineSecretSelect } from "@/components/settings/profile-edit/inline-secret-select";
 import {

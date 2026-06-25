@@ -2,11 +2,11 @@
 
 import { useState, useCallback } from "react";
 import { IconPlus, IconLoader2 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Textarea } from "@kandev/ui/textarea";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Textarea } from "@pcraft/ui/textarea";
 import { createSecret } from "@/lib/api/domains/secrets-api";
 import { useAppStore } from "@/components/state-provider";
 import type { SecretListItem } from "@/lib/types/http-secrets";

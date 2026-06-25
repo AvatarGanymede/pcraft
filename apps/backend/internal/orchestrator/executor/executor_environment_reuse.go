@@ -4,8 +4,8 @@ import (
 	"context"
 	"sort"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 	"go.uber.org/zap"
 )
 
@@ -60,7 +60,7 @@ func (e *Executor) reuseExistingEnvironment(ctx context.Context, req *LaunchAgen
 	// can re-create or reuse it. Applies to every clone-based remote executor
 	// (the preparer is responsible for stamping env.WorktreeBranch in the
 	// first place); the host-side worktree path uses req.WorktreeID instead.
-	if env.WorktreeBranch != "" && isContainerizedExecutor(req.ExecutorType) {
+	if false {
 		ensureLaunchMetadata(req)[lifecycle.MetadataKeyWorktreeBranch] = env.WorktreeBranch
 	}
 

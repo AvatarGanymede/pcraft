@@ -11,16 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/orchestrator"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/sysprompt"
-	"github.com/kandev/kandev/internal/task/dto"
-	"github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/task/service"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/sysprompt"
+	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/task/service"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // OrchestratorService defines the interface for orchestrator operations
@@ -391,22 +391,22 @@ func (h *MessageHandlers) logBlockedRunningSession(sessionID string, state model
 		zap.String("session_state", string(state)))
 }
 
-// ensureTaskInProgress fetches the task and transitions it from REVIEW → IN_PROGRESS if needed.
+// ensureTaskInProgress fetches the task and transitions it from IN_PROGRESS → IN_PROGRESS if needed.
 // Returns an error only when the task cannot be fetched.
 func (h *MessageHandlers) ensureTaskInProgress(ctx context.Context, taskID string) error {
 	task, err := h.service.GetTask(ctx, taskID)
 	if err != nil {
 		return err
 	}
-	if task.State != v1.TaskStateReview {
+	if task.State != v1.TaskStateInProgress {
 		return nil
 	}
 	if _, err := h.service.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress); err != nil {
-		h.logger.Error("failed to transition task from REVIEW to IN_PROGRESS",
+		h.logger.Error("failed to transition task from IN_PROGRESS to IN_PROGRESS",
 			zap.String("task_id", taskID),
 			zap.Error(err))
 	} else {
-		h.logger.Info("task transitioned from REVIEW to IN_PROGRESS",
+		h.logger.Info("task already IN_PROGRESS",
 			zap.String("task_id", taskID))
 	}
 	return nil

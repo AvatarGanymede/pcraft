@@ -8,7 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/kandev/kandev/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/models"
 )
 
 func setupTestRepo(t *testing.T) *Repository {

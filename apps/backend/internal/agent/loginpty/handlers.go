@@ -12,8 +12,8 @@ import (
 	gorillaws "github.com/gorilla/websocket"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
 )
 
 // LoginCommandLookup returns the agent's LoginCommand or nil. Implemented by

@@ -3,7 +3,7 @@
 import { memo, useState } from "react";
 import Link from "@/components/routing/app-link";
 import { IconArrowLeft, IconMenu2, IconGitBranch, IconCheck } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import { RemoteCloudTooltip } from "@/components/task/remote-cloud-tooltip";
 import { LineStat } from "@/components/diff-stat";
 import { useSessionGitStatus } from "@/hooks/domains/session/use-session-git-status";

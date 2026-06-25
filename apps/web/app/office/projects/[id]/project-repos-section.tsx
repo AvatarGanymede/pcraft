@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from "react";
 import { IconCode, IconWorld, IconX } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { toast } from "sonner";
 import { updateProject } from "@/lib/api/domains/office-api";
 import { useAppStore } from "@/components/state-provider";

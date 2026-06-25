@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { IconX, IconLoader2, IconPlus } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
 import {
   Command,
   CommandInput,
@@ -11,10 +11,10 @@ import {
   CommandEmpty,
   CommandItem,
   CommandGroup,
-} from "@kandev/ui/command";
-import { Label } from "@kandev/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
-import { Switch } from "@kandev/ui/switch";
+} from "@pcraft/ui/command";
+import { Label } from "@pcraft/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
+import { Switch } from "@pcraft/ui/switch";
 import { cn } from "@/lib/utils";
 import { listUserOrgs, searchOrgRepos } from "@/lib/api/domains/github-api";
 import type { RepoFilter, GitHubOrg, GitHubRepoInfo } from "@/lib/types/github";

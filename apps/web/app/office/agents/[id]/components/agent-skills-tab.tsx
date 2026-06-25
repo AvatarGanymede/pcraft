@@ -3,10 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "@/components/routing/app-link";
 import { toast } from "sonner";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { listSkills, updateAgentProfile } from "@/lib/api/domains/office-api";
 import type { AgentProfile } from "@/lib/state/slices/office/types";

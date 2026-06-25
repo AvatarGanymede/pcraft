@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/agentruntime"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/agentruntime"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Runtime abstracts the agent execution environment (Docker, Standalone, K8s, SSH, etc.)
@@ -122,29 +122,6 @@ const (
 // (e.g., task_description, session_id) are treated as launch-time-only and
 // are NOT copied on resume.
 var persistentMetadataKeys = map[string]bool{
-	// Sprites runtime
-	MetadataKeySpriteName:      true,
-	MetadataKeySpriteState:     true,
-	MetadataKeySpriteCreatedAt: true,
-	MetadataKeyLocalPort:       true,
-
-	// SSH runtime
-	MetadataKeySSHHost:               true,
-	MetadataKeySSHPort:               true,
-	MetadataKeySSHUser:               true,
-	MetadataKeySSHHostFingerprint:    true,
-	MetadataKeySSHRemoteTaskDir:      true,
-	MetadataKeySSHRemoteSessionDir:   true,
-	MetadataKeySSHRemoteAgentctlPort: true,
-	MetadataKeySSHRemoteAgentctlPID:  true,
-	MetadataKeySSHLocalForwardPort:   true,
-	MetadataKeySSHRemoteAgentctlURL:  true,
-	MetadataKeySSHWorkdirRoot:        true,
-	MetadataKeySSHProxyJump:          true,
-	MetadataKeySSHIdentitySource:     true,
-	MetadataKeySSHIdentityFile:       true,
-	MetadataKeySSHShell:              true,
-
 	// Executor type marker
 	MetadataKeyIsRemote: true,
 
@@ -157,7 +134,6 @@ var persistentMetadataKeys = map[string]bool{
 	"remote_credentials":           true,
 	"remote_auth_secrets":          true,
 	"executor_mcp_policy":          true,
-	"sprites_network_policy_rules": true,
 	"executor_profile_id":          true,
 	MetadataKeyImageTagOverride:    true,
 	MetadataKeyContainerID:         true,
@@ -304,8 +280,7 @@ type ExecutorInstance struct {
 
 	// AuthToken is the agentctl auth token retrieved via handshake.
 	// Populated by Docker executor for encrypted storage in SecretStore.
-	// Empty for standalone (launcher-owned token wired via cfg.Agent.StandaloneAuthToken)
-	// and Sprites (no agentctl auth).
+	// Empty for standalone (launcher-owned token wired via cfg.Agent.StandaloneAuthToken).
 	AuthToken string
 
 	// BootstrapNonce is the one-time nonce injected into Docker container env.

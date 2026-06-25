@@ -3,7 +3,7 @@ package agents
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // GetMemory returns a single memory entry by agent, layer, and key.

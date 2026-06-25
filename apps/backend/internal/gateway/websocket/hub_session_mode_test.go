@@ -6,7 +6,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 func newTestHub(t *testing.T) *Hub {

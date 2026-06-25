@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { IconTerminal2, IconCopy, IconCheck } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { RecoveryAuthMethod } from "@/components/task/chat/types";
 
 function buildFullCommand(termAuth: RecoveryAuthMethod["terminal_auth"]): string | null {

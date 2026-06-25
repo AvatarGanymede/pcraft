@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { IconPlus, IconTrash, IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@kandev/ui/tabs";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@pcraft/ui/tabs";
 import { useToast } from "@/components/toast-provider";
 import { SettingsSection } from "@/components/settings/settings-section";
 import {

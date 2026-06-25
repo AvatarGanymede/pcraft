@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "@/components/routing/app-link";
 import { useRouter } from "@/lib/routing/client-router";
 import { IconGitBranch, IconLayoutColumns, IconTrash } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Separator } from "@kandev/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Button } from "@pcraft/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Separator } from "@pcraft/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
+} from "@pcraft/ui/dialog";
 import { updateWorkspaceAction, deleteWorkspaceAction } from "@/app/actions/workspaces";
 import type { Executor } from "@/lib/types/http";
 import type { AgentProfileOption, WorkspaceState } from "@/lib/state/slices";

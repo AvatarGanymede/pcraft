@@ -1,5 +1,5 @@
 import { forwardRef, type ReactNode, type HTMLAttributes } from "react";
-import { cn } from "@kandev/ui/lib/utils";
+import { cn } from "@pcraft/ui/lib/utils";
 
 /**
  * Reusable dockview panel layout primitives.

@@ -9,7 +9,7 @@ import (
 //
 // Implementations: pat_client.go (REST v4 over HTTP), glab_client.go
 // (shells out to the glab CLI), mock_client.go (in-memory, gated by
-// KANDEV_MOCK_GITLAB=true), and noop_client.go (null-object fallback).
+// PCRAFT_MOCK_GITLAB=true), and noop_client.go (null-object fallback).
 //
 // projectPath everywhere is the namespace/path slug, e.g. "group/project"
 // or "group/subgroup/project". The MR IID (per-project sequential ID) is

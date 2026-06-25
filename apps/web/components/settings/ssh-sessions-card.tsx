@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { IconLoader2 } from "@tabler/icons-react";
 import { listSSHSessions } from "@/lib/api/domains/ssh-api";
 import type { SSHSession } from "@/lib/types/http-ssh";

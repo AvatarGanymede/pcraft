@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/acp"
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/acp"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // Protocol and file type constants.
@@ -104,7 +104,7 @@ func discoverFixtureFiles(baseDir string) ([]DiscoveredFile, error) {
 // discoverNormalizedFiles finds all normalized event files (normalized-*.jsonl).
 // It looks in two places: the legacy backend-root location (where older runs
 // wrote files into the process CWD) and the per-session log dir used by the
-// managed ACP writer (~/.kandev/logs/acp by default).
+// managed ACP writer (~/.pcraft/logs/acp by default).
 func discoverNormalizedFiles(baseDir string) ([]DiscoveredFile, error) {
 	dirs := []string{
 		filepath.Join(baseDir, "..", "..", "..", ".."), // backend root (legacy CWD)

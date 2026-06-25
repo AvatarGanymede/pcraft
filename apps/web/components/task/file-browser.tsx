@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useCallback, useRef, useState } from "react";
-import { ScrollArea } from "@kandev/ui/scroll-area";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
 import type { FileTreeNode, OpenFileTab } from "@/lib/types/backend";
 import { useSession } from "@/hooks/domains/session/use-session";
 import { useRepository } from "@/hooks/domains/workspace/use-repository";

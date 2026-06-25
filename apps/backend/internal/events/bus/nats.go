@@ -9,8 +9,8 @@ import (
 	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // NATSEventBus implements EventBus using NATS

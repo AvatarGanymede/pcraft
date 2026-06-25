@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@kandev/ui/dialog";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Button } from "@kandev/ui/button";
+} from "@pcraft/ui/dialog";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Button } from "@pcraft/ui/button";
 import { createExecutorProfile } from "@/lib/api/domains/settings-api";
 import type { ExecutorProfile } from "@/lib/types/http";
 

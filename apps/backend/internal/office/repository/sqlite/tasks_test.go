@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kandev/kandev/internal/office/repository/sqlite"
+	"github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 )
 
 // newSearchTestRepo creates a test repo with a minimal tasks table for

@@ -201,26 +201,26 @@ func bundleToZip(bundle *ConfigBundle) (io.Reader, error) {
 	buf := new(bytes.Buffer)
 	w := zip.NewWriter(buf)
 
-	if err := writeYAMLFile(w, ".kandev/kandev.yml", bundle.Settings); err != nil {
+	if err := writeYAMLFile(w, ".pcraft/kandev.yml", bundle.Settings); err != nil {
 		return nil, err
 	}
 	for _, a := range bundle.Agents {
-		if err := writeYAMLFile(w, ".kandev/agents/"+a.Name+".yml", a); err != nil {
+		if err := writeYAMLFile(w, ".pcraft/agents/"+a.Name+".yml", a); err != nil {
 			return nil, err
 		}
 	}
 	for _, sk := range bundle.Skills {
-		if err := writeYAMLFile(w, ".kandev/skills/"+sk.Slug+".yml", sk); err != nil {
+		if err := writeYAMLFile(w, ".pcraft/skills/"+sk.Slug+".yml", sk); err != nil {
 			return nil, err
 		}
 	}
 	for _, r := range bundle.Routines {
-		if err := writeYAMLFile(w, ".kandev/routines/"+r.Name+".yml", r); err != nil {
+		if err := writeYAMLFile(w, ".pcraft/routines/"+r.Name+".yml", r); err != nil {
 			return nil, err
 		}
 	}
 	for _, p := range bundle.Projects {
-		if err := writeYAMLFile(w, ".kandev/projects/"+p.Name+".yml", p); err != nil {
+		if err := writeYAMLFile(w, ".pcraft/projects/"+p.Name+".yml", p); err != nil {
 			return nil, err
 		}
 	}

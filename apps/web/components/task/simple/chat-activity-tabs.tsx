@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kandev/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@pcraft/ui/tabs";
 import { useAppStore } from "@/components/state-provider";
 import { agentTint } from "@/app/office/components/agent-avatar";
 import { TaskChat } from "./task-chat";

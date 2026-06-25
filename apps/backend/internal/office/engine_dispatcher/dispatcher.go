@@ -12,10 +12,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	officeservice "github.com/kandev/kandev/internal/office/service"
-	taskmodels "github.com/kandev/kandev/internal/task/models"
-	"github.com/kandev/kandev/internal/workflow/engine"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	officeservice "github.com/AvatarGanymede/pcraft/internal/office/service"
+	taskmodels "github.com/AvatarGanymede/pcraft/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/workflow/engine"
 	"go.uber.org/zap"
 )
 

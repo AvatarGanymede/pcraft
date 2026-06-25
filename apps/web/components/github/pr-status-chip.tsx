@@ -19,9 +19,9 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from "@kandev/ui/drawer";
-import { Button } from "@kandev/ui/button";
-import { Popover, PopoverAnchor, PopoverContent } from "@kandev/ui/popover";
+} from "@pcraft/ui/drawer";
+import { Button } from "@pcraft/ui/button";
+import { Popover, PopoverAnchor, PopoverContent } from "@pcraft/ui/popover";
 import { useTaskPR } from "@/hooks/domains/github/use-task-pr";
 import { useHoverPopover } from "@/hooks/domains/github/use-hover-popover";
 import { usePRFeedbackBackgroundSync } from "@/hooks/domains/github/use-pr-ci-popover";

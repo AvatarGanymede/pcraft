@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kandev/kandev/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 )
 
 // CommandBuilder builds agent commands from agent configuration.
@@ -58,7 +58,7 @@ func (cb *CommandBuilder) BuildContinueCommandString(ag agents.Agent, opts agent
 
 // ExpandSessionDir resolves the host-side directory that should be bind-
 // mounted into the container at SessionDirTarget. The path is the kandev-
-// managed per-container session dir (~/.kandev/agent-sessions/<instance_id>/
+// managed per-container session dir (~/.pcraft/agent-sessions/<instance_id>/
 // <dotdir>) — isolated from the user's actual ~/<dotdir> so the host's stale
 // state DBs and session caches stay out of the container.
 //

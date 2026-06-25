@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/config"
-	"github.com/kandev/kandev/internal/profiles"
+	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/profiles"
 )
 
 func OptionsFromConfig(cfg *config.Config) Options {
@@ -13,10 +13,10 @@ func OptionsFromConfig(cfg *config.Config) Options {
 		DefaultValues: ValuesFromConfig(cfg),
 		RuntimeValues: ValuesFromConfig(cfg),
 		EnvValues: map[string]bool{
-			"KANDEV_FEATURES_OFFICE":      isTruthy(os.Getenv("KANDEV_FEATURES_OFFICE")),
-			"KANDEV_DEBUG_DEV_MODE":       isTruthy(os.Getenv("KANDEV_DEBUG_DEV_MODE")),
-			"KANDEV_DEBUG_PPROF_ENABLED":  isTruthy(os.Getenv("KANDEV_DEBUG_PPROF_ENABLED")),
-			"KANDEV_DEBUG_AGENT_MESSAGES": isTruthy(os.Getenv("KANDEV_DEBUG_AGENT_MESSAGES")),
+			"PCRAFT_FEATURES_OFFICE":      isTruthy(os.Getenv("PCRAFT_FEATURES_OFFICE")),
+			"PCRAFT_DEBUG_DEV_MODE":       isTruthy(os.Getenv("PCRAFT_DEBUG_DEV_MODE")),
+			"PCRAFT_DEBUG_PPROF_ENABLED":  isTruthy(os.Getenv("PCRAFT_DEBUG_PPROF_ENABLED")),
+			"PCRAFT_DEBUG_AGENT_MESSAGES": isTruthy(os.Getenv("PCRAFT_DEBUG_AGENT_MESSAGES")),
 		},
 		IsExplicitEnv: func(name string) bool {
 			_, ok := os.LookupEnv(name)
@@ -42,11 +42,11 @@ func ApplyStatesToConfig(cfg *config.Config, states []RuntimeFlagState) {
 			cfg.Debug.DevMode = state.EffectiveValue
 			cfg.Debug.PprofEnabled = state.EffectiveValue
 			if state.EffectiveValue {
-				setIfNotExplicit("KANDEV_DEBUG_AGENT_MESSAGES", "true")
-				setIfNotExplicit("KANDEV_DEBUG_PPROF_ENABLED", "true")
+				setIfNotExplicit("PCRAFT_DEBUG_AGENT_MESSAGES", "true")
+				setIfNotExplicit("PCRAFT_DEBUG_PPROF_ENABLED", "true")
 			} else {
-				unsetIfNotExplicit("KANDEV_DEBUG_AGENT_MESSAGES")
-				unsetIfNotExplicit("KANDEV_DEBUG_PPROF_ENABLED")
+				unsetIfNotExplicit("PCRAFT_DEBUG_AGENT_MESSAGES")
+				unsetIfNotExplicit("PCRAFT_DEBUG_PPROF_ENABLED")
 			}
 		}
 	}

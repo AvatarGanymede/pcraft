@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
 import type { CostBreakdownItem } from "@/lib/state/slices/office/types";
 import { formatDollars } from "@/lib/utils";
 

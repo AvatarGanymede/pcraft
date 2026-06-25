@@ -15,15 +15,12 @@ import { useEnvironmentSessionId } from "@/hooks/use-environment-session-id";
 
 // Panel components (rendered via portals, not directly by dockview)
 import { TaskChatPanel } from "./task-chat-panel";
-import { TaskChangesPanel } from "./task-changes-panel";
-import { ChangesPanel } from "./changes-panel";
 import { FilesPanel } from "./files-panel";
 import { TaskPlanPanel } from "./task-plan-panel";
 import { FileEditorPanel } from "./file-editor-panel";
 import { PassthroughToolbar } from "./passthrough-toolbar";
 import { PanelRoot, PanelBody } from "./panel-primitives";
 import { ContextMenuTab } from "./tab-context-menu";
-import { ChangesTab } from "./changes-tab";
 import { PlanTab } from "./plan-tab";
 import { PreviewFileTab, PreviewDiffTab, PreviewCommitTab, PinnedDefaultTab } from "./preview-tab";
 import { SessionTab } from "./session-tab";
@@ -126,7 +123,6 @@ export const dockviewTabComponents: Record<
   React.FunctionComponent<IDockviewPanelHeaderProps>
 > = {
   permanentTab: PermanentTab,
-  changesTab: ChangesTab,
   planTab: PlanTab,
   sessionTab: SessionTab,
   terminalTab: TerminalTab,
@@ -247,74 +243,13 @@ function DiffViewerContent({
   panelId: string;
   params: Record<string, unknown>;
 }) {
-  const selectedDiff = useDockviewStore((s) => s.selectedDiff);
-  const setSelectedDiff = useDockviewStore((s) => s.setSelectedDiff);
-  const { openFile } = useFileEditors();
-  const activeSessionId = useAppStore((state) => state.tasks.activeSessionId);
-  const panelKind = (params?.kind as string) ?? "all";
-  const selectedPath = panelKind === "file" ? (params?.path as string) : undefined;
-  const panelSelectedDiff = panelKind === "all" ? selectedDiff : null;
-  useResyncGitStatusOnTabActivate(panelId, activeSessionId);
-  const handleClosePanel = useCallback(() => {
-    const dockApi = useDockviewStore.getState().api;
-    const panel = dockApi?.getPanel(panelId);
-    if (dockApi && panel) dockApi.removePanel(panel);
-  }, [panelId]);
-
-  return (
-    <TaskChangesPanel
-      mode={panelKind as "all" | "file"}
-      filePath={selectedPath}
-      selectedDiff={panelSelectedDiff}
-      onClearSelected={() => setSelectedDiff(null)}
-      onOpenFile={openFile}
-      onBecameEmpty={handleClosePanel}
-    />
-  );
+  // TODO: Re-implement diff viewer panel
+  return <div className="p-4 text-muted-foreground">Diff viewer is being reworked.</div>;
 }
 
 function ChangesContent({ panelId }: { panelId: string }) {
-  const addDiffViewerPanel = useDockviewStore((s) => s.addDiffViewerPanel);
-  const addFileDiffPanel = useDockviewStore((s) => s.addFileDiffPanel);
-  const addCommitDetailPanel = useDockviewStore((s) => s.addCommitDetailPanel);
-  const { openFile } = useFileEditors();
-
-  // Dynamic title with file count — use environment-stable sessionId so the
-  // tab title doesn't re-fetch on same-environment session tab switches.
-  const activeSessionId = useEnvironmentSessionId();
-  const gitStatus = useSessionGitStatus(activeSessionId);
-  const { commits } = useSessionCommits(activeSessionId);
-  const fileCount = gitStatus?.files ? Object.keys(gitStatus.files).length : 0;
-  const totalCount = fileCount + commits.length;
-
-  useEffect(() => {
-    const title = totalCount > 0 ? `Changes (${totalCount})` : "Changes";
-    setPanelTitle(panelId, title);
-  }, [totalCount, panelId]);
-
-  const handleEditFile = useCallback((path: string) => openFile(path), [openFile]);
-  const handleOpenDiffFile = useCallback(
-    (path: string) => addFileDiffPanel(path),
-    [addFileDiffPanel],
-  );
-  const handleOpenCommitDetail = useCallback(
-    (sha: string) => addCommitDetailPanel(sha),
-    [addCommitDetailPanel],
-  );
-  const handleOpenDiffAll = useCallback(() => addDiffViewerPanel(), [addDiffViewerPanel]);
-  const handleOpenReview = useCallback(() => {
-    window.dispatchEvent(new CustomEvent("open-review-dialog"));
-  }, []);
-
-  return (
-    <ChangesPanel
-      onOpenDiffFile={handleOpenDiffFile}
-      onEditFile={handleEditFile}
-      onOpenCommitDetail={handleOpenCommitDetail}
-      onOpenDiffAll={handleOpenDiffAll}
-      onOpenReview={handleOpenReview}
-    />
-  );
+  // TODO: Re-implement changes panel
+  return <div className="p-4 text-muted-foreground">Changes panel is being reworked.</div>;
 }
 
 function FilesContent() {

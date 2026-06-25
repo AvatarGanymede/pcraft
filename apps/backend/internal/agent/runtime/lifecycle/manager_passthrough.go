@@ -10,15 +10,15 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	"github.com/kandev/kandev/internal/agent/executor"
-	"github.com/kandev/kandev/internal/agent/mcpconfig"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/agent/settings/cliflags"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	agentctltypes "github.com/kandev/kandev/internal/agentctl/types"
-	"github.com/kandev/kandev/internal/events"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
+	"github.com/AvatarGanymede/pcraft/internal/agent/mcpconfig"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/agent/settings/cliflags"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // MarkPassthroughRunning marks a passthrough execution as running when user submits input.
@@ -137,9 +137,9 @@ func (m *Manager) GetPassthroughBuffer(ctx context.Context, sessionID string) (s
 // including Kandev metadata and required credentials from the agent runtime config.
 func (m *Manager) buildPassthroughEnv(ctx context.Context, execution *AgentExecution, requiredEnv []string) map[string]string {
 	env := make(map[string]string)
-	env["KANDEV_TASK_ID"] = execution.TaskID
-	env["KANDEV_SESSION_ID"] = execution.SessionID
-	env["KANDEV_AGENT_PROFILE_ID"] = execution.AgentProfileID
+	env["PCRAFT_TASK_ID"] = execution.TaskID
+	env["PCRAFT_SESSION_ID"] = execution.SessionID
+	env["PCRAFT_AGENT_PROFILE_ID"] = execution.AgentProfileID
 	m.mergeAgentProfileEnv(ctx, execution.AgentProfileID, env)
 	if m.credsMgr != nil {
 		for _, credKey := range requiredEnv {

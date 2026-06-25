@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	ws "github.com/kandev/kandev/pkg/websocket"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 // TestHandleWSSetConfigOption_NoAdapter verifies the WS handler surfaces a

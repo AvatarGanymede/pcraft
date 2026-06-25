@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 )
 
 func TestTaskMigrations_NewColumnsExist(t *testing.T) {

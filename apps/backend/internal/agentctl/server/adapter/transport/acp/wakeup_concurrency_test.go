@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
 )
 
 // concurrencyFakeAgent is a minimal acp.Agent whose Prompt handler blocks until

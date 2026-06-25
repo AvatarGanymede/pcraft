@@ -12,7 +12,7 @@ import {
   IconCloudUpload,
   IconAlertTriangle,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +22,9 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { cn } from "@kandev/ui/lib/utils";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
+import { cn } from "@pcraft/ui/lib/utils";
 import { useSessionGit } from "@/hooks/domains/session/use-session-git";
 import { useGitWithFeedback } from "@/hooks/use-git-with-feedback";
 import { useVcsDialogs } from "@/components/vcs/vcs-dialogs";

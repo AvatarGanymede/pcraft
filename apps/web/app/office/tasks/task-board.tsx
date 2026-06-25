@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "@/lib/routing/client-router";
-import { ScrollArea } from "@kandev/ui/scroll-area";
+import { ScrollArea } from "@pcraft/ui/scroll-area";
 import { useAppStore } from "@/components/state-provider";
 import type { OfficeTask, OfficeTaskStatus } from "@/lib/state/slices/office/types";
 import { StatusIcon } from "./status-icon";

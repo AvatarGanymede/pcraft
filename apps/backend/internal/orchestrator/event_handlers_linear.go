@@ -6,10 +6,10 @@ import (
 
 	"go.uber.org/zap"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/linear"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/linear"
 )
 
 // LinearService is the subset of linear.Service the orchestrator needs to

@@ -10,7 +10,7 @@ vi.mock("@/lib/routing/client-router", () => ({
 // Radix dropdown primitives rely on pointer/portal behaviour that jsdom doesn't
 // model well. Render them as plain elements so the focus stays on the picker's
 // routing logic: `onSelect` fires on click of the item.
-vi.mock("@kandev/ui/dropdown-menu", () => ({
+vi.mock("@pcraft/ui/dropdown-menu", () => ({
   DropdownMenu: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

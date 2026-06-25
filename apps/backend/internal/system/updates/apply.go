@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/persistence"
+	"github.com/AvatarGanymede/pcraft/internal/persistence"
 )
 
 type applyRunner func(context.Context, applyRequest) (map[string]interface{}, error)
@@ -93,7 +93,7 @@ func (s *Service) writeApplyIntent(resp UpdatesResponse, metadata *serviceInstal
 }
 
 func (s *Service) defaultApplyRunner(ctx context.Context, req applyRequest) (map[string]interface{}, error) {
-	if s.getenv("KANDEV_E2E_MOCK") == "true" {
+	if s.getenv("PCRAFT_E2E_MOCK") == "true" {
 		return map[string]interface{}{
 			applyResultStatusKey:     applyResultStarted,
 			applyResultRunnerKey:     applyRunnerFake,
@@ -161,7 +161,7 @@ func runLaunchdSelfUpdate(ctx context.Context, req applyRequest) (map[string]int
 	if strings.TrimSpace(req.Intent.Install.HomeDir) == "" || strings.TrimSpace(req.Intent.Install.LogDir) == "" {
 		return nil, fmt.Errorf("service metadata missing home_dir or log_dir")
 	}
-	label := "com.kdlbs.kandev.self-update." + strconv.FormatInt(time.Now().UnixNano(), 10)
+	label := "com.kdlbs.pcraft.self-update." + strconv.FormatInt(time.Now().UnixNano(), 10)
 	uid := os.Getuid()
 	domain := launchdSelfUpdateDomain(req, uid)
 

@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/utility/models"
+	"github.com/AvatarGanymede/pcraft/internal/utility/models"
 )
 
 type sqliteRepository struct {

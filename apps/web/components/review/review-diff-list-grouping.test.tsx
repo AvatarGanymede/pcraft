@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { createRef, type ReactNode } from "react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import type { ReviewFile } from "./types";
 
 // FileDiffViewer is heavy and irrelevant to the grouping test — stub it.

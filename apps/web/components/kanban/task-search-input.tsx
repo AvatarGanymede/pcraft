@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "@kandev/ui/input";
+import { Input } from "@pcraft/ui/input";
 import { IconSearch, IconX, IconLoader2 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 

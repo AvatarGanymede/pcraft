@@ -49,7 +49,7 @@ var (
 
 	// ErrTaskDirRequired is returned when a worktree create request is missing
 	// TaskDirName or RepoName. Worktrees are always placed inside the per-task
-	// directory (~/.kandev/tasks/{taskDir}/{repo}/), so callers must populate
+	// directory (~/.pcraft/tasks/{taskDir}/{repo}/), so callers must populate
 	// both fields.
 	ErrTaskDirRequired = errors.New("worktree create requires TaskDirName and RepoName")
 

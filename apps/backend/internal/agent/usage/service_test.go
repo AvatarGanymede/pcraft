@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
 )
 
 // mockClient implements ProviderUsageClient for testing.

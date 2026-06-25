@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 func newTestManager(t *testing.T, onExit func(string, int, error)) *Manager {

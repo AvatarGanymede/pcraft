@@ -1,10 +1,10 @@
 // Package main is the entry point for the agentctl binary.
 // agentctl is a sidecar process that manages agent subprocess communication
-// via HTTP API, bridging the agent's ACP protocol with the kandev backend.
+// via HTTP API, bridging the agent's ACP protocol with the pcraft backend.
 //
 // agentctl is runtime-agnostic - it behaves identically whether running
 // inside a Docker container or directly on the host machine. The caller
-// (kandev backend) handles any Docker vs standalone differences.
+// (pcraft backend) handles any Docker vs standalone differences.
 package main
 
 import (
@@ -19,14 +19,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kandev/kandev/internal/agentctl/server/adapter/transport/shared"
-	"github.com/kandev/kandev/internal/agentctl/server/api"
-	"github.com/kandev/kandev/internal/agentctl/server/config"
-	"github.com/kandev/kandev/internal/agentctl/server/instance"
-	"github.com/kandev/kandev/internal/agentctl/server/process"
-	"github.com/kandev/kandev/internal/common/logger"
-	mcpserver "github.com/kandev/kandev/internal/mcp/server"
-	"github.com/kandev/kandev/pkg/agent"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/shared"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/api"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/instance"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	mcpserver "github.com/AvatarGanymede/pcraft/internal/mcp/server"
+	"github.com/AvatarGanymede/pcraft/pkg/agent"
 	"go.uber.org/zap"
 )
 
@@ -39,11 +39,11 @@ var (
 )
 
 func main() {
-	// Dispatch kandev CLI subcommands before flag parsing or server startup.
-	// When invoked as "agentctl kandev <cmd>", this runs the CLI and exits
+	// Dispatch pcraft CLI subcommands before flag parsing or server startup.
+	// When invoked as "agentctl pcraft <cmd>", this runs the CLI and exits
 	// without starting the HTTP server.
-	if len(os.Args) > 1 && os.Args[1] == "kandev" {
-		os.Exit(runKandevCLI(os.Args[2:]))
+	if len(os.Args) > 1 && os.Args[1] == "pcraft" {
+		os.Exit(runPcraftCLI(os.Args[2:]))
 	}
 
 	flag.Parse()
@@ -89,7 +89,7 @@ func main() {
 // run starts the agentctl server.
 // All instances are managed through the instance management API.
 func run(cfg *config.Config, log *logger.Logger) {
-	// Start the ACP debug-log janitor (no-op unless KANDEV_DEBUG_AGENT_MESSAGES
+	// Start the ACP debug-log janitor (no-op unless PCRAFT_DEBUG_AGENT_MESSAGES
 	// is set). It periodically flushes the per-session debug writers and prunes
 	// old/oversized files so an always-on debug session can't fill the disk.
 	acpJanitor := shared.NewACPJanitor()
@@ -192,20 +192,20 @@ func waitForShutdown(log *logger.Logger, parentDied <-chan struct{}, cleanup fun
 }
 
 // monitorParentLiveness watches a pipe inherited from the parent process.
-// The parent (kandev backend) passes the read-end of a pipe via ExtraFiles
-// and sets KANDEV_PARENT_PIPE_FD to the FD number. A goroutine blocks on
+// The parent (pcraft backend) passes the read-end of a pipe via ExtraFiles
+// and sets PCRAFT_PARENT_PIPE_FD to the FD number. A goroutine blocks on
 // reading the pipe. When the parent dies — even via SIGKILL — the kernel
 // closes the write-end, the read returns, and the returned channel is closed.
 // Returns nil when the env var is absent (Docker, manual start, remote executors).
 func monitorParentLiveness(log *logger.Logger) <-chan struct{} {
-	fdStr := os.Getenv("KANDEV_PARENT_PIPE_FD")
+	fdStr := os.Getenv("PCRAFT_PARENT_PIPE_FD")
 	if fdStr == "" {
 		return nil
 	}
 
 	fd, err := strconv.Atoi(fdStr)
 	if err != nil {
-		log.Warn("invalid KANDEV_PARENT_PIPE_FD", zap.String("value", fdStr), zap.Error(err))
+		log.Warn("invalid PCRAFT_PARENT_PIPE_FD", zap.String("value", fdStr), zap.Error(err))
 		return nil
 	}
 

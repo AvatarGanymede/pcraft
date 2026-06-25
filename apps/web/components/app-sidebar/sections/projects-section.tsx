@@ -2,9 +2,9 @@
 
 import { useRouter } from "@/lib/routing/client-router";
 import { IconBoxMultiple, IconPlus } from "@tabler/icons-react";
-import { Badge } from "@kandev/ui/badge";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Badge } from "@pcraft/ui/badge";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { useInOffice } from "@/hooks/use-in-office";
 import { cn } from "@/lib/utils";

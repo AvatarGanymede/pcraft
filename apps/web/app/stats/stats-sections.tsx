@@ -1,8 +1,8 @@
 "use client";
 
 import { IconGitCommit } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { StatsResponse, TaskStatsDTO, RepositoryStatsDTO } from "@/lib/types/http";
 
 function formatDuration(ms: number): string {

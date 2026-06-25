@@ -1,6 +1,6 @@
 package routing
 
-import "github.com/kandev/kandev/internal/agent/registry"
+import "github.com/AvatarGanymede/pcraft/internal/agent/registry"
 
 // v1AllowList is the static set of provider IDs eligible for routing in
 // v1. It is filtered against the live registry so a workspace cannot
@@ -8,7 +8,7 @@ import "github.com/kandev/kandev/internal/agent/registry"
 //
 // The canonical list lives in the registry package as
 // registry.RoutableProviderIDs so the E2E multi-mock registration path
-// (KANDEV_MOCK_PROVIDERS) and this catalogue cannot drift.
+// (PCRAFT_MOCK_PROVIDERS) and this catalogue cannot drift.
 var v1AllowList = buildV1AllowList()
 
 func buildV1AllowList() []ProviderID {

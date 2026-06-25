@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import type { ReactNode } from "react";
 import { cleanup, render } from "@testing-library/react";
-import { TooltipProvider } from "@kandev/ui/tooltip";
+import { TooltipProvider } from "@pcraft/ui/tooltip";
 import { StateProvider } from "@/components/state-provider";
 import { PRTaskIcon } from "./pr-task-icon";
 import type { AppState } from "@/lib/state/store";

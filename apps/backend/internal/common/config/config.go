@@ -6,33 +6,31 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/ports"
-	"github.com/kandev/kandev/internal/profiles"
+	"github.com/AvatarGanymede/pcraft/internal/common/ports"
+	"github.com/AvatarGanymede/pcraft/internal/profiles"
 	"github.com/spf13/viper"
 )
 
 // kandevHomeSubdir is the hidden directory name used for the Kandev root
-// under the user's home directory (e.g. ~/.kandev). This is the single
+// under the user's home directory (e.g. ~/.pcraft). This is the single
 // source of truth for the dotdir name; derived paths go through
 // ResolvedHomeDir / ResolvedDataDir rather than re-constructing it.
-const kandevHomeSubdir = ".kandev"
+const kandevHomeSubdir = ".pcraft"
 
 // Config holds all configuration sections for Kandev.
 type Config struct {
-	// HomeDir is the root Kandev directory (e.g. ~/.kandev in prod, or
-	// <repo>/.kandev-dev during local development). When empty, falls back
-	// to ~/.kandev. All workspace artifacts (data, tasks, worktrees, repos)
+	// HomeDir is the root Kandev directory (e.g. ~/.pcraft in prod, or
+	// <repo>/.pcraft-dev during local development). When empty, falls back
+	// to ~/.pcraft. All workspace artifacts (data, tasks, worktrees, repos)
 	// live under this root.
 	HomeDir             string                    `mapstructure:"homeDir"`
 	Server              ServerConfig              `mapstructure:"server"`
 	Database            DatabaseConfig            `mapstructure:"database"`
 	NATS                NATSConfig                `mapstructure:"nats"`
 	Events              EventsConfig              `mapstructure:"events"`
-	Docker              DockerConfig              `mapstructure:"docker"`
 	Agent               AgentConfig               `mapstructure:"agent"`
 	Auth                AuthConfig                `mapstructure:"auth"`
 	Logging             LoggingConfig             `mapstructure:"logging"`
@@ -62,9 +60,9 @@ func expandTilde(p string) string {
 // tasks, worktrees, repos, sessions, quick-chat and lsp-servers.
 //
 // Resolution order:
-//  1. KANDEV_HOME_DIR (explicit override — e.g. /data in Docker, /kandev in K8s,
-//     or <repo>/.kandev-dev during local development).
-//  2. ~/.kandev (default).
+//  1. PCRAFT_HOME_DIR (explicit override — e.g. /data in Docker, /kandev in K8s,
+//     or <repo>/.pcraft-dev during local development).
+//  2. ~/.pcraft (default).
 func (c *Config) ResolvedHomeDir() string {
 	if c.HomeDir != "" {
 		return expandTilde(c.HomeDir)
@@ -77,7 +75,7 @@ func (c *Config) ResolvedHomeDir() string {
 }
 
 // ResolvedDataDir returns the base data directory (where the SQLite DB lives).
-// Always <ResolvedHomeDir>/data — relocate via KANDEV_HOME_DIR, not a separate knob.
+// Always <ResolvedHomeDir>/data — relocate via PCRAFT_HOME_DIR, not a separate knob.
 func (c *Config) ResolvedDataDir() string {
 	return filepath.Join(c.ResolvedHomeDir(), "data")
 }
@@ -120,18 +118,6 @@ type EventsConfig struct {
 	Namespace string `mapstructure:"namespace"`
 }
 
-// DockerConfig holds Docker client configuration.
-type DockerConfig struct {
-	// Enabled controls whether the Docker runtime is available for task execution.
-	// When true and Docker is accessible, tasks can use Docker-based executors.
-	// Default: true (Docker runtime is enabled if Docker is available)
-	Enabled        bool   `mapstructure:"enabled"`
-	Host           string `mapstructure:"host"`
-	APIVersion     string `mapstructure:"apiVersion"`
-	TLSVerify      bool   `mapstructure:"tlsVerify"`
-	DefaultNetwork string `mapstructure:"defaultNetwork"`
-	VolumeBasePath string `mapstructure:"volumeBasePath"`
-}
 
 // AuthConfig holds authentication configuration.
 type AuthConfig struct {
@@ -144,7 +130,7 @@ type OfficeConfig struct {
 	// JWTSigningKey is the HMAC key used to sign agent runtime JWTs.
 	// When empty, a random key is generated at startup — fine for dev, but
 	// means every restart invalidates outstanding agent tokens. Production
-	// deployments should set a stable value (e.g. via KANDEV_OFFICE_JWTSIGNINGKEY).
+	// deployments should set a stable value (e.g. via PCRAFT_OFFICE_JWTSIGNINGKEY).
 	JWTSigningKey string `mapstructure:"jwtSigningKey"`
 }
 
@@ -158,13 +144,13 @@ type OfficeConfig struct {
 // ship un-configured.
 type VoiceConfig struct {
 	// OpenAIAPIKey is the API key used to call OpenAI's Whisper transcription
-	// endpoint. Set via KANDEV_VOICE_OPENAI_API_KEY.
+	// endpoint. Set via PCRAFT_VOICE_OPENAI_API_KEY.
 	OpenAIAPIKey string `mapstructure:"openAIApiKey"`
 }
 
 // FeaturesConfig is the central registry of runtime feature flags. Every flag
 // defaults to false so production binaries ship with new work hidden until a
-// deployment explicitly opts in (env var, e.g. KANDEV_FEATURES_OFFICE=true).
+// deployment explicitly opts in (env var, e.g. PCRAFT_FEATURES_OFFICE=true).
 //
 // The struct doubles as the wire shape for GET /api/v1/features — `json` tags
 // keep the field names lowercase and the handler in helpers.go just calls
@@ -212,24 +198,23 @@ type WorktreeConfig struct {
 
 // RepoCloneConfig holds configuration for automatic repository cloning.
 type RepoCloneConfig struct {
-	BasePath string `mapstructure:"basePath"` // Base directory for cloned repos (default: ~/.kandev/repos)
+	BasePath string `mapstructure:"basePath"` // Base directory for cloned repos (default: ~/.pcraft/repos)
 }
 
 // DebugConfig holds debug/profiling configuration.
 type DebugConfig struct {
 	// DevMode enables all developer-only endpoints (pprof, memory, debug export).
-	// Controlled via KANDEV_DEBUG_DEV_MODE env var. Default: false.
+	// Controlled via PCRAFT_DEBUG_DEV_MODE env var. Default: false.
 	DevMode bool `mapstructure:"devMode"`
 
 	// PprofEnabled is a legacy alias — if set, it also enables DevMode.
-	// Controlled via KANDEV_DEBUG_PPROF_ENABLED env var. Default: false.
+	// Controlled via PCRAFT_DEBUG_PPROF_ENABLED env var. Default: false.
 	PprofEnabled bool `mapstructure:"pprofEnabled"`
 }
 
 // AgentConfig holds agent runtime configuration.
 // Note: Runtime selection is now per-task based on executor type, not global.
 // The Standalone runtime (agentctl) always runs as a core service.
-// Docker runtime is available when docker.enabled=true.
 type AgentConfig struct {
 	// StandaloneHost is the host where standalone agentctl is running (default: localhost)
 	StandaloneHost string `mapstructure:"standaloneHost"`
@@ -267,7 +252,7 @@ func detectDefaultLogFormat() string {
 	}
 
 	// Check for explicit production environment
-	if env := os.Getenv("KANDEV_ENV"); env == "production" || env == "prod" {
+	if env := os.Getenv("PCRAFT_ENV"); env == "production" || env == "prod" {
 		return "json"
 	}
 
@@ -284,7 +269,7 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("server.writeTimeout", 30)
 	v.SetDefault("server.webInternalUrl", "")
 
-	// HomeDir default — empty means resolve from KANDEV_HOME_DIR env or ~/.kandev
+	// HomeDir default — empty means resolve from PCRAFT_HOME_DIR env or ~/.pcraft
 	v.SetDefault("homeDir", "")
 
 	// Database defaults
@@ -308,13 +293,6 @@ func setDefaults(v *viper.Viper) {
 	// Events defaults
 	v.SetDefault("events.namespace", "")
 
-	// Docker defaults — platform-aware host and volume path
-	v.SetDefault("docker.enabled", true) // Docker runtime enabled by default if Docker is available
-	v.SetDefault("docker.host", DefaultDockerHost())
-	v.SetDefault("docker.apiVersion", "") // Empty = auto-negotiate with daemon
-	v.SetDefault("docker.tlsVerify", false)
-	v.SetDefault("docker.defaultNetwork", "kandev-network")
-	v.SetDefault("docker.volumeBasePath", defaultDockerVolumePath())
 
 	// Agent defaults (runtime selection is now per-task based on executor type)
 	v.SetDefault("agent.standaloneHost", "localhost")
@@ -334,7 +312,7 @@ func setDefaults(v *viper.Viper) {
 	// apps/backend/internal/features/features.yaml). LoadWithPath applies
 	// them via features.ApplyDefaults after this function returns so the
 	// embedded YAML, not a Go literal, is the source of truth. Env vars
-	// (KANDEV_FEATURES_<NAME>) and the deployment's config.yaml still
+	// (PCRAFT_FEATURES_<NAME>) and the deployment's config.yaml still
 	// override. See docs/decisions/0007-runtime-feature-flags.md.
 
 	// Logging defaults
@@ -364,33 +342,10 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("debug.pprofEnabled", false)
 }
 
-// DefaultDockerHost returns the platform-appropriate Docker socket path.
-// Respects DOCKER_HOST env var as override (standard Docker convention).
-func DefaultDockerHost() string {
-	if host := os.Getenv("DOCKER_HOST"); host != "" {
-		return host
-	}
-	if runtime.GOOS == "windows" {
-		return "npipe:////./pipe/docker_engine"
-	}
-	return "unix:///var/run/docker.sock"
-}
-
-// defaultDockerVolumePath returns the platform-appropriate volume base path.
-func defaultDockerVolumePath() string {
-	if runtime.GOOS == "windows" {
-		localAppData := os.Getenv("LOCALAPPDATA")
-		if localAppData == "" {
-			localAppData = filepath.Join(os.Getenv("USERPROFILE"), "AppData", "Local")
-		}
-		return filepath.Join(localAppData, "kandev", "volumes")
-	}
-	return "/var/lib/kandev/volumes"
-}
 
 // Load reads configuration from environment variables, config file, and defaults.
-// Environment variables use the prefix KANDEV_ with snake_case naming.
-// Config file should be named config.yaml and placed in the current directory or /etc/kandev/.
+// Environment variables use the prefix PCRAFT_ with snake_case naming.
+// Config file should be named config.yaml and placed in the current directory or /etc/pcraft/.
 func Load() (*Config, error) {
 	return LoadWithPath("")
 }
@@ -431,22 +386,22 @@ func LoadWithPath(configPath string) (*Config, error) {
 	}
 
 	// Configure environment variables
-	v.SetEnvPrefix("KANDEV")
+	v.SetEnvPrefix("PCRAFT")
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	v.AutomaticEnv()
 
 	// Explicit bindings for snake_case env vars (camelCase config keys)
 	// AutomaticEnv does not handle camelCase to SNAKE_CASE conversion,
 	// so we explicitly bind keys where env var naming differs from config key naming.
-	_ = v.BindEnv("agent.standalonePort", "AGENTCTL_PORT", "KANDEV_AGENT_STANDALONE_PORT")
-	_ = v.BindEnv("agent.standaloneHost", "KANDEV_AGENT_STANDALONE_HOST")
-	_ = v.BindEnv("server.webInternalUrl", "KANDEV_WEB_INTERNAL_URL")
-	_ = v.BindEnv("homeDir", "KANDEV_HOME_DIR")
-	_ = v.BindEnv("logging.level", "KANDEV_LOG_LEVEL")
-	_ = v.BindEnv("events.namespace", "KANDEV_EVENTS_NAMESPACE")
-	_ = v.BindEnv("debug.devMode", "KANDEV_DEBUG_DEV_MODE")
-	_ = v.BindEnv("debug.pprofEnabled", "KANDEV_DEBUG_PPROF_ENABLED")
-	_ = v.BindEnv("voice.openAIApiKey", "KANDEV_VOICE_OPENAI_API_KEY")
+	_ = v.BindEnv("agent.standalonePort", "AGENTCTL_PORT", "PCRAFT_AGENT_STANDALONE_PORT")
+	_ = v.BindEnv("agent.standaloneHost", "PCRAFT_AGENT_STANDALONE_HOST")
+	_ = v.BindEnv("server.webInternalUrl", "PCRAFT_WEB_INTERNAL_URL")
+	_ = v.BindEnv("homeDir", "PCRAFT_HOME_DIR")
+	_ = v.BindEnv("logging.level", "PCRAFT_LOG_LEVEL")
+	_ = v.BindEnv("events.namespace", "PCRAFT_EVENTS_NAMESPACE")
+	_ = v.BindEnv("debug.devMode", "PCRAFT_DEBUG_DEV_MODE")
+	_ = v.BindEnv("debug.pprofEnabled", "PCRAFT_DEBUG_PPROF_ENABLED")
+	_ = v.BindEnv("voice.openAIApiKey", "PCRAFT_VOICE_OPENAI_API_KEY")
 
 	// Configure config file
 	v.SetConfigName("config")
@@ -456,7 +411,7 @@ func LoadWithPath(configPath string) (*Config, error) {
 		v.AddConfigPath(configPath)
 	}
 	v.AddConfigPath(".")
-	v.AddConfigPath("/etc/kandev/")
+	v.AddConfigPath("/etc/pcraft/")
 
 	// Read config file (ignore if not found)
 	if err := v.ReadInConfig(); err != nil {
@@ -516,8 +471,6 @@ func validate(cfg *Config) error {
 	// NATS validation - optional (uses in-memory event bus if not set)
 	// No validation needed - empty URL means use in-memory
 
-	// Docker validation - optional (agent features disabled if not available)
-	// No validation needed - will gracefully degrade
 
 	// Auth validation - generate random secret if not set (dev mode)
 	if cfg.Auth.JWTSecret == "" {
@@ -559,6 +512,6 @@ func (d *DatabaseConfig) DSN() string {
 // generateDevSecret generates a random secret for development mode.
 func generateDevSecret() string {
 	// Use a fixed dev secret with a warning prefix
-	// In production, users should set KANDEV_AUTH_JWTSECRET
+	// In production, users should set PCRAFT_AUTH_JWTSECRET
 	return "dev-secret-change-in-production-" + fmt.Sprintf("%d", time.Now().UnixNano())
 }

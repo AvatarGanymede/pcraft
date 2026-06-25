@@ -1,8 +1,8 @@
 package runtime
 
 import (
-	"github.com/kandev/kandev/internal/office/models"
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 // WildcardTaskScope grants task mutation access to any task in the run's workspace.

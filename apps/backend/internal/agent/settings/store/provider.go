@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 // Provide creates the SQLite agent settings store using separate writer and reader pools.

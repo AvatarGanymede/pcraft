@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "@/lib/routing/client-router";
-import { Button } from "@kandev/ui/button";
-import { Separator } from "@kandev/ui/separator";
+import { Button } from "@pcraft/ui/button";
+import { Separator } from "@pcraft/ui/separator";
 import { IconPlus, IconBolt } from "@tabler/icons-react";
 import { useAutomations } from "@/hooks/domains/settings/use-automations";
 import { AutomationsTable } from "./automations-table";

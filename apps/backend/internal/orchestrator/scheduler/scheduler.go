@@ -8,11 +8,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/orchestrator/executor"
-	"github.com/kandev/kandev/internal/orchestrator/queue"
-	taskrepo "github.com/kandev/kandev/internal/task/repository/sqlite"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/executor"
+	"github.com/AvatarGanymede/pcraft/internal/orchestrator/queue"
+	taskrepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -311,8 +311,8 @@ func (s *Scheduler) processTasks(ctx context.Context) {
 			// Attempt retry
 			if !s.RetryTask(task.ID) {
 				// Retry limit exceeded, mark as failed
-				if stateErr := s.taskRepo.UpdateTaskState(ctx, task.ID, v1.TaskStateFailed); stateErr != nil {
-					s.logger.Error("failed to update task state to FAILED",
+				if stateErr := s.taskRepo.UpdateTaskState(ctx, task.ID, v1.TaskStateBacklog); stateErr != nil {
+					s.logger.Error("failed to update task state to BACKLOG",
 						zap.String("task_id", task.ID),
 						zap.Error(stateErr))
 				}

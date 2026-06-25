@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Checkbox } from "@kandev/ui/checkbox";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
+import { Checkbox } from "@pcraft/ui/checkbox";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
 
 type GitHubCIConfigProps = {
   config: Record<string, unknown>;

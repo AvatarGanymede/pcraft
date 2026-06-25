@@ -2,13 +2,12 @@ package skill
 
 import (
 	"context"
-	"encoding/json"
 	"os"
 	"path/filepath"
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/instructionrefs"
+	"github.com/AvatarGanymede/pcraft/internal/common/instructionrefs"
 )
 
 // deliver dispatches the manifest to the executor-specific strategy.
@@ -19,13 +18,9 @@ func (d *Deployer) deliver(_ context.Context, manifest *Manifest, executorType, 
 		return DeployResult{}
 	}
 	switch executorType {
-	case "sprites":
-		return d.deliverSprites(manifest)
 	default:
-		// local_pc and local_docker share the same delivery: the
-		// worktree IS the agent's CWD inside the executor (Docker
-		// bind-mounts it; local_pc runs the agent in it directly), so
-		// writing skills under <worktree>/<projectSkillDir>/kandev-<slug>
+		// local_pc: the worktree IS the agent's CWD, so writing
+		// skills under <worktree>/<projectSkillDir>/kandev-<slug>
 		// gets them in front of the agent's project-skill discovery.
 		return d.deliverLocal(manifest, worktreePath)
 	}
@@ -50,31 +45,11 @@ func (d *Deployer) deliverLocal(manifest *Manifest, worktreePath string) DeployR
 	return DeployResult{InstructionsDir: instructionsDir}
 }
 
-// deliverSprites serialises the manifest as JSON and stashes it on
-// the launch metadata. The Sprites executor reads the JSON during
-// post-create setup and uploads files into the sprite. We do NOT
-// write files to the host because the sprite runs in a remote sandbox.
-func (d *Deployer) deliverSprites(manifest *Manifest) DeployResult {
-	dir := spritesInstructionsDir(manifest.WorkspaceSlug, manifest.AgentID)
-	rewriteManifestRefs(manifest, dir)
-	data, err := json.Marshal(manifest)
-	if err != nil {
-		d.logger.Warn("failed to marshal skill manifest for sprites", zap.Error(err))
-		return DeployResult{}
-	}
-	return DeployResult{
-		InstructionsDir: dir,
-		Metadata: map[string]any{
-			MetadataKeySkillManifestJSON: string(data),
-		},
-	}
-}
-
 // rewriteManifestRefs canonicalises sibling instruction references
 // (./HEARTBEAT.md, ./SOUL.md, ...) inside each instruction file's
-// content to absolute paths under instructionsDir. Used by both the
-// local writer and the Sprites delivery so the contract matches the
-// office prompt builder, which applies the same rewrite.
+// content to absolute paths under instructionsDir. Used by the
+// local writer so the contract matches the office prompt builder,
+// which applies the same rewrite.
 func rewriteManifestRefs(manifest *Manifest, instructionsDir string) {
 	if manifest == nil || instructionsDir == "" {
 		return

@@ -7,7 +7,7 @@ import {
   IconHexagon,
   IconTicket,
 } from "@tabler/icons-react";
-import { Card, CardContent } from "@kandev/ui/card";
+import { Card, CardContent } from "@pcraft/ui/card";
 
 const INTEGRATIONS = [
   {

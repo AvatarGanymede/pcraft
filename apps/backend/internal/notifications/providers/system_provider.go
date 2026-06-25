@@ -32,7 +32,7 @@ func (p *SystemProvider) Available() bool {
 	// machine every time a session transitions to WAITING_FOR_INPUT. The
 	// frontend WS handler still fires through the Local provider (and is
 	// captured by the e2e Notification stub) so tests retain visibility.
-	if os.Getenv("KANDEV_E2E_MOCK") == "true" {
+	if os.Getenv("PCRAFT_E2E_MOCK") == "true" {
 		return false
 	}
 	switch runtime.GOOS {
@@ -65,9 +65,9 @@ func (p *SystemProvider) Validate(config map[string]interface{}) error {
 
 func (p *SystemProvider) Send(ctx context.Context, message Message) error {
 	// Defense-in-depth match for the e2e gate in Available(): if a System
-	// provider was pre-seeded into the DB before KANDEV_E2E_MOCK was set,
+	// provider was pre-seeded into the DB before PCRAFT_E2E_MOCK was set,
 	// still skip the shell-out so tests stay quiet.
-	if os.Getenv("KANDEV_E2E_MOCK") == "true" {
+	if os.Getenv("PCRAFT_E2E_MOCK") == "true" {
 		return nil
 	}
 	cfg, err := parseSystemConfig(message.Config)

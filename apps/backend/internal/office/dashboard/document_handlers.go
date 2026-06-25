@@ -8,9 +8,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/task/models"
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 
 	"go.uber.org/zap"
 )
@@ -29,7 +29,7 @@ type DocumentHandler struct {
 }
 
 // NewDocumentHandler creates a new DocumentHandler.
-// basePath is the root storage directory (e.g. KANDEV_HOME); attachments are
+// basePath is the root storage directory (e.g. PCRAFT_HOME); attachments are
 // stored under <basePath>/data/attachments/<taskID>/<key>.<ext>.
 func NewDocumentHandler(svc *taskservice.DocumentService, basePath string, log *logger.Logger) *DocumentHandler {
 	return &DocumentHandler{

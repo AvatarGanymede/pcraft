@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	taskservice "github.com/kandev/kandev/internal/task/service"
+	taskservice "github.com/AvatarGanymede/pcraft/internal/task/service"
 )
 
 type fakeResetter struct {

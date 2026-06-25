@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconRefresh } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import type { InferenceAgent, InferenceAgentStatus } from "@/lib/api/domains/utility-api";
 
 type Props = {

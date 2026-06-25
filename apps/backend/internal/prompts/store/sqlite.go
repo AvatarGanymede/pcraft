@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	promptcfg "github.com/kandev/kandev/config/prompts"
-	"github.com/kandev/kandev/internal/prompts/models"
+	promptcfg "github.com/AvatarGanymede/pcraft/config/prompts"
+	"github.com/AvatarGanymede/pcraft/internal/prompts/models"
 )
 
 type sqliteRepository struct {

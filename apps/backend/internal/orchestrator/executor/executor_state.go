@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/task/models"
-	v1 "github.com/kandev/kandev/pkg/api/v1"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
+	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 	"go.uber.org/zap"
 )
 
@@ -202,7 +202,7 @@ func (e *Executor) applyProfile(ctx context.Context, profileID string, cfg *exec
 	cfg.CleanupScript = profile.CleanupScript
 	cfg.ProfileEnv = e.resolveProfileEnvVars(ctx, profile.EnvVars)
 	// Persist secret store IDs in metadata so runtimes can resolve tokens after restart
-	// (e.g., SpritesExecutor needs SPRITES_API_TOKEN to poll remote status).
+	// (e.g., secret store IDs are persisted in metadata for runtime use).
 	for _, ev := range profile.EnvVars {
 		if ev.SecretID != "" {
 			metadata["env_secret_id_"+ev.Key] = ev.SecretID
@@ -229,7 +229,6 @@ const (
 // into launch metadata under the same key when non-empty. An empty
 // profile value leaves any task-supplied value in place.
 var profileConfigPassthroughKeys = []string{
-	"sprites_network_policy_rules",
 	profileKeyRemoteCredentials,
 	profileKeyRemoteAuthSecrets,
 	"remote_auth_target_home",
@@ -242,19 +241,6 @@ var profileConfigPassthroughKeys = []string{
 // profileConfigPassthroughKeys.
 var profileConfigRenameKeys = map[string]string{
 	"image_tag": "image_tag_override",
-}
-
-// profileConfigAuthoritativeKeys are profile.Config keys whose value is
-// the source of truth for launch metadata — they overwrite any
-// task-supplied value, including with an empty string. The reader-side
-// helpers (e.g. SSHExecutor.workdirRoot, sshShellFromMetadata) handle
-// the empty fall-through to a default. Without this, a task that
-// supplies ssh_workdir_root or ssh_shell in its Metadata wins when the
-// profile has no value set — that's a redirect vector (workdir target,
-// login shell that runs every remote command).
-var profileConfigAuthoritativeKeys = []string{
-	lifecycle.MetadataKeySSHWorkdirRoot,
-	lifecycle.MetadataKeySSHShell,
 }
 
 // applyProfileConfigToMetadata projects profile.Config keys into the
@@ -270,12 +256,6 @@ func applyProfileConfigToMetadata(profileConfig map[string]string, metadata map[
 		if v := profileConfig[src]; v != "" {
 			metadata[dst] = v
 		}
-	}
-	for _, k := range profileConfigAuthoritativeKeys {
-		// Unconditional set: an empty profile value overwrites any
-		// task-supplied value in metadata. The reader-side fall-through
-		// to a default handles the empty case.
-		metadata[k] = profileConfig[k]
 	}
 }
 

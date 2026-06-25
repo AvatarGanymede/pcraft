@@ -9,8 +9,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@kandev/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@kandev/ui/popover";
+} from "@pcraft/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@pcraft/ui/popover";
 import { cn } from "@/lib/utils";
 
 export type MultiSelectItem = {

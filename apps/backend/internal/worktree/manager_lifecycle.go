@@ -13,7 +13,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/worktree/copyfiles"
+	"github.com/AvatarGanymede/pcraft/internal/worktree/copyfiles"
 )
 
 // Create creates a new worktree for a session, or returns an existing one.
@@ -59,7 +59,7 @@ func (m *Manager) Create(ctx context.Context, req CreateRequest) (*Worktree, err
 		return nil, err
 	}
 
-	// Worktrees are always placed under ~/.kandev/tasks/{taskDir}/{repo}/.
+	// Worktrees are always placed under ~/.pcraft/tasks/{taskDir}/{repo}/.
 	// Callers must populate TaskDirName and RepoName; the legacy flat layout
 	// has been removed, so a missing field is a programming error.
 	if req.TaskDirName == "" || req.RepoName == "" {
@@ -193,7 +193,7 @@ func (m *Manager) resolveBaseRefWithFallback(ctx context.Context, req *CreateReq
 }
 
 // createInTaskDir creates a worktree inside the task directory structure:
-// ~/.kandev/tasks/{taskDirName}/{repoName}/
+// ~/.pcraft/tasks/{taskDirName}/{repoName}/
 //
 // RepoName is sanitized to a single path segment so display names like
 // "owner/repo" don't produce a nested subdirectory — that would push the

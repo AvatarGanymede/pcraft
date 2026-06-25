@@ -7,7 +7,6 @@ import { SessionTaskSwitcherSheet } from "./session-task-switcher-sheet";
 import { MobileFileViewerPanel } from "./mobile-file-viewer-panel";
 import { TaskChatPanel } from "../task-chat-panel";
 import { TaskPlanPanel } from "../task-plan-panel";
-import { MobileChangesPanel } from "./mobile-changes-panel";
 import { ReviewDialog } from "@/components/review/review-dialog";
 import { useReviewDialog } from "../use-review-dialog";
 import { TaskFilesPanel } from "../task-files-panel";
@@ -15,7 +14,7 @@ import { PassthroughToolbar } from "../passthrough-toolbar";
 import { MobileTerminalKeybar, KEYBAR_HEIGHT_PX } from "./mobile-terminal-keybar";
 import { MobileTerminalPane } from "./mobile-terminal-pane";
 import { MobileSessionsPicker } from "./mobile-sessions-section";
-import { SessionPanelContent } from "@kandev/ui/pannel-session";
+import { SessionPanelContent } from "@pcraft/ui/pannel-session";
 import { useSessionLayoutState } from "@/hooks/use-session-layout-state";
 import { useVisualViewportOffset } from "@/hooks/use-visual-viewport-offset";
 import { useToast } from "@/components/toast-provider";
@@ -143,11 +142,9 @@ function MobilePanelArea({
       )}
       {currentMobilePanel === "changes" && (
         <div className="flex-1 min-h-0 flex flex-col p-2">
-          <MobileChangesPanel
-            selectedDiff={selectedDiff}
-            onClearSelected={handleClearSelectedDiff}
-            onOpenFile={handleOpenFileFromChat}
-          />
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Changes panel is being reworked.
+          </div>
         </div>
       )}
       {currentMobilePanel === "files" && (

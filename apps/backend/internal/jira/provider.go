@@ -9,15 +9,15 @@ import (
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 )
 
 // mockEnvVar gates the in-memory mock client used in E2E tests. Production
 // builds never set this — the real CloudClient hits Atlassian.
-const mockEnvVar = "KANDEV_MOCK_JIRA"
+const mockEnvVar = "PCRAFT_MOCK_JIRA"
 
-// MockEnabled reports whether KANDEV_MOCK_JIRA is set to "true". Exposed so
+// MockEnabled reports whether PCRAFT_MOCK_JIRA is set to "true". Exposed so
 // route registration can branch on the same signal Provide uses.
 func MockEnabled() bool {
 	return os.Getenv(mockEnvVar) == "true"
@@ -29,7 +29,7 @@ func MockEnabled() bool {
 // in-memory client caches — but the signature mirrors other integration
 // providers so callers can register it uniformly.
 //
-// When KANDEV_MOCK_JIRA=true, the service is wired to a process-wide
+// When PCRAFT_MOCK_JIRA=true, the service is wired to a process-wide
 // MockClient and the same instance is exposed via Service.MockClient() so the
 // E2E mock controller can drive it.
 func Provide(writer, reader *sqlx.DB, secrets SecretStore, eventBus bus.EventBus, log *logger.Logger) (*Service, func() error, error) {
@@ -43,7 +43,7 @@ func Provide(writer, reader *sqlx.DB, secrets SecretStore, eventBus bus.EventBus
 	if MockEnabled() {
 		mock = NewMockClient()
 		clientFn = MockClientFactory(mock)
-		log.Info("jira: using in-memory mock client (KANDEV_MOCK_JIRA=true)")
+		log.Info("jira: using in-memory mock client (PCRAFT_MOCK_JIRA=true)")
 	}
 	svc := NewService(store, secrets, clientFn, log)
 	svc.mockClient = mock

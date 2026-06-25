@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@kandev/ui/input";
-import { Button } from "@kandev/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Button } from "@pcraft/ui/button";
 import type { SidebarView } from "@/lib/state/slices/ui/sidebar-view-types";
 
 type HeaderMode = "view" | "rename" | "saveAs";

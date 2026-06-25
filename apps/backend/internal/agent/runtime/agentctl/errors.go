@@ -1,7 +1,7 @@
 package client
 
 import (
-	acptransport "github.com/kandev/kandev/internal/agentctl/server/adapter/transport/acp"
+	acptransport "github.com/AvatarGanymede/pcraft/internal/agentctl/server/adapter/transport/acp"
 )
 
 // ErrTurnCancelNotAcknowledged means the agent did not end the in-flight prompt

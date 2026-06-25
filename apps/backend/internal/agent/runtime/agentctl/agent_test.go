@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kandev/kandev/internal/common/logger"
-	ws "github.com/kandev/kandev/pkg/websocket"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
 func newTestLogger() *logger.Logger {

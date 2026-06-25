@@ -1,7 +1,7 @@
 "use client";
 
 import { IconPointFilled } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 type ExecutionIndicatorProps = {

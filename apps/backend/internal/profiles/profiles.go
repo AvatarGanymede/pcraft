@@ -5,8 +5,8 @@
 //
 // At startup the backend calls ApplyProfile which:
 //
-//  1. Detects the active profile from env (KANDEV_E2E_MOCK >
-//     KANDEV_DEBUG_DEV_MODE > prod).
+//  1. Detects the active profile from env (PCRAFT_E2E_MOCK >
+//     PCRAFT_DEBUG_DEV_MODE > prod).
 //  2. Walks every leaf of profiles.yaml.
 //  3. For each leaf, picks the value for the active profile (falling
 //     back to prod when a leaf doesn't declare one for the active env).
@@ -18,7 +18,7 @@
 //
 //	shell env / launcher env  >  profiles.yaml  >  Go zero values
 //
-// A self-hoster setting KANDEV_FEATURES_OFFICE=true in their k8s
+// A self-hoster setting PCRAFT_FEATURES_OFFICE=true in their k8s
 // manifest wins over the YAML's prod default of "false". A playwright
 // spec setting AGENTCTL_AUTO_APPROVE_PERMISSIONS=false (the inverse of
 // the e2e default) likewise wins — because the spec sets it before
@@ -47,8 +47,8 @@ var appliedEnvVars = struct {
 }{names: map[string]bool{}}
 
 var derivedAppliedEnvVars = map[string]bool{
-	"KANDEV_DEBUG_AGENT_MESSAGES": true,
-	"KANDEV_DEBUG_PPROF_ENABLED":  true,
+	"PCRAFT_DEBUG_AGENT_MESSAGES": true,
+	"PCRAFT_DEBUG_PPROF_ENABLED":  true,
 }
 
 // Environment identifies the active runtime profile.
@@ -61,15 +61,15 @@ const (
 )
 
 // DetectEnvironment picks the active profile from process env. e2e
-// wins over dev because the playwright fixtures set KANDEV_E2E_MOCK
+// wins over dev because the playwright fixtures set PCRAFT_E2E_MOCK
 // while dev mode is often also on under e2e (the harness inherits the
 // developer's env). The default is prod so production releases never
 // pick up dev/e2e values just because something leaked in.
 func DetectEnvironment() Environment {
-	if isTruthy(os.Getenv("KANDEV_E2E_MOCK")) {
+	if isTruthy(os.Getenv("PCRAFT_E2E_MOCK")) {
 		return EnvE2E
 	}
-	if isTruthy(os.Getenv("KANDEV_DEBUG_DEV_MODE")) || isTruthy(os.Getenv("KANDEV_DEBUG_PPROF_ENABLED")) {
+	if isTruthy(os.Getenv("PCRAFT_DEBUG_DEV_MODE")) || isTruthy(os.Getenv("PCRAFT_DEBUG_PPROF_ENABLED")) {
 		return EnvDev
 	}
 	return EnvProd
@@ -185,7 +185,7 @@ func isTruthy(s string) bool {
 // AutomaticEnv reads (e.g., in tests that build Config by hand).
 //
 // Keys are the *short* feature names, lowercased — e.g.
-// KANDEV_FEATURES_OFFICE becomes "office". Values are the resolved
+// PCRAFT_FEATURES_OFFICE becomes "office". Values are the resolved
 // strings ("true" / "false" / "").
 func FeatureFlagDefaults() (map[string]string, error) {
 	file, err := parse(profilesYAML)
@@ -207,7 +207,7 @@ func FeatureFlagDefaults() (map[string]string, error) {
 	return out, nil
 }
 
-const featurePrefix = "KANDEV_FEATURES_"
+const featurePrefix = "PCRAFT_FEATURES_"
 
 func stripFeaturePrefix(name string) (string, bool) {
 	if len(name) <= len(featurePrefix) {

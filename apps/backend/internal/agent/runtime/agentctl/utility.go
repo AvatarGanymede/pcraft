@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kandev/kandev/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
 )
 
 // doLongRunningJSON posts a JSON body to the given path on the long-running

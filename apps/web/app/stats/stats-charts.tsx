@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { DailyActivityDTO, AgentUsageDTO, CompletedTaskActivityDTO } from "@/lib/types/http";
 
 function formatMonthLabel(date: Date): string {

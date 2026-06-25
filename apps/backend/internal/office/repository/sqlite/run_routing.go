@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 )
 
 // likeEscaper escapes SQLite LIKE metacharacters so a caller-supplied

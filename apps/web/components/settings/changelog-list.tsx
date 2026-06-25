@@ -3,8 +3,8 @@
 import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "@/lib/routing/client-router";
 import ReactMarkdown from "react-markdown";
-import { Card, CardContent, CardHeader, CardTitle } from "@kandev/ui/card";
-import { Badge } from "@kandev/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@pcraft/ui/card";
+import { Badge } from "@pcraft/ui/badge";
 import {
   Pagination,
   PaginationContent,
@@ -13,7 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationEllipsis,
-} from "@kandev/ui/pagination";
+} from "@pcraft/ui/pagination";
 import { IconExternalLink } from "@tabler/icons-react";
 import { remarkPlugins, markdownComponents } from "@/components/shared/markdown-components";
 import { getChangelog, type ChangelogEntry } from "@/lib/changelog";

@@ -1,7 +1,7 @@
 "use client";
 
 import { IconClick } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 
 interface InspectButtonProps {
   active: boolean;

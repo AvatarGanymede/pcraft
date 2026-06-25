@@ -9,8 +9,8 @@ import {
   IconChevronDown,
   IconSearch,
 } from "@tabler/icons-react";
-import { Input } from "@kandev/ui/input";
-import { Checkbox } from "@kandev/ui/checkbox";
+import { Input } from "@pcraft/ui/input";
+import { Checkbox } from "@pcraft/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useTree, type VisibleRow } from "@/hooks/use-tree";
 import type { FileTreeNode } from "./export-types";

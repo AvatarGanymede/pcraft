@@ -10,10 +10,10 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@kandev/ui/select";
+} from "@pcraft/ui/select";
 import { Fragment } from "react";
-import { Input } from "@kandev/ui/input";
-import { Button } from "@kandev/ui/button";
+import { Input } from "@pcraft/ui/input";
+import { Button } from "@pcraft/ui/button";
 import { cn } from "@/lib/utils";
 import type {
   FilterClause,

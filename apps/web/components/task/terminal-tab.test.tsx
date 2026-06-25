@@ -59,7 +59,7 @@ vi.mock("dockview-react", () => ({
     ),
 }));
 
-vi.mock("@kandev/ui/context-menu", () => ({
+vi.mock("@pcraft/ui/context-menu", () => ({
   ContextMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   ContextMenuTrigger: ({
     children,

@@ -1,8 +1,8 @@
 "use client";
 
 import { IconSparkles } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { GridSpinner } from "@/components/grid-spinner";
 import { useTooltipMountGate } from "@/hooks/use-tooltip-mount-gate";
 

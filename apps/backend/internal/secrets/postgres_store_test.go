@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kandev/kandev/internal/testutil"
+	"github.com/AvatarGanymede/pcraft/internal/testutil"
 )
 
 func TestPostgresStoreRoundTrip(t *testing.T) {

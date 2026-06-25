@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 const (
@@ -29,20 +29,24 @@ func OpenSQLite(dbPath string) (*sql.DB, error) {
 		return nil, fmt.Errorf("failed to create database file: %w", err)
 	}
 
-	// Writer DSN settings:
-	// - foreign_keys=on: enforce FK constraints consistently.
-	// - busy_timeout: wait briefly on locks to reduce transient "database is locked".
-	// - journal_mode=WAL: better read concurrency with a single writer.
-	// - synchronous=NORMAL: reasonable durability/perf tradeoff for app workloads.
-	// - cache=shared: allow multiple connections to share a page cache.
-	dsn := fmt.Sprintf(
-		"file:%s?_foreign_keys=on&_mode=rwc&_busy_timeout=%d&_journal_mode=WAL&_synchronous=NORMAL&_cache=shared",
-		normalizedPath,
-		int(defaultBusyTimeout/time.Millisecond),
-	)
-	db, err := sql.Open("sqlite3", dsn)
+	dsn := normalizedPath
+	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
+	}
+
+	// Apply PRAGMAs for WAL mode, FK, and busy timeout (modernc does not use DSN params).
+	pragmas := []string{
+		"PRAGMA journal_mode = WAL",
+		"PRAGMA synchronous = NORMAL",
+		"PRAGMA foreign_keys = ON",
+		fmt.Sprintf("PRAGMA busy_timeout = %d", int(defaultBusyTimeout/time.Millisecond)),
+	}
+	for _, p := range pragmas {
+		if _, err := db.Exec(p); err != nil {
+			db.Close()
+			return nil, fmt.Errorf("failed to set pragma %q: %w", p, err)
+		}
 	}
 
 	// Single writer connection: serializes writes and avoids SQLITE_BUSY.
@@ -58,16 +62,16 @@ func OpenSQLite(dbPath string) (*sql.DB, error) {
 func OpenSQLiteReader(dbPath string) (*sql.DB, error) {
 	normalizedPath := normalizeSQLitePath(dbPath)
 
-	// Reader DSN: read-only mode, FK enforcement, shared cache.
-	// journal_mode and synchronous are database-level (set by the writer).
-	dsn := fmt.Sprintf(
-		"file:%s?_foreign_keys=on&_mode=ro&_busy_timeout=%d&_cache=shared",
-		normalizedPath,
-		int(defaultBusyTimeout/time.Millisecond),
-	)
-	db, err := sql.Open("sqlite3", dsn)
+	dsn := "file:" + normalizedPath + "?mode=ro"
+	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open read-only database: %w", err)
+	}
+
+	// Apply PRAGMAs for read connections too (FK, busy timeout).
+	if _, err := db.Exec(fmt.Sprintf("PRAGMA busy_timeout = %d", int(defaultBusyTimeout/time.Millisecond))); err != nil {
+		db.Close()
+		return nil, fmt.Errorf("failed to set busy_timeout: %w", err)
 	}
 
 	db.SetMaxOpenConns(defaultSQLiteReaderConns)

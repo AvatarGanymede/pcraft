@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/coder/acp-go-sdk"
-	"github.com/kandev/kandev/internal/agentctl/types"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 )
 
 func TestResolvePath(t *testing.T) {

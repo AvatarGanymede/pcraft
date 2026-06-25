@@ -12,24 +12,14 @@ package agentruntime
 type Runtime string
 
 const (
-	RuntimeStandalone   Runtime = "standalone"
-	RuntimeDocker       Runtime = "docker"
-	RuntimeRemoteDocker Runtime = "remote_docker"
-	RuntimeSprites      Runtime = "sprites"
-	RuntimeSSH          Runtime = "ssh"
+	RuntimeStandalone Runtime = "standalone"
 )
 
 // IsContainerized reports whether the runtime hosts the agent
 // subprocess inside a filesystem-isolated container/sandbox.
-// Adding a runtime that returns true is the single place that
-// decision gets reviewed; new constants default to host-mode.
+// All supported runtimes run on the host.
 func (r Runtime) IsContainerized() bool {
-	switch r {
-	case RuntimeDocker, RuntimeRemoteDocker, RuntimeSprites:
-		return true
-	default:
-		return false
-	}
+	return false
 }
 
 func (r Runtime) String() string { return string(r) }

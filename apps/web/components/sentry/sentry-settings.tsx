@@ -2,14 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { IconBrandSentry, IconInfoCircle } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Card, CardContent } from "@kandev/ui/card";
-import { Input } from "@kandev/ui/input";
-import { Label } from "@kandev/ui/label";
-import { Separator } from "@kandev/ui/separator";
-import { Alert, AlertDescription } from "@kandev/ui/alert";
-import { Switch } from "@kandev/ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Card, CardContent } from "@pcraft/ui/card";
+import { Input } from "@pcraft/ui/input";
+import { Label } from "@pcraft/ui/label";
+import { Separator } from "@pcraft/ui/separator";
+import { Alert, AlertDescription } from "@pcraft/ui/alert";
+import { Switch } from "@pcraft/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useToast } from "@/components/toast-provider";
 import { SettingsSection } from "@/components/settings/settings-section";
 import { useSentryEnabled } from "@/hooks/domains/sentry/use-sentry-enabled";

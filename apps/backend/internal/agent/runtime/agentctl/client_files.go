@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/kandev/kandev/internal/agentctl/types/streams"
-	"github.com/kandev/kandev/internal/worktree/copyfiles"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/types/streams"
+	"github.com/AvatarGanymede/pcraft/internal/worktree/copyfiles"
 	"go.uber.org/zap"
 )
 

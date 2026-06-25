@@ -3,8 +3,8 @@ package slack
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/integrations/healthpoll"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/integrations/healthpoll"
 )
 
 // Poller probes the stored Slack credentials on the shared 90s auth-health

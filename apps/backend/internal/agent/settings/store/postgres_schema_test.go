@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/testutil"
+	"github.com/AvatarGanymede/pcraft/internal/testutil"
 )
 
 func TestPostgresFreshSchemaInitializes(t *testing.T) {

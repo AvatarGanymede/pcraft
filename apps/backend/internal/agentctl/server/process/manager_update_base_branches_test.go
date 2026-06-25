@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kandev/kandev/internal/agentctl/server/config"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/config"
 )
 
 // TestManagerUpdateBaseBranches_StampsRootTracker confirms a single-repo

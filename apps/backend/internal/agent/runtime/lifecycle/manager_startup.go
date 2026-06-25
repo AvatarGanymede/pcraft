@@ -3,16 +3,17 @@ package lifecycle
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/agents"
-	agentctl "github.com/kandev/kandev/internal/agent/runtime/agentctl"
-	"github.com/kandev/kandev/internal/common/appctx"
-	"github.com/kandev/kandev/internal/events"
-	"github.com/kandev/kandev/internal/task/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	agentctl "github.com/AvatarGanymede/pcraft/internal/agent/runtime/agentctl"
+	"github.com/AvatarGanymede/pcraft/internal/common/appctx"
+	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
 
 // startPassthroughExecution dispatches a passthrough-routed execution to the
@@ -239,10 +240,15 @@ func (m *Manager) buildEnvForExecution(ctx context.Context, executionID string, 
 	}
 
 	// Add standard variables for recovery after backend restart
-	env["KANDEV_INSTANCE_ID"] = executionID
-	env["KANDEV_TASK_ID"] = req.TaskID
-	env["KANDEV_SESSION_ID"] = req.SessionID
-	env["KANDEV_AGENT_PROFILE_ID"] = req.AgentProfileID
+	env["PCRAFT_INSTANCE_ID"] = executionID
+	env["PCRAFT_TASK_ID"] = req.TaskID
+	env["PCRAFT_SESSION_ID"] = req.SessionID
+	env["PCRAFT_AGENT_PROFILE_ID"] = req.AgentProfileID
+
+		// Forward CLAUDE_PLUGIN_ROOT so the agent process can locate its plugin.
+		if pluginRoot := os.Getenv("CLAUDE_PLUGIN_ROOT"); pluginRoot != "" {
+			env["CLAUDE_PLUGIN_ROOT"] = pluginRoot
+		}
 
 	// Add agent runtime default env vars (e.g., MCP_TIMEOUT for Claude Code)
 	if agentConfig != nil {

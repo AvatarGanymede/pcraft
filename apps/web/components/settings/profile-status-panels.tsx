@@ -9,8 +9,8 @@ import {
   IconRefresh,
   IconTerminal2,
 } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Button } from "@pcraft/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useAppStore } from "@/components/state-provider";
 import { AgentLoginDialog } from "@/components/settings/agent-login-dialog";
 import { HostShellDialog } from "@/components/settings/host-shell-dialog";

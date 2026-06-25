@@ -1,6 +1,6 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
 import type { GroupKey } from "@/lib/state/slices/ui/sidebar-view-types";
 
 const GROUP_OPTIONS: Array<{ key: GroupKey; label: string }> = [

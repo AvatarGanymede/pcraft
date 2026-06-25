@@ -41,7 +41,7 @@ const CollapsibleOpenCtx = createContext<{
 }>({
   open: true,
 });
-vi.mock("@kandev/ui/collapsible", () => ({
+vi.mock("@pcraft/ui/collapsible", () => ({
   Collapsible: ({
     open,
     onOpenChange,

@@ -5,7 +5,7 @@ import { useAppStore } from "@/components/state-provider";
 import { getAgentProfileMcpConfigAction } from "@/app/actions/agents";
 
 const EMPTY_SERVERS: string[] = [];
-const DEFAULT_KANDEV: string[] = ["kandev"];
+const DEFAULT_PCRAFT: string[] = ["pcraft"];
 
 /**
  * Resolves MCP support and configured MCP server names for the current session's agent.
@@ -37,11 +37,11 @@ export function useSessionMcp(agentProfileId: string | null | undefined) {
       .then((config) => {
         if (!active) return;
         const userServers = config.enabled ? Object.keys(config.servers) : [];
-        setFetchResult({ profileId: currentProfileId, servers: ["kandev", ...userServers] });
+        setFetchResult({ profileId: currentProfileId, servers: ["pcraft", ...userServers] });
       })
       .catch(() => {
         if (!active) return;
-        setFetchResult({ profileId: currentProfileId, servers: DEFAULT_KANDEV });
+        setFetchResult({ profileId: currentProfileId, servers: DEFAULT_PCRAFT });
       });
     return () => {
       active = false;
@@ -51,7 +51,7 @@ export function useSessionMcp(agentProfileId: string | null | undefined) {
   const mcpServers = useMemo(() => {
     if (!supportsMcp) return EMPTY_SERVERS;
     if (fetchResult && fetchResult.profileId === agentProfileId) return fetchResult.servers;
-    return DEFAULT_KANDEV;
+    return DEFAULT_PCRAFT;
   }, [supportsMcp, fetchResult, agentProfileId]);
 
   return { supportsMcp, mcpServers };

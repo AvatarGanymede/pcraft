@@ -1,9 +1,9 @@
 "use client";
 
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Label } from "@kandev/ui/label";
-import { Textarea } from "@kandev/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Label } from "@pcraft/ui/label";
+import { Textarea } from "@pcraft/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@pcraft/ui/tooltip";
 import type { Repository } from "@/lib/types/http";
 
 type CopyFilesFieldProps = {

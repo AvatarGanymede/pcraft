@@ -16,10 +16,10 @@ import (
 	gorillaws "github.com/gorilla/websocket"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/lsp/installer"
-	"github.com/kandev/kandev/internal/user/models"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/lsp/installer"
+	"github.com/AvatarGanymede/pcraft/internal/user/models"
 )
 
 // Custom WebSocket close codes for LSP connections.

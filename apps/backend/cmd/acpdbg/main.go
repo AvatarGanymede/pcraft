@@ -16,9 +16,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kandev/kandev/internal/agent/acpdbg"
-	"github.com/kandev/kandev/internal/agent/registry"
-	"github.com/kandev/kandev/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/agent/acpdbg"
+	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 )
 
 const defaultTimeout = 30 * time.Second

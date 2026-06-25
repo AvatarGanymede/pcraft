@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/events/bus"
-	"github.com/kandev/kandev/internal/task/repository"
-	wfmodels "github.com/kandev/kandev/internal/workflow/models"
-	"github.com/kandev/kandev/internal/worktree"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/events/bus"
+	"github.com/AvatarGanymede/pcraft/internal/task/repository"
+	wfmodels "github.com/AvatarGanymede/pcraft/internal/workflow/models"
+	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
 // WorktreeCleanup provides worktree cleanup on task deletion.
@@ -185,7 +185,7 @@ type Service struct {
 	workflowStepGetter    WorkflowStepGetter
 	startStepResolver     StartStepResolver
 	prTaskResolver        PRTaskResolver
-	quickChatDir          string // Directory for quick-chat workspaces (e.g., ~/.kandev/quick-chat)
+	quickChatDir          string // Directory for quick-chat workspaces (e.g., ~/.pcraft/quick-chat)
 	branchFetcher         *branchFetcher
 	envDestroyer          EnvironmentDestroyer
 	sessionRunningChecker SessionRunningChecker
@@ -305,7 +305,7 @@ func (s *Service) SetRemoteBranchLister(lister RemoteBranchLister) {
 }
 
 // RepoCloneLocation reports the base path the orchestrator clones repos into
-// (e.g. ~/.kandev/repos or KANDEV_REPOCLONE_BASEPATH). Listing local branches
+// (e.g. ~/.pcraft/repos or PCRAFT_REPOCLONE_BASEPATH). Listing local branches
 // for a cloned repo requires that path to be allow-listed by
 // discoveryRoots(); without this hook clones to a custom basepath silently
 // fall outside the allow-list and branch listing returns no results.

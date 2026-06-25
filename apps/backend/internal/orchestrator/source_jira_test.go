@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kandev/kandev/internal/jira"
+	"github.com/AvatarGanymede/pcraft/internal/jira"
 )
 
 type fakeJiraService struct {

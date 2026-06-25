@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kandev/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcraft/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {

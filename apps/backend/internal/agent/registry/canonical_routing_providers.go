@@ -5,7 +5,7 @@ package registry
 // the registry package so both:
 //
 //  1. internal/office/routing's catalogue (KnownProviders), and
-//  2. the E2E multi-mock registration path (KANDEV_MOCK_PROVIDERS),
+//  2. the E2E multi-mock registration path (PCRAFT_MOCK_PROVIDERS),
 //
 // can reference the same list without an import cycle. Adding a new
 // real CLI provider to routing v2+ means appending its agent-registry

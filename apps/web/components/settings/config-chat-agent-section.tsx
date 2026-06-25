@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@kandev/ui/select";
-import { Separator } from "@kandev/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@pcraft/ui/select";
+import { Separator } from "@pcraft/ui/separator";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 import { useToast } from "@/components/toast-provider";
 import { updateWorkspaceAction } from "@/app/actions/workspaces";

@@ -10,13 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/kandev/kandev/internal/agent/hostutility"
-	"github.com/kandev/kandev/internal/agent/runtime/lifecycle"
-	agentctlutil "github.com/kandev/kandev/internal/agentctl/server/utility"
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/utility/controller"
-	"github.com/kandev/kandev/internal/utility/dto"
-	"github.com/kandev/kandev/internal/utility/service"
+	"github.com/AvatarGanymede/pcraft/internal/agent/hostutility"
+	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/lifecycle"
+	agentctlutil "github.com/AvatarGanymede/pcraft/internal/agentctl/server/utility"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/utility/controller"
+	"github.com/AvatarGanymede/pcraft/internal/utility/dto"
+	"github.com/AvatarGanymede/pcraft/internal/utility/service"
 )
 
 // InferenceExecutor executes inference prompts via agentctl.

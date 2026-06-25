@@ -3,7 +3,7 @@ package scheduler
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/office/dashboard"
+	"github.com/AvatarGanymede/pcraft/internal/office/dashboard"
 )
 
 // DashboardReactivityAdapter implements dashboard.ReactivityApplier by

@@ -58,7 +58,7 @@ type managedAppConfig struct {
 }
 
 func resolveLogLevel(opts Options) string {
-	if logLevel := os.Getenv("KANDEV_LOG_LEVEL"); logLevel != "" {
+	if logLevel := os.Getenv("PCRAFT_LOG_LEVEL"); logLevel != "" {
 		return logLevel
 	}
 	switch {
@@ -112,7 +112,7 @@ func logStartup(header string, ports portConfig, dbPath, logLevel string) {
 }
 
 func openBrowser(url string) {
-	if os.Getenv("KANDEV_NO_BROWSER") == "1" {
+	if os.Getenv("PCRAFT_NO_BROWSER") == "1" {
 		return
 	}
 	var cmd *exec.Cmd

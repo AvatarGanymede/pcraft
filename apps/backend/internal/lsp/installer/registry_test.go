@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	tools "github.com/kandev/kandev/internal/tools/installer"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	tools "github.com/AvatarGanymede/pcraft/internal/tools/installer"
 )
 
 func testLogger() *logger.Logger {

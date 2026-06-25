@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { Button } from "@kandev/ui/button";
-import { ScrollOnOverflow } from "@kandev/ui/scroll-on-overflow";
+import { Button } from "@pcraft/ui/button";
+import { ScrollOnOverflow } from "@pcraft/ui/scroll-on-overflow";
 import {
   IconDeviceFloppy,
   IconLoader2,
@@ -14,7 +14,7 @@ import {
   IconRefresh,
   IconEye,
 } from "@tabler/icons-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { formatDiffStats } from "@/lib/utils/file-diff";
 import { toRelativePath } from "@/lib/utils";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";

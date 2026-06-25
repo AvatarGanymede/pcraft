@@ -2,15 +2,15 @@
 
 import { useMemo, useCallback } from "react";
 import { IconExternalLink, IconCopy, IconFolderShare } from "@tabler/icons-react";
-import { Button } from "@kandev/ui/button";
+import { Button } from "@pcraft/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@kandev/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
+} from "@pcraft/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@pcraft/ui/tooltip";
 import { useEditors } from "@/hooks/domains/settings/use-editors";
 import { useOpenSessionInEditor } from "@/hooks/use-open-session-in-editor";
 import { useOpenSessionFolder } from "@/hooks/use-open-session-folder";

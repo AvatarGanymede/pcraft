@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/kandev/kandev/internal/editors/models"
+	"github.com/AvatarGanymede/pcraft/internal/editors/models"
 )
 
 type EditorDTO struct {

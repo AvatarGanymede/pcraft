@@ -65,10 +65,6 @@ func (r *Repository) ensureStatsIndexes() error {
 		`CREATE INDEX IF NOT EXISTS idx_messages_turn
 			ON task_session_messages(turn_id)`,
 
-		// Task session commits indexes
-		`CREATE INDEX IF NOT EXISTS idx_commits_session_time
-			ON task_session_commits(session_id, committed_at)`,
-
 		// Task repositories indexes
 		`CREATE INDEX IF NOT EXISTS idx_task_repos_task
 			ON task_repositories(task_id, repository_id)`,

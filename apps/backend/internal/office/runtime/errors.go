@@ -3,7 +3,7 @@ package runtime
 import (
 	"fmt"
 
-	"github.com/kandev/kandev/internal/office/shared"
+	"github.com/AvatarGanymede/pcraft/internal/office/shared"
 )
 
 var (

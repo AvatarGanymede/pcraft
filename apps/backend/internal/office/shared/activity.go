@@ -3,8 +3,8 @@ package shared
 import (
 	"context"
 
-	"github.com/kandev/kandev/internal/common/logger"
-	"github.com/kandev/kandev/internal/office/models"
+	"github.com/AvatarGanymede/pcraft/internal/common/logger"
+	"github.com/AvatarGanymede/pcraft/internal/office/models"
 
 	"go.uber.org/zap"
 )
