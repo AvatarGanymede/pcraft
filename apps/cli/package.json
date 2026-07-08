@@ -1,6 +1,6 @@
 {
   "name": "@beilin/pcraft",
-  "version": "0.1.1-beilin-test.0",
+  "version": "0.3.0",
   "private": false,
   "description": "Launcher for pcraft — GUI-driven Claude Code development with P4 workspaces",
   "license": "AGPL-3.0-only",
