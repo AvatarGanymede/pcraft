@@ -16,15 +16,11 @@ name: release
 #   8. docker-universal-manifest — size-gate amd64 staging, then promote both
 #                          arches to the user-facing :universal tags
 #   9. publish-release   — create GH release with .tar.gz + .sha256 assets + auto-generated notes
-#  10. publish-npm       — publish kandev@X.Y.Z + @kdlbs/runtime-*@X.Y.Z to npmjs
-#  11. update-homebrew-tap — push updated Formula/kandev.rb to kdlbs/homebrew-kandev
+#  10. publish-npm       — publish pcraft@X.Y.Z + @beilin/runtime-*@X.Y.Z to npmjs
 #
 # npm publishing uses Trusted Publishers (OIDC) — no NPM_TOKEN required.
-# Each package (kandev + 5 @kdlbs/runtime-* packages) must have this workflow
+# Each package (pcraft + 5 @beilin/runtime-* packages) must have this workflow
 # configured as its trusted publisher on npmjs.com (Settings → Publishing access).
-#
-# Required secrets:
-#   HOMEBREW_TAP_DEPLOY_KEY  — SSH private key for kdlbs/homebrew-kandev deploy key
 
 on:
   workflow_dispatch:
@@ -39,7 +35,7 @@ on:
           - minor
           - major
       dry_run:
-        description: "Dry run (no PR, tag, npm publish, or tap update)"
+        description: "Dry run (no PR, tag, or npm publish)"
         type: boolean
         default: false
 
@@ -92,8 +88,8 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.email "release-bot@kandev"
-          git config user.name "kandev release bot"
+          git config user.email "release-bot@pcraft"
+          git config user.name "pcraft release bot"
 
       - name: Compute next version
         id: compute
@@ -170,7 +166,7 @@ jobs:
           # Bump only the main package version. optionalDependencies stay
           # pinned to 0.0.0-bootstrap in committed source — publish-npm.sh
           # rewrites them to the real version in-flight before publishing,
-          # once the matching @kdlbs/runtime-* tarballs exist on npm.
+          # once the matching @beilin/runtime-* tarballs exist on npm.
           (cd apps/cli && npm version --no-git-tag-version "$NEXT")
           pnpm -C apps install --no-frozen-lockfile
           git-cliff --tag "$TAG" -o CHANGELOG.md
@@ -270,10 +266,10 @@ jobs:
         run: pnpm -C apps install --frozen-lockfile
       - name: Build web (Vite)
         env:
-          KANDEV_VERSION: ${{ needs.prepare.outputs.tag }}
+          PCRAFT_VERSION: ${{ needs.prepare.outputs.tag }}
           VITE_KANDEV_API_PORT: ""
           VITE_KANDEV_DEBUG: ""
-        run: pnpm -C apps --filter @kandev/web build
+        run: pnpm -C apps --filter @pcraft/web build
       - uses: actions/upload-artifact@v5
         with:
           name: web-bundle
@@ -332,19 +328,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-mingw-w64-x86-64
 
-      # The `fts5` build tag is REQUIRED on the kandev binary. The office
+      # The `fts5` build tag is REQUIRED on the pcraft binary. The office
       # task search migrations create a `tasks_fts` virtual table using
       # `USING fts5(...)`; without the tag, mattn/go-sqlite3 lacks the
       # module and any subsequent boot against a DB that already has the
       # virtual table fails with "no such module: fts5" during schema init.
       # See issue #1006 for the regression this prevents.
       #
-      # Version ldflags mirror apps/backend/Makefile so `kandev --version`
+      # Version ldflags mirror apps/backend/Makefile so `pcraft --version`
       # reports the released tag instead of the build-time default "dev".
       - name: Build backend binaries
         env:
           CC: ${{ matrix.cc || '' }}
-          KANDEV_VERSION: ${{ needs.prepare.outputs.tag }}
+          PCRAFT_VERSION: ${{ needs.prepare.outputs.tag }}
         run: |
           test -f apps/backend/internal/webapp/embedded/generated/index.html
           cd apps/backend
@@ -352,11 +348,11 @@ jobs:
           EXT=${{ matrix.goos == 'windows' && '.exe' || '' }}
           COMMIT=$(git rev-parse --short HEAD)
           BUILD_TIME=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-          LDFLAGS="-s -w -X main.Version=${KANDEV_VERSION} -X main.Commit=${COMMIT} -X main.BuildTime=${BUILD_TIME}"
+          LDFLAGS="-s -w -X main.Version=${PCRAFT_VERSION} -X main.Commit=${COMMIT} -X main.BuildTime=${BUILD_TIME}"
           # Export to subsequent steps so the cross-compiled agentctl helper
           # below gets the same version metadata (matches Makefile parity).
           echo "LDFLAGS=${LDFLAGS}" >> "${GITHUB_ENV}"
-          go build -tags fts5 -ldflags "${LDFLAGS}" -o bin/kandev${EXT} ./cmd/kandev
+          go build -tags fts5 -ldflags "${LDFLAGS}" -o bin/pcraft${EXT} ./cmd/pcraft
           go build -ldflags "${LDFLAGS}" -o bin/agentctl${EXT} ./cmd/agentctl
 
       # Cross-compile a linux/amd64 agentctl regardless of the host platform.
@@ -372,22 +368,22 @@ jobs:
 
       - name: Package bundle
         run: |
-          rm -rf dist/kandev
-          mkdir -p dist/kandev/bin
+          rm -rf dist/pcraft
+          mkdir -p dist/pcraft/bin
           EXT=${{ matrix.goos == 'windows' && '.exe' || '' }}
-          cp apps/backend/bin/kandev${EXT} dist/kandev/bin/
-          cp apps/backend/bin/agentctl${EXT} dist/kandev/bin/
-          cp apps/backend/bin/agentctl-linux-amd64 dist/kandev/bin/
+          cp apps/backend/bin/pcraft${EXT} dist/pcraft/bin/
+          cp apps/backend/bin/agentctl${EXT} dist/pcraft/bin/
+          cp apps/backend/bin/agentctl-linux-amd64 dist/pcraft/bin/
           cd dist
-          tar -czf "kandev-${{ matrix.platform }}.tar.gz" kandev
-          shasum -a 256 "kandev-${{ matrix.platform }}.tar.gz" > "kandev-${{ matrix.platform }}.tar.gz.sha256"
+          tar -czf "pcraft-${{ matrix.platform }}.tar.gz" pcraft
+          shasum -a 256 "pcraft-${{ matrix.platform }}.tar.gz" > "pcraft-${{ matrix.platform }}.tar.gz.sha256"
 
       - uses: actions/upload-artifact@v5
         with:
           name: bundle-${{ matrix.platform }}
           path: |
-            dist/kandev-${{ matrix.platform }}.tar.gz
-            dist/kandev-${{ matrix.platform }}.tar.gz.sha256
+            dist/pcraft-${{ matrix.platform }}.tar.gz
+            dist/pcraft-${{ matrix.platform }}.tar.gz.sha256
 
   # ---------------------------------------------------------------------------
   # Docker base image — split per arch onto native runners, then stitched into
@@ -406,7 +402,7 @@ jobs:
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     env:
-      STAGING_IMAGE: ghcr.io/kdlbs/kandev:base-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-amd64
+      STAGING_IMAGE: ghcr.io/avatarganymede/pcraft:base-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-amd64
     steps:
       - uses: actions/checkout@v6
         with:
@@ -421,9 +417,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ctx/bundle
-          # --strip-components=1 drops the top-level `kandev/` dir inside the
+          # --strip-components=1 drops the top-level `pcraft/` dir inside the
           # tarball so ctx/bundle/ ends up with bin/ directly.
-          tar -xzf dist/bundle/kandev-linux-x64.tar.gz --strip-components=1 -C ctx/bundle
+          tar -xzf dist/bundle/pcraft-linux-x64.tar.gz --strip-components=1 -C ctx/bundle
           cp docker-entrypoint.sh ctx/
 
       - uses: docker/setup-buildx-action@v3
@@ -444,7 +440,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kdlbs/kandev
+          images: ghcr.io/avatarganymede/pcraft
 
       - name: Build and push (amd64 staging tag)
         id: build
@@ -477,7 +473,7 @@ jobs:
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     env:
-      STAGING_IMAGE: ghcr.io/kdlbs/kandev:base-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-arm64
+      STAGING_IMAGE: ghcr.io/avatarganymede/pcraft:base-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-arm64
     steps:
       - uses: actions/checkout@v4
         with:
@@ -492,7 +488,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ctx/bundle
-          tar -xzf dist/bundle/kandev-linux-arm64.tar.gz --strip-components=1 -C ctx/bundle
+          tar -xzf dist/bundle/pcraft-linux-arm64.tar.gz --strip-components=1 -C ctx/bundle
           cp docker-entrypoint.sh ctx/
 
       - uses: docker/setup-buildx-action@v3
@@ -508,7 +504,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kdlbs/kandev
+          images: ghcr.io/avatarganymede/pcraft
 
       - name: Build and push (arm64 staging tag)
         id: build
@@ -538,7 +534,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kdlbs/kandev
+          images: ghcr.io/avatarganymede/pcraft
           tags: |
             type=raw,value=${{ needs.prepare.outputs.version }}
             type=raw,value=${{ needs.prepare.outputs.tag }}
@@ -562,8 +558,8 @@ jobs:
       # per-arch jobs just pushed.
       - name: Combine arch images into multi-arch tags
         env:
-          AMD64_REF: ghcr.io/kdlbs/kandev@${{ needs.docker-amd64.outputs.digest }}
-          ARM64_REF: ghcr.io/kdlbs/kandev@${{ needs.docker-arm64.outputs.digest }}
+          AMD64_REF: ghcr.io/avatarganymede/pcraft@${{ needs.docker-amd64.outputs.digest }}
+          ARM64_REF: ghcr.io/avatarganymede/pcraft@${{ needs.docker-arm64.outputs.digest }}
           TAGS: ${{ steps.meta.outputs.tags }}
         run: |
           set -euo pipefail
@@ -590,7 +586,7 @@ jobs:
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     env:
-      STAGING_IMAGE: ghcr.io/kdlbs/kandev:universal-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-amd64
+      STAGING_IMAGE: ghcr.io/avatarganymede/pcraft:universal-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-amd64
     steps:
       - uses: actions/checkout@v6
         with:
@@ -609,7 +605,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kdlbs/kandev
+          images: ghcr.io/avatarganymede/pcraft
 
       - name: Build and push (universal amd64 staging tag)
         id: build
@@ -620,7 +616,7 @@ jobs:
           push: true
           platforms: linux/amd64
           build-args: |
-            BASE_IMAGE=ghcr.io/kdlbs/kandev:${{ needs.prepare.outputs.tag }}
+            BASE_IMAGE=ghcr.io/avatarganymede/pcraft:${{ needs.prepare.outputs.tag }}
           tags: ${{ env.STAGING_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
           # provenance/sbom off so `imagetools inspect --raw` on the staging
@@ -642,7 +638,7 @@ jobs:
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     env:
-      STAGING_IMAGE: ghcr.io/kdlbs/kandev:universal-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-arm64
+      STAGING_IMAGE: ghcr.io/avatarganymede/pcraft:universal-staging-${{ needs.prepare.outputs.tag }}-${{ github.run_id }}-arm64
     steps:
       - uses: actions/checkout@v4
         with:
@@ -661,7 +657,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kdlbs/kandev
+          images: ghcr.io/avatarganymede/pcraft
 
       - name: Build and push (universal arm64 staging tag)
         id: build
@@ -672,7 +668,7 @@ jobs:
           push: true
           platforms: linux/arm64
           build-args: |
-            BASE_IMAGE=ghcr.io/kdlbs/kandev:${{ needs.prepare.outputs.tag }}
+            BASE_IMAGE=ghcr.io/avatarganymede/pcraft:${{ needs.prepare.outputs.tag }}
           tags: ${{ env.STAGING_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: false
@@ -691,8 +687,8 @@ jobs:
       contents: read
       packages: write
     env:
-      AMD64_REF: ghcr.io/kdlbs/kandev@${{ needs.docker-universal-amd64.outputs.digest }}
-      ARM64_REF: ghcr.io/kdlbs/kandev@${{ needs.docker-universal-arm64.outputs.digest }}
+      AMD64_REF: ghcr.io/avatarganymede/pcraft@${{ needs.docker-universal-amd64.outputs.digest }}
+      ARM64_REF: ghcr.io/avatarganymede/pcraft@${{ needs.docker-universal-arm64.outputs.digest }}
     steps:
       - uses: docker/setup-buildx-action@v3
 
@@ -734,9 +730,9 @@ jobs:
         run: |
           set -euo pipefail
           docker buildx imagetools create \
-            --tag "ghcr.io/kdlbs/kandev:${{ needs.prepare.outputs.version }}-universal" \
-            --tag "ghcr.io/kdlbs/kandev:${{ needs.prepare.outputs.tag }}-universal" \
-            --tag "ghcr.io/kdlbs/kandev:universal" \
+            --tag "ghcr.io/avatarganymede/pcraft:${{ needs.prepare.outputs.version }}-universal" \
+            --tag "ghcr.io/avatarganymede/pcraft:${{ needs.prepare.outputs.tag }}-universal" \
+            --tag "ghcr.io/avatarganymede/pcraft:universal" \
             "$AMD64_REF" "$ARM64_REF"
 
   publish-release:
@@ -772,7 +768,7 @@ jobs:
           set -euo pipefail
           required_platforms=(linux-x64 linux-arm64 macos-x64 macos-arm64 windows-x64)
           for platform in "${required_platforms[@]}"; do
-            archive="dist/release-assets/kandev-${platform}.tar.gz"
+            archive="dist/release-assets/pcraft-${platform}.tar.gz"
             checksum="${archive}.sha256"
             if [ ! -f "$archive" ]; then
               echo "Missing required archive: $archive" >&2
@@ -792,8 +788,8 @@ jobs:
           name: ${{ needs.prepare.outputs.tag }}
           body_path: RELEASE_NOTES.md
           files: |
-            dist/release-assets/kandev-*.tar.gz
-            dist/release-assets/kandev-*.tar.gz.sha256
+            dist/release-assets/pcraft-*.tar.gz
+            dist/release-assets/pcraft-*.tar.gz.sha256
 
   publish-npm:
     name: Publish npm packages
@@ -827,24 +823,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash scripts/release/publish-npm.sh \
-            "${{ needs.prepare.outputs.version }}" \
-            "${{ needs.prepare.outputs.tag }}"
-
-  update-homebrew-tap:
-    name: Update Homebrew tap
-    needs: [prepare, publish-release]
-    if: ${{ !inputs.dry_run }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.prepare.outputs.tag }}
-
-      - name: Update Homebrew tap formula
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
-        run: |
-          bash scripts/release/update-homebrew-tap.sh \
             "${{ needs.prepare.outputs.version }}" \
             "${{ needs.prepare.outputs.tag }}"

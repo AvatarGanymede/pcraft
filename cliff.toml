@@ -4,7 +4,7 @@
 [changelog]
 header = """# Changelog
 
-All notable changes to Kandev.\n
+All notable changes to pcraft.\n
 """
 body = """
 {# Update when team changes — must match GitHub login (lowercased). Check repo admins at https://github.com/orgs/kdlbs/people #}\
@@ -26,8 +26,8 @@ trim = true
 footer = ""
 
 [remote.github]
-owner = "kdlbs"
-repo = "kandev"
+owner = "AvatarGanymede"
+repo = "pcraft"
 
 [git]
 conventional_commits = true
@@ -35,7 +35,7 @@ filter_unconventional = false
 split_commits = false
 commit_preprocessors = [
   # Convert (#NNN) references into clickable GitHub PR links
-  { pattern = '\(#(\d+)\)', replace = "([#${1}](https://github.com/kdlbs/kandev/pull/${1}))" },
+  { pattern = '\(#(\d+)\)', replace = "([#${1}](https://github.com/AvatarGanymede/pcraft/pull/${1}))" },
 ]
 commit_parsers = [
   { message = "^feat", group = "<!-- 0 -->Features" },

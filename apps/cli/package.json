@@ -1,0 +1,36 @@
+{
+  "name": "@beilin/pcraft",
+  "version": "0.1.1-beilin-test.0",
+  "private": false,
+  "description": "Launcher for pcraft — GUI-driven Claude Code development with P4 workspaces",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AvatarGanymede/pcraft.git"
+  },
+  "homepage": "https://github.com/AvatarGanymede/pcraft",
+  "type": "commonjs",
+  "bin": {
+    "pcraft": "bin/cli.js"
+  },
+  "main": "bin/native-shim.js",
+  "files": [
+    "bin/cli.js",
+    "bin/native-shim.js"
+  ],
+  "engines": {
+    "npm": ">=7"
+  },
+  "optionalDependencies": {
+    "@beilin/runtime-linux-x64": "0.0.0-bootstrap",
+    "@beilin/runtime-linux-arm64": "0.0.0-bootstrap",
+    "@beilin/runtime-darwin-x64": "0.0.0-bootstrap",
+    "@beilin/runtime-darwin-arm64": "0.0.0-bootstrap",
+    "@beilin/runtime-win32-x64": "0.0.0-bootstrap"
+  },
+  "scripts": {
+    "build": "node -c bin/cli.js && node -c bin/native-shim.js",
+    "test": "node --test bin/native-shim.test.mjs",
+    "prepublishOnly": "npm run build"
+  }
+}

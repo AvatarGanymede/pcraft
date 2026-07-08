@@ -15,7 +15,7 @@
 # vanilla image inside the same run (so universal-of-X.Y.Z is built on top
 # of vanilla-X.Y.Z, not on whatever :latest happens to be).
 
-ARG BASE_IMAGE=ghcr.io/kdlbs/kandev:latest
+ARG BASE_IMAGE=ghcr.io/avatarganymede/pcraft:latest
 FROM ${BASE_IMAGE}
 
 USER root
@@ -217,4 +217,4 @@ ENV PATH=$PATH:/usr/local/go/bin:/usr/local/cargo/bin
 # Drop back to the unprivileged user. Matches the vanilla image's runtime
 # user; the docker-entrypoint.sh in the base image handles root → kandev
 # privilege drop via gosu for users who run the container as root.
-USER kandev
+USER pcraft

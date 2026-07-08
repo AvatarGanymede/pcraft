@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Finalize the dist/kandev/ release layout from already-built pieces.
+# Finalize the dist/pcraft/ release layout from already-built pieces.
 # Caller must have run, in this order:
 #   - Vite assets synced into apps/backend/internal/webapp/embedded/generated
-#   - go build ./cmd/{kandev,agentctl} -o dist/kandev/bin/...
-# After this: dist/kandev/bin is ready to install or tar.
+#   - go build ./cmd/{pcraft,agentctl} -o dist/pcraft/bin/...
+# After this: dist/pcraft/bin is ready to install or tar.
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-BUNDLE="$ROOT_DIR/dist/kandev"
+BUNDLE="$ROOT_DIR/dist/pcraft"
 
-if [ ! -f "$BUNDLE/bin/kandev" ] && [ ! -f "$BUNDLE/bin/kandev.exe" ]; then
-  echo "Missing native launcher in $BUNDLE/bin; build cmd/kandev first" >&2
+if [ ! -f "$BUNDLE/bin/pcraft" ] && [ ! -f "$BUNDLE/bin/pcraft.exe" ]; then
+  echo "Missing native launcher in $BUNDLE/bin; build cmd/pcraft first" >&2
   exit 1
 fi
 

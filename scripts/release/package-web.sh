@@ -10,7 +10,7 @@ echo "Packaging Vite web output for release..."
 
 if [ ! -f "$WEB_DIR/dist/index.html" ]; then
   echo "Missing Vite output at $WEB_DIR/dist/index.html"
-  echo "Run: pnpm -C apps --filter @kandev/web build:vite"
+  echo "Run: pnpm -C apps --filter @pcraft/web build"
   exit 1
 fi
 "$ROOT_DIR/scripts/release/validate-web-bundle.sh" "$WEB_DIR/dist"

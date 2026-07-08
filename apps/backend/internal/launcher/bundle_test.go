@@ -9,7 +9,7 @@ import (
 
 func TestValidateRuntimeBundleAcceptsSingleBinaryLayout(t *testing.T) {
 	dir := t.TempDir()
-	writeFile(t, filepath.Join(dir, "bin", "kandev"))
+	writeFile(t, filepath.Join(dir, "bin", "pcraft"))
 	writeFile(t, filepath.Join(dir, "bin", "agentctl"))
 	if requiresAgentctlLinuxAMD64(runtime.GOOS, runtime.GOARCH) {
 		writeFile(t, filepath.Join(dir, "bin", "agentctl-linux-amd64"))
@@ -19,7 +19,7 @@ func TestValidateRuntimeBundleAcceptsSingleBinaryLayout(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if bundle.Launcher != filepath.Join(dir, "bin", "kandev") {
+	if bundle.Launcher != filepath.Join(dir, "bin", "pcraft") {
 		t.Fatalf("Launcher = %q", bundle.Launcher)
 	}
 }

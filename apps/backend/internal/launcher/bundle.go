@@ -16,13 +16,13 @@ type runtimeBundle struct {
 func resolveRuntimeBundle() (runtimeBundle, error) {
 	dir := os.Getenv("PCRAFT_BUNDLE_DIR")
 	if dir == "" {
-		return runtimeBundle{}, fmt.Errorf("no Kandev runtime found; PCRAFT_BUNDLE_DIR is not set")
+		return runtimeBundle{}, fmt.Errorf("no pcraft runtime found; PCRAFT_BUNDLE_DIR is not set")
 	}
 	return validateRuntimeBundle(dir, "env")
 }
 
 func validateRuntimeBundle(dir, source string) (runtimeBundle, error) {
-	launcher := filepath.Join(dir, "bin", executableName("kandev"))
+	launcher := filepath.Join(dir, "bin", executableName("pcraft"))
 	if !exists(launcher) {
 		return runtimeBundle{}, fmt.Errorf("launcher binary not found in bundle at %s", launcher)
 	}
