@@ -7,7 +7,7 @@ import { buildSettingsInitialStateForRoute } from "./settings-routes";
 describe("buildSettingsInitialStateForRoute", () => {
   it("prefers the workspace matching the URL path param", () => {
     const state = buildState({
-      pathname: "/settings/workspace/ws-2/repositories",
+      pathname: "/settings/workspace/ws-2/workflows",
       workspaces: workspaceRows(["ws-1", "ws-2"]),
       userSettingsResponse: userSettings({ workspace_id: workspaceId("ws-1") }),
     });
@@ -18,7 +18,7 @@ describe("buildSettingsInitialStateForRoute", () => {
 
   it("falls back to the settings workspace_id when no URL param matches", () => {
     const state = buildState({
-      pathname: "/settings/workspace/missing/repositories",
+      pathname: "/settings/workspace/missing/workflows",
       workspaces: workspaceRows(["ws-1", "ws-2"]),
       userSettingsResponse: userSettings({ workspace_id: workspaceId("ws-2") }),
     });
@@ -93,7 +93,6 @@ function workspaceRows(ids: string[]): ListWorkspacesResponse["workspaces"] {
     name: `Workspace ${id}`,
     description: null,
     owner_id: "owner-1",
-    default_executor_id: null,
     default_environment_id: null,
     default_agent_profile_id: null,
     default_config_agent_profile_id: null,

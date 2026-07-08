@@ -37,20 +37,20 @@ describe("AppSidebarHeader", () => {
 
   afterEach(() => cleanup());
 
-  it("routes the Kandev brand to the active kanban workspace home", () => {
+  it("routes the PCraft brand to the active kanban workspace home", () => {
     renderHeader();
 
-    expect(screen.getByRole("link", { name: "Kandev home" }).getAttribute("href")).toBe(
+    expect(screen.getByRole("link", { name: "PCraft home" }).getAttribute("href")).toBe(
       "/?workspaceId=kanban-1",
     );
   });
 
-  it("routes the Kandev brand to the active office workspace home", () => {
+  it("routes the PCraft brand to the active office workspace home", () => {
     state.workspaces.activeId = "office-1";
 
     renderHeader();
 
-    expect(screen.getByRole("link", { name: "Kandev home" }).getAttribute("href")).toBe(
+    expect(screen.getByRole("link", { name: "PCraft home" }).getAttribute("href")).toBe(
       "/office?workspaceId=office-1",
     );
   });

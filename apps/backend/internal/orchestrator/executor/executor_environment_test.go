@@ -231,22 +231,22 @@ func TestBuildResumeRequest_ReusesTaskEnvironmentRuntimeMetadata(t *testing.T) {
 		ID:                "session-new",
 		TaskID:            "task-1",
 		AgentProfileID:    "profile-1",
-		ExecutorID:        models.ExecutorIDLocalDocker,
+		ExecutorID:        "exec-mock-remote",
 		TaskEnvironmentID: "env-1",
 		State:             models.TaskSessionStateWaitingForInput,
 		StartedAt:         now,
 		UpdatedAt:         now,
 	}
-	repo.executors[models.ExecutorIDLocalDocker] = &models.Executor{
-		ID:        models.ExecutorIDLocalDocker,
-		Type:      models.ExecutorTypeLocalDocker,
+	repo.executors["exec-mock-remote"] = &models.Executor{
+		ID:        "exec-mock-remote",
+		Type:      models.ExecutorTypeMockRemote,
 		Status:    models.ExecutorStatusActive,
 		Resumable: true,
 	}
 	repo.taskEnvironments["env-1"] = &models.TaskEnvironment{
 		ID:           "env-1",
 		TaskID:       "task-1",
-		ExecutorType: string(models.ExecutorTypeLocalDocker),
+		ExecutorType: string(models.ExecutorTypeMockRemote),
 		ContainerID:  "container-old",
 		Status:       models.TaskEnvironmentStatusReady,
 	}
@@ -262,7 +262,7 @@ func TestBuildResumeRequest_ReusesTaskEnvironmentRuntimeMetadata(t *testing.T) {
 		TaskID:           "task-1",
 		AgentExecutionID: "exec-old",
 		ContainerID:      "container-old",
-		Runtime:          models.ExecutorTypeLocalDocker.Runtime(),
+		Runtime:          models.ExecutorTypeMockRemote.Runtime(),
 		Metadata: map[string]interface{}{
 			lifecycle.MetadataKeyAuthTokenSecret: "secret-token",
 			"task_description":                   "drop me",

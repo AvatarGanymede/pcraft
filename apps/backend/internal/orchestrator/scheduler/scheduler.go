@@ -311,8 +311,8 @@ func (s *Scheduler) processTasks(ctx context.Context) {
 			// Attempt retry
 			if !s.RetryTask(task.ID) {
 				// Retry limit exceeded, mark as failed
-				if stateErr := s.taskRepo.UpdateTaskState(ctx, task.ID, v1.TaskStateBacklog); stateErr != nil {
-					s.logger.Error("failed to update task state to BACKLOG",
+				if stateErr := s.taskRepo.UpdateTaskState(ctx, task.ID, v1.TaskStateFailed); stateErr != nil {
+					s.logger.Error("failed to update task state to FAILED",
 						zap.String("task_id", task.ID),
 						zap.Error(stateErr))
 				}

@@ -16,7 +16,6 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 	"github.com/AvatarGanymede/pcraft/internal/secrets"
-	"github.com/AvatarGanymede/pcraft/internal/task/models"
 	"github.com/AvatarGanymede/pcraft/internal/worktree"
 )
 
@@ -232,22 +231,13 @@ func (m *Manager) flushCachedPollMode(sessionID string) {
 	m.pollAggregator.FlushSessionMode(sessionID)
 }
 
-// SetWorktreeManager sets the worktree manager for Git worktree isolation.
-//
-// This must be called before launching agents if Git worktree support is enabled in the runtime.
-// The worktree manager creates isolated Git working directories for each agent execution,
-// allowing multiple agents to work on the same repository without conflicts.
-//
-// Call this during initialization, typically when setting up the orchestrator service.
-// If not set, agents will work directly in the repository's main working directory.
+// SetWorktreeManager sets the worktree manager used by legacy Git isolation
+// paths (office task-handoff cleanup, git diff). The worktree executor type has
+// been removed, so this no longer registers a dedicated env preparer — all
+// executors use the local preparer. Retained so callers that still hold a
+// worktree.Manager (git diff/cleanup) can wire it without a nil deref.
 func (m *Manager) SetWorktreeManager(worktreeMgr *worktree.Manager) {
 	m.worktreeMgr = worktreeMgr
-	// Register the worktree preparer so that executor type "worktree" gets
-	// worktree-specific preparation (create git worktree, checkout PR branch)
-	// instead of the generic local preparer.
-	if m.preparerRegistry != nil {
-		m.preparerRegistry.Register(models.ExecutorTypeWorktree, NewWorktreePreparer(worktreeMgr, m.logger))
-	}
 }
 
 // WorktreeManager returns the configured worktree manager. Returns nil

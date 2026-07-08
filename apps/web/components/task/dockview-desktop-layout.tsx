@@ -165,6 +165,26 @@ function PermanentTab(props: IDockviewPanelHeaderProps) {
   );
 }
 
+// The Changes panel's rich tab (diff-count badge, flash, auto-activate) was
+// removed in the P4 migration since pcraft has no per-session git change data,
+// but the layout still references `tabComponent: "changesTab"` — both the fresh
+// default (PANEL_REGISTRY.changes) and any layout persisted in localStorage.
+// Dockview's fromJSON throws "Only React.memo/ForwardRef/functional components
+// are accepted" for an unregistered tab component, which aborts deserialize and
+// leaves the task page blank. Register a plain (closeable) default tab so those
+// layouts deserialize cleanly.
+function ChangesTab(props: IDockviewPanelHeaderProps) {
+  const onDoubleClick = useTabMaximizeOnDoubleClick(props.api);
+  return (
+    <div
+      className="flex h-full items-center cursor-pointer select-none"
+      onDoubleClick={onDoubleClick}
+    >
+      <DockviewDefaultTab {...props} />
+    </div>
+  );
+}
+
 /** Sync the user's default saved layout from settings into the dockview store. */
 function useSyncUserDefaultLayout() {
   const savedLayouts = useAppStore((s) => s.userSettings.savedLayouts);
@@ -186,6 +206,7 @@ function useSyncUserDefaultLayout() {
 
 const tabComponents: Record<string, React.FunctionComponent<IDockviewPanelHeaderProps>> = {
   permanentTab: PermanentTab,
+  changesTab: ChangesTab,
   planTab: PlanTab,
   sessionTab: SessionTab,
   terminalTab: TerminalTab,

@@ -59,8 +59,8 @@ func (e *Executor) runAgentProcessAsync(ctx context.Context, taskID, sessionID, 
 					zap.Error(updateErr))
 			}
 			if escalateTaskOnFailure {
-				if updateErr := e.updateTaskState(updateCtx, taskID, v1.TaskStateBacklog); updateErr != nil {
-					e.logger.Warn("failed to mark task as backlog after start error",
+				if updateErr := e.updateTaskState(updateCtx, taskID, v1.TaskStateFailed); updateErr != nil {
+					e.logger.Warn("failed to mark task as failed after start error",
 						zap.String("task_id", taskID),
 						zap.Error(updateErr))
 				}
@@ -108,9 +108,12 @@ func (e *Executor) updateSessionState(ctx context.Context, taskID, sessionID str
 	return e.repo.UpdateTaskSessionState(ctx, sessionID, state, errorMessage)
 }
 
-// shouldUseWorktree returns true if the given executor type should use Git worktrees.
+// shouldUseWorktree always returns false: the worktree executor type has been
+// removed (P4 replaces Git worktree isolation). Retained as a single choke
+// point so the surrounding UseWorktree plumbing stays inert without threading
+// the change through every caller.
 func shouldUseWorktree(executorType string) bool {
-	return models.ExecutorType(executorType) == models.ExecutorTypeWorktree
+	return false
 }
 
 const providerGitHub = "github"
@@ -523,8 +526,8 @@ func (e *Executor) handleLaunchFailure(ctx context.Context, taskID, sessionID st
 			zap.String("session_id", sessionID),
 			zap.Error(updateErr))
 	}
-	if updateErr := e.updateTaskState(failCtx, taskID, v1.TaskStateBacklog); updateErr != nil {
-		e.logger.Warn("failed to mark task as backlog after launch error",
+	if updateErr := e.updateTaskState(failCtx, taskID, v1.TaskStateFailed); updateErr != nil {
+		e.logger.Warn("failed to mark task as failed after launch error",
 			zap.String("task_id", taskID),
 			zap.Error(updateErr))
 	}

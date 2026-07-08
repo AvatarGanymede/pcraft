@@ -2,19 +2,42 @@ package lifecycle
 
 import (
 	"context"
-	"io"
-	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
+	"github.com/AvatarGanymede/pcraft/internal/agent/executor"
 	"github.com/AvatarGanymede/pcraft/internal/agent/registry"
 	"github.com/AvatarGanymede/pcraft/internal/agent/usage"
+	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
+
+// MockExecutor is a base ExecutorBackend mock providing no-op defaults so
+// concrete test executors can embed it and override only the methods they
+// exercise. Name() returns the configured name; everything else is inert.
+type MockExecutor struct {
+	name executor.Name
+}
+
+func (m MockExecutor) Name() executor.Name                   { return m.name }
+func (m MockExecutor) HealthCheck(ctx context.Context) error { return nil }
+func (m MockExecutor) CreateInstance(ctx context.Context, req *ExecutorCreateRequest) (*ExecutorInstance, error) {
+	return nil, nil
+}
+func (m MockExecutor) StopInstance(ctx context.Context, instance *ExecutorInstance, force bool) error {
+	return nil
+}
+func (m MockExecutor) RecoverInstances(ctx context.Context) ([]*ExecutorInstance, error) {
+	return nil, nil
+}
+func (m MockExecutor) GetInteractiveRunner() *process.InteractiveRunner { return nil }
+func (m MockExecutor) RequiresCloneURL() bool                           { return false }
+func (m MockExecutor) ShouldApplyPreferredShell() bool                  { return false }
+func (m MockExecutor) IsAlwaysResumable() bool                          { return false }
 
 // testAgent implements agents.Agent for use in lifecycle tests.
 // Embed StandardPassthrough to optionally satisfy agents.PassthroughAgent.
@@ -65,74 +88,6 @@ var (
 	_ agents.Agent            = (*testAgent)(nil)
 	_ agents.PassthroughAgent = (*testAgent)(nil)
 )
-
-// MockDockerClient implements a mock for the docker.Client for testing
-type MockDockerClient struct {
-	CreateContainerFn  func(ctx context.Context, cfg docker.ContainerConfig) (string, error)
-	StartContainerFn   func(ctx context.Context, containerID string) error
-	StopContainerFn    func(ctx context.Context, containerID string, timeout time.Duration) error
-	KillContainerFn    func(ctx context.Context, containerID string, signal string) error
-	RemoveContainerFn  func(ctx context.Context, containerID string, force bool) error
-	GetContainerInfoFn func(ctx context.Context, containerID string) (*docker.ContainerInfo, error)
-	GetContainerLogsFn func(ctx context.Context, containerID string, follow bool, tail string) (io.ReadCloser, error)
-	ListContainersFn   func(ctx context.Context, labels map[string]string) ([]docker.ContainerInfo, error)
-}
-
-func (m *MockDockerClient) CreateContainer(ctx context.Context, cfg docker.ContainerConfig) (string, error) {
-	if m.CreateContainerFn != nil {
-		return m.CreateContainerFn(ctx, cfg)
-	}
-	return "mock-container-id", nil
-}
-
-func (m *MockDockerClient) StartContainer(ctx context.Context, containerID string) error {
-	if m.StartContainerFn != nil {
-		return m.StartContainerFn(ctx, containerID)
-	}
-	return nil
-}
-
-func (m *MockDockerClient) StopContainer(ctx context.Context, containerID string, timeout time.Duration) error {
-	if m.StopContainerFn != nil {
-		return m.StopContainerFn(ctx, containerID, timeout)
-	}
-	return nil
-}
-
-func (m *MockDockerClient) KillContainer(ctx context.Context, containerID string, signal string) error {
-	if m.KillContainerFn != nil {
-		return m.KillContainerFn(ctx, containerID, signal)
-	}
-	return nil
-}
-
-func (m *MockDockerClient) RemoveContainer(ctx context.Context, containerID string, force bool) error {
-	if m.RemoveContainerFn != nil {
-		return m.RemoveContainerFn(ctx, containerID, force)
-	}
-	return nil
-}
-
-func (m *MockDockerClient) GetContainerInfo(ctx context.Context, containerID string) (*docker.ContainerInfo, error) {
-	if m.GetContainerInfoFn != nil {
-		return m.GetContainerInfoFn(ctx, containerID)
-	}
-	return &docker.ContainerInfo{ID: containerID, State: "running"}, nil
-}
-
-func (m *MockDockerClient) GetContainerLogs(ctx context.Context, containerID string, follow bool, tail string) (io.ReadCloser, error) {
-	if m.GetContainerLogsFn != nil {
-		return m.GetContainerLogsFn(ctx, containerID, follow, tail)
-	}
-	return io.NopCloser(strings.NewReader("test logs")), nil
-}
-
-func (m *MockDockerClient) ListContainers(ctx context.Context, labels map[string]string) ([]docker.ContainerInfo, error) {
-	if m.ListContainersFn != nil {
-		return m.ListContainersFn(ctx, labels)
-	}
-	return []docker.ContainerInfo{}, nil
-}
 
 // MockEventBus implements bus.EventBus for testing
 type MockEventBus struct {

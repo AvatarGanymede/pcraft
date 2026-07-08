@@ -1,7 +1,7 @@
 ---
 name: debug
 description: Diagnose Kandev bugs, running-instance issues, UI/browser failures, and runtime behavior. Use when the user reports unexpected behavior, asks to investigate, asks to add logs/instrumentation, or when a fix needs root-cause evidence before implementing. Triage first, gather evidence safely, then hand off to /fix or /tdd for code changes.
-allowed-tools: Bash(curl:*) Bash(jq:*) Bash(npx:*) Bash(scripts/kandev-instances:*) Bash(scripts/kandev-logs:*) Bash(scripts/dev-isolated:*) Bash(scripts/kandev-kill:*) Bash(go:*) Bash(rg:*) Bash(grep:*)
+allowed-tools: Bash(curl:*) Bash(jq:*) Bash(npx:*) Bash(scripts/pcraft-instances:*) Bash(scripts/pcraft-logs:*) Bash(scripts/dev-isolated:*) Bash(scripts/pcraft-kill:*) Bash(go:*) Bash(rg:*) Bash(grep:*)
 ---
 
 # Debug
@@ -40,7 +40,7 @@ Rules:
 Start with the cheapest faithful reproduction:
 
 1. Backend logic: write a throwaway focused Go repro test against the real service path. If it reproduces, convert it via `/fix` or `/tdd`.
-2. Live instance: use `scripts/kandev-logs <port> --export` or `--level error`; do not relaunch.
+2. Live instance: use `scripts/pcraft-logs <port> --export` or `--level error`; do not relaunch.
 3. UI/browser: launch `scripts/dev-isolated --web`, drive `npx playwright-cli`, and correlate console/network state with backend logs.
 4. Unknown: trace from the symptom backward through code and add temporary instrumentation only where it will split the search space.
 

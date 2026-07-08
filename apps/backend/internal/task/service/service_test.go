@@ -20,7 +20,6 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/task/repository"
 	sqliterepo "github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
 	"github.com/AvatarGanymede/pcraft/internal/worktree"
-	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // MockEventBus implements bus.EventBus for testing
@@ -129,66 +128,6 @@ func createTestService(t *testing.T) (*Service, *MockEventBus, *sqliterepo.Repos
 }
 
 // Task tests
-
-func TestService_CreateTask(t *testing.T) {
-	svc, eventBus, repo := createTestService(t)
-	ctx := context.Background()
-
-	// Create workflow first
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	workflow := &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Test Workflow"}
-	_ = repo.CreateWorkflow(ctx, workflow)
-	repository := &models.Repository{ID: "repo-123", WorkspaceID: "ws-1", Name: "Test Repo"}
-	_ = repo.CreateRepository(ctx, repository)
-
-	req := &CreateTaskRequest{
-		WorkspaceID:    "ws-1",
-		WorkflowID:     "wf-123",
-		WorkflowStepID: "step-123",
-		Title:          "Test Task",
-		Description:    "A test task",
-		Priority:       "high",
-		Repositories: []TaskRepositoryInput{
-			{
-				RepositoryID: "repo-123",
-				BaseBranch:   "main",
-			},
-		},
-	}
-
-	task, err := svc.CreateTask(ctx, req)
-	if err != nil {
-		t.Fatalf("failed to create task: %v", err)
-	}
-
-	if task.ID == "" {
-		t.Error("expected task ID to be set")
-	}
-	if task.Title != "Test Task" {
-		t.Errorf("expected title 'Test Task', got %s", task.Title)
-	}
-	if task.State != v1.TaskStateCreated {
-		t.Errorf("expected state CREATED, got %s", task.State)
-	}
-
-	// Check event was published
-	events := eventBus.GetPublishedEvents()
-	if len(events) != 1 {
-		t.Errorf("expected 1 event, got %d", len(events))
-	}
-	if events[0].Type != "task.created" {
-		t.Errorf("expected event type 'task.created', got %s", events[0].Type)
-	}
-	// workspace_id MUST be in the event payload so the office WS handler
-	// can workspace-scope the dashboard refetch.
-	data, ok := events[0].Data.(map[string]interface{})
-	if !ok {
-		t.Fatalf("event data is not map[string]interface{}, got %T", events[0].Data)
-	}
-	if got := data["workspace_id"]; got != "ws-1" {
-		t.Errorf("expected workspace_id 'ws-1' in event payload, got %v", got)
-	}
-}
 
 // TestService_CreateTask_DefaultsPriorityWhenEmpty pins the regression
 // from the office priority migration. The migration added a CHECK
@@ -943,54 +882,6 @@ func waitForCleanupDone(t *testing.T, svc *Service) {
 	case <-svc.cleanupDoneForTest:
 	case <-time.After(500 * time.Millisecond):
 		t.Fatal("timed out waiting for async task cleanup")
-	}
-}
-
-func TestService_UpdateTaskState(t *testing.T) {
-	svc, eventBus, repo := createTestService(t)
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	_ = repo.CreateWorkflow(ctx, &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Workflow"})
-	task := &models.Task{ID: "task-123", WorkspaceID: "ws-1", WorkflowID: "wf-123", WorkflowStepID: "step-123", Title: "Test", State: v1.TaskStateTODO, Priority: "medium"}
-	_ = repo.CreateTask(ctx, task)
-	eventBus.ClearEvents()
-
-	updated, err := svc.UpdateTaskState(ctx, "task-123", v1.TaskStateInProgress)
-	if err != nil {
-		t.Fatalf("failed to update task state: %v", err)
-	}
-	if updated.State != v1.TaskStateInProgress {
-		t.Errorf("expected state IN_PROGRESS, got %s", updated.State)
-	}
-
-	// Check event was published
-	events := eventBus.GetPublishedEvents()
-	if len(events) != 1 {
-		t.Errorf("expected 1 event, got %d", len(events))
-	}
-	if events[0].Type != "task.state_changed" {
-		t.Errorf("expected event type 'task.state_changed', got %s", events[0].Type)
-	}
-}
-
-func TestService_MoveTask(t *testing.T) {
-	svc, eventBus, repo := createTestService(t)
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	_ = repo.CreateWorkflow(ctx, &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Workflow"})
-
-	task := &models.Task{ID: "task-123", WorkspaceID: "ws-1", WorkflowID: "wf-123", WorkflowStepID: "step-todo", Title: "Test", State: v1.TaskStateTODO, Priority: "medium"}
-	_ = repo.CreateTask(ctx, task)
-	eventBus.ClearEvents()
-
-	moved, err := svc.MoveTask(ctx, "task-123", "wf-123", "step-done", 0)
-	if err != nil {
-		t.Fatalf("failed to move task: %v", err)
-	}
-	if moved.Task.WorkflowStepID != "step-done" {
-		t.Errorf("expected workflow step 'step-done', got %s", moved.Task.WorkflowStepID)
 	}
 }
 

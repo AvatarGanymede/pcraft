@@ -12,6 +12,8 @@ import type { WorkflowStep } from "@/lib/types/http";
 import { useHealthyAgentProfiles } from "@/hooks/domains/settings/use-healthy-agent-profiles";
 import { useDebouncedCallback } from "@/hooks/use-debounce";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/components/state-provider";
+import { resolveTaskFormConfig, fieldPlaceholderKey } from "@/lib/task-form-config";
 import {
   ScriptEditor,
   computeEditorHeight,
@@ -31,14 +33,36 @@ import {
   ChildrenCompletedSelect,
 } from "./workflow-pipeline-editor-step-actions";
 
-const STEP_PROMPT_PLACEHOLDERS: ScriptPlaceholder[] = [
-  {
-    key: "task_prompt",
-    description: "The original task description provided by the user",
-    example: "Implement user authentication with OAuth2",
-    executor_types: [],
-  },
-];
+const TASK_PROMPT_PLACEHOLDER: ScriptPlaceholder = {
+  key: "task_prompt",
+  description: "The original task description provided by the user",
+  example: "Implement user authentication with OAuth2",
+  executor_types: [],
+};
+
+/**
+ * Step-prompt placeholders: always {{task_prompt}}, plus a {{prompt_<def>}}
+ * entry for every field in the workspace's custom new-task form so step
+ * prompts can reference the individual values the user entered.
+ */
+function useStepPromptPlaceholders(workspaceId?: string): ScriptPlaceholder[] {
+  const config = useAppStore((state) => {
+    const ws = workspaceId
+      ? state.workspaces.items.find((w) => w.id === workspaceId)
+      : undefined;
+    return ws?.task_form_config ?? null;
+  });
+  const resolved = resolveTaskFormConfig(config);
+  return [
+    TASK_PROMPT_PLACEHOLDER,
+    ...resolved.fields.map((f) => ({
+      key: fieldPlaceholderKey(f.def),
+      description: f.label || f.def,
+      example: f.placeholder ?? "",
+      executor_types: [],
+    })),
+  ];
+}
 
 // --- StepAgentProfileSelect ---
 
@@ -423,6 +447,7 @@ type StepPromptSectionProps = {
   onLocalPromptChange: (prompt: string) => void;
   debouncedUpdatePrompt: (prompt: string) => void;
   readOnly: boolean;
+  placeholders: ScriptPlaceholder[];
 };
 
 function StepPromptSection({
@@ -431,6 +456,7 @@ function StepPromptSection({
   onLocalPromptChange,
   debouncedUpdatePrompt,
   readOnly,
+  placeholders,
 }: StepPromptSectionProps) {
   return (
     <div className="space-y-2">
@@ -473,7 +499,7 @@ function StepPromptSection({
           height={computeEditorHeight(localPrompt)}
           lineNumbers="off"
           readOnly={readOnly}
-          placeholders={STEP_PROMPT_PLACEHOLDERS}
+          placeholders={placeholders}
         />
       </div>
       <p className="text-[11px] text-muted-foreground/60">
@@ -490,6 +516,7 @@ function StepPromptSection({
 type StepConfigPanelProps = {
   step: WorkflowStep;
   steps: WorkflowStep[];
+  workspaceId?: string;
   onUpdate: (updates: Partial<WorkflowStep>) => void;
   onRemove: () => void;
   readOnly?: boolean;
@@ -498,12 +525,14 @@ type StepConfigPanelProps = {
 export function StepConfigPanel({
   step,
   steps,
+  workspaceId,
   onUpdate,
   onRemove,
   readOnly = false,
 }: StepConfigPanelProps) {
   const [localName, setLocalName] = useState(step.name);
   const [localPrompt, setLocalPrompt] = useState(step.prompt ?? "");
+  const promptPlaceholders = useStepPromptPlaceholders(workspaceId);
 
   const debouncedUpdateName = useDebouncedCallback((name: string) => {
     onUpdate({ name });
@@ -552,6 +581,7 @@ export function StepConfigPanel({
           onLocalPromptChange={setLocalPrompt}
           debouncedUpdatePrompt={debouncedUpdatePrompt}
           readOnly={readOnly}
+          placeholders={promptPlaceholders}
         />
       </div>
     </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "@/components/routing/app-link";
 import { useRouter } from "@/lib/routing/client-router";
-import { IconGitBranch, IconLayoutColumns, IconTrash } from "@tabler/icons-react";
+import { IconLayoutColumns, IconTrash } from "@tabler/icons-react";
 import { Button } from "@pcraft/ui/button";
 import { Input } from "@pcraft/ui/input";
 import { Label } from "@pcraft/ui/label";
@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from "@pcraft/ui/dialog";
 import { updateWorkspaceAction, deleteWorkspaceAction } from "@/app/actions/workspaces";
-import type { Executor } from "@/lib/types/http";
+import { listP4Workspaces, type P4Workspace } from "@/lib/api/domains/p4-api";
 import type { AgentProfileOption, WorkspaceState } from "@/lib/state/slices";
 
 type Workspace = WorkspaceState["items"][number];
@@ -27,6 +27,7 @@ import { useRequest } from "@/lib/http/use-request";
 import { useToast } from "@/components/toast-provider";
 import { useAppStore } from "@/components/state-provider";
 import { UnsavedChangesBadge, UnsavedSaveButton } from "@/components/settings/unsaved-indicator";
+import { WorkspaceTaskFormCard } from "@/components/settings/workspace-task-form-card";
 
 type WorkspaceEditClientProps = {
   workspaceId: string;
@@ -105,10 +106,6 @@ type WorkspaceSettingsCardProps = {
   isDirty: boolean;
   workspaceNameDraft: string;
   onNameChange: (value: string) => void;
-  defaultExecutorId: string;
-  onExecutorChange: (value: string) => void;
-  activeExecutors: Executor[];
-  executorsEmpty: boolean;
   defaultAgentProfileId: string;
   onAgentProfileChange: (value: string) => void;
   agentProfiles: AgentProfileOption[];
@@ -121,10 +118,6 @@ function WorkspaceSettingsCard({
   isDirty,
   workspaceNameDraft,
   onNameChange,
-  defaultExecutorId,
-  onExecutorChange,
-  activeExecutors,
-  executorsEmpty,
   defaultAgentProfileId,
   onAgentProfileChange,
   agentProfiles,
@@ -132,7 +125,6 @@ function WorkspaceSettingsCard({
   saveStatus,
   onSave,
 }: WorkspaceSettingsCardProps) {
-  const executorOptions = activeExecutors.map((e: Executor) => ({ id: e.id, name: e.name }));
   const profileOptions = agentProfiles.map((p: AgentProfileOption) => ({
     id: p.id,
     name: p.label,
@@ -156,14 +148,6 @@ function WorkspaceSettingsCard({
             />
           </div>
           <SelectField
-            label="Default Executor"
-            value={defaultExecutorId}
-            onChange={onExecutorChange}
-            options={executorsEmpty ? [] : executorOptions}
-            emptyLabel="No executors available"
-            emptyValue=""
-          />
-          <SelectField
             label="Default Agent Profile"
             value={defaultAgentProfileId}
             onChange={onAgentProfileChange}
@@ -171,6 +155,126 @@ function WorkspaceSettingsCard({
             emptyLabel="No agent profiles available"
             emptyValue="empty-agent-profiles"
           />
+          <div className="flex justify-end pt-2">
+            <UnsavedSaveButton
+              isDirty={isDirty}
+              isLoading={isLoading}
+              status={saveStatus}
+              onClick={onSave}
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+type P4WorkspaceCardProps = {
+  isDirty: boolean;
+  p4Client: string;
+  onP4ClientChange: (value: string) => void;
+  p4Root: string;
+  p4Stream: string;
+  isLoading: boolean;
+  saveStatus: "idle" | "loading" | "success" | "error";
+  onSave: () => void;
+};
+
+// Binds this workspace 1:1 to a local P4 client (workspace). The dropdown is
+// populated from the developer's local `p4 clients`; on save the backend
+// resolves the client's Root/Stream and a task created in this workspace uses
+// that Root as its working directory.
+function P4WorkspaceCard({
+  isDirty,
+  p4Client,
+  onP4ClientChange,
+  p4Root,
+  p4Stream,
+  isLoading,
+  saveStatus,
+  onSave,
+}: P4WorkspaceCardProps) {
+  const [clients, setClients] = useState<P4Workspace[]>([]);
+  const [clientsLoading, setClientsLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setClientsLoading(true);
+    void listP4Workspaces()
+      .then((resp) => {
+        if (!cancelled) setClients(resp.workspaces ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setClients([]);
+      })
+      .finally(() => {
+        if (!cancelled) setClientsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // The saved client may not appear in the freshly-listed clients (e.g. p4 not
+  // reachable this session); keep it selectable so we don't silently drop it.
+  const options = clients.map((c) => ({ id: c.p4client || c.id, name: c.name || c.p4client }));
+  if (p4Client && !options.some((o) => o.id === p4Client)) {
+    options.unshift({ id: p4Client, name: p4Client });
+  }
+
+  // Show the selected client's Root/Stream immediately (before saving) by
+  // reading them from the freshly-listed clients. Fall back to the saved
+  // values (from the workspace binding) when the client isn't in the list yet
+  // — e.g. the saved selection while the list is still loading.
+  const selected = clients.find((c) => (c.p4client || c.id) === p4Client);
+  const displayRoot = selected?.root_path ?? p4Root;
+  const displayStream = selected?.p4stream ?? p4Stream;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <span>P4 Workspace</span>
+          {isDirty && <UnsavedChangesBadge />}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>P4 Client</Label>
+            <Select
+              value={p4Client || "none"}
+              onValueChange={(v) => onP4ClientChange(v === "none" ? "" : v)}
+              disabled={clientsLoading}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder={clientsLoading ? "Loading P4 clients…" : "Select a P4 client"} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Not bound</SelectItem>
+                {options.map((opt) => (
+                  <SelectItem key={opt.id} value={opt.id}>
+                    {opt.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Tasks in this workspace run in the selected client's root directory.
+            </p>
+          </div>
+          {p4Client ? (
+            <div className="grid gap-1 text-xs text-muted-foreground">
+              <div>
+                <span className="font-medium text-foreground">Root:</span>{" "}
+                <span className="font-mono">{displayRoot || "—"}</span>
+              </div>
+              <div>
+                <span className="font-medium text-foreground">Stream:</span>{" "}
+                <span className="font-mono">{displayStream || "—"}</span>
+              </div>
+            </div>
+          ) : null}
           <div className="flex justify-end pt-2">
             <UnsavedSaveButton
               isDirty={isDirty}
@@ -196,13 +300,7 @@ function WorkspaceLinksCard({ workspaceId }: WorkspaceLinksCardProps) {
         <CardTitle>Workspace Links</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Button asChild variant="outline" className="justify-start gap-2">
-            <Link href={`/settings/workspace/${workspaceId}/repositories`}>
-              <IconGitBranch className="h-4 w-4" />
-              Repositories
-            </Link>
-          </Button>
+        <div className="grid gap-3">
           <Button asChild variant="outline" className="justify-start gap-2">
             <Link href={`/settings/workspace/${workspaceId}/workflows`}>
               <IconLayoutColumns className="h-4 w-4" />
@@ -303,26 +401,26 @@ function DeleteWorkspaceCard({
 
 type SavedState = {
   name: string;
-  executorId: string;
   agentProfileId: string;
+  p4Client: string;
 };
 
 function buildWorkspaceUpdates(
-  draft: { name: string; executorId: string; agentProfileId: string },
+  draft: { name: string; agentProfileId: string; p4Client: string },
   saved: SavedState,
 ): Record<string, string | undefined> {
   const updates: Record<string, string | undefined> = {};
   if (draft.name.trim() !== saved.name) updates.name = draft.name.trim();
-  if (draft.executorId !== saved.executorId) updates.default_executor_id = draft.executorId;
   if (draft.agentProfileId !== saved.agentProfileId)
     updates.default_agent_profile_id = draft.agentProfileId;
+  if (draft.p4Client !== saved.p4Client) updates.p4_client = draft.p4Client;
   return updates;
 }
 
 type WorkspaceDraftState = {
   workspaceNameDraft: string;
-  defaultExecutorId: string;
   defaultAgentProfileId: string;
+  p4Client: string;
 };
 
 type SaveRequestLike = {
@@ -360,8 +458,8 @@ function buildSaveHandler({
       const updates = buildWorkspaceUpdates(
         {
           name: draft.workspaceNameDraft,
-          executorId: draft.defaultExecutorId,
           agentProfileId: draft.defaultAgentProfileId,
+          p4Client: draft.p4Client,
         },
         savedState,
       );
@@ -369,8 +467,8 @@ function buildSaveHandler({
       setCurrentWorkspace((prev) => ({ ...prev, ...updated }));
       setSavedState({
         name: updated.name ?? draft.workspaceNameDraft.trim(),
-        executorId: updated.default_executor_id ?? "",
         agentProfileId: updated.default_agent_profile_id ?? "",
+        p4Client: updated.p4_client ?? "",
       });
       setWorkspaces(
         workspaces.map((ws: Workspace) =>
@@ -378,9 +476,11 @@ function buildSaveHandler({
             ? {
                 ...ws,
                 name: updated.name,
-                default_executor_id: updated.default_executor_id ?? null,
                 default_environment_id: updated.default_environment_id ?? null,
                 default_agent_profile_id: updated.default_agent_profile_id ?? null,
+                p4_client: updated.p4_client ?? "",
+                p4_root: updated.p4_root ?? "",
+                p4_stream: updated.p4_stream ?? "",
               }
             : ws,
         ),
@@ -400,19 +500,18 @@ function useWorkspaceEditForm(workspace: Workspace) {
   const { toast } = useToast();
   const [currentWorkspace, setCurrentWorkspace] = useState<Workspace>(workspace);
   const [workspaceNameDraft, setWorkspaceNameDraft] = useState(workspace.name ?? "");
-  const [defaultExecutorId, setDefaultExecutorId] = useState(workspace.default_executor_id ?? "");
   const [defaultAgentProfileId, setDefaultAgentProfileId] = useState(
     workspace.default_agent_profile_id ?? "",
   );
+  const [p4Client, setP4Client] = useState(workspace.p4_client ?? "");
   const [savedState, setSavedState] = useState<SavedState>({
     name: workspace.name ?? "",
-    executorId: workspace.default_executor_id ?? "",
     agentProfileId: workspace.default_agent_profile_id ?? "",
+    p4Client: workspace.p4_client ?? "",
   });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
 
-  const executors = useAppStore((state) => state.executors.items);
   const agentProfiles = useAppStore((state) => state.agentProfiles.items);
   const workspaces = useAppStore((state) => state.workspaces.items);
   const setWorkspaces = useAppStore((state) => state.setWorkspaces);
@@ -420,15 +519,14 @@ function useWorkspaceEditForm(workspace: Workspace) {
   const saveWorkspaceRequest = useRequest(updateWorkspaceAction);
   const deleteWorkspaceRequest = useRequest(deleteWorkspaceAction);
 
-  const activeExecutors = executors.filter((executor: Executor) => executor.status === "active");
   const isDirty =
     workspaceNameDraft.trim() !== savedState.name ||
-    defaultExecutorId !== savedState.executorId ||
-    defaultAgentProfileId !== savedState.agentProfileId;
+    defaultAgentProfileId !== savedState.agentProfileId ||
+    p4Client !== savedState.p4Client;
 
   const handleSave = buildSaveHandler({
     currentWorkspace,
-    draft: { workspaceNameDraft, defaultExecutorId, defaultAgentProfileId },
+    draft: { workspaceNameDraft, defaultAgentProfileId, p4Client },
     savedState,
     isDirty,
     setSavedState,
@@ -464,16 +562,14 @@ function useWorkspaceEditForm(workspace: Workspace) {
     currentWorkspace,
     workspaceNameDraft,
     setWorkspaceNameDraft,
-    defaultExecutorId,
-    setDefaultExecutorId,
     defaultAgentProfileId,
     setDefaultAgentProfileId,
+    p4Client,
+    setP4Client,
     deleteDialogOpen,
     setDeleteDialogOpen: handleDeleteDialogOpenChange,
     deleteConfirmText,
     setDeleteConfirmText,
-    activeExecutors,
-    executors,
     agentProfiles,
     isDirty,
     saveWorkspaceRequest,
@@ -487,16 +583,14 @@ function WorkspaceEditForm({ workspace }: WorkspaceEditFormProps) {
     currentWorkspace,
     workspaceNameDraft,
     setWorkspaceNameDraft,
-    defaultExecutorId,
-    setDefaultExecutorId,
     defaultAgentProfileId,
     setDefaultAgentProfileId,
+    p4Client,
+    setP4Client,
     deleteDialogOpen,
     setDeleteDialogOpen,
     deleteConfirmText,
     setDeleteConfirmText,
-    activeExecutors,
-    executors,
     agentProfiles,
     isDirty,
     saveWorkspaceRequest,
@@ -509,7 +603,7 @@ function WorkspaceEditForm({ workspace }: WorkspaceEditFormProps) {
       <div>
         <h2 className="text-2xl font-bold">{currentWorkspace.name}</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage workspace details and jump into workflows or repositories.
+          Manage workspace details, its P4 workspace, and workflows.
         </p>
       </div>
       <Separator />
@@ -517,16 +611,26 @@ function WorkspaceEditForm({ workspace }: WorkspaceEditFormProps) {
         isDirty={isDirty}
         workspaceNameDraft={workspaceNameDraft}
         onNameChange={setWorkspaceNameDraft}
-        defaultExecutorId={defaultExecutorId}
-        onExecutorChange={setDefaultExecutorId}
-        activeExecutors={activeExecutors}
-        executorsEmpty={executors.length === 0}
         defaultAgentProfileId={defaultAgentProfileId}
         onAgentProfileChange={setDefaultAgentProfileId}
         agentProfiles={agentProfiles}
         isLoading={saveWorkspaceRequest.isLoading}
         saveStatus={saveWorkspaceRequest.status}
         onSave={handleSave}
+      />
+      <P4WorkspaceCard
+        isDirty={isDirty}
+        p4Client={p4Client}
+        onP4ClientChange={setP4Client}
+        p4Root={currentWorkspace.p4_root ?? ""}
+        p4Stream={currentWorkspace.p4_stream ?? ""}
+        isLoading={saveWorkspaceRequest.isLoading}
+        saveStatus={saveWorkspaceRequest.status}
+        onSave={handleSave}
+      />
+      <WorkspaceTaskFormCard
+        workspaceId={currentWorkspace.id}
+        initialConfig={currentWorkspace.task_form_config ?? null}
       />
       <WorkspaceLinksCard workspaceId={currentWorkspace.id} />
       <Separator />

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# kandev-instances — list every running kandev backend instance on this host.
+# pcraft-instances — list every running kandev backend instance on this host.
 #
 # For each backend process (binary named `kandev` with a listening TCP socket)
 # it prints, tab-separated:
@@ -21,8 +21,8 @@
 # as `?` rather than failing the whole listing.
 #
 # Usage:
-#   scripts/kandev-instances            # human-readable table
-#   scripts/kandev-instances --raw      # tab-separated, no header (scriptable)
+#   scripts/pcraft-instances            # human-readable table
+#   scripts/pcraft-instances --raw      # tab-separated, no header (scriptable)
 #
 set -euo pipefail
 

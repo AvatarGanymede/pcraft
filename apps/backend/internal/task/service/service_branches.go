@@ -378,22 +378,11 @@ func (s *Service) defaultRepositoryIDForTask(existing []*models.TaskRepository) 
 // the executor type isn't fixed yet, and rejecting them would block the
 // pre-launch "set up multi-branch first, then start the agent" flow.
 func (s *Service) requireWorktreeExecutorForBranchAdd(ctx context.Context, taskID string) error {
-	if s.taskEnvironments == nil {
-		return nil
-	}
-	env, err := s.taskEnvironments.GetTaskEnvironmentByTaskID(ctx, taskID)
-	if err != nil {
-		return fmt.Errorf("look up task environment: %w", err)
-	}
-	if env == nil || env.ExecutorType == "" {
-		return nil
-	}
-	if env.ExecutorType != string(models.ExecutorTypeWorktree) {
-		return fmt.Errorf(
-			"add_branch_to_task is only supported on the worktree executor; this task uses %q",
-			env.ExecutorType,
-		)
-	}
+	// The worktree executor has been removed (P4 replaces Git worktree
+	// isolation) and Local is now the only executor, so the former
+	// "worktree executor required" gate is vacuous — allow all callers.
+	// Full removal of the add_branch_to_task feature is deferred to the Git
+	// deletion phase.
 	return nil
 }
 

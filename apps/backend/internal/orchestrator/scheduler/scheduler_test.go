@@ -269,7 +269,6 @@ func createTestTask(id string, priority int) *v1.Task {
 		WorkflowID: "test-wf",
 		Title:      "Test Task " + id,
 		Priority:   intPriorityToLabel(priority),
-		State:      v1.TaskStateTODO,
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),
 	}

@@ -206,10 +206,10 @@ export type WorkspacePayload = {
   name: string;
   description?: string;
   owner_id?: string;
-  default_executor_id?: string | null;
   default_environment_id?: string | null;
   default_agent_profile_id?: string | null;
   default_config_agent_profile_id?: string | null;
+  task_form_config?: import("@/lib/task-form-config").TaskFormConfig | null;
   created_at?: string;
   updated_at?: string;
 };

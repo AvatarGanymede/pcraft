@@ -39,7 +39,7 @@ npx playwright-cli goto http://localhost:<your_web_port>/some/path
 Correlate browser console, frontend log buffer, network activity, and backend logs from:
 
 ```bash
-scripts/kandev-logs <your_backend_port> --export --level error
+scripts/pcraft-logs <your_backend_port> --export --level error
 ```
 
 Close the browser when done unless the user asks to keep it open:

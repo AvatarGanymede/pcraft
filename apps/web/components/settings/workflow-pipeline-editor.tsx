@@ -42,6 +42,7 @@ import { StepConfigPanel } from "./workflow-pipeline-editor-panels";
 
 type WorkflowPipelineEditorProps = {
   steps: WorkflowStep[];
+  workspaceId?: string;
   onUpdateStep: (stepId: string, updates: Partial<WorkflowStep>) => void;
   onAddStep: () => void;
   onRemoveStep: (stepId: string) => void;
@@ -256,6 +257,7 @@ function StepDeleteConfirmation({
 
 export function WorkflowPipelineEditor({
   steps,
+  workspaceId,
   onUpdateStep,
   onAddStep,
   onRemoveStep,
@@ -344,6 +346,7 @@ export function WorkflowPipelineEditor({
           key={selectedStep.id}
           step={selectedStep}
           steps={steps}
+          workspaceId={workspaceId}
           onUpdate={(updates) => onUpdateStep(selectedStep.id, updates)}
           onRemove={() => requestRemoveStep(selectedStep.id)}
           readOnly={readOnly}

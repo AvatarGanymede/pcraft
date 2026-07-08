@@ -24,19 +24,22 @@ type WorkflowDTO struct {
 }
 
 type WorkspaceDTO struct {
-	ID                          string    `json:"id"`
-	Name                        string    `json:"name"`
-	Description                 *string   `json:"description,omitempty"`
-	OwnerID                     string    `json:"owner_id"`
-	DefaultExecutorID           *string   `json:"default_executor_id,omitempty"`
-	DefaultEnvironmentID        *string   `json:"default_environment_id,omitempty"`
-	DefaultAgentProfileID       *string   `json:"default_agent_profile_id,omitempty"`
-	DefaultConfigAgentProfileID *string   `json:"default_config_agent_profile_id,omitempty"`
-	TaskPrefix                  string    `json:"task_prefix,omitempty"`
-	TaskSequence                int       `json:"task_sequence,omitempty"`
-	OfficeWorkflowID            string    `json:"office_workflow_id,omitempty"`
-	CreatedAt                   time.Time `json:"created_at"`
-	UpdatedAt                   time.Time `json:"updated_at"`
+	ID                          string                `json:"id"`
+	Name                        string                `json:"name"`
+	Description                 *string               `json:"description,omitempty"`
+	OwnerID                     string                `json:"owner_id"`
+	DefaultEnvironmentID        *string               `json:"default_environment_id,omitempty"`
+	DefaultAgentProfileID       *string               `json:"default_agent_profile_id,omitempty"`
+	DefaultConfigAgentProfileID *string               `json:"default_config_agent_profile_id,omitempty"`
+	TaskPrefix                  string                `json:"task_prefix,omitempty"`
+	TaskSequence                int                   `json:"task_sequence,omitempty"`
+	OfficeWorkflowID            string                `json:"office_workflow_id,omitempty"`
+	TaskFormConfig              models.TaskFormConfig `json:"task_form_config"`
+	P4Client                    string                `json:"p4_client,omitempty"`
+	P4Root                      string                `json:"p4_root,omitempty"`
+	P4Stream                    string                `json:"p4_stream,omitempty"`
+	CreatedAt                   time.Time             `json:"created_at"`
+	UpdatedAt                   time.Time             `json:"updated_at"`
 }
 
 type RepositoryDTO struct {
@@ -421,13 +424,16 @@ func FromWorkspace(workspace *models.Workspace) WorkspaceDTO {
 		Name:                        workspace.Name,
 		Description:                 description,
 		OwnerID:                     workspace.OwnerID,
-		DefaultExecutorID:           workspace.DefaultExecutorID,
 		DefaultEnvironmentID:        workspace.DefaultEnvironmentID,
 		DefaultAgentProfileID:       workspace.DefaultAgentProfileID,
 		DefaultConfigAgentProfileID: workspace.DefaultConfigAgentProfileID,
 		TaskPrefix:                  workspace.TaskPrefix,
 		TaskSequence:                workspace.TaskSequence,
 		OfficeWorkflowID:            workspace.OfficeWorkflowID,
+		TaskFormConfig:              workspace.TaskFormConfig,
+		P4Client:                    workspace.P4Client,
+		P4Root:                      workspace.P4Root,
+		P4Stream:                    workspace.P4Stream,
 		CreatedAt:                   workspace.CreatedAt,
 		UpdatedAt:                   workspace.UpdatedAt,
 	}

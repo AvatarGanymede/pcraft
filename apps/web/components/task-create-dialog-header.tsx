@@ -22,7 +22,18 @@ export function DialogHeaderContent({
   initialTitle,
 }: DialogHeaderContentProps) {
   if (isCreateMode || isEditMode) {
-    return <DialogTitle className="sr-only">{isEditMode ? "Edit task" : "New task"}</DialogTitle>;
+    return (
+      <div className="flex flex-col gap-0.5">
+        <DialogTitle className="text-base font-semibold">
+          {isEditMode ? "Edit task" : "New task"}
+        </DialogTitle>
+        <p className="text-xs text-muted-foreground">
+          {isEditMode
+            ? "Update the task's GUI development configuration"
+            : "Fill in the details below to create a new GUI development task"}
+        </p>
+      </div>
+    );
   }
   return (
     <DialogTitle asChild>

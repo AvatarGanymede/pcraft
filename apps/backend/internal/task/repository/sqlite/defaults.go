@@ -95,14 +95,13 @@ func (r *Repository) createInitialWorkspace(ctx context.Context) error {
 			name,
 			description,
 			owner_id,
-			default_executor_id,
 			default_environment_id,
 			default_agent_profile_id,
 			created_at,
 			updated_at
 		)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`), defaultID, workspaceName, workspaceDescription, "", nil, nil, nil, now, now); err != nil {
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+	`), defaultID, workspaceName, workspaceDescription, "", nil, nil, now, now); err != nil {
 		return err
 	}
 	if workflowCount == 0 && taskCount == 0 {
@@ -189,7 +188,6 @@ func (r *Repository) insertDefaultExecutors(ctx context.Context) error {
 		config    map[string]string
 	}{
 		{id: models.ExecutorIDLocal, name: "Local", execType: models.ExecutorTypeLocal, status: models.ExecutorStatusActive, isSystem: true, resumable: true, config: map[string]string{}},
-		{id: models.ExecutorIDWorktree, name: "Worktree", execType: models.ExecutorTypeWorktree, status: models.ExecutorStatusActive, isSystem: true, resumable: true, config: map[string]string{}},
 	}
 	for _, executor := range executors {
 		configJSON, err := json.Marshal(executor.config)
@@ -212,7 +210,6 @@ func (r *Repository) ensureDefaultExecutorProfiles(ctx context.Context) error {
 		name       string
 	}{
 		{models.ExecutorIDLocal, "Local"},
-		{models.ExecutorIDWorktree, "Worktree"},
 	}
 	for _, seed := range profileSeeds {
 		var profileCount int

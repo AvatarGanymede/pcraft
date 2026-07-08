@@ -33,11 +33,13 @@ function mapWorkspaceItem(ws: {
   name: string;
   description?: string | null;
   owner_id: string;
-  default_executor_id?: string | null;
   default_environment_id?: string | null;
   default_agent_profile_id?: string | null;
   default_config_agent_profile_id?: string | null;
   office_workflow_id?: string | null;
+  p4_client?: string;
+  p4_root?: string;
+  p4_stream?: string;
   created_at: string;
   updated_at: string;
 }) {
@@ -46,11 +48,13 @@ function mapWorkspaceItem(ws: {
     name: ws.name,
     description: ws.description ?? null,
     owner_id: ws.owner_id,
-    default_executor_id: ws.default_executor_id ?? null,
     default_environment_id: ws.default_environment_id ?? null,
     default_agent_profile_id: ws.default_agent_profile_id ?? null,
     default_config_agent_profile_id: ws.default_config_agent_profile_id ?? null,
     office_workflow_id: ws.office_workflow_id ?? null,
+    p4_client: ws.p4_client ?? "",
+    p4_root: ws.p4_root ?? "",
+    p4_stream: ws.p4_stream ?? "",
     created_at: ws.created_at,
     updated_at: ws.updated_at,
   };

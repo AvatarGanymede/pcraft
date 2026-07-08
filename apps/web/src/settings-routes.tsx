@@ -10,7 +10,6 @@ import AutomationsPage from "@/app/settings/workspace/[id]/automations/page";
 import AutomationEditorPage from "@/app/settings/workspace/[id]/automations/[automationId]/page";
 import NewAutomationPage from "@/app/settings/workspace/[id]/automations/new/page";
 import WorkspaceEditPage from "@/app/settings/workspace/[id]/page";
-import { WorkspaceRepositoriesClient } from "@/app/settings/workspace/workspace-repositories-client";
 import { WorkspaceWorkflowsClient } from "@/app/settings/workspace/workspace-workflows-client";
 import WorkspacesPage from "@/app/settings/workspace/page";
 import { useAppStoreApi } from "@/components/state-provider";
@@ -49,7 +48,7 @@ import {
   listExecutors,
 } from "@/lib/api/domains/settings-api";
 import { listWorkflowTemplates } from "@/lib/api/domains/workflow-api";
-import { listRepositories, listWorkspaces } from "@/lib/api/domains/workspace-api";
+import { listWorkspaces } from "@/lib/api/domains/workspace-api";
 import { useRouter } from "@/lib/routing/client-router";
 import { mapWorkspaceItem } from "@/lib/routing/route-bootstrap";
 import { mapUserSettingsResponse } from "@/lib/ssr/user-settings";
@@ -57,8 +56,6 @@ import type { AppState } from "@/lib/state/store";
 import { toAgentProfileOption } from "@/lib/state/slices/settings/types";
 import type {
   ListWorkspacesResponse,
-  Repository,
-  RepositoryScript,
   UserSettingsResponse,
   Workflow,
   WorkflowTemplate,
@@ -67,11 +64,6 @@ import type {
 import type { LicenseEntry } from "@/lib/types/system";
 
 type RouteRenderer = () => ReactNode;
-type RepositoryWithScripts = Repository & { scripts: RepositoryScript[] };
-type WorkspaceRepositoriesRouteState = {
-  workspace: Workspace | null;
-  repositories: RepositoryWithScripts[];
-};
 type WorkspaceWorkflowsRouteState = {
   workspace: Workspace | null;
   workflows: Workflow[];
@@ -208,13 +200,10 @@ function renderDynamicSettingsRoute(pathname: string) {
 
   const workspaceSubpage = matchDouble(
     pathname,
-    /^\/settings\/workspace\/([^/]+)\/(repositories|workflows|automations)$/,
+    /^\/settings\/workspace\/([^/]+)\/(workflows|automations)$/,
   );
   if (workspaceSubpage) {
     const [id, section] = workspaceSubpage;
-    if (section === "repositories") {
-      return <WorkspaceRepositoriesRoute workspaceId={id} />;
-    }
     if (section === "workflows") {
       return <WorkspaceWorkflowsRoute workspaceId={id} />;
     }
@@ -369,30 +358,6 @@ function resolveSettingsActiveWorkspaceId(
   );
 }
 
-function WorkspaceRepositoriesRoute({ workspaceId }: { workspaceId: string }) {
-  const [state, setState] = useState<WorkspaceRepositoriesRouteState | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setState(null);
-
-    loadWorkspaceRepositoriesRoute(workspaceId)
-      .catch(() => ({ workspace: null, repositories: [] }))
-      .then((nextState) => {
-        if (!cancelled) setState(nextState);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [workspaceId]);
-
-  if (!state) return null;
-  return (
-    <WorkspaceRepositoriesClient workspace={state.workspace} repositories={state.repositories} />
-  );
-}
-
 function WorkspaceWorkflowsRoute({ workspaceId }: { workspaceId: string }) {
   const [state, setState] = useState<WorkspaceWorkflowsRouteState | null>(null);
 
@@ -419,23 +384,6 @@ function WorkspaceWorkflowsRoute({ workspaceId }: { workspaceId: string }) {
       workflowTemplates={state.workflowTemplates}
     />
   );
-}
-
-async function loadWorkspaceRepositoriesRoute(
-  workspaceId: string,
-): Promise<WorkspaceRepositoriesRouteState> {
-  const [workspace, repoResponse] = await Promise.all([
-    fetchJson<Workspace>(`/api/v1/workspaces/${workspaceId}`, { cache: "no-store" }),
-    listRepositories(workspaceId, { includeScripts: true }, { cache: "no-store" }),
-  ]);
-
-  return {
-    workspace,
-    repositories: repoResponse.repositories.map((repository) => ({
-      ...repository,
-      scripts: repository.scripts ?? [],
-    })),
-  };
 }
 
 async function loadWorkspaceWorkflowsRoute(

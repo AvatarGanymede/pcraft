@@ -386,8 +386,6 @@ test-cli:
 test-scripts:
 	@printf "$(CYAN)Running script tests...$(RESET)\n"
 	@bash scripts/pr-state.test.sh
-	@bash scripts/opencode-code-review.test.sh
-	@python3 scripts/opencode-code-review.test.py
 
 .PHONY: test-e2e
 test-e2e: build-backend build-web

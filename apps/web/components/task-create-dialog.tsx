@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { JiraTicket } from "@/lib/types/jira";
 import type { LinearIssue } from "@/lib/types/linear";
 import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@pcraft/ui/dialog";
+import { Label } from "@pcraft/ui/label";
 import type { Task, Repository } from "@/lib/types/http";
 import { SHORTCUTS } from "@/lib/keyboard/constants";
 import { useIsUtilityConfigured } from "@/hooks/use-is-utility-configured";
@@ -42,12 +43,11 @@ import {
 import { resetTaskCreateLastUsedSync } from "@/components/task-create-dialog-handlers";
 import { TaskCreateDialogPopoverContainerProvider } from "@/hooks/use-task-create-dialog-popover-container";
 import {
-  P4WorkspaceSelect,
-  P4TaskDetailFields,
-  P4TaskCreateFields,
-  isP4TaskFormValid,
+  DynamicTaskForm,
   type P4TaskFormValues,
 } from "@/components/task-create-dialog-p4-fields";
+import { useAppStore } from "@/components/state-provider";
+import { resolveTaskFormConfig, isTaskFormComplete } from "@/lib/task-form-config";
 
 export interface TaskCreateDialogProps {
   open: boolean;
@@ -111,24 +111,45 @@ function CreateModeBody(props: DialogFormBodyProps) {
   const { isCreateMode, isEditMode, isTaskStarted, fs, onTaskNameChange } = props;
   const showTaskName = (isCreateMode || isEditMode) && !isTaskStarted;
   return (
-    <div className="grid gap-3" data-testid="p4-task-create-fields">
-      <P4WorkspaceSelect
-        values={props.p4Values}
-        onChange={props.onP4ValuesChange}
-        disabled={isTaskStarted}
-      />
-      {showTaskName && (
-        <InlineTaskName
-          value={fs.taskName}
-          onChange={onTaskNameChange}
-          autoFocus
-        />
-      )}
-      <P4TaskDetailFields
-        values={props.p4Values}
-        onChange={props.onP4ValuesChange}
-        disabled={isTaskStarted}
-      />
+    <div className="flex flex-col gap-5" data-testid="p4-task-create-fields">
+      {props.p4Unbound ? (
+        <div
+          className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive"
+          data-testid="p4-unbound-warning"
+        >
+          This workspace has no P4 workspace configured.{" "}
+          <a href="/settings/workspace" className="font-medium underline">
+            Configure it in Settings
+          </a>{" "}
+          before creating a task.
+        </div>
+      ) : null}
+      <section className="rounded-lg border border-border bg-muted/30 p-4">
+        <div className="grid gap-4">
+          {showTaskName && (
+            <div className="grid gap-1.5">
+              <Label htmlFor="task-title-input">
+                Task name<span className="text-destructive ml-0.5">*</span>
+              </Label>
+              <InlineTaskName
+                value={fs.taskName}
+                onChange={onTaskNameChange}
+                autoFocus
+              />
+            </div>
+          )}
+        </div>
+      </section>
+      <section className="rounded-lg border border-border bg-muted/30 p-4">
+        <div className="grid gap-4">
+          <DynamicTaskForm
+            config={props.taskFormConfig}
+            values={props.p4Values.values}
+            onChange={props.onP4ValuesChange}
+            disabled={isTaskStarted}
+          />
+        </div>
+      </section>
       {props.bottomSlot}
     </div>
   );
@@ -232,6 +253,7 @@ type SubmitWiringArgs = {
   isSessionMode: boolean;
   isEditMode: boolean;
   p4Values: P4TaskFormValues;
+  taskFormConfig: import("@/lib/task-form-config").TaskFormConfig;
 };
 
 function useSubmitHandlersWiring({
@@ -243,6 +265,7 @@ function useSubmitHandlersWiring({
   isSessionMode,
   isEditMode,
   p4Values,
+  taskFormConfig,
 }: SubmitWiringArgs) {
   const { workspaceId, workflowId, editingTask, onSuccess, onCreateSession, onOpenChange } = props;
   const { parentTaskId } = props;
@@ -289,10 +312,8 @@ function useSubmitHandlersWiring({
     repositoryLocalPath,
     noRepository: fs.noRepository,
     workspacePath: fs.workspacePath,
-    p4WorkspaceId: p4Values.p4WorkspaceId,
-    panelId: p4Values.panelId,
-    requirement: p4Values.requirement,
-    prefabPath: p4Values.prefabPath,
+    taskFormConfig,
+    dynamicValues: p4Values.values,
   });
 }
 
@@ -311,6 +332,27 @@ function resolveSingleRowLocalPath(fs: DialogFormState, repositories: Repository
   return "";
 }
 
+// Keeps create-mode form state in sync with the dynamic task form:
+//  - GUI/P4 tasks have no git repo, so mark the task repo-less to satisfy the
+//    footer's repo + branch gates (the P4 workspace pick stands in for a repo).
+//  - Mirror the dynamic form's required-field validity into `hasDescription`
+//    so the footer shows the proper "Start task" button once it's filled in.
+function useCreateModeFormSync(
+  isCreateMode: boolean,
+  open: boolean,
+  fs: DialogFormState,
+  taskFormConfig: import("@/lib/task-form-config").TaskFormConfig,
+  values: Record<string, string>,
+) {
+  useEffect(() => {
+    if (isCreateMode && open && !fs.noRepository) fs.setNoRepository(true);
+  }, [isCreateMode, open, fs]);
+  const dynamicFormValid = isTaskFormComplete(taskFormConfig, values);
+  useEffect(() => {
+    if (isCreateMode) fs.setHasDescription(dynamicFormValid);
+  }, [isCreateMode, dynamicFormValid, fs]);
+}
+
 export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
   const { open, mode = "create", workspaceId, workflowId, defaultStepId } = props;
   const { editingTask, initialValues } = props;
@@ -320,14 +362,29 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
   const isTaskStarted = computeIsTaskStarted(isEditMode, editingTask);
   const fs = useDialogFormState(open, workspaceId, workflowId, initialValues);
   const [p4Values, setP4Values] = useState<P4TaskFormValues>({
-    p4WorkspaceId: "",
-    panelId: "",
-    requirement: "",
-    prefabPath: "",
+    values: {},
   });
   const onP4ValuesChange = useCallback((patch: Partial<P4TaskFormValues>) => {
     setP4Values((prev) => ({ ...prev, ...patch }));
   }, []);
+  // Resolve the workspace's custom new-task form (default single-prompt form
+  // when the workspace hasn't configured one).
+  const workspaceItem = useAppStore((state) =>
+    workspaceId ? (state.workspaces.items.find((w) => w.id === workspaceId) ?? null) : null,
+  );
+  const taskFormConfig = useMemo(
+    () => resolveTaskFormConfig(workspaceItem?.task_form_config),
+    [workspaceItem],
+  );
+  // The task cwd comes from the workspace's bound P4 client (1:1). Block create
+  // when the workspace has no binding — there is no working directory to run in.
+  const p4Unbound = isCreateMode && !(workspaceItem?.p4_client ?? "").trim();
+  const effectiveSubmitBlockedReason =
+    props.submitBlockedReason ??
+    (p4Unbound
+      ? "This workspace has no P4 workspace configured. Configure it in Settings first."
+      : undefined);
+  useCreateModeFormSync(isCreateMode, open, fs, taskFormConfig, p4Values.values);
   const { toast } = useToast();
   const sessionRepoName = useSessionRepoName(isSessionMode);
   const {
@@ -367,10 +424,11 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     isSessionMode,
     isEditMode,
     p4Values,
+    taskFormConfig,
   });
   const guardedHandleSubmit = useGuardedSubmit(
     submitHandlers.handleSubmit,
-    props.submitBlockedReason,
+    effectiveSubmitBlockedReason,
   );
   const handleKeyDown = useKeyboardShortcutHandler(SHORTCUTS.SUBMIT, (event) => {
     guardedHandleSubmit(event as unknown as FormEvent);
@@ -403,6 +461,9 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     handleLinearImport: useLinearImportHandler(fs),
     p4Values,
     onP4ValuesChange,
+    taskFormConfig,
+    p4Unbound,
+    effectiveSubmitBlockedReason,
   };
 }
 

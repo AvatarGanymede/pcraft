@@ -188,12 +188,6 @@ export function computeExecutorHint(
   repoCount: number,
 ): string | null {
   const selectedExecutor = executors.find((e: Executor) => e.id === executorId);
-  if (selectedExecutor?.type === "worktree") {
-    if (repoCount > 1) {
-      return "A git worktree will be created for each repository in a parent folder. The agent runs in that parent folder so it can see every worktree side by side.";
-    }
-    return "A git worktree will be created from the base branch.";
-  }
   if (selectedExecutor?.type === "local_docker" || selectedExecutor?.type === "remote_docker") {
     return "A Docker container will be created from the selected base branch and checked out on a task branch.";
   }

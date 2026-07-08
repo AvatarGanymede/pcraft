@@ -349,10 +349,10 @@ export type SubmitHandlersDeps = {
   noRepository: boolean;
   /** Optional host folder for repo-less tasks; empty means kandev creates a scratch workspace. */
   workspacePath: string;
-  p4WorkspaceId?: string;
-  panelId?: string;
-  requirement?: string;
-  prefabPath?: string;
+  /** Workspace custom new-task form definition (resolved; never empty). */
+  taskFormConfig: import("@/lib/task-form-config").TaskFormConfig;
+  /** Dynamic form values keyed by field `def`. */
+  dynamicValues: Record<string, string>;
   /**
    * Optional async transform applied to the trimmed description before the
    * API payload is built. Used by feature wrappers (e.g. Improve Kandev) to
@@ -439,4 +439,9 @@ export type DialogFormBodyProps = {
   onVoiceAutoSend?: () => void;
   p4Values: P4TaskFormValues;
   onP4ValuesChange: (patch: Partial<P4TaskFormValues>) => void;
+  /** Workspace custom new-task form definition (resolved; never empty). */
+  taskFormConfig: import("@/lib/task-form-config").TaskFormConfig;
+  /** True in create mode when the selected pcraft workspace has no bound P4
+   * client — the body shows a hint and submit is blocked. */
+  p4Unbound?: boolean;
 };

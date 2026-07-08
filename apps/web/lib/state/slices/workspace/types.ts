@@ -1,4 +1,5 @@
 import type { Repository, Branch, RepositoryScript } from "@/lib/types/http";
+import type { TaskFormConfig } from "@/lib/task-form-config";
 
 export type WorkspaceState = {
   items: Array<{
@@ -6,11 +7,14 @@ export type WorkspaceState = {
     name: string;
     description?: string | null;
     owner_id: string;
-    default_executor_id?: string | null;
     default_environment_id?: string | null;
     default_agent_profile_id?: string | null;
     default_config_agent_profile_id?: string | null;
     office_workflow_id?: string | null;
+    task_form_config?: TaskFormConfig | null;
+    p4_client?: string;
+    p4_root?: string;
+    p4_stream?: string;
     created_at: string;
     updated_at: string;
   }>;

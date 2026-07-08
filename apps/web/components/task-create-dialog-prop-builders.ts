@@ -73,6 +73,8 @@ export function buildDialogFormBodyProps(
     workflowLocked: props.lockedFields?.workflow,
     p4Values: setup.p4Values,
     onP4ValuesChange: setup.onP4ValuesChange,
+    taskFormConfig: setup.taskFormConfig,
+    p4Unbound: setup.p4Unbound,
   };
 }
 
@@ -102,6 +104,6 @@ export function buildDialogFooterProps(
     onUpdateWithoutAgent: submitHandlers.handleUpdateWithoutAgent,
     onCreateWithoutAgent: submitHandlers.handleCreateWithoutAgent,
     onCreateWithPlanMode: submitHandlers.handleCreateWithPlanMode,
-    submitBlockedReason: props.submitBlockedReason,
+    submitBlockedReason: setup.effectiveSubmitBlockedReason,
   };
 }

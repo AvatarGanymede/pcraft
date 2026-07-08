@@ -1,194 +1,96 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { Input } from "@pcraft/ui/input";
+import { Textarea } from "@pcraft/ui/textarea";
 import { Label } from "@pcraft/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@pcraft/ui/select";
-import { listP4Workspaces, type P4Workspace } from "@/lib/api/domains/p4-api";
+import type { TaskFormConfig } from "@/lib/task-form-config";
 
+/**
+ * Create-dialog form values. `values` holds the workspace's custom new-task
+ * form entries keyed by each field's `def`. The task's P4 workspace is no
+ * longer chosen here — it is derived from the selected pcraft workspace's
+ * bound P4 client (1:1), so there is no per-task P4 selector.
+ */
 export type P4TaskFormValues = {
-  p4WorkspaceId: string;
-  panelId: string;
-  requirement: string;
-  prefabPath: string;
+  values: Record<string, string>;
 };
 
-type P4TaskCreateFieldsProps = {
-  values: P4TaskFormValues;
+/**
+ * Shared field label row: bold label on the left, optional inline hint on the
+ * right, and a destructive-colored asterisk when the field is required. Keeps
+ * every field in the create dialog visually consistent.
+ */
+function FieldLabel({
+  htmlFor,
+  required,
+  hint,
+  children,
+}: {
+  htmlFor: string;
+  required?: boolean;
+  hint?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-baseline justify-between gap-2">
+      <Label htmlFor={htmlFor}>
+        {children}
+        {required ? <span className="text-destructive ml-0.5">*</span> : null}
+      </Label>
+      {hint ? (
+        <span className="text-[11px] leading-none text-muted-foreground">{hint}</span>
+      ) : null}
+    </div>
+  );
+}
+
+type DynamicTaskFormProps = {
+  config: TaskFormConfig;
+  values: Record<string, string>;
   onChange: (patch: Partial<P4TaskFormValues>) => void;
   disabled?: boolean;
 };
 
-export function P4WorkspaceSelect({ values, onChange, disabled }: P4TaskCreateFieldsProps) {
-  const [workspaces, setWorkspaces] = useState<P4Workspace[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    void listP4Workspaces()
-      .then((resp) => {
-        if (!cancelled) setWorkspaces(resp.workspaces ?? []);
-      })
-      .catch(() => {
-        if (!cancelled) setWorkspaces([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return (
-    <div className="grid gap-1.5">
-      <Label htmlFor="p4-workspace">P4 Workspace</Label>
-      <Select
-        value={values.p4WorkspaceId}
-        onValueChange={(v) => onChange({ p4WorkspaceId: v })}
-        disabled={disabled || loading}
-      >
-        <SelectTrigger id="p4-workspace" className="cursor-pointer">
-          <SelectValue placeholder={loading ? "加载 P4 clients…" : "选择 P4 client"} />
-        </SelectTrigger>
-        <SelectContent>
-          {workspaces.map((ws) => (
-            <SelectItem key={ws.id} value={ws.id} className="cursor-pointer">
-              {ws.name || ws.p4client}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
-}
-
-export function P4TaskDetailFields({ values, onChange, disabled }: P4TaskCreateFieldsProps) {
+/**
+ * Renders the workspace's custom new-task form. Each configured field becomes a
+ * single-line input or a textarea (when `multiline`). Values are tracked by the
+ * field's `def`; the dialog later concatenates them via the workspace template.
+ */
+export function DynamicTaskForm({ config, values, onChange, disabled }: DynamicTaskFormProps) {
+  const setValue = (def: string, value: string) => {
+    onChange({ values: { ...values, [def]: value } });
+  };
   return (
     <>
-      <div className="grid gap-1.5">
-        <Label htmlFor="panel-id">panelId</Label>
-        <Input
-          id="panel-id"
-          value={values.panelId}
-          onChange={(e) => onChange({ panelId: e.target.value })}
-          disabled={disabled}
-          placeholder="例如 MainMenuPanel"
-        />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="requirement">需求描述</Label>
-        <Input
-          id="requirement"
-          value={values.requirement}
-          onChange={(e) => onChange({ requirement: e.target.value })}
-          disabled={disabled}
-          placeholder="简要描述本次 GUI 开发需求"
-        />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="prefab-path">Prefab 路径（可选）</Label>
-        <Input
-          id="prefab-path"
-          value={values.prefabPath}
-          onChange={(e) => onChange({ prefabPath: e.target.value })}
-          disabled={disabled}
-          placeholder="Assets/..."
-        />
-      </div>
+      {config.fields.map((field) => {
+        const id = `task-form-${field.def}`;
+        return (
+          <div key={field.def} className="grid gap-1.5">
+            <FieldLabel htmlFor={id} required={field.required}>
+              {field.label}
+            </FieldLabel>
+            {field.multiline ? (
+              <Textarea
+                id={id}
+                value={values[field.def] ?? ""}
+                onChange={(e) => setValue(field.def, e.target.value)}
+                disabled={disabled}
+                placeholder={field.placeholder}
+                rows={4}
+              />
+            ) : (
+              <Input
+                id={id}
+                value={values[field.def] ?? ""}
+                onChange={(e) => setValue(field.def, e.target.value)}
+                disabled={disabled}
+                placeholder={field.placeholder}
+              />
+            )}
+          </div>
+        );
+      })}
     </>
-  );
-}
-
-export function P4TaskCreateFields({ values, onChange, disabled }: P4TaskCreateFieldsProps) {
-  const [workspaces, setWorkspaces] = useState<P4Workspace[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    void listP4Workspaces()
-      .then((resp) => {
-        if (!cancelled) setWorkspaces(resp.workspaces ?? []);
-      })
-      .catch(() => {
-        if (!cancelled) setWorkspaces([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return (
-    <div className="grid gap-3" data-testid="p4-task-create-fields">
-      <div className="grid gap-1.5">
-        <Label htmlFor="p4-workspace">P4 Workspace</Label>
-        <Select
-          value={values.p4WorkspaceId}
-          onValueChange={(v) => onChange({ p4WorkspaceId: v })}
-          disabled={disabled || loading}
-        >
-          <SelectTrigger id="p4-workspace" className="cursor-pointer">
-            <SelectValue placeholder={loading ? "加载 P4 clients…" : "选择 P4 client"} />
-          </SelectTrigger>
-          <SelectContent>
-            {workspaces.map((ws) => (
-              <SelectItem key={ws.id} value={ws.id} className="cursor-pointer">
-                {ws.name || ws.p4client}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="panel-id">panelId</Label>
-        <Input
-          id="panel-id"
-          value={values.panelId}
-          onChange={(e) => onChange({ panelId: e.target.value })}
-          disabled={disabled}
-          placeholder="例如 MainMenuPanel"
-        />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="requirement">需求描述</Label>
-        <Input
-          id="requirement"
-          value={values.requirement}
-          onChange={(e) => onChange({ requirement: e.target.value })}
-          disabled={disabled}
-          placeholder="简要描述本次 GUI 开发需求"
-        />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="prefab-path">Prefab 路径（可选）</Label>
-        <Input
-          id="prefab-path"
-          value={values.prefabPath}
-          onChange={(e) => onChange({ prefabPath: e.target.value })}
-          disabled={disabled}
-          placeholder="Assets/..."
-        />
-      </div>
-    </div>
-  );
-}
-
-export function isP4TaskFormValid(values: P4TaskFormValues, title: string): boolean {
-  return (
-    title.trim() !== "" &&
-    values.p4WorkspaceId.trim() !== "" &&
-    values.panelId.trim() !== "" &&
-    values.requirement.trim() !== ""
   );
 }

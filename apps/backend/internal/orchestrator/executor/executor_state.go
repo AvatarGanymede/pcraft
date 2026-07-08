@@ -89,15 +89,11 @@ func (e *Executor) MarkCompletedBySession(ctx context.Context, sessionID string,
 	}
 }
 
+// defaultExecutorID returns the executor to use when a caller didn't specify
+// one. The worktree executor has been removed, so Local is the only executor;
+// there is no longer a per-workspace default to look up.
 func (e *Executor) defaultExecutorID(ctx context.Context, workspaceID string) string {
-	if workspaceID == "" {
-		return ""
-	}
-	workspace, err := e.repo.GetWorkspace(ctx, workspaceID)
-	if err != nil || workspace == nil || workspace.DefaultExecutorID == nil {
-		return ""
-	}
-	return strings.TrimSpace(*workspace.DefaultExecutorID)
+	return models.ExecutorIDLocal
 }
 
 // executorConfig holds resolved executor configuration.

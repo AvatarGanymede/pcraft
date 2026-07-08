@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# kandev-logs — fetch logs for a running kandev instance by backend port.
+# pcraft-logs — fetch logs for a running kandev instance by backend port.
 #
 # Two modes:
 #   --export  (default)  GET /api/v1/system/debug/export[?level=LEVEL], pretty
 #                        printed with jq. This is the structured in-memory log
 #                        buffer + runtime metadata.
 #   --tail               Tail the stderr log file written by dev-isolated
-#                        (/tmp/kandev-iso-<port>-*/backend.log), or a file given
+#                        (/tmp/pcraft-iso-<port>-*/backend.log), or a file given
 #                        with --file.
 #
 # Usage:
-#   scripts/kandev-logs <backend_port> [--export] [--level LEVEL]
-#   scripts/kandev-logs <backend_port> --tail [--lines N] [--file PATH]
+#   scripts/pcraft-logs <backend_port> [--export] [--level LEVEL]
+#   scripts/pcraft-logs <backend_port> --tail [--lines N] [--file PATH]
 #
 # Options:
 #   --export          Hit the debug-export endpoint (default).
@@ -25,9 +25,9 @@
 #   -h, --help         Show this help.
 #
 # Examples:
-#   scripts/kandev-logs 48429 --export
-#   scripts/kandev-logs 48429 --export --level error
-#   scripts/kandev-logs 48429 --tail --lines 120
+#   scripts/pcraft-logs 48429 --export
+#   scripts/pcraft-logs 48429 --export --level error
+#   scripts/pcraft-logs 48429 --tail --lines 120
 #
 set -euo pipefail
 
@@ -52,18 +52,18 @@ while [[ $# -gt 0 ]]; do
     --lines) LINES="${2:?--lines requires a number}"; shift 2 ;;
     --file) FILE="${2:?--file requires a path}"; shift 2 ;;
     -h|--help) usage 0 ;;
-    --*) echo "kandev-logs: unknown flag '$1'" >&2; usage 2 ;;
+    --*) echo "pcraft-logs: unknown flag '$1'" >&2; usage 2 ;;
     *)
       if [[ -z "$PORT" ]]; then PORT="$1"; else
-        echo "kandev-logs: unexpected argument '$1'" >&2; usage 2
+        echo "pcraft-logs: unexpected argument '$1'" >&2; usage 2
       fi
       shift
       ;;
   esac
 done
 
-[[ -n "$PORT" ]] || { echo "kandev-logs: a backend port is required." >&2; usage 2; }
-[[ "$PORT" =~ ^[0-9]+$ ]] || { echo "kandev-logs: port must be numeric, got '$PORT'" >&2; exit 2; }
+[[ -n "$PORT" ]] || { echo "pcraft-logs: a backend port is required." >&2; usage 2; }
+[[ "$PORT" =~ ^[0-9]+$ ]] || { echo "pcraft-logs: port must be numeric, got '$PORT'" >&2; exit 2; }
 
 # Validate --level against the allowed set BEFORE it reaches the URL. An invalid
 # value would otherwise be interpolated into ?level= and silently return zero
@@ -74,7 +74,7 @@ if [[ -n "$LEVEL" ]]; then
     [[ "$LEVEL" == "$lvl" ]] && { level_ok=1; break; }
   done
   if [[ "$level_ok" -ne 1 ]]; then
-    echo "kandev-logs: invalid --level '$LEVEL'. Allowed: ${ALLOWED_LEVELS[*]}" >&2
+    echo "pcraft-logs: invalid --level '$LEVEL'. Allowed: ${ALLOWED_LEVELS[*]}" >&2
     exit 2
   fi
 fi
@@ -85,7 +85,7 @@ if [[ "$MODE" == "export" ]]; then
   # interpolate directly; the query value needs no further encoding.
   [[ -n "$LEVEL" ]] && url="$url?level=$LEVEL"
   if ! body="$(curl -s --fail-with-body "$url" 2>/dev/null)"; then
-    echo "kandev-logs: request to $url failed (is the instance on port $PORT up?)" >&2
+    echo "pcraft-logs: request to $url failed (is the instance on port $PORT up?)" >&2
     exit 1
   fi
   if command -v jq >/dev/null 2>&1; then
@@ -102,13 +102,13 @@ fi
 
 # --- tail mode ---
 if [[ -z "$FILE" ]]; then
-  # Resolve the dev-isolated log convention: /tmp/kandev-iso-<port>-*/backend.log
+  # Resolve the dev-isolated log convention: /tmp/pcraft-iso-<port>-*/backend.log
   # Pick the most recent match.
-  FILE="$(ls -t /tmp/kandev-iso-"$PORT"-*/backend.log 2>/dev/null | head -1 || true)"
+  FILE="$(ls -t /tmp/pcraft-iso-"$PORT"-*/backend.log 2>/dev/null | head -1 || true)"
 fi
 [[ -n "$FILE" && -f "$FILE" ]] || {
-  echo "kandev-logs: no log file found for port $PORT. Pass --file PATH." >&2
+  echo "pcraft-logs: no log file found for port $PORT. Pass --file PATH." >&2
   exit 1
 }
-echo "kandev-logs: tail -n $LINES $FILE" >&2
+echo "pcraft-logs: tail -n $LINES $FILE" >&2
 tail -n "$LINES" "$FILE"

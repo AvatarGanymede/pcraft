@@ -52,12 +52,9 @@ describe("SettingsTree rendering", () => {
 
   afterEach(() => cleanup());
 
-  it("renders workspace repository and workflow links when Workspaces is open", () => {
+  it("renders workspace workflow links when Workspaces is open", () => {
     render(<WorkspacesGroup pathname="/settings/workspace" expanded />);
 
-    expect(screen.getByRole("link", { name: "Repositories" }).getAttribute("href")).toBe(
-      "/settings/workspace/ws-1/repositories",
-    );
     expect(screen.getByRole("link", { name: "Workflows" }).getAttribute("href")).toBe(
       "/settings/workspace/ws-1/workflows",
     );
@@ -71,19 +68,16 @@ describe("SettingsTree rendering", () => {
 
     const { rerender } = render(<WorkspacesGroup pathname="/settings/workspace" expanded />);
 
-    expect(screen.getAllByRole("link", { name: "Repositories" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Workflows" })).toHaveLength(2);
 
-    rerender(<WorkspacesGroup pathname="/settings/workspace/ws-10/repositories" expanded />);
+    rerender(<WorkspacesGroup pathname="/settings/workspace/ws-10/workflows" expanded />);
 
     expect(screen.getByRole("link", { name: MAIN_WORKSPACE_NAME }).getAttribute("href")).toBe(
       "/settings/workspace/ws-1",
     );
-    const repositoryLinks = screen.getAllByRole("link", { name: "Repositories" });
     const workflowLinks = screen.getAllByRole("link", { name: "Workflows" });
 
-    expect(repositoryLinks).toHaveLength(1);
     expect(workflowLinks).toHaveLength(1);
-    expect(repositoryLinks[0].getAttribute("href")).toBe("/settings/workspace/ws-10/repositories");
     expect(workflowLinks[0].getAttribute("href")).toBe("/settings/workspace/ws-10/workflows");
     expect(screen.getByRole("link", { name: ARCHIVE_WORKSPACE_NAME }).getAttribute("href")).toBe(
       "/settings/workspace/ws-10",

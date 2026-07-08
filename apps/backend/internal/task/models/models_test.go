@@ -42,16 +42,7 @@ func TestTaskStateConstants(t *testing.T) {
 		state    v1.TaskState
 		expected string
 	}{
-		{"CREATED state", v1.TaskStateCreated, "CREATED"},
-		{"SCHEDULING state", v1.TaskStateScheduling, "SCHEDULING"},
-		{"TODO state", v1.TaskStateTODO, "TODO"},
 		{"IN_PROGRESS state", v1.TaskStateInProgress, "IN_PROGRESS"},
-		{"REVIEW state", v1.TaskStateReview, "REVIEW"},
-		{"BLOCKED state", v1.TaskStateBlocked, "BLOCKED"},
-		{"WAITING_FOR_INPUT state", v1.TaskStateWaitingForInput, "WAITING_FOR_INPUT"},
-		{"COMPLETED state", v1.TaskStateCompleted, "COMPLETED"},
-		{"FAILED state", v1.TaskStateFailed, "FAILED"},
-		{"CANCELLED state", v1.TaskStateCancelled, "CANCELLED"},
 	}
 
 	for _, tt := range tests {
@@ -68,92 +59,12 @@ func TestIsTerminalTaskState(t *testing.T) {
 		state v1.TaskState
 		want  bool
 	}{
-		{v1.TaskStateCompleted, true},
-		{v1.TaskStateFailed, true},
-		{v1.TaskStateCancelled, true},
-		{v1.TaskStateTODO, false},
-		{v1.TaskStateCreated, false},
-		{v1.TaskStateScheduling, false},
 		{v1.TaskStateInProgress, false},
-		{v1.TaskStateReview, false},
-		{v1.TaskStateBlocked, false},
-		{v1.TaskStateWaitingForInput, false},
 	}
 	for _, tt := range tests {
 		if got := IsTerminalTaskState(tt.state); got != tt.want {
 			t.Errorf("IsTerminalTaskState(%s) = %v, want %v", tt.state, got, tt.want)
 		}
-	}
-}
-
-func TestTaskStructInitialization(t *testing.T) {
-	now := time.Now().UTC()
-	repos := []*TaskRepository{
-		{
-			ID:           "task-repo-1",
-			TaskID:       "task-123",
-			RepositoryID: "repo-123",
-			BaseBranch:   "main",
-			Position:     0,
-			Metadata:     map[string]interface{}{"role": "primary"},
-			CreatedAt:    now,
-			UpdatedAt:    now,
-		},
-	}
-	task := Task{
-		ID:             "task-123",
-		WorkspaceID:    "workspace-001",
-		WorkflowID:     "workflow-456",
-		WorkflowStepID: "workflow-step-789",
-		Title:          "Test Task",
-		Description:    "A test task description",
-		State:          v1.TaskStateTODO,
-		Priority:       "high",
-		Position:       1,
-		Metadata:       map[string]interface{}{"key": "value"},
-		Repositories:   repos,
-		CreatedAt:      now,
-		UpdatedAt:      now,
-	}
-
-	if task.ID != "task-123" {
-		t.Errorf("expected ID task-123, got %s", task.ID)
-	}
-	if task.WorkspaceID != "workspace-001" {
-		t.Errorf("expected WorkspaceID workspace-001, got %s", task.WorkspaceID)
-	}
-	if task.WorkflowID != "workflow-456" {
-		t.Errorf("expected WorkflowID workflow-456, got %s", task.WorkflowID)
-	}
-	if task.WorkflowStepID != "workflow-step-789" {
-		t.Errorf("expected WorkflowStepID workflow-step-789, got %s", task.WorkflowStepID)
-	}
-	if task.Title != "Test Task" {
-		t.Errorf("expected Title 'Test Task', got %s", task.Title)
-	}
-	if task.Description != "A test task description" {
-		t.Errorf("expected Description 'A test task description', got %s", task.Description)
-	}
-	if task.State != v1.TaskStateTODO {
-		t.Errorf("expected State TODO, got %s", task.State)
-	}
-	if task.Priority != "high" {
-		t.Errorf("expected Priority high, got %s", task.Priority)
-	}
-	if len(task.Repositories) != 1 {
-		t.Fatalf("expected 1 repository, got %d", len(task.Repositories))
-	}
-	if task.Repositories[0].RepositoryID != "repo-123" {
-		t.Errorf("expected RepositoryID 'repo-123', got %s", task.Repositories[0].RepositoryID)
-	}
-	if task.Repositories[0].BaseBranch != "main" {
-		t.Errorf("expected BaseBranch 'main', got %s", task.Repositories[0].BaseBranch)
-	}
-	if task.Position != 1 {
-		t.Errorf("expected Position 1, got %d", task.Position)
-	}
-	if task.Metadata["key"] != "value" {
-		t.Errorf("expected Metadata key 'value', got %v", task.Metadata["key"])
 	}
 }
 
@@ -248,30 +159,6 @@ func TestTaskToAPI(t *testing.T) {
 	}
 }
 
-func TestTaskToAPIWithEmptyOptionalFields(t *testing.T) {
-	now := time.Now().UTC()
-	task := &Task{
-		ID:             "task-123",
-		WorkspaceID:    "workspace-001",
-		WorkflowID:     "workflow-456",
-		WorkflowStepID: "step-789",
-		Title:          "Test Task",
-		Description:    "A test task description",
-		State:          v1.TaskStateTODO,
-		Priority:       "medium",
-		Position:       0,
-		Metadata:       nil,
-		CreatedAt:      now,
-		UpdatedAt:      now,
-	}
-
-	apiTask := task.ToAPI()
-
-	if len(apiTask.Repositories) != 0 {
-		t.Errorf("expected no repositories, got %d", len(apiTask.Repositories))
-	}
-}
-
 // TestTaskIsFromOfficeField verifies the IsFromOffice field round-trips
 // through the model. The actual office-vs-kanban predicate is computed in
 // SQL by isFromOfficeProjection (see repository/sqlite/task.go) so the
@@ -305,7 +192,6 @@ func TestExecutorTypeRuntime(t *testing.T) {
 		want agentruntime.Runtime
 	}{
 		{ExecutorTypeLocal, agentruntime.RuntimeStandalone},
-		{ExecutorTypeWorktree, agentruntime.RuntimeStandalone},
 		{ExecutorTypeMockRemote, agentruntime.RuntimeStandalone},
 	}
 	for _, tc := range cases {

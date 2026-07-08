@@ -122,6 +122,11 @@ function makeDeps(overrides: Partial<SubmitHandlersDeps>): SubmitHandlersDeps {
     repositoryLocalPath: "",
     noRepository: true,
     workspacePath: "",
+    taskFormConfig: {
+      fields: [{ def: "main", label: "Prompt", required: false, multiline: true }],
+      template: "{{prompt_main}}",
+    },
+    dynamicValues: {},
     ...overrides,
   };
 }
@@ -158,7 +163,7 @@ describe("useTaskSubmitHandlers — handleCreateSubmit (CLI-mode parity)", () =>
   it("creates the task with the user's prompt when cli_passthrough=true and prompt is provided", async () => {
     const deps = makeDeps({
       isPassthroughProfile: true,
-      descriptionInputRef: makeRef("run npm test"),
+      dynamicValues: { main: "run npm test" },
     });
     const { result } = renderHook(() => useTaskSubmitHandlers(deps));
 
@@ -178,7 +183,7 @@ describe("useTaskSubmitHandlers — handleCreateSubmit (CLI-mode parity)", () =>
   it("still creates the task in ACP mode when prompt is provided", async () => {
     const deps = makeDeps({
       isPassthroughProfile: false,
-      descriptionInputRef: makeRef("refactor module"),
+      dynamicValues: { main: "refactor module" },
     });
     const { result } = renderHook(() => useTaskSubmitHandlers(deps));
 

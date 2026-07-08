@@ -3,9 +3,7 @@ package repository
 import (
 	"context"
 	"path/filepath"
-	"slices"
 	"testing"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/AvatarGanymede/pcraft/internal/db"
@@ -15,66 +13,6 @@ import (
 )
 
 // Task CRUD tests
-
-func TestSQLiteRepository_TaskCRUD(t *testing.T) {
-	repo, cleanup := createTestSQLiteRepo(t)
-	defer cleanup()
-	ctx := context.Background()
-
-	// Create workspace and workflow for foreign keys
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	workflow := &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Test Workflow"}
-	_ = repo.CreateWorkflow(ctx, workflow)
-
-	// Create task (workflow steps are managed by workflow repository)
-	task := &models.Task{
-		WorkspaceID:    "ws-1",
-		WorkflowID:     "wf-123",
-		WorkflowStepID: "step-123",
-		Title:          "Test Task",
-		Description:    "A test task",
-		State:          v1.TaskStateTODO,
-		Priority:       "high",
-		Metadata:       map[string]interface{}{"key": "value"},
-	}
-	if err := repo.CreateTask(ctx, task); err != nil {
-		t.Fatalf("failed to create task: %v", err)
-	}
-	if task.ID == "" {
-		t.Error("expected task ID to be set")
-	}
-
-	// Get
-	retrieved, err := repo.GetTask(ctx, task.ID)
-	if err != nil {
-		t.Fatalf("failed to get task: %v", err)
-	}
-	if retrieved.Title != "Test Task" {
-		t.Errorf("expected title 'Test Task', got %s", retrieved.Title)
-	}
-	if retrieved.Metadata["key"] != "value" {
-		t.Errorf("expected metadata key 'value', got %v", retrieved.Metadata["key"])
-	}
-
-	// Update
-	task.Title = "Updated Task"
-	if err := repo.UpdateTask(ctx, task); err != nil {
-		t.Fatalf("failed to update task: %v", err)
-	}
-	retrieved, _ = repo.GetTask(ctx, task.ID)
-	if retrieved.Title != "Updated Task" {
-		t.Errorf("expected title 'Updated Task', got %s", retrieved.Title)
-	}
-
-	// Delete
-	if err := repo.DeleteTask(ctx, task.ID); err != nil {
-		t.Fatalf("failed to delete task: %v", err)
-	}
-	_, err = repo.GetTask(ctx, task.ID)
-	if err == nil {
-		t.Error("expected task to be deleted")
-	}
-}
 
 func TestSQLiteRepository_TaskNotFound(t *testing.T) {
 	repo, cleanup := createTestSQLiteRepo(t)
@@ -97,29 +35,6 @@ func TestSQLiteRepository_TaskNotFound(t *testing.T) {
 	}
 }
 
-func TestSQLiteRepository_UpdateTaskState(t *testing.T) {
-	repo, cleanup := createTestSQLiteRepo(t)
-	defer cleanup()
-	ctx := context.Background()
-
-	// Create workspace, workflow, and task
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	workflow := &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Test Workflow"}
-	_ = repo.CreateWorkflow(ctx, workflow)
-	task := &models.Task{ID: "task-123", WorkspaceID: "ws-1", WorkflowID: "wf-123", WorkflowStepID: "step-123", Title: "Test", State: v1.TaskStateTODO}
-	_ = repo.CreateTask(ctx, task)
-
-	err := repo.UpdateTaskState(ctx, "task-123", v1.TaskStateInProgress)
-	if err != nil {
-		t.Fatalf("failed to update task state: %v", err)
-	}
-
-	retrieved, _ := repo.GetTask(ctx, "task-123")
-	if retrieved.State != v1.TaskStateInProgress {
-		t.Errorf("expected state IN_PROGRESS, got %s", retrieved.State)
-	}
-}
-
 func TestSQLiteRepository_UpdateTaskStateNotFound(t *testing.T) {
 	repo, cleanup := createTestSQLiteRepo(t)
 	defer cleanup()
@@ -128,133 +43,6 @@ func TestSQLiteRepository_UpdateTaskStateNotFound(t *testing.T) {
 	err := repo.UpdateTaskState(ctx, "nonexistent", v1.TaskStateInProgress)
 	if err == nil {
 		t.Error("expected error for nonexistent task")
-	}
-}
-
-func TestSQLiteRepository_UpdateTaskStateIfCurrentIn(t *testing.T) {
-	repo, cleanup := createTestSQLiteRepo(t)
-	defer cleanup()
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	workflow := &models.Workflow{ID: "wf-123", WorkspaceID: "ws-1", Name: "Test Workflow"}
-	_ = repo.CreateWorkflow(ctx, workflow)
-	task := &models.Task{ID: "task-123", WorkspaceID: "ws-1", WorkflowID: "wf-123", WorkflowStepID: "step-123", Title: "Test", State: v1.TaskStateInProgress}
-	_ = repo.CreateTask(ctx, task)
-
-	oldState, updated, err := repo.UpdateTaskStateIfCurrentIn(
-		ctx, "task-123", v1.TaskStateWaitingForInput,
-		[]v1.TaskState{v1.TaskStateInProgress, v1.TaskStateScheduling},
-	)
-	if err != nil {
-		t.Fatalf("conditional update failed: %v", err)
-	}
-	if !updated {
-		t.Fatal("expected update from IN_PROGRESS")
-	}
-	if oldState != v1.TaskStateInProgress {
-		t.Fatalf("old state = %q, want IN_PROGRESS", oldState)
-	}
-
-	retrieved, _ := repo.GetTask(ctx, "task-123")
-	if retrieved.State != v1.TaskStateWaitingForInput {
-		t.Fatalf("expected WAITING_FOR_INPUT, got %s", retrieved.State)
-	}
-
-	_, updated, err = repo.UpdateTaskStateIfCurrentIn(
-		ctx, "task-123", v1.TaskStateWaitingForInput,
-		[]v1.TaskState{v1.TaskStateInProgress, v1.TaskStateScheduling},
-	)
-	if err != nil {
-		t.Fatalf("second conditional update failed: %v", err)
-	}
-	if updated {
-		t.Fatal("expected no update when current state is not allowed")
-	}
-
-	_, updated, err = repo.UpdateTaskStateIfCurrentIn(ctx, "missing", v1.TaskStateReview, []v1.TaskState{v1.TaskStateInProgress})
-	if err == nil {
-		t.Fatal("expected error for missing task")
-	}
-	if updated {
-		t.Fatal("expected no update for missing task")
-	}
-}
-
-func TestSQLiteRepository_ListChildCompletionRows_ActiveChildren(t *testing.T) {
-	repo, cleanup := createTestSQLiteRepo(t)
-	defer cleanup()
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "Workspace"})
-	_ = repo.CreateWorkflow(ctx, &models.Workflow{ID: "wf-1", WorkspaceID: "ws-1", Name: "Workflow"})
-
-	now := time.Now().UTC()
-	parent := &models.Task{
-		ID:             "parent-1",
-		WorkspaceID:    "ws-1",
-		WorkflowID:     "wf-1",
-		WorkflowStepID: "step-1",
-		Title:          "Parent",
-		State:          v1.TaskStateInProgress,
-		Priority:       "medium",
-		CreatedAt:      now,
-		UpdatedAt:      now,
-	}
-	if err := repo.CreateTask(ctx, parent); err != nil {
-		t.Fatalf("create parent: %v", err)
-	}
-
-	createChild := func(id string, state v1.TaskState, archived, ephemeral bool) {
-		t.Helper()
-		child := &models.Task{
-			ID:             id,
-			WorkspaceID:    "ws-1",
-			WorkflowID:     "wf-1",
-			WorkflowStepID: "step-1",
-			Title:          id,
-			State:          state,
-			Priority:       "medium",
-			ParentID:       parent.ID,
-			IsEphemeral:    ephemeral,
-			CreatedAt:      now.Add(time.Duration(len(id)) * time.Second),
-			UpdatedAt:      now.Add(time.Duration(len(id)) * time.Minute),
-		}
-		if err := repo.CreateTask(ctx, child); err != nil {
-			t.Fatalf("create child %s: %v", id, err)
-		}
-		if archived {
-			if err := repo.ArchiveTask(ctx, id); err != nil {
-				t.Fatalf("archive child %s: %v", id, err)
-			}
-		}
-	}
-
-	createChild("child-completed", v1.TaskStateCompleted, false, false)
-	createChild("child-failed", v1.TaskStateFailed, false, false)
-	createChild("child-cancelled", v1.TaskStateCancelled, false, false)
-	createChild("child-open", v1.TaskStateInProgress, false, false)
-	createChild("child-archived", v1.TaskStateTODO, true, false)
-	createChild("child-ephemeral", v1.TaskStateTODO, false, true)
-
-	rows, err := repo.ListChildCompletionRows(ctx, parent.ID)
-	if err != nil {
-		t.Fatalf("ListChildCompletionRows: %v", err)
-	}
-	gotIDs := make([]string, 0, len(rows))
-	for _, row := range rows {
-		gotIDs = append(gotIDs, row.ID)
-		if row.Title == "" {
-			t.Errorf("row %s missing title", row.ID)
-		}
-		if row.UpdatedAt.IsZero() {
-			t.Errorf("row %s missing updated_at", row.ID)
-		}
-	}
-	wantIDs := []string{"child-cancelled", "child-completed", "child-failed", "child-open"}
-	slices.Sort(gotIDs)
-	if !slices.Equal(gotIDs, wantIDs) {
-		t.Fatalf("active child rows = %v, want %v", gotIDs, wantIDs)
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/AvatarGanymede/pcraft/internal/task/models"
-	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // seedDocTask creates the prerequisite workspace, workflow, and task for document tests.
@@ -21,7 +20,7 @@ func seedDocTask(t *testing.T, ctx context.Context, repo interface {
 	now := time.Now().UTC()
 	_ = repo.CreateTask(ctx, &models.Task{
 		ID: taskID, WorkspaceID: "ws-doc", WorkflowID: "wf-doc",
-		Title: "T", State: v1.TaskStateCreated, CreatedAt: now, UpdatedAt: now,
+		Title: "T", CreatedAt: now, UpdatedAt: now,
 	})
 }
 

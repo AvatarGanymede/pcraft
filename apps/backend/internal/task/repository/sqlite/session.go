@@ -355,8 +355,6 @@ func (r *Repository) scanTaskSession(ctx context.Context, row *sql.Row, noRowsEr
 	session.Worktrees = nil
 
 	return session, nil
-
-	return session, nil
 }
 
 // GetTaskSession retrieves an agent session by ID

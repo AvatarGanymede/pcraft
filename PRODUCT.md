@@ -2,24 +2,32 @@
 
 ## Users
 
-Kandev is for developers and engineering teams using AI agents for code work, reviews, workflows, and repository automation. Users arrive with active engineering context: tasks in flight, sessions running, worktrees diverging, repositories changing, integrations reporting state, and follow-up decisions waiting on them.
+pcraft is for developers driving automated GUI/game development with **Claude Code + dev-gui-plugin** on **Perforce** workspaces. Users arrive with active engineering context: tasks in flight, a Claude Code session running a dev-gui pipeline, P4 changelists pending submit, and file locks coordinating concurrent work against shared P4 clients.
 
 ## Product Purpose
 
-Kandev coordinates agentic development work across tasks, sessions, worktrees, repositories, and integrations. The product should help users understand what is happening, choose the next command, and move work through a workflow without losing trust in the underlying developer environment.
+pcraft is the GUI control plane for a single, opinionated workflow: turn a requirement into working code through Claude Code's dev-gui-plugin pipeline, with Perforce as the source of truth and pcraft as the lock coordinator. The product should help users launch tasks, watch pipeline progress, resolve file contention, and move work from Backlog to Closed without losing trust in the underlying P4 state.
 
 Success means users can quickly answer:
 
-- What task, repository, branch, session, and workflow step am I in?
-- What changed, what is running, and what needs attention?
-- Which commands are available now, and which are secondary or conditional?
-- How does this agent-driven work connect back to GitHub, Jira, editors, terminals, and local or remote execution?
+- What task, P4 workspace, changelist, and dev-gui phase am I in?
+- What is the pipeline doing right now, and which files are checked out?
+- Why did a task revert to Backlog, and which task is blocking it?
+- Is the changelist ready to submit, and what happens when I confirm Closed?
+
+## Core Workflow
+
+1. **Create** — pick a P4 workspace, panel ID, requirements, optional prefab. Saved as Backlog.
+2. **Launch** — pcraft injects the dev-gui-plugin prompt and starts Claude Code. Task → In Progress.
+3. **Execute** — Claude runs 8 phases; pcraft checks out files via P4 per Write/Edit, reverting to Backlog on conflict.
+4. **Done** — pipeline finishes; session stays open for follow-up; changelist pending manual submit.
+5. **Close** — user submits in P4 and confirms; pcraft verifies the changelist is submitted, terminates the session, releases locks, and auto-wakes eligible Backlog tasks.
 
 ## Brand Personality
 
 Focused, technical, composed.
 
-The interface should feel like a reliable developer workbench: direct, legible, and confident under pressure. It should avoid performative futurism and keep the user oriented in real engineering state.
+The interface should feel like a reliable developer workbench: direct, legible, and confident under pressure. It should avoid performative futurism and keep the user oriented in real engineering state — P4 changelists, file locks, and pipeline phases.
 
 ## Anti-references
 
@@ -32,23 +40,23 @@ The interface should feel like a reliable developer workbench: direct, legible, 
 
 ### Orientation before controls
 
-The user should first understand their current scope: workspace, repository, task, session, branch, workflow step, and execution state. Controls follow orientation instead of crowding it.
+The user should first understand their current scope: P4 workspace, task, session, changelist, and dev-gui phase. Controls follow orientation instead of crowding it.
 
 ### Command-first secondary actions
 
-Primary actions should be obvious and state-aware. Secondary actions should be available through predictable command surfaces, menus, panel headers, or contextual toolbars rather than scattered across global chrome.
+Primary actions should be obvious and state-aware (launch, confirm submit). Secondary actions should be available through predictable command surfaces — menus, panel headers, contextual toolbars — rather than scattered across global chrome.
 
 ### Density without clutter
 
-Kandev is a professional tool with real state density. Use compact controls and information-rich rows, but preserve grouping, alignment, and hierarchy so the surface can be scanned without fatigue.
+pcraft is a professional tool with real state density. Use compact controls and information-rich rows, but preserve grouping, alignment, and hierarchy so the surface can be scanned without fatigue.
 
 ### State visible but calm
 
-Running agents, remote execution, git status, reviews, tunnels, health, and workflow progress should be visible without becoming alarmist. Color and motion indicate meaning, not decoration.
+Running pipelines, P4 checkout status, file locks, changelist state, and phase progress should be visible without becoming alarmist. Color and motion indicate meaning, not decoration.
 
 ### Familiar affordances preserve developer trust
 
-Use recognizable developer patterns for navigation, git, terminals, panels, editors, filters, and settings. Novel interaction should be reserved for places where the workflow genuinely needs it.
+Use recognizable developer patterns for navigation, changelists, sessions, panels, filters, and settings. Novel interaction should be reserved for places where the workflow genuinely needs it — like the dev-gui phase progress and P4 lock conflict surfacing.
 
 ## Accessibility & Inclusion
 

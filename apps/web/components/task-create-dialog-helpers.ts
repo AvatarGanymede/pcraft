@@ -127,10 +127,9 @@ export type BuildCreatePayloadArgs = {
   attachments?: MessageAttachment[];
   parentId?: string;
   workspacePath?: string;
-  p4WorkspaceId?: string;
-  panelId?: string;
-  requirement?: string;
-  prefabPath?: string;
+  /** Raw per-field values from the workspace's custom form, keyed by
+   * `prompt_<def>`, persisted so workflow STEP PROMPTs can reference them. */
+  metadata?: Record<string, unknown>;
 };
 
 export function buildCreateTaskPayload(args: BuildCreatePayloadArgs): CreateTaskParams {
@@ -150,10 +149,8 @@ export function buildCreateTaskPayload(args: BuildCreatePayloadArgs): CreateTask
     attachments: args.attachments,
     parent_id: args.parentId || undefined,
     workspace_path: args.workspacePath || undefined,
-    p4_workspace_id: args.p4WorkspaceId || undefined,
-    panel_id: args.panelId || undefined,
-    requirement: args.requirement || undefined,
-    prefab: args.prefabPath || undefined,
+    metadata:
+      args.metadata && Object.keys(args.metadata).length > 0 ? args.metadata : undefined,
   };
 }
 
@@ -167,17 +164,12 @@ export function validateCreateInputs(inputs: {
   remoteRepos?: TaskRemoteRepoRow[];
   agentProfileId: string;
   noRepository?: boolean;
-  p4WorkspaceId?: string;
-  panelId?: string;
-  requirement?: string;
 }): boolean {
-  const hasP4 =
-    (inputs.p4WorkspaceId ?? "").trim() !== "" &&
-    (inputs.panelId ?? "").trim() !== "" &&
-    (inputs.requirement ?? "").trim() !== "";
+  // P4/GUI tasks are repo-less: the working directory comes from the pcraft
+  // workspace's bound P4 client, so create mode marks the task noRepository
+  // (which satisfies this gate). Git tasks still need a repo row or URL.
   const hasRemoteRepo = (inputs.remoteRepos ?? []).some((r) => r.url.trim() !== "");
   const hasRepo =
-    hasP4 ||
     inputs.noRepository ||
     inputs.repositories.some((r) => r.repositoryId || r.localPath) ||
     hasRemoteRepo;

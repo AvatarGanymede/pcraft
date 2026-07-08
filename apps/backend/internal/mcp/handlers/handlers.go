@@ -644,7 +644,7 @@ func (h *Handlers) autoStartTask(task *models.Task, agentProfileID, executorProf
 		}
 	}
 
-	// Fall back to workspace defaults for agent profile and worktree executor
+	// Fall back to workspace default agent profile; executor is always Local.
 	if agentProfileID == "" {
 		workspace, err := h.taskSvc.GetWorkspace(context.Background(), task.WorkspaceID)
 		if err == nil && workspace.DefaultAgentProfileID != nil {
@@ -652,7 +652,7 @@ func (h *Handlers) autoStartTask(task *models.Task, agentProfileID, executorProf
 		}
 	}
 	if executorID == "" && executorProfileID == "" {
-		executorID = models.ExecutorIDWorktree
+		executorID = models.ExecutorIDLocal
 	}
 
 	if agentProfileID == "" {

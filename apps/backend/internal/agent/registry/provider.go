@@ -1,11 +1,9 @@
 package registry
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 
 	"github.com/AvatarGanymede/pcraft/internal/agent/agents"
 	"github.com/AvatarGanymede/pcraft/internal/agent/runtime/routingerr"
@@ -19,67 +17,24 @@ import (
 //   - "only"  → E2E mode: only register mock agent, skip all others
 //   - "true"  → Dev mode: load all agents AND enable mock agent
 //   - unset   → Production: load all agents, mock agent disabled
-//
-// PCRAFT_MOCK_PROVIDERS is a comma-separated list of canonical routing
-// provider IDs registered as additional MockAgent instances. This
-// unblocks coverage of the office provider-routing feature: routing
-// config validation requires real-looking provider IDs to be present
-// in the registry, while every launch still routes through the mock
-// binary. Entries not in RoutableProviderIDs are skipped with a
-// warning. It is honoured only when explicitly set, in both dev and
-// E2E modes, and is never honoured in production.
-//
-// For the routing UI without real CLIs installed, set
-// `PCRAFT_MOCK_PROVIDERS=claude-acp,codex-acp,opencode-acp` when
-// launching `make dev`.
 func Provide(log *logger.Logger) (*Registry, func() error, error) {
 	reg := NewRegistry(log)
 
 	mockMode := os.Getenv("PCRAFT_MOCK_AGENT")
-	mockProviders := os.Getenv("PCRAFT_MOCK_PROVIDERS")
 	if mockMode == "only" {
 		// E2E mode: only register mock agent — skip agent discovery for all others
 		_ = reg.Register(agents.NewMockAgent())
 		configureMockAgent(reg, "mock-agent", log)
-		registerExtraMockProviders(reg, log, mockProviders)
-		validateMockProviders(reg, mockProviders, log)
 	} else {
 		reg.LoadDefaults()
 		if mockMode == "true" {
-			// Dev mode: enable the base mock agent alongside the real
-			// agents. PCRAFT_MOCK_PROVIDERS is opt-in — when set, the
-			// listed canonicals are replaced with MockAgent aliases so
-			// the routing UI is exercisable without the real CLIs.
+			// Dev mode: enable the base mock agent alongside the real agents.
 			configureMockAgent(reg, "mock-agent", log)
-			registerExtraMockProviders(reg, log, mockProviders)
-			validateMockProviders(reg, mockProviders, log)
 		}
 		registerRealProvidersProber(reg, log)
 	}
 
 	return reg, func() error { return nil }, nil
-}
-
-// validateMockProviders logs an error if any provider listed in the raw
-// comma-separated string is missing from the registry after
-// registerExtraMockProviders. A missing provider means the routing
-// catalogue will reject every non-empty provider_order, causing 400s
-// in the office-routing-* E2E specs. Failing loudly here surfaces the
-// root cause instead of leaving it to cascade into opaque HTTP errors.
-func validateMockProviders(reg *Registry, raw string, log *logger.Logger) {
-	if raw == "" {
-		return
-	}
-	for _, entry := range strings.Split(raw, ",") {
-		id := strings.TrimSpace(entry)
-		if id == "" || !IsRoutableProviderID(id) {
-			continue
-		}
-		if !reg.Exists(id) {
-			log.Error("PCRAFT_MOCK_PROVIDERS: provider missing from registry after registration — routing catalogue will be empty",
-				zap.String("id", id))
-		}
-	}
 }
 
 // registerRealProvidersProber wires the shared ACP probe to each
@@ -109,94 +64,13 @@ func registerRealProvidersProber(reg *Registry, log *logger.Logger) {
 	}
 	probe := routingerr.NewACPProbe(resolver, log)
 	for _, id := range RoutableProviderIDs {
-		// Skip ids that are not actually loaded (e.g. an agent type
-		// that was removed from LoadDefaults but still appears in the
-		// routable list). The probe is harmless to register against a
-		// missing agent — but registering only loaded ones keeps the
-		// boot log noise minimal.
+		// Skip ids that are not actually loaded. The probe is harmless to
+		// register against a missing agent — but registering only loaded
+		// ones keeps the boot log noise minimal.
 		if !reg.Exists(id) {
 			continue
 		}
 		routingerr.RegisterProber(id, probe)
-	}
-}
-
-// registerExtraMockProviders parses the supplied comma-separated list
-// of provider IDs and registers each accepted entry as a MockAgent
-// alias under that canonical provider ID.
-//
-// In PCRAFT_MOCK_AGENT=only (E2E) mode the canonicals are not loaded by
-// LoadDefaults so each entry is a fresh registration. In
-// PCRAFT_MOCK_AGENT=true (dev) mode the real agents were just loaded —
-// we Replace the entry with a MockAgent so the routing UI exercises
-// the mock binary instead of requiring the real CLI to be installed
-// on the developer's machine.
-func registerExtraMockProviders(reg *Registry, log *logger.Logger, raw string) {
-	if raw == "" {
-		return
-	}
-	for _, entry := range strings.Split(raw, ",") {
-		id := strings.TrimSpace(entry)
-		if id == "" {
-			continue
-		}
-		if !IsRoutableProviderID(id) {
-			log.Warn("PCRAFT_MOCK_PROVIDERS: skipping unknown provider id",
-				zap.String("id", id),
-				zap.Strings("allowed", RoutableProviderIDs))
-			continue
-		}
-		displayName := mockDisplayNameFor(id)
-		ag := agents.NewMockAgentWithID(id, displayName, displayName)
-		if err := reg.Replace(ag); err != nil {
-			log.Warn("PCRAFT_MOCK_PROVIDERS: register failed",
-				zap.String("id", id), zap.Error(err))
-			continue
-		}
-		configureMockAgent(reg, id, log)
-		// Register an E2E-only prober so /routing/retry can mark the
-		// provider healthy without depending on a follow-up launch.
-		// The prober consults the live injection map: if PCRAFT_PROVIDER_
-		// FAILURES still names this provider, the probe fails with that
-		// code; otherwise it succeeds (provider flips healthy).
-		routingerr.RegisterProber(id, &mockProvProber{providerID: id})
-	}
-}
-
-// mockProvProber is the E2E-only ProviderProber wired in
-// registerExtraMockProviders. It mirrors how a real prober for
-// claude-acp/codex-acp would behave: a cheap availability check that
-// returns the injected error when the test has armed one, and nil
-// when the injection has been cleared.
-type mockProvProber struct{ providerID string }
-
-func (p *mockProvProber) Probe(_ context.Context, _ routingerr.ProbeInput) *routingerr.Error {
-	if _, ok := routingerr.InjectedCode(p.providerID); ok {
-		return routingerr.Classify(routingerr.Input{
-			Phase:      routingerr.PhaseProcessStart,
-			ProviderID: p.providerID,
-		})
-	}
-	return nil
-}
-
-// mockDisplayNameFor returns a friendly display name for a routable
-// provider id (e.g. "Mock Claude" for "claude-acp"). Falls back to the
-// id itself when the prefix is unknown.
-func mockDisplayNameFor(id string) string {
-	switch id {
-	case "claude-acp":
-		return "Mock Claude"
-	case "codex-acp":
-		return "Mock Codex"
-	case "opencode-acp":
-		return "Mock OpenCode"
-	case "copilot-acp":
-		return "Mock Copilot"
-	case "amp-acp":
-		return "Mock Amp"
-	default:
-		return "Mock " + id
 	}
 }
 

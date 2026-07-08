@@ -149,7 +149,7 @@ func seedTaskHandler(repo *sqliterepo.Repository, log *logger.Logger) gin.Handle
 		}
 		state := req.State
 		if state == "" {
-			state = string(v1.TaskStateBacklog)
+			state = string(v1.TaskStateCreated)
 		}
 		task := &models.Task{
 			ID:             uuid.New().String(),

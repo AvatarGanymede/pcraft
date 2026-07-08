@@ -886,17 +886,14 @@ func (m *mockShellPrefs) PreferredShell(ctx context.Context) (string, error) {
 type mockCapabilities struct{}
 
 func (m *mockCapabilities) RequiresCloneURL(executorType string) bool {
-	switch models.ExecutorType(executorType) {
-	case models.ExecutorTypeLocalDocker, models.ExecutorTypeRemoteDocker, models.ExecutorTypeSprites:
-		return true
-	default:
-		return false
-	}
+	// No remaining executor type needs a git clone URL (Docker / Sprites / SSH
+	// executors were removed; Local uses the on-disk workspace).
+	return false
 }
 
 func (m *mockCapabilities) ShouldApplyPreferredShell(executorType string) bool {
 	switch models.ExecutorType(executorType) {
-	case models.ExecutorTypeLocal, models.ExecutorTypeWorktree, models.ExecutorTypeMockRemote:
+	case models.ExecutorTypeLocal, models.ExecutorTypeMockRemote:
 		return true
 	default:
 		return false

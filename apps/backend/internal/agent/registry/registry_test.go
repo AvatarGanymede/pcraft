@@ -240,9 +240,9 @@ func TestRegistry_LoadDefaults(t *testing.T) {
 		t.Skip("no default agents configured")
 	}
 
-	// Check a known default agent exists
-	if !reg.Exists("auggie") {
-		t.Error("expected default agent 'auggie' to be loaded")
+	// Check the default real agent exists (pcraft ships a single agent).
+	if !reg.Exists("claude-acp") {
+		t.Error("expected default agent 'claude-acp' to be loaded")
 	}
 }
 

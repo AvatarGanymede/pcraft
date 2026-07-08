@@ -24,45 +24,6 @@ import { useRemoteAuthSpecs } from "@/hooks/domains/settings/use-remote-auth-spe
 import { isAgentConfiguredOnExecutor } from "@/lib/agent-executor-compat";
 
 /**
- * Multi-repo tasks currently only run on the git-worktree executor —
- * Docker/Sprites/etc. don't yet know how to provision N sibling repos under
- * one task root. Returning a non-null reason marks the option as disabled in
- * the executor selector and surfaces this string as a tooltip. The dialog
- * only applies this when 2+ repos are selected (see isMultiRepoSelection).
- */
-function nonWorktreeDisabledReason(profile: ExecutorProfile): string | null {
-  if ((profile.executor_type ?? "") === "worktree") return null;
-  return "Multi-repo tasks only support the git-worktree executor.";
-}
-
-/**
- * Worktree executor needs a repository to create the worktree from. Disable
- * it when the task is in no-repository mode so the picker doesn't offer an
- * unworkable choice (the backend would silently fall back to local).
- */
-function worktreeDisabledReason(profile: ExecutorProfile): string | null {
-  if ((profile.executor_type ?? "") !== "worktree") return null;
-  return "Worktree executor requires a repository.";
-}
-
-/**
- * Combines the two executor-disable rules into a single resolver:
- *   - no-repository mode → disable worktree (it needs a repo)
- *   - multi-repo selection → disable everything except worktree
- *   - otherwise → no disabling
- * The two never co-occur (no-repository implies zero repos, so multi-repo
- * cannot be true at the same time), so a simple priority order is enough.
- */
-function pickExecutorDisabledReason(
-  noRepository: boolean,
-  isMultiRepoSelection: boolean,
-): ((profile: ExecutorProfile) => string | null) | undefined {
-  if (noRepository) return worktreeDisabledReason;
-  if (isMultiRepoSelection) return nonWorktreeDisabledReason;
-  return undefined;
-}
-
-/**
  * The form has a repo selection when:
  *   - noRepository is on (intentionally repo-less), OR
  *   - useRemote is on and at least one remote-URL row has a non-empty URL, OR
@@ -198,14 +159,10 @@ export function useDialogComputed({
       })),
     );
   }, [executors]);
-  // Multi-repo tasks only run on the git-worktree executor today — Docker /
-  // Sprites / standalone don't yet know how to provision N sibling repos. Gate
-  // non-worktree options only when 2+ repos are selected; single-repo tasks
-  // keep the full executor catalogue. Count BOTH workspace/local rows AND
-  // remote-URL rows (each non-empty row is a distinct repo the task will
-  // operate on) so a 2-row Remote selection trips the same restriction.
+  // Local is the only executor, so there is no executor-disable rule to apply
+  // (the former multi-repo/worktree gating was removed with the worktree
+  // executor). selectedRepoCount is still used below for the executor hint.
   const selectedRepoCount = computeSelectedRepoCount(fs);
-  const isMultiRepoSelection = selectedRepoCount > 1;
   // Use the effective agent ID (form value OR the workflow-locked override)
   // so the compatibility gate catches the override case too — passing the
   // raw fs.agentProfileId would let workflow-locked sessions slip past with
@@ -215,7 +172,7 @@ export function useDialogComputed({
     fs.executorProfileId,
     effectiveAgentProfileId,
     agentProfiles,
-    pickExecutorDisabledReason(fs.noRepository, isMultiRepoSelection),
+    undefined,
   );
   const agentProfileOptions = useAgentProfileOptions(exec.compatibleAgentProfiles);
   const executorHint = useExecutorHint(executors, fs.executorId, selectedRepoCount);

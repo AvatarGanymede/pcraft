@@ -56,16 +56,13 @@ type CreateTaskRequest struct {
 
 // UpdateTaskRequest contains the data for updating a task
 type UpdateTaskRequest struct {
-	Title          *string                `json:"title,omitempty"`
-	Description    *string                `json:"description,omitempty"`
-	Priority       *string                `json:"priority,omitempty"`
-	State          *v1.TaskState          `json:"state,omitempty"`
-	Repositories   []TaskRepositoryInput  `json:"repositories,omitempty"`
-	Position       *int                   `json:"position,omitempty"`
-	Metadata       map[string]interface{} `json:"metadata,omitempty"`
-	P4WorkspaceID  *string                `json:"p4_workspace_id,omitempty"`
-	P4Changelist   *string                `json:"p4_changelist,omitempty"`
-	BlockedByTaskID *string               `json:"blocked_by_task_id,omitempty"`
+	Title           *string                `json:"title,omitempty"`
+	Description     *string                `json:"description,omitempty"`
+	Priority        *string                `json:"priority,omitempty"`
+	State           *v1.TaskState          `json:"state,omitempty"`
+	Repositories    []TaskRepositoryInput  `json:"repositories,omitempty"`
+	Position        *int                   `json:"position,omitempty"`
+	Metadata        map[string]interface{} `json:"metadata,omitempty"`
 }
 
 // CreateWorkflowRequest contains the data for creating a new workflow
@@ -90,7 +87,6 @@ type CreateWorkspaceRequest struct {
 	Name                        string  `json:"name"`
 	Description                 string  `json:"description"`
 	OwnerID                     string  `json:"owner_id"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
@@ -98,12 +94,16 @@ type CreateWorkspaceRequest struct {
 
 // UpdateWorkspaceRequest contains the data for updating a workspace
 type UpdateWorkspaceRequest struct {
-	Name                        *string `json:"name,omitempty"`
-	Description                 *string `json:"description,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
-	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
-	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
-	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
+	Name                        *string                `json:"name,omitempty"`
+	Description                 *string                `json:"description,omitempty"`
+	DefaultEnvironmentID        *string                `json:"default_environment_id,omitempty"`
+	DefaultAgentProfileID       *string                `json:"default_agent_profile_id,omitempty"`
+	DefaultConfigAgentProfileID *string                `json:"default_config_agent_profile_id,omitempty"`
+	TaskFormConfig              *models.TaskFormConfig `json:"task_form_config,omitempty"`
+	// P4Client is the bound P4 client (workspace) name. Only the name is
+	// user-supplied; the service resolves Root/Stream via `p4 client -o` and
+	// persists them alongside. Empty string clears the binding.
+	P4Client *string `json:"p4_client,omitempty"`
 }
 
 // FindOrCreateRepositoryRequest contains the data for finding or creating a repository by provider info.

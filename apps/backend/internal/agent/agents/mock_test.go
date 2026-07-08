@@ -116,19 +116,6 @@ func TestMockAgent_PassthroughConfig_ResumeFlags(t *testing.T) {
 	}
 }
 
-func TestNewMockAgentWithID_AppliesIdentityOverrides(t *testing.T) {
-	a := NewMockAgentWithID("claude-acp", "Mock Claude", "Claude (Mock)")
-	if a.ID() != "claude-acp" {
-		t.Errorf("ID() = %q, want claude-acp", a.ID())
-	}
-	if a.Name() != "Mock Claude" {
-		t.Errorf("Name() = %q, want Mock Claude", a.Name())
-	}
-	if a.DisplayName() != "Claude (Mock)" {
-		t.Errorf("DisplayName() = %q, want Claude (Mock)", a.DisplayName())
-	}
-}
-
 func TestNewMockAgent_DefaultIdentity(t *testing.T) {
 	a := NewMockAgent()
 	if a.ID() != "mock-agent" {

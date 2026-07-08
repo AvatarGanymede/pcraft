@@ -14,10 +14,13 @@ export function registerWorkspacesHandlers(store: StoreApi<AppState>): WsHandler
           name: payload.name,
           description: payload.description ?? null,
           owner_id: payload.owner_id ?? "",
-          default_executor_id: payload.default_executor_id ?? null,
           default_environment_id: payload.default_environment_id ?? null,
           default_agent_profile_id: payload.default_agent_profile_id ?? null,
           default_config_agent_profile_id: payload.default_config_agent_profile_id ?? null,
+          task_form_config: payload.task_form_config ?? null,
+          p4_client: (payload as { p4_client?: string }).p4_client ?? "",
+          p4_root: (payload as { p4_root?: string }).p4_root ?? "",
+          p4_stream: (payload as { p4_stream?: string }).p4_stream ?? "",
           created_at: payload.created_at ?? new Date().toISOString(),
           updated_at: payload.updated_at ?? new Date().toISOString(),
         };
@@ -48,13 +51,28 @@ export function registerWorkspacesHandlers(store: StoreApi<AppState>): WsHandler
                   ...item,
                   name: message.payload.name,
                   description: message.payload.description ?? item.description,
-                  default_executor_id: message.payload.default_executor_id ?? null,
                   default_environment_id: message.payload.default_environment_id ?? null,
                   default_agent_profile_id: message.payload.default_agent_profile_id ?? null,
                   default_config_agent_profile_id:
                     "default_config_agent_profile_id" in message.payload
                       ? (message.payload.default_config_agent_profile_id ?? null)
                       : (item.default_config_agent_profile_id ?? null),
+                  task_form_config:
+                    "task_form_config" in message.payload
+                      ? (message.payload.task_form_config ?? null)
+                      : (item.task_form_config ?? null),
+                  p4_client:
+                    "p4_client" in message.payload
+                      ? ((message.payload as { p4_client?: string }).p4_client ?? "")
+                      : (item.p4_client ?? ""),
+                  p4_root:
+                    "p4_root" in message.payload
+                      ? ((message.payload as { p4_root?: string }).p4_root ?? "")
+                      : (item.p4_root ?? ""),
+                  p4_stream:
+                    "p4_stream" in message.payload
+                      ? ((message.payload as { p4_stream?: string }).p4_stream ?? "")
+                      : (item.p4_stream ?? ""),
                   updated_at: message.payload.updated_at ?? item.updated_at,
                 }
               : item,

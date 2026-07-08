@@ -54,6 +54,7 @@ import (
 	officesqlite "github.com/AvatarGanymede/pcraft/internal/office/repository/sqlite"
 	officetestharness "github.com/AvatarGanymede/pcraft/internal/office/testharness"
 	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/p4"
 	promptcontroller "github.com/AvatarGanymede/pcraft/internal/prompts/controller"
 	prompthandlers "github.com/AvatarGanymede/pcraft/internal/prompts/handlers"
 	"github.com/AvatarGanymede/pcraft/internal/repoclone"
@@ -433,6 +434,7 @@ type routeParams struct {
 	officeRepo              *officesqlite.Repository
 	analyticsRepo           analyticsrepository.Repository
 	orchestratorSvc         *orchestrator.Service
+	p4Svc                   *p4.Service
 	lifecycleMgr            *lifecycle.Manager
 	hostUtilityMgr          *hostutility.Manager
 	eventBus                bus.EventBus
@@ -803,6 +805,11 @@ func registerSecondaryRoutes(
 
 	clarification.RegisterRoutes(p.router, clarificationStore, p.gateway.Hub, p.msgCreator, p.taskRepo, p.eventBus, p.log)
 	p.log.Debug("Registered Clarification handlers (HTTP)")
+
+	if p.p4Svc != nil {
+		p4.RegisterRoutes(p.router.Group("/api/v1"), p.p4Svc)
+		p.log.Debug("Registered P4 handlers (HTTP)")
+	}
 
 	if p.secretsSvc != nil {
 		secrets.RegisterRoutes(p.router, p.gateway.Dispatcher, p.secretsSvc, p.log)

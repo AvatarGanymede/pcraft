@@ -366,7 +366,7 @@ func createMoveTask(t *testing.T, ctx context.Context, repo interface {
 		WorkflowID:     workflowID,
 		WorkflowStepID: stepID,
 		Title:          id,
-		State:          v1.TaskStateTODO,
+		State:          v1.TaskStateCreated,
 		ArchivedAt:     archivedAt,
 	}))
 	if archivedAt != nil {

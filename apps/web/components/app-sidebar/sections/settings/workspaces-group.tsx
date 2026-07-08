@@ -1,6 +1,6 @@
 "use client";
 
-import { IconArrowsShuffle, IconFolder, IconGitBranch } from "@tabler/icons-react";
+import { IconArrowsShuffle, IconFolder } from "@tabler/icons-react";
 import { useAppStore } from "@/components/state-provider";
 import { SettingsGroup, SettingsLeaf } from "./settings-nav-primitives";
 
@@ -39,7 +39,6 @@ export function WorkspacesGroup({ pathname, expanded, onToggle }: WorkspacesGrou
     >
       {workspaces.map((workspace) => {
         const workspacePath = `${ROOT_HREF}/${workspace.id}`;
-        const repositoriesPath = `${workspacePath}/repositories`;
         const workflowsPath = `${workspacePath}/workflows`;
         return (
           <SettingsGroup
@@ -50,13 +49,6 @@ export function WorkspacesGroup({ pathname, expanded, onToggle }: WorkspacesGrou
             defaultExpanded={shouldExpandWorkspace(workspace.id)}
             depth={1}
           >
-            <SettingsLeaf
-              href={repositoriesPath}
-              label="Repositories"
-              icon={IconGitBranch}
-              isActive={pathname === repositoriesPath}
-              depth={2}
-            />
             <SettingsLeaf
               href={workflowsPath}
               label="Workflows"

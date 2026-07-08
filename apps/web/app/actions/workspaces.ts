@@ -69,7 +69,6 @@ export async function getWorkspaceAction(id: string): Promise<Workspace> {
 export async function createWorkspaceAction(payload: {
   name: string;
   description?: string;
-  default_executor_id?: string;
   default_environment_id?: string;
   default_agent_profile_id?: string;
 }) {
@@ -84,10 +83,11 @@ export async function updateWorkspaceAction(
   payload: {
     name?: string;
     description?: string;
-    default_executor_id?: string;
     default_environment_id?: string;
     default_agent_profile_id?: string;
     default_config_agent_profile_id?: string;
+    task_form_config?: import("@/lib/task-form-config").TaskFormConfig;
+    p4_client?: string;
   },
 ) {
   return fetchJson<Workspace>(`${apiBaseUrl}/api/v1/workspaces/${id}`, {

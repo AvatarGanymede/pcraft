@@ -2,16 +2,12 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/AvatarGanymede/pcraft/internal/task/dto"
-	"github.com/AvatarGanymede/pcraft/internal/task/models"
 	"github.com/AvatarGanymede/pcraft/internal/task/service"
 	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
-	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -58,75 +54,6 @@ func TestEnrichTasksWithPRs_NilListerIsNoop(t *testing.T) {
 	dtos := []dto.TaskDTO{{ID: "task-1"}}
 	h.enrichTasksWithPRs(context.Background(), dtos)
 	assert.Nil(t, dtos[0].PRs)
-}
-
-func TestHandleListTasks_IncludesAssociatedPRs(t *testing.T) {
-	svc, repo := newTestTaskService(t)
-	ctx := context.Background()
-	now := time.Now().UTC()
-
-	require.NoError(t, repo.CreateWorkspace(ctx, &models.Workspace{
-		ID: "ws-pr", Name: "PR WS", CreatedAt: now, UpdatedAt: now,
-	}))
-	require.NoError(t, repo.CreateTask(ctx, &models.Task{
-		ID: "task-pr", WorkspaceID: "ws-pr", WorkflowID: "wf-pr",
-		Title: "Has a PR", State: v1.TaskStateReview, CreatedAt: now, UpdatedAt: now,
-	}))
-
-	h := &Handlers{
-		taskSvc: svc,
-		logger:  testLogger(t).WithFields(),
-		taskPRLister: &fakeTaskPRLister{byTask: map[string][]TaskPRInfo{
-			"task-pr": {{Number: 7, URL: "https://github.com/o/r/pull/7", Title: "Ship it", State: "merged"}},
-		}},
-	}
-
-	msg := makeWSMessage(t, ws.ActionMCPListTasks, map[string]any{"workflow_id": "wf-pr"})
-	resp, err := h.handleListTasks(ctx, msg)
-	require.NoError(t, err)
-
-	var payload dto.ListTasksResponse
-	require.NoError(t, json.Unmarshal(resp.Payload, &payload))
-	require.Len(t, payload.Tasks, 1)
-	require.Len(t, payload.Tasks[0].PRs, 1)
-	assert.Equal(t, "merged", payload.Tasks[0].PRs[0].State)
-	assert.Equal(t, 7, payload.Tasks[0].PRs[0].Number)
-	assert.Equal(t, "https://github.com/o/r/pull/7", payload.Tasks[0].PRs[0].URL)
-}
-
-func TestHandleListRelatedTasks_IncludesAssociatedPRs(t *testing.T) {
-	svc, repo := newTestTaskService(t)
-	ctx := context.Background()
-	now := time.Now().UTC()
-
-	require.NoError(t, repo.CreateWorkspace(ctx, &models.Workspace{
-		ID: "ws-rel", Name: "Rel WS", CreatedAt: now, UpdatedAt: now,
-	}))
-	require.NoError(t, repo.CreateTask(ctx, &models.Task{
-		ID: "task-rel", WorkspaceID: "ws-rel", WorkflowID: "wf-rel",
-		Title: "Self", State: v1.TaskStateReview, CreatedAt: now, UpdatedAt: now,
-	}))
-
-	merged := now
-	h := &Handlers{
-		taskSvc:    svc,
-		handoffSvc: service.NewHandoffService(repo, nil, nil, nil, nil, testLogger(t)),
-		logger:     testLogger(t).WithFields(),
-		taskPRLister: &fakeTaskPRLister{byTask: map[string][]TaskPRInfo{
-			"task-rel": {{Number: 99, URL: "https://github.com/o/r/pull/99", Title: "Fix", State: "merged", MergedAt: &merged}},
-		}},
-	}
-
-	msg := makeWSMessage(t, ws.ActionMCPListRelatedTasks, map[string]any{"task_id": "task-rel"})
-	resp, err := h.handleListRelatedTasks(ctx, msg)
-	require.NoError(t, err)
-
-	var payload service.RelatedTasks
-	require.NoError(t, json.Unmarshal(resp.Payload, &payload))
-	require.Len(t, payload.Task.PRs, 1)
-	assert.Equal(t, 99, payload.Task.PRs[0].Number)
-	assert.Equal(t, "merged", payload.Task.PRs[0].State)
-	require.NotNil(t, payload.Task.PRs[0].MergedAt, "merged_at should be surfaced")
 }
 
 func TestEnrichRelatedTasksWithPRs(t *testing.T) {

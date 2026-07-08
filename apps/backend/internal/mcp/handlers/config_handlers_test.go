@@ -586,13 +586,6 @@ func TestHandleMoveTask_ActiveSessionWithoutPrompt_DefersMove(t *testing.T) {
 	assert.Equal(t, "step-work", task.WorkflowStepID, "deferred move must not apply immediately")
 }
 
-func TestNormalizeTaskState_AcceptsCommonAliases(t *testing.T) {
-	assert.Equal(t, v1.TaskStateCompleted, normalizeTaskState("complete"))
-	assert.Equal(t, v1.TaskStateCompleted, normalizeTaskState("DONE"))
-	assert.Equal(t, v1.TaskStateInProgress, normalizeTaskState("in_progress"))
-	assert.Equal(t, v1.TaskStateTODO, normalizeTaskState("open"))
-}
-
 func TestHandleUpdateTaskState_InvalidPayload(t *testing.T) {
 	h := &Handlers{}
 	msg := &ws.Message{

@@ -41,7 +41,7 @@
 #   -h, --help            Show this help
 #
 # Teardown (printed again at the end):
-#   scripts/kandev-kill --pidfile <pidfile> --yes
+#   scripts/pcraft-kill --pidfile <pidfile> --yes
 #
 set -euo pipefail
 
@@ -197,7 +197,7 @@ if [[ "$WANT_WEB" -eq 1 && ! -d "$NODE_MODULES" ]]; then
 fi
 
 # --- Create the isolated home / data dir ---
-TMPDIR_ISO="$(mktemp -d "/tmp/kandev-iso-${BACKEND_PORT}-XXXXXX")"
+TMPDIR_ISO="$(mktemp -d "/tmp/pcraft-iso-${BACKEND_PORT}-XXXXXX")"
 HOME_ISO="$TMPDIR_ISO/home"
 KHOME="$HOME_ISO/.kandev"
 DATA_DIR="$KHOME/data"
@@ -226,8 +226,8 @@ fi
 
 BACKEND_LOG="$TMPDIR_ISO/backend.log"
 WEB_LOG="$TMPDIR_ISO/web.log"
-PIDFILE="/tmp/kandev-dev-isolated-${BACKEND_PORT}.pid"
-WEB_PIDFILE="/tmp/kandev-dev-isolated-${BACKEND_PORT}.web.pid"
+PIDFILE="/tmp/pcraft-dev-isolated-${BACKEND_PORT}.pid"
+WEB_PIDFILE="/tmp/pcraft-dev-isolated-${BACKEND_PORT}.web.pid"
 
 # --- Launch the backend (detached process-group leader, logs to file) ---
 # KANDEV_DEBUG_DEV_MODE=true selects the `dev` profile (mock agent, pprof,
@@ -335,6 +335,6 @@ echo "  backend log : $BACKEND_LOG"
 [[ "$WANT_WEB" -eq 1 ]] && echo "  web log     : $WEB_LOG"
 echo "  pidfile     : $PIDFILE"
 echo
-echo "  Logs        : scripts/kandev-logs $BACKEND_PORT --export"
-echo "  Teardown    : scripts/kandev-kill --pidfile $PIDFILE --yes"
+echo "  Logs        : scripts/pcraft-logs $BACKEND_PORT --export"
+echo "  Teardown    : scripts/pcraft-kill --pidfile $PIDFILE --yes"
 echo "==========================================================="

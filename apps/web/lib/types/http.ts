@@ -167,11 +167,17 @@ export type Workspace = {
   name: string;
   description?: string | null;
   owner_id: string;
-  default_executor_id?: string | null;
   default_environment_id?: string | null;
   default_agent_profile_id?: AgentProfileId | null;
   default_config_agent_profile_id?: AgentProfileId | null;
   office_workflow_id?: WorkflowId;
+  task_form_config?: import("@/lib/task-form-config").TaskFormConfig | null;
+  /** Bound P4 client (workspace) name; empty when unbound. */
+  p4_client?: string;
+  /** Local root of the bound P4 client, resolved server-side. Task cwd. */
+  p4_root?: string;
+  /** Stream path of the bound P4 client (empty for classic clients). */
+  p4_stream?: string;
   created_at: string;
   updated_at: string;
 };

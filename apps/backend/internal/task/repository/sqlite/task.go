@@ -825,12 +825,12 @@ func (r *Repository) CountOpenWatcherCreatedTasks(ctx context.Context, metadataK
 	query := r.ro.Rebind(fmt.Sprintf(`
 		SELECT COUNT(*) FROM tasks
 		WHERE archived_at IS NULL
-			AND state NOT IN (?, ?)
+			AND state NOT IN (?, ?, ?)
 			AND %s = ?
 	`, dialect.JSONExtract(r.ro.DriverName(), "metadata", metadataKey)))
 	var n int
 	if err := r.ro.QueryRowxContext(ctx, query,
-		v1.TaskStateDone, v1.TaskStateClosed, watchID,
+		v1.TaskStateCompleted, v1.TaskStateFailed, v1.TaskStateCancelled, watchID,
 	).Scan(&n); err != nil {
 		return 0, err
 	}

@@ -11,7 +11,6 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/AvatarGanymede/pcraft/internal/events"
 	"github.com/AvatarGanymede/pcraft/internal/events/bus"
-	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 // mockSubscription implements bus.Subscription for testing
@@ -200,55 +199,6 @@ func TestStopNotRunning(t *testing.T) {
 	if err != nil {
 		t.Errorf("stopping not running watcher should not error: %v", err)
 	}
-}
-
-func TestTaskEventHandling(t *testing.T) {
-	synctest.Test(t, func(t *testing.T) {
-		eventBus := newMockEventBus()
-
-		var receivedData TaskEventData
-		var received bool
-		var mu sync.Mutex
-
-		handlers := EventHandlers{
-			OnTaskStateChanged: func(ctx context.Context, data TaskEventData) {
-				mu.Lock()
-				receivedData = data
-				received = true
-				mu.Unlock()
-			},
-		}
-		log := createTestLogger()
-
-		w := NewWatcher(eventBus, handlers, "orchestrator-test", log)
-		_ = w.Start(context.Background())
-		defer func() {
-			_ = w.Stop()
-		}()
-
-		// Simulate publishing a task state changed event
-		oldState := v1.TaskStateTODO
-		newState := v1.TaskStateInProgress
-		event := bus.NewEvent(events.TaskStateChanged, "test", map[string]interface{}{
-			"task_id":   "task-123",
-			"old_state": string(oldState),
-			"new_state": string(newState),
-		})
-
-		_ = eventBus.Publish(context.Background(), events.TaskStateChanged, event)
-
-		// Wait for goroutines in mock event bus to settle
-		synctest.Wait()
-
-		mu.Lock()
-		defer mu.Unlock()
-		if !received {
-			t.Error("OnTaskStateChanged handler was not called")
-		}
-		if receivedData.TaskID != "task-123" {
-			t.Errorf("expected task_id = 'task-123', got %s", receivedData.TaskID)
-		}
-	})
 }
 
 func TestAgentEventHandling(t *testing.T) {

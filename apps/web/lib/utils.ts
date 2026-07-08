@@ -160,7 +160,7 @@ export function selectPreferredBranch(branches: BranchSelectionCandidate[]): str
   return null;
 }
 
-export const DEFAULT_LOCAL_EXECUTOR_TYPE = "worktree";
+export const DEFAULT_LOCAL_EXECUTOR_TYPE = "local";
 
 /**
  * Format a date string as a human-readable relative time (e.g., "2m ago", "1h ago", "yesterday").

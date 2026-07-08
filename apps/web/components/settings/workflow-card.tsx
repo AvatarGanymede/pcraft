@@ -316,6 +316,7 @@ function WorkflowCardBody({
         ) : (
           <WorkflowPipelineEditor
             steps={workflowSteps}
+            workspaceId={workflow.workspace_id}
             onUpdateStep={stepActions.handleUpdateWorkflowStep}
             onAddStep={stepActions.handleAddWorkflowStep}
             onRemoveStep={stepActions.handleRemoveWorkflowStep}

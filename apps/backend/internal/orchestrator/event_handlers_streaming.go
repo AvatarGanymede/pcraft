@@ -577,14 +577,27 @@ func (s *Service) setSessionWaitingForInput(ctx context.Context, taskID, session
 	s.writeTaskReviewState(ctx, taskID)
 }
 
+// writeTaskReviewState transitions a task to REVIEW when its agent turn
+// completes (session enters WAITING_FOR_INPUT). Uses a compare-and-set so it
+// only fires from an active state (IN_PROGRESS/SCHEDULING) and never clobbers a
+// terminal or already-reviewed task.
 func (s *Service) writeTaskReviewState(ctx context.Context, taskID string) {
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateInProgress); err != nil {
-		s.logger.Error("failed to update task state to IN_PROGRESS",
+	updated, err := s.taskRepo.UpdateTaskStateIfCurrentIn(
+		ctx,
+		taskID,
+		v1.TaskStateReview,
+		[]v1.TaskState{v1.TaskStateInProgress, v1.TaskStateScheduling},
+	)
+	if err != nil {
+		s.logger.Error("failed to update task state to REVIEW",
 			zap.String("task_id", taskID),
 			zap.Error(err))
 		return
 	}
-	s.logger.Info("task moved to IN_PROGRESS state",
+	if !updated {
+		return
+	}
+	s.logger.Info("task moved to REVIEW state",
 		zap.String("task_id", taskID))
 }
 

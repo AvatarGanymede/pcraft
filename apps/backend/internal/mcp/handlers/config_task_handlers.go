@@ -267,8 +267,10 @@ func (h *Handlers) handleUpdateTaskState(ctx context.Context, msg *ws.Message) (
 	}
 	state := normalizeTaskState(req.State)
 	switch state {
-	case v1.TaskStateBacklog, v1.TaskStateInProgress,
-		v1.TaskStateDone, v1.TaskStateClosed:
+	case v1.TaskStateTODO, v1.TaskStateCreated, v1.TaskStateScheduling,
+		v1.TaskStateInProgress, v1.TaskStateReview, v1.TaskStateBlocked,
+		v1.TaskStateWaitingForInput, v1.TaskStateCompleted,
+		v1.TaskStateFailed, v1.TaskStateCancelled:
 		// valid
 	default:
 		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "invalid task state: "+req.State, nil)
@@ -292,14 +294,26 @@ func normalizeTaskState(raw string) v1.TaskState {
 	}
 	upper := strings.ToUpper(trimmed)
 	switch upper {
-	case "OPEN", "TODO", "CREATED", "SCHEDULING", "BLOCKED", "FAILED":
-		return v1.TaskStateBacklog
-	case "IN_PROGRESS", "INPROGRESS", "ACTIVE", "REVIEW", "WAITING_FOR_INPUT", "WAITING":
+	case "OPEN", "TODO":
+		return v1.TaskStateTODO
+	case "IN_PROGRESS", "INPROGRESS", "ACTIVE":
 		return v1.TaskStateInProgress
 	case "COMPLETE", "COMPLETED", "DONE":
-		return v1.TaskStateDone
+		return v1.TaskStateCompleted
+	case "BLOCKED":
+		return v1.TaskStateBlocked
 	case "CANCELLED", "CANCELED":
-		return v1.TaskStateClosed
+		return v1.TaskStateCancelled
+	case "REVIEW":
+		return v1.TaskStateReview
+	case "FAILED":
+		return v1.TaskStateFailed
+	case "CREATED":
+		return v1.TaskStateCreated
+	case "SCHEDULING":
+		return v1.TaskStateScheduling
+	case "WAITING_FOR_INPUT", "WAITING":
+		return v1.TaskStateWaitingForInput
 	default:
 		return v1.TaskState(trimmed)
 	}

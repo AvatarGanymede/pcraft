@@ -2,13 +2,13 @@ package routing
 
 import "github.com/AvatarGanymede/pcraft/internal/agent/registry"
 
-// v1AllowList is the static set of provider IDs eligible for routing in
-// v1. It is filtered against the live registry so a workspace cannot
-// configure a provider whose binary is missing on this host.
+// v1AllowList is the static set of provider IDs eligible for routing. It
+// is filtered against the live registry so a workspace cannot configure a
+// provider whose binary is missing on this host.
 //
 // The canonical list lives in the registry package as
-// registry.RoutableProviderIDs so the E2E multi-mock registration path
-// (PCRAFT_MOCK_PROVIDERS) and this catalogue cannot drift.
+// registry.RoutableProviderIDs (a single entry, claude-acp) so it and this
+// catalogue cannot drift.
 var v1AllowList = buildV1AllowList()
 
 func buildV1AllowList() []ProviderID {

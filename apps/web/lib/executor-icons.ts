@@ -1,13 +1,11 @@
 import {
   IconFolder,
-  IconFolders,
   IconServer,
   IconServerOff,
 } from "@tabler/icons-react";
 
 export const EXECUTOR_ICON_MAP: Record<string, typeof IconFolder> = {
   local: IconFolder,
-  worktree: IconFolders,
 };
 
 export function getExecutorIcon(type: string): typeof IconFolder {
@@ -16,7 +14,6 @@ export function getExecutorIcon(type: string): typeof IconFolder {
 
 const EXECUTOR_LABEL_MAP: Record<string, string> = {
   local: "Local",
-  worktree: "Worktree",
 };
 
 export function getExecutorLabel(type: string): string {

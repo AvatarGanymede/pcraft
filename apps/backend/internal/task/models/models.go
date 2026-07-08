@@ -350,10 +350,6 @@ type Task struct {
 	// tasks always come back false. UI callers gate office-only surfaces on
 	// this (e.g. the "Open in office view" topbar link).
 	IsFromOffice bool `json:"is_from_office,omitempty"`
-	// P4 integration fields (pcraft slim build).
-		P4WorkspaceID   string `json:"p4_workspace_id,omitempty"`
-		P4Changelist    string `json:"p4_changelist,omitempty"`
-		BlockedByTaskID string `json:"blocked_by_task_id,omitempty"`
 }
 
 // ChildCompletionRow is the compact active-child projection used to decide
@@ -369,7 +365,7 @@ type ChildCompletionRow struct {
 // is expected from that task.
 func IsTerminalTaskState(state v1.TaskState) bool {
 	switch state {
-	case v1.TaskStateDone, v1.TaskStateClosed:
+	case v1.TaskStateCompleted, v1.TaskStateFailed, v1.TaskStateCancelled:
 		return true
 	default:
 		return false
@@ -420,7 +416,6 @@ type Workspace struct {
 	Name                        string    `json:"name"`
 	Description                 string    `json:"description"`
 	OwnerID                     string    `json:"owner_id"`
-	DefaultExecutorID           *string   `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string   `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string   `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string   `json:"default_config_agent_profile_id,omitempty"`
@@ -431,6 +426,63 @@ type Workspace struct {
 	TaskPrefix       string `json:"task_prefix,omitempty"`        // e.g. "KAN"
 	TaskSequence     int    `json:"task_sequence,omitempty"`      // auto-incrementing counter
 	OfficeWorkflowID string `json:"office_workflow_id,omitempty"` // FK to system office workflow
+
+	// P4 binding (pcraft): each workspace binds 1:1 to a single P4 client
+	// (workspace). Only the client name is user-supplied; Root/Stream are
+	// resolved server-side via `p4 client -o` and cached here. A task in this
+	// workspace uses P4Root as its working directory.
+	P4Client string `json:"p4_client,omitempty"`
+	P4Root   string `json:"p4_root,omitempty"`
+	P4Stream string `json:"p4_stream,omitempty"`
+
+	// TaskFormConfig describes the customizable "new task" form for this
+	// workspace: the ordered fields the user fills in plus the template that
+	// concatenates them into the task's base prompt. Empty/zero value means
+	// the default single-prompt form (see DefaultTaskFormConfig).
+	TaskFormConfig TaskFormConfig `json:"task_form_config"`
+}
+
+// TaskFormField is a single user-defined field on the new-task form.
+type TaskFormField struct {
+	// Def is the placeholder key referenced as {{prompt_<def>}}. Required,
+	// unique within a workspace, English letters/digits/underscore only.
+	Def string `json:"def"`
+	// Label is the human-facing field label shown in the dialog.
+	Label string `json:"label"`
+	// Placeholder is the optional input placeholder text.
+	Placeholder string `json:"placeholder,omitempty"`
+	// Required marks the field as mandatory before a task can be created.
+	Required bool `json:"required,omitempty"`
+	// Multiline renders a textarea instead of a single-line input.
+	Multiline bool `json:"multiline,omitempty"`
+}
+
+// TaskFormConfig is the per-workspace new-task form definition.
+type TaskFormConfig struct {
+	Fields []TaskFormField `json:"fields"`
+	// Template concatenates field values into the base prompt. It may
+	// reference {{prompt_<def>}} for any field above. It must NOT reference
+	// {{task_prompt}} (that placeholder IS this template's output and would
+	// recurse).
+	Template string `json:"template"`
+}
+
+// DefaultTaskFormConfig is the implicit form used when a workspace has no
+// custom configuration: a single required "Prompt" field whose raw value is
+// passed through unchanged as the task prompt.
+func DefaultTaskFormConfig() TaskFormConfig {
+	return TaskFormConfig{
+		Fields: []TaskFormField{
+			{Def: "default", Label: "Prompt", Required: true, Multiline: true},
+		},
+		Template: "{{prompt_default}}",
+	}
+}
+
+// IsZero reports whether the config carries no fields (treated as "use the
+// default form").
+func (c TaskFormConfig) IsZero() bool {
+	return len(c.Fields) == 0
 }
 
 // TaskRepository represents a repository associated with a task
@@ -799,7 +851,6 @@ type ExecutorType string
 
 const (
 	ExecutorTypeLocal      ExecutorType = "local"
-	ExecutorTypeWorktree   ExecutorType = "worktree"
 	ExecutorTypeMockRemote ExecutorType = "mock_remote"
 )
 
@@ -821,7 +872,7 @@ func IsRemoteExecutorType(t ExecutorType) bool {
 // when adding a new ExecutorType.
 func (t ExecutorType) Runtime() agentruntime.Runtime {
 	switch t {
-	case ExecutorTypeLocal, ExecutorTypeWorktree, ExecutorTypeMockRemote:
+	case ExecutorTypeLocal, ExecutorTypeMockRemote:
 		return agentruntime.RuntimeStandalone
 	default:
 		return agentruntime.RuntimeStandalone
@@ -845,8 +896,7 @@ func IsAlwaysResumableRuntime(runtime agentruntime.Runtime) bool {
 }
 
 const (
-	ExecutorIDLocal    = "exec-local"
-	ExecutorIDWorktree = "exec-worktree"
+	ExecutorIDLocal = "exec-local"
 )
 
 // ExecutorStatus represents executor availability.

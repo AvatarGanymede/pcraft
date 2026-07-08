@@ -6,47 +6,33 @@ import (
 )
 
 type MockClient struct {
-	Clients         []string
-	OpenedByCL      map[string][]string
-	Submitted       map[string]bool
-	NextChangelist  int
-	CreatedDescribe []string
+	Clients []string
+	// RootByClient maps a client name to its (root, stream). Unknown clients
+	// fall back to a synthesized temp-style root so tests/mock mode always
+	// resolve a non-empty working directory.
+	RootByClient map[string][2]string
 }
 
 func NewMockClient() *MockClient {
 	return &MockClient{
-		Clients:        []string{"default-client"},
-		OpenedByCL:     map[string][]string{},
-		Submitted:      map[string]bool{},
-		NextChangelist: 1000,
+		Clients: []string{"default-client"},
+		RootByClient: map[string][2]string{
+			"default-client": {"/tmp/pcraft-p4/default-client", "//depot/main"},
+		},
 	}
-}
-
-func (m *MockClient) CreateChangelist(_ context.Context, description string) (string, error) {
-	cl := fmt.Sprintf("%d", m.NextChangelist)
-	m.NextChangelist++
-	m.CreatedDescribe = append(m.CreatedDescribe, description)
-	return cl, nil
 }
 
 func (m *MockClient) ListClients(_ context.Context, _ string) ([]string, error) {
 	return m.Clients, nil
 }
 
-func (m *MockClient) CheckoutFiles(_ context.Context, changelist string, files []string) error {
-	m.OpenedByCL[changelist] = append(m.OpenedByCL[changelist], files...)
-	return nil
+func (m *MockClient) CurrentUser(_ context.Context) (string, error) {
+	return "mock-user", nil
 }
 
-func (m *MockClient) RevertChangelist(_ context.Context, changelist string) error {
-	delete(m.OpenedByCL, changelist)
-	return nil
-}
-
-func (m *MockClient) OpenedFiles(_ context.Context, changelist string) ([]string, error) {
-	return m.OpenedByCL[changelist], nil
-}
-
-func (m *MockClient) IsSubmitted(_ context.Context, changelist string) (bool, error) {
-	return m.Submitted[changelist], nil
+func (m *MockClient) GetClientRoot(_ context.Context, clientName string) (string, string, error) {
+	if rs, ok := m.RootByClient[clientName]; ok {
+		return rs[0], rs[1], nil
+	}
+	return fmt.Sprintf("/tmp/pcraft-p4/%s", clientName), "", nil
 }

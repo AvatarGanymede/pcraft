@@ -84,6 +84,13 @@ func (s *Service) CreateTask(ctx context.Context, req *CreateTaskRequest) (*mode
 		}
 	}
 
+	// pcraft: when the workspace binds a P4 client, a task with no explicit
+	// working directory runs in that client's root. Resolve before buildTask so
+	// the root flows through metadata into the session's WorkspacePath. The
+	// task's P4 client itself is not stored per-task — it is always derivable
+	// from the workspace binding (1:1), so any consumer reads it from there.
+	s.applyWorkspaceP4Defaults(ctx, req)
+
 	workflowStepID := s.resolveWorkflowStep(ctx, req)
 	task := s.buildTask(req, workflowStepID)
 
@@ -226,8 +233,26 @@ func (s *Service) resolveWorkflowStep(ctx context.Context, req *CreateTaskReques
 }
 
 // buildTask constructs a Task model from the CreateTaskRequest.
+// applyWorkspaceP4Defaults derives a task's working directory from its
+// workspace P4 binding: when the workspace has a bound P4 client and the
+// request didn't specify a working directory, the client's cached root becomes
+// req.WorkspacePath (the task cwd). No-op when the workspace has no P4 binding
+// or the caller already supplied a path.
+func (s *Service) applyWorkspaceP4Defaults(ctx context.Context, req *CreateTaskRequest) {
+	if req.WorkspaceID == "" || strings.TrimSpace(req.WorkspacePath) != "" {
+		return
+	}
+	ws, err := s.workspaces.GetWorkspace(ctx, req.WorkspaceID)
+	if err != nil || ws == nil {
+		return
+	}
+	if strings.TrimSpace(ws.P4Root) != "" {
+		req.WorkspacePath = ws.P4Root
+	}
+}
+
 func (s *Service) buildTask(req *CreateTaskRequest, workflowStepID string) *models.Task {
-	state := v1.TaskStateBacklog
+	state := v1.TaskStateCreated
 	if req.State != nil {
 		state = *req.State
 	}

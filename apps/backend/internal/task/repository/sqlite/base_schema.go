@@ -142,10 +142,10 @@ const infraSchemaDDL = `
 		name TEXT NOT NULL,
 		description TEXT DEFAULT '',
 		owner_id TEXT DEFAULT '',
-		default_executor_id TEXT DEFAULT '',
 		default_environment_id TEXT DEFAULT '',
 		default_agent_profile_id TEXT DEFAULT '',
 		default_config_agent_profile_id TEXT DEFAULT '',
+		task_form_config TEXT DEFAULT '',
 		created_at TIMESTAMP NOT NULL,
 		updated_at TIMESTAMP NOT NULL
 	);

@@ -24,7 +24,6 @@ func (s *Service) CreateWorkspace(ctx context.Context, req *CreateWorkspaceReque
 		Name:                        req.Name,
 		Description:                 req.Description,
 		OwnerID:                     req.OwnerID,
-		DefaultExecutorID:           normalizeOptionalID(req.DefaultExecutorID),
 		DefaultEnvironmentID:        normalizeOptionalID(req.DefaultEnvironmentID),
 		DefaultAgentProfileID:       normalizeOptionalID(req.DefaultAgentProfileID),
 		DefaultConfigAgentProfileID: normalizeOptionalID(req.DefaultConfigAgentProfileID),
@@ -58,9 +57,6 @@ func (s *Service) UpdateWorkspace(ctx context.Context, id string, req *UpdateWor
 	if req.Description != nil {
 		workspace.Description = *req.Description
 	}
-	if req.DefaultExecutorID != nil {
-		workspace.DefaultExecutorID = normalizeOptionalID(req.DefaultExecutorID)
-	}
 	if req.DefaultEnvironmentID != nil {
 		workspace.DefaultEnvironmentID = normalizeOptionalID(req.DefaultEnvironmentID)
 	}
@@ -69,6 +65,14 @@ func (s *Service) UpdateWorkspace(ctx context.Context, id string, req *UpdateWor
 	}
 	if req.DefaultConfigAgentProfileID != nil {
 		workspace.DefaultConfigAgentProfileID = normalizeOptionalID(req.DefaultConfigAgentProfileID)
+	}
+	if req.TaskFormConfig != nil {
+		workspace.TaskFormConfig = *req.TaskFormConfig
+	}
+	if req.P4Client != nil {
+		if err := s.applyP4ClientBinding(ctx, workspace, strings.TrimSpace(*req.P4Client)); err != nil {
+			return nil, err
+		}
 	}
 	workspace.UpdatedAt = time.Now().UTC()
 
@@ -80,6 +84,34 @@ func (s *Service) UpdateWorkspace(ctx context.Context, id string, req *UpdateWor
 	s.publishWorkspaceEvent(ctx, events.WorkspaceUpdated, workspace)
 	s.logger.Info("workspace updated", zap.String("workspace_id", workspace.ID))
 	return workspace, nil
+}
+
+// applyP4ClientBinding sets the workspace's P4 client binding. An empty name
+// clears the binding. A non-empty name is resolved to its Root/Stream via the
+// injected resolver (p4 client -o) and cached on the workspace so task launch
+// can use the root as the working directory. When the client hasn't changed we
+// still re-resolve so a moved/edited client spec refreshes the cached root.
+func (s *Service) applyP4ClientBinding(ctx context.Context, workspace *models.Workspace, clientName string) error {
+	if clientName == "" {
+		workspace.P4Client = ""
+		workspace.P4Root = ""
+		workspace.P4Stream = ""
+		return nil
+	}
+	if s.p4ClientResolver == nil {
+		return fmt.Errorf("p4 is not configured on this server")
+	}
+	root, stream, err := s.p4ClientResolver.ResolveClientRoot(ctx, clientName)
+	if err != nil {
+		return fmt.Errorf("resolve p4 client %q: %w", clientName, err)
+	}
+	if strings.TrimSpace(root) == "" {
+		return fmt.Errorf("p4 client %q has no Root", clientName)
+	}
+	workspace.P4Client = clientName
+	workspace.P4Root = root
+	workspace.P4Stream = stream
+	return nil
 }
 
 // DeleteWorkspace deletes a workspace

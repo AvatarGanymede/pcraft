@@ -66,8 +66,9 @@ func (r *Registry) Get(id string) (agents.Agent, bool) {
 	return ag, exists
 }
 
-// GetDefault returns the default agent.
-// It tries "claude-acp" first, then falls back to the enabled agent with the lowest DisplayOrder.
+// GetDefault returns the default agent. pcraft ships a single real agent
+// (claude-acp); the mock agent is the only other registrable type and is
+// used solely by the E2E path, where claude-acp is not loaded.
 func (r *Registry) GetDefault() (agents.Agent, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -75,19 +76,10 @@ func (r *Registry) GetDefault() (agents.Agent, error) {
 	if ag, exists := r.agents["claude-acp"]; exists && ag.Enabled() {
 		return ag, nil
 	}
-
-	// Collect enabled agents and sort by DisplayOrder for deterministic fallback
-	var enabled []agents.Agent
-	for _, ag := range r.agents {
-		if ag.Enabled() {
-			enabled = append(enabled, ag)
-		}
+	if ag, exists := r.agents["mock-agent"]; exists && ag.Enabled() {
+		return ag, nil
 	}
-	if len(enabled) == 0 {
-		return nil, fmt.Errorf("no default agent type available")
-	}
-	sortByDisplayOrder(enabled)
-	return enabled[0], nil
+	return nil, fmt.Errorf("no default agent type available")
 }
 
 // sortByDisplayOrder sorts agents by their DisplayOrder in ascending order.
@@ -202,27 +194,6 @@ func (r *Registry) Register(ag agents.Agent) error {
 
 	r.agents[ag.ID()] = ag
 	r.logger.Info("registered agent type", zap.String("id", ag.ID()))
-	return nil
-}
-
-// Replace registers ag under its ID, overwriting any previously
-// registered agent for that ID. Returns an error only when ag has no
-// ID. Used by the dev/E2E mock-provider seam to swap a real provider
-// agent for a MockAgent alias without going through Unregister +
-// Register (which would race with concurrent readers).
-func (r *Registry) Replace(ag agents.Agent) error {
-	if ag.ID() == "" {
-		return fmt.Errorf("agent type ID is required")
-	}
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	_, existed := r.agents[ag.ID()]
-	r.agents[ag.ID()] = ag
-	if existed {
-		r.logger.Info("replaced agent type", zap.String("id", ag.ID()))
-	} else {
-		r.logger.Info("registered agent type", zap.String("id", ag.ID()))
-	}
 	return nil
 }
 

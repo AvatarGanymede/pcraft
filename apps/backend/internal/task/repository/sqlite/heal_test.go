@@ -340,59 +340,19 @@ func TestEnsureTaskEnvironmentTaskUniqueIndex_BlocksFutureDuplicates(t *testing.
 	}
 }
 
-// TestCreateTaskEnvironment_RejectsEmptyWorkspaceForWorktree asserts that
-// inserts of a worktree-mode env with empty workspace_path are refused at
-// the repository boundary — a future writer regression must fail loud.
-func TestCreateTaskEnvironment_RejectsEmptyWorkspaceForWorktree(t *testing.T) {
-	repo := newRepoForHealTests(t)
-	insertTask(t, repo.db, "task-G")
-
-	err := repo.CreateTaskEnvironment(context.Background(), &models.TaskEnvironment{
-		TaskID:       "task-G",
-		ExecutorType: "worktree",
-		WorktreePath: "/g",
-		// WorkspacePath intentionally empty.
-	})
-	if err == nil {
-		t.Fatal("expected create to fail when workspace_path empty for worktree")
-	}
-}
-
-// TestCreateTaskEnvironment_AllowsNonWorktreeWithEmptyWorkspace — non-worktree
-// executors (e.g. local_pc) may legitimately have no workspace_path; the
-// guard must not block them.
-func TestCreateTaskEnvironment_AllowsNonWorktreeWithEmptyWorkspace(t *testing.T) {
+// TestCreateTaskEnvironment_AllowsEmptyWorkspace — envs may legitimately have
+// no workspace_path (the former worktree-mode workspace_path requirement was
+// removed along with the worktree executor); the writer must not block them.
+func TestCreateTaskEnvironment_AllowsEmptyWorkspace(t *testing.T) {
 	repo := newRepoForHealTests(t)
 	insertTask(t, repo.db, "task-H")
 
 	err := repo.CreateTaskEnvironment(context.Background(), &models.TaskEnvironment{
 		TaskID:       "task-H",
-		ExecutorType: "local_pc",
+		ExecutorType: "local",
 	})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
-	}
-}
-
-// TestUpdateTaskEnvironment_RejectsClearingWorkspaceForWorktree — symmetric
-// guard: a writer must not be able to clear a previously-populated
-// workspace_path on a worktree env.
-func TestUpdateTaskEnvironment_RejectsClearingWorkspaceForWorktree(t *testing.T) {
-	repo := newRepoForHealTests(t)
-	insertTask(t, repo.db, "task-I")
-	if err := repo.CreateTaskEnvironment(context.Background(), &models.TaskEnvironment{
-		ID: "env-I", TaskID: "task-I", ExecutorType: "worktree",
-		WorktreePath: "/i", WorkspacePath: "/i",
-	}); err != nil {
-		t.Fatalf("seed: %v", err)
-	}
-
-	err := repo.UpdateTaskEnvironment(context.Background(), &models.TaskEnvironment{
-		ID: "env-I", TaskID: "task-I", ExecutorType: "worktree",
-		WorktreePath: "/i", WorkspacePath: "",
-	})
-	if err == nil {
-		t.Fatal("expected update to fail when clearing workspace_path on worktree env")
 	}
 }
 

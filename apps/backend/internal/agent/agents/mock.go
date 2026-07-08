@@ -23,19 +23,16 @@ var (
 
 const (
 	mockTUIReadyPromptPattern = "\x1b\\[1;32m❯\x1b\\[0m $"
-	// mockAgentDefaultID is the canonical ID for the default MockAgent
-	// instance. When NewMockAgentWithID() supplies a non-empty override
-	// the override wins; otherwise this is returned by ID() and used as
-	// the default binary basename across BuildCommand/Runtime/Inference.
+	// mockAgentDefaultID is the canonical ID for the MockAgent, returned by
+	// ID() and used as the default binary basename across
+	// BuildCommand/Runtime/Inference.
 	mockAgentDefaultID = "mock-agent"
 )
 
 type MockAgent struct {
 	StandardPassthrough
-	// id/name/displayName are per-instance overrides so the same mock
-	// binary can be registered under multiple canonical routing provider
-	// IDs (e.g. "claude-acp", "codex-acp") in E2E mode. When empty the
-	// defaults ("mock-agent", "Mock Agent", "Mock") are returned.
+	// id/name/displayName are optional per-instance overrides; when empty
+	// the defaults ("mock-agent", "Mock Agent", "Mock") are returned.
 	id          string
 	name        string
 	displayName string
@@ -63,20 +60,6 @@ func NewMockAgent() *MockAgent {
 		},
 		supportsMCP: true,
 	}
-}
-
-// NewMockAgentWithID returns a MockAgent identical to NewMockAgent but
-// with its ID, Name and DisplayName pre-set to the supplied values.
-// Used in E2E mode (PCRAFT_MOCK_PROVIDERS) to register the same mock
-// binary under multiple canonical routing provider IDs so routing
-// validation accepts real-looking provider_order lists while every
-// launch still routes through the mock binary.
-func NewMockAgentWithID(id, name, displayName string) *MockAgent {
-	a := NewMockAgent()
-	a.id = id
-	a.name = name
-	a.displayName = displayName
-	return a
 }
 
 // SetEnabled enables or disables the mock agent at runtime.

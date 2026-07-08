@@ -32,13 +32,13 @@ export function AppSidebarHeader({ collapsed, onToggleCollapse }: AppSidebarHead
           <TooltipTrigger asChild>
             <Link
               href={homeHref}
-              aria-label="Kandev home"
+              aria-label="PCraft home"
               className="flex h-7 w-7 items-center justify-center rounded-md text-foreground/80 hover:bg-muted/60 cursor-pointer"
             >
-              <span className="text-base font-bold tracking-tight">K</span>
+              <span className="text-base font-bold tracking-tight">P</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Kandev</TooltipContent>
+          <TooltipContent side="right">PCraft</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -69,13 +69,13 @@ export function AppSidebarHeader({ collapsed, onToggleCollapse }: AppSidebarHead
     >
       <Link
         href={homeHref}
-        aria-label="Kandev home"
+        aria-label="PCraft home"
         className={cn(
           "shrink-0 cursor-pointer text-sm font-semibold tracking-tight",
           "text-foreground hover:text-foreground/80 transition-colors",
         )}
       >
-        Kandev
+        PCraft
       </Link>
       <span aria-hidden className="shrink-0 select-none text-muted-foreground/30">
         /

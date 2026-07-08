@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -172,7 +173,7 @@ func (s *Service) PrepareTaskSession(ctx context.Context, taskID string, agentPr
 			}
 		}
 		if executorID == "" && executorProfileID == "" {
-			executorID = models.ExecutorIDWorktree
+			executorID = models.ExecutorIDLocal
 		}
 	}
 
@@ -320,7 +321,7 @@ func (s *Service) StartCreatedSession(ctx context.Context, taskID, sessionID, ag
 	}
 
 	// Transition task state: CREATED → SCHEDULING → (IN_PROGRESS via executor)
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); err != nil {
 		s.logger.Warn("failed to update task state to SCHEDULING",
 			zap.String("task_id", taskID),
 			zap.Error(err))
@@ -559,7 +560,7 @@ func (s *Service) startTask(ctx context.Context, taskID string, agentProfileID s
 	if s.isOfficeTask(ctx, taskID) {
 		s.logger.Debug("skipping SCHEDULING transition for office task",
 			zap.String("task_id", taskID))
-	} else if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); err != nil {
+	} else if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); err != nil {
 		s.logger.Warn("failed to update task state to SCHEDULING",
 			zap.String("task_id", taskID),
 			zap.Error(err))
@@ -870,7 +871,7 @@ func (s *Service) applyWorkflowAndPlanMode(ctx context.Context, prompt string, t
 				zap.Error(err))
 		} else {
 			stepHasPlanMode = step.HasOnEnterAction(wfmodels.OnEnterEnablePlanMode)
-			effectivePrompt = s.buildWorkflowPrompt(effectivePrompt, step, taskID, sessionID)
+			effectivePrompt = s.buildWorkflowPrompt(ctx, effectivePrompt, step, taskID, sessionID)
 		}
 	}
 
@@ -930,15 +931,18 @@ func (s *Service) recordInitialMessage(ctx context.Context, taskID, sessionID, p
 // buildWorkflowPrompt constructs the effective prompt using workflow step configuration.
 // If step.Prompt contains {{task_prompt}}, it is replaced with the base prompt.
 // Otherwise, step.Prompt fully replaces the base prompt.
+// Any {{prompt_<def>}} placeholders are resolved from the task's metadata (the
+// raw per-field values captured by the workspace's custom new-task form).
 // If the step has enable_plan_mode in on_enter events, plan mode prefix is also prepended.
 // Only true internal instructions are wrapped in <kandev-system> tags so they can be stripped from the visible chat.
-func (s *Service) buildWorkflowPrompt(basePrompt string, step *wfmodels.WorkflowStep, taskID string, sessionID string) string {
+func (s *Service) buildWorkflowPrompt(ctx context.Context, basePrompt string, step *wfmodels.WorkflowStep, taskID string, sessionID string) string {
 	_ = sessionID
 	var parts []string
 
 	// Build the prompt from step.Prompt template and base prompt
 	if step.Prompt != "" {
 		interpolatedPrompt := sysprompt.InterpolatePlaceholders(step.Prompt, taskID)
+		interpolatedPrompt = s.resolveTaskFormPlaceholders(ctx, interpolatedPrompt, taskID)
 		if strings.Contains(interpolatedPrompt, "{{task_prompt}}") {
 			// Replace placeholder with base prompt
 			combined := strings.Replace(interpolatedPrompt, "{{task_prompt}}", basePrompt, 1)
@@ -953,6 +957,37 @@ func (s *Service) buildWorkflowPrompt(basePrompt string, step *wfmodels.Workflow
 	}
 
 	return strings.Join(parts, "\n\n")
+}
+
+// taskFormPlaceholderPattern matches {{prompt_<def>}} tokens referencing a
+// workspace custom-form field's raw value.
+var taskFormPlaceholderPattern = regexp.MustCompile(`\{\{(prompt_[a-zA-Z0-9_]+)\}\}`)
+
+// resolveTaskFormPlaceholders replaces every {{prompt_<def>}} token in the
+// template with the matching value from the task's metadata. Unknown tokens
+// resolve to an empty string (the field was optional and left blank, or the
+// workspace form changed after the task was created). The task is fetched only
+// when at least one such token is present.
+func (s *Service) resolveTaskFormPlaceholders(ctx context.Context, template string, taskID string) string {
+	if !strings.Contains(template, "{{prompt_") {
+		return template
+	}
+	task, err := s.repo.GetTask(ctx, taskID)
+	if err != nil || task == nil {
+		if err != nil {
+			s.logger.Warn("failed to load task for form placeholder resolution",
+				zap.String("task_id", taskID), zap.Error(err))
+		}
+		// Strip the unresolved tokens rather than leaking raw {{prompt_x}}.
+		return taskFormPlaceholderPattern.ReplaceAllString(template, "")
+	}
+	return taskFormPlaceholderPattern.ReplaceAllStringFunc(template, func(token string) string {
+		key := strings.TrimSuffix(strings.TrimPrefix(token, "{{"), "}}")
+		if v, ok := task.Metadata[key].(string); ok {
+			return v
+		}
+		return ""
+	})
 }
 
 // ResumeTaskSession restarts a specific task session using its stored worktree.
@@ -1040,13 +1075,13 @@ func (s *Service) ResumeTaskSession(ctx context.Context, taskID, sessionID strin
 		// themselves fail with "context canceled" and leave the task stuck
 		// looking "running" forever.
 		s.updateTaskSessionState(resumeCtx, taskID, sessionID, models.TaskSessionStateFailed, err.Error(), false, session)
-		if stateErr := s.taskRepo.UpdateTaskState(resumeCtx, taskID, v1.TaskStateBacklog); stateErr != nil {
-			s.logger.Warn("failed to update task state to BACKLOG after resume error",
+		if stateErr := s.taskRepo.UpdateTaskState(resumeCtx, taskID, v1.TaskStateFailed); stateErr != nil {
+			s.logger.Warn("failed to update task state to FAILED after resume error",
 				zap.String("task_id", taskID),
 				zap.String("session_id", sessionID),
 				zap.Error(stateErr))
 		} else {
-			s.processParentChildrenCompletedForTaskState(resumeCtx, taskID, v1.TaskStateBacklog)
+			s.processParentChildrenCompletedForTaskState(resumeCtx, taskID, v1.TaskStateFailed)
 		}
 		return nil, err
 	}
@@ -1157,7 +1192,7 @@ func (s *Service) StartSessionForWorkflowStep(ctx context.Context, taskID, sessi
 
 	s.advanceTaskWorkflowStep(ctx, dbTask, workflowStepID, session)
 
-	effectivePrompt := s.buildWorkflowPrompt(dbTask.Description, step, taskID, sessionID)
+	effectivePrompt := s.buildWorkflowPrompt(ctx, dbTask.Description, step, taskID, sessionID)
 
 	if err := s.ensureSessionRunning(ctx, sessionID, session); err != nil {
 		return err
@@ -1248,13 +1283,13 @@ func (s *Service) ensureSessionRunning(ctx context.Context, sessionID string, se
 			return nil // Agent is already running, nothing to do
 		}
 		s.updateTaskSessionState(ctx, session.TaskID, sessionID, models.TaskSessionStateFailed, err.Error(), false, session)
-		if stateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateBacklog); stateErr != nil {
-			s.logger.Warn("failed to update task state to BACKLOG after session ensure resume error",
+		if stateErr := s.taskRepo.UpdateTaskState(ctx, session.TaskID, v1.TaskStateFailed); stateErr != nil {
+			s.logger.Warn("failed to update task state to FAILED after session ensure resume error",
 				zap.String("task_id", session.TaskID),
 				zap.String("session_id", sessionID),
 				zap.Error(stateErr))
 		} else {
-			s.processParentChildrenCompletedForTaskState(resumeCtx, session.TaskID, v1.TaskStateBacklog)
+			s.processParentChildrenCompletedForTaskState(resumeCtx, session.TaskID, v1.TaskStateFailed)
 		}
 		return fmt.Errorf("failed to resume session: %w", err)
 	}
@@ -2482,10 +2517,10 @@ func (s *Service) CompleteTask(ctx context.Context, taskID string) error {
 	}
 
 	// Update task state to COMPLETED
-	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateDone); err != nil {
+	if err := s.taskRepo.UpdateTaskState(ctx, taskID, v1.TaskStateCompleted); err != nil {
 		return fmt.Errorf("failed to update task state: %w", err)
 	}
-	s.processParentChildrenCompletedForTaskState(ctx, taskID, v1.TaskStateDone)
+	s.processParentChildrenCompletedForTaskState(ctx, taskID, v1.TaskStateCompleted)
 
 	s.logger.Info("task marked as COMPLETED",
 		zap.String("task_id", taskID))

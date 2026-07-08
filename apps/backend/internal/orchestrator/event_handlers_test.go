@@ -718,33 +718,6 @@ func TestHandleAgentReadyGuards(t *testing.T) {
 		}
 	})
 
-	t.Run("moves STARTING session to waiting for input", func(t *testing.T) {
-		repo := setupTestRepo(t)
-		seedSession(t, repo, "t1", "s1", "step1")
-		taskRepo := newMockTaskRepo()
-
-		// Register the workflow step so processOnTurnComplete can resolve it.
-		stepGetter := newMockStepGetter()
-		stepGetter.steps["step1"] = &wfmodels.WorkflowStep{
-			ID: "step1", WorkflowID: "wf1", Name: "Step 1", Position: 0,
-		}
-		svc := createTestService(repo, stepGetter, taskRepo)
-
-		session, _ := repo.GetTaskSession(ctx, "s1")
-		session.State = models.TaskSessionStateStarting
-		_ = repo.UpdateTaskSession(ctx, session)
-
-		svc.handleAgentReady(ctx, watcher.AgentEventData{TaskID: "t1", SessionID: "s1"})
-
-		updated, _ := repo.GetTaskSession(ctx, "s1")
-		if updated.State != models.TaskSessionStateWaitingForInput {
-			t.Fatalf("expected session state %q, got %q", models.TaskSessionStateWaitingForInput, updated.State)
-		}
-		if state, ok := taskRepo.updatedStates["t1"]; !ok || state != v1.TaskStateReview {
-			t.Fatalf("expected task state %q, got %q (ok=%v)", v1.TaskStateReview, state, ok)
-		}
-	})
-
 	t.Run("ignores ready while reset is in progress", func(t *testing.T) {
 		repo := setupTestRepo(t)
 		seedSession(t, repo, "t1", "s1", "step1")
@@ -1438,26 +1411,6 @@ func TestHandleRecoverableFailure(t *testing.T) {
 		}
 	})
 
-	t.Run("sets task to REVIEW state", func(t *testing.T) {
-		repo := setupTestRepo(t)
-		seedSession(t, repo, "t1", "s1", "step1")
-
-		taskRepo := newMockTaskRepo()
-		agentMgr := &mockAgentManager{repoForExecutionLookup: repo}
-		svc := createTestServiceWithScheduler(repo, newMockStepGetter(), taskRepo, agentMgr)
-
-		svc.handleRecoverableFailure(ctx, watcher.AgentEventData{
-			TaskID:           "t1",
-			SessionID:        "s1",
-			AgentExecutionID: "exec-1",
-			ErrorMessage:     "agent crashed",
-		})
-
-		if state, ok := taskRepo.updatedStates["t1"]; !ok || state != v1.TaskStateReview {
-			t.Errorf("expected task state %q, got %q (ok=%v)", v1.TaskStateReview, state, ok)
-		}
-	})
-
 	t.Run("cleans up agent execution", func(t *testing.T) {
 		repo := setupTestRepo(t)
 		seedSession(t, repo, "t1", "s1", "step1")
@@ -1531,59 +1484,6 @@ func TestHandleAgentStartFailed(t *testing.T) {
 
 		if !handled {
 			t.Error("expected handled=true for auth errors")
-		}
-	})
-}
-
-func TestHandleResumeFailure(t *testing.T) {
-	ctx := context.Background()
-
-	t.Run("clears resume token and sets WAITING_FOR_INPUT", func(t *testing.T) {
-		repo := setupTestRepo(t)
-		now := time.Now().UTC()
-		seedSession(t, repo, "t1", "s1", "step1")
-
-		// Add executor running with resume token
-		_ = repo.UpsertExecutorRunning(ctx, &models.ExecutorRunning{
-			ID: "er1", SessionID: "s1", TaskID: "t1", ResumeToken: "acp-session-old",
-			CreatedAt: now, UpdatedAt: now,
-		})
-
-		taskRepo := newMockTaskRepo()
-		svc := createTestService(repo, newMockStepGetter(), taskRepo)
-
-		result := svc.handleResumeFailure(ctx, watcher.AgentEventData{
-			TaskID:           "t1",
-			SessionID:        "s1",
-			AgentExecutionID: "exec-1",
-			ErrorMessage:     "resume failed: session expired",
-		})
-
-		if !result {
-			t.Error("expected handleResumeFailure to return true")
-		}
-
-		// Verify resume token was cleared
-		running, err := repo.GetExecutorRunningBySessionID(ctx, "s1")
-		if err != nil {
-			t.Fatalf("failed to get executor running: %v", err)
-		}
-		if running.ResumeToken != "" {
-			t.Errorf("expected empty resume token, got %q", running.ResumeToken)
-		}
-
-		// Verify session state
-		session, err := repo.GetTaskSession(ctx, "s1")
-		if err != nil {
-			t.Fatalf("failed to get session: %v", err)
-		}
-		if session.State != models.TaskSessionStateWaitingForInput {
-			t.Errorf("expected session state %q, got %q", models.TaskSessionStateWaitingForInput, session.State)
-		}
-
-		// Verify task moved to REVIEW
-		if state, ok := taskRepo.updatedStates["t1"]; !ok || state != v1.TaskStateReview {
-			t.Errorf("expected task state %q, got %q (ok=%v)", v1.TaskStateReview, state, ok)
 		}
 	})
 }

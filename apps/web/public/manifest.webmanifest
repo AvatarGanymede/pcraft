@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "Kandev",
-  "short_name": "Kandev",
+  "name": "Pcraft",
+  "short_name": "Pcraft",
   "description": "AI-powered workflow management for developers",
   "start_url": "/",
   "scope": "/",

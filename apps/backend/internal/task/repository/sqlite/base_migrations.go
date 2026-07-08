@@ -56,6 +56,7 @@ func (r *Repository) runMigrations() error {
 	}
 	r.migrate.Apply("task_sessions.base_commit_sha", `ALTER TABLE task_sessions ADD COLUMN base_commit_sha TEXT DEFAULT ''`)
 	r.migrate.Apply("workspaces.default_config_agent_profile_id", `ALTER TABLE workspaces ADD COLUMN default_config_agent_profile_id TEXT DEFAULT ''`)
+	r.migrate.Apply("workspaces.task_form_config", `ALTER TABLE workspaces ADD COLUMN task_form_config TEXT DEFAULT ''`)
 	r.migrate.Apply("task_sessions.task_environment_id", `ALTER TABLE task_sessions ADD COLUMN task_environment_id TEXT DEFAULT ''`)
 	r.migrate.Apply("tasks.parent_id", `ALTER TABLE tasks ADD COLUMN parent_id TEXT DEFAULT ''`)
 	// Remove FK constraint on workflow_id to allow ephemeral tasks without workflows
@@ -120,6 +121,21 @@ func (r *Repository) runMigrations() error {
 	r.migrate.Apply("workspaces.task_prefix", `ALTER TABLE workspaces ADD COLUMN task_prefix TEXT DEFAULT 'KAN'`)
 	r.migrate.Apply("workspaces.task_sequence", `ALTER TABLE workspaces ADD COLUMN task_sequence INTEGER DEFAULT 0`)
 	r.migrate.Apply("workspaces.office_workflow_id", `ALTER TABLE workspaces ADD COLUMN office_workflow_id TEXT DEFAULT ''`)
+
+	// pcraft P4 binding — each workspace binds 1:1 to a P4 client. Only the
+	// client name is user-supplied; root/stream are resolved server-side and
+	// cached so task launch can use the client root as the working directory.
+	r.migrate.Apply("workspaces.p4_client", `ALTER TABLE workspaces ADD COLUMN p4_client TEXT DEFAULT ''`)
+	r.migrate.Apply("workspaces.p4_root", `ALTER TABLE workspaces ADD COLUMN p4_root TEXT DEFAULT ''`)
+	r.migrate.Apply("workspaces.p4_stream", `ALTER TABLE workspaces ADD COLUMN p4_stream TEXT DEFAULT ''`)
+
+	// Drop the deprecated workspaces.default_executor_id column. The worktree
+	// executor has been removed and Local is the only executor, so there is no
+	// per-workspace executor default to store. Runs after all workspace ALTERs
+	// above so the recreated table carries every current column.
+	if err := r.migrateWorkspacesRemoveDefaultExecutorID(); err != nil {
+		return err
+	}
 
 	// Office session cost tracking extensions are declared in
 	// initSessionWorktreeSchema's CREATE TABLE (cost_subcents, tokens_in,
@@ -441,6 +457,43 @@ func (r *Repository) recreateTaskRepositoriesForMultiBranch(trigger string) erro
 			`CREATE INDEX IF NOT EXISTS idx_task_repositories_repository_id ON task_repositories(repository_id)`,
 		},
 	)
+}
+
+// migrateWorkspacesRemoveDefaultExecutorID rebuilds the workspaces table without
+// the deprecated default_executor_id column. Gated on the column's presence in
+// the stored table SQL, so it is a no-op on already-migrated / fresh DBs.
+// Indexes are recreated by ensureWorkspaceIndexes later in initSchema.
+func (r *Repository) migrateWorkspacesRemoveDefaultExecutorID() error {
+	return r.recreateTableNamed("workspaces.recreate_drop_default_executor_id", "workspaces", "default_executor_id", []string{
+		`CREATE TABLE workspaces_new (
+			id TEXT PRIMARY KEY,
+			name TEXT NOT NULL,
+			description TEXT DEFAULT '',
+			owner_id TEXT DEFAULT '',
+			default_environment_id TEXT DEFAULT '',
+			default_agent_profile_id TEXT DEFAULT '',
+			default_config_agent_profile_id TEXT DEFAULT '',
+			task_form_config TEXT DEFAULT '',
+			task_prefix TEXT DEFAULT 'KAN',
+			task_sequence INTEGER DEFAULT 0,
+			office_workflow_id TEXT DEFAULT '',
+			created_at TIMESTAMP NOT NULL,
+			updated_at TIMESTAMP NOT NULL
+		)`,
+		`INSERT INTO workspaces_new (
+			id, name, description, owner_id,
+			default_environment_id, default_agent_profile_id, default_config_agent_profile_id,
+			task_form_config, task_prefix, task_sequence, office_workflow_id,
+			created_at, updated_at
+		) SELECT
+			id, name, description, owner_id,
+			default_environment_id, default_agent_profile_id, COALESCE(default_config_agent_profile_id, ''),
+			COALESCE(task_form_config, ''), COALESCE(task_prefix, 'KAN'), COALESCE(task_sequence, 0), COALESCE(office_workflow_id, ''),
+			created_at, updated_at
+		FROM workspaces`,
+		`DROP TABLE workspaces`,
+		`ALTER TABLE workspaces_new RENAME TO workspaces`,
+	})
 }
 
 // migrateSessionsRemoveWorkflowStepID removes the deprecated workflow_step_id column

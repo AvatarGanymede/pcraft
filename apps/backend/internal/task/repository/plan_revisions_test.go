@@ -10,7 +10,6 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/db"
 	"github.com/AvatarGanymede/pcraft/internal/task/models"
 	"github.com/AvatarGanymede/pcraft/internal/task/repository/sqlite"
-	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
 func seedPlanRevisionTask(t *testing.T, ctx context.Context, repo interface {
@@ -24,7 +23,7 @@ func seedPlanRevisionTask(t *testing.T, ctx context.Context, repo interface {
 	now := time.Now().UTC()
 	_ = repo.CreateTask(ctx, &models.Task{
 		ID: taskID, WorkspaceID: "ws-rev", WorkflowID: "wf-rev",
-		Title: "T", State: v1.TaskStateCreated, CreatedAt: now, UpdatedAt: now,
+		Title: "T", CreatedAt: now, UpdatedAt: now,
 	})
 }
 

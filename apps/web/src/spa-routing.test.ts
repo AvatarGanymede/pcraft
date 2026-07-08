@@ -117,8 +117,8 @@ describe("settingsRouteKey", () => {
     );
     expect(settingsRouteKey("/settings/system/logs/")).toBe("/settings/system/logs");
     expect(settingsRouteKey("/settings/changelog/")).toBe("/settings/changelog");
-    expect(settingsRouteKey("/settings/workspace/ws-1/repositories/")).toBe(
-      "/settings/workspace/ws-1/repositories",
+    expect(settingsRouteKey("/settings/workspace/ws-1/workflows/")).toBe(
+      "/settings/workspace/ws-1/workflows",
     );
     expect(settingsRouteKey("/settings/executor/executor-1/profile/profile-1")).toBe(
       "/settings/executor/executor-1/profile/profile-1",

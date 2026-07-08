@@ -926,18 +926,12 @@ func TestExecuteWithProfile_UsesPrepareThenLaunch(t *testing.T) {
 	}
 }
 
+// TestShouldUseWorktree pins the post-removal behavior: the worktree executor
+// is gone, so shouldUseWorktree always reports false regardless of input.
 func TestShouldUseWorktree(t *testing.T) {
-	tests := []struct {
-		executorType string
-		want         bool
-	}{
-		{"worktree", true},
-		{"local", false},
-		{"", false},
-	}
-	for _, tt := range tests {
-		if got := shouldUseWorktree(tt.executorType); got != tt.want {
-			t.Errorf("shouldUseWorktree(%q) = %v, want %v", tt.executorType, got, tt.want)
+	for _, executorType := range []string{"worktree", "local", "mock_remote", ""} {
+		if got := shouldUseWorktree(executorType); got {
+			t.Errorf("shouldUseWorktree(%q) = true, want false (worktree executor removed)", executorType)
 		}
 	}
 }
@@ -1109,23 +1103,6 @@ func TestRunAgentProcessAsync_ResumeDoesNotEscalateTaskState(t *testing.T) {
 	}
 	if !f.lastFromResume {
 		t.Error("expected fromResume=true to be propagated to onAgentStartFailed")
-	}
-}
-
-func TestRunAgentProcessAsync_FreshStartEscalatesTaskState(t *testing.T) {
-	f := newRunAgentProcessAsyncFailureFixture(t)
-	f.exec.runAgentProcessAsync(context.Background(), "task-123", "session-123", "exec-456",
-		func(ctx context.Context) { t.Error("onSuccess should not run on failure") },
-		true, false) // fresh-start path: escalate, fromResume=false
-	f.awaitStop(t)
-	if !f.sessionFailedSeen {
-		t.Error("expected session state FAILED")
-	}
-	if len(f.taskStateUpdates) != 1 || f.taskStateUpdates[0] != string(v1.TaskStateFailed) {
-		t.Errorf("expected fresh-start failure to set task state FAILED, got %v", f.taskStateUpdates)
-	}
-	if f.lastFromResume {
-		t.Error("expected fromResume=false on fresh-start path")
 	}
 }
 

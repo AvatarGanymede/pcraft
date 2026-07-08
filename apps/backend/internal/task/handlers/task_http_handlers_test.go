@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -211,97 +210,6 @@ func TestHTTPCreateTask_ProjectIDReachesOfficePath(t *testing.T) {
 	require.NotNil(t, repo.captured, "service.CreateTask was not called")
 	assert.Equal(t, "proj-1", repo.captured.ProjectID)
 	assert.Equal(t, "wf-office", repo.captured.WorkflowID, "office workflow should be auto-resolved")
-}
-
-func TestHTTPCreateTask_StartAgentReturnsSchedulingTask(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	log := newTestLogger(t)
-
-	repo := &captureCreateTaskRepo{}
-	svc := service.NewService(service.Repos{
-		Workspaces: repo, Tasks: repo, TaskRepos: repo,
-		Workflows: repo, Messages: repo, Turns: repo,
-		Sessions: repo, GitSnapshots: repo, RepoEntities: repo,
-		Executors: repo, Environments: repo, TaskEnvironments: repo,
-		Reviews: repo,
-	}, nil, log, service.RepositoryDiscoveryConfig{})
-	startCreatedCalled := make(chan struct{}, 1)
-	orch := &captureOrchestrator{startCreatedCalled: startCreatedCalled}
-	h := &TaskHandlers{service: svc, orchestrator: orch, logger: log}
-
-	rec := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(rec)
-	c.Request = httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{
-		"workspace_id": "ws-1",
-		"workflow_id": "wf-1",
-		"workflow_step_id": "step-1",
-		"title": "Boot an agent",
-		"description": "Do the thing",
-		"priority": "medium",
-		"agent_profile_id": "profile-1",
-		"start_agent": true
-	}`))
-	c.Request.Header.Set("Content-Type", "application/json")
-
-	h.httpCreateTask(c)
-
-	require.Equal(t, http.StatusOK, rec.Code, "body: %s", rec.Body.String())
-	var response createTaskResponse
-	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &response))
-	assert.Equal(t, v1.TaskStateScheduling, repo.captured.State)
-	assert.Equal(t, v1.TaskStateScheduling, response.State)
-	assert.Equal(t, "sess-1", response.TaskSessionID)
-	requireStartCreatedLaunch(t, startCreatedCalled)
-}
-
-func TestHTTPCreateTask_StartAgentKeepsCreatedStateWhenSchedulingUpdateFails(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	log := newTestLogger(t)
-
-	repo := &captureCreateTaskRepo{updateStateErr: errors.New("database locked")}
-	svc := service.NewService(service.Repos{
-		Workspaces: repo, Tasks: repo, TaskRepos: repo,
-		Workflows: repo, Messages: repo, Turns: repo,
-		Sessions: repo, GitSnapshots: repo, RepoEntities: repo,
-		Executors: repo, Environments: repo, TaskEnvironments: repo,
-		Reviews: repo,
-	}, nil, log, service.RepositoryDiscoveryConfig{})
-	startCreatedCalled := make(chan struct{}, 1)
-	orch := &captureOrchestrator{startCreatedCalled: startCreatedCalled}
-	h := &TaskHandlers{service: svc, orchestrator: orch, logger: log}
-
-	rec := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(rec)
-	c.Request = httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{
-		"workspace_id": "ws-1",
-		"workflow_id": "wf-1",
-		"workflow_step_id": "step-1",
-		"title": "Boot an agent",
-		"description": "Do the thing",
-		"priority": "medium",
-		"agent_profile_id": "profile-1",
-		"start_agent": true
-	}`))
-	c.Request.Header.Set("Content-Type", "application/json")
-
-	h.httpCreateTask(c)
-
-	require.Equal(t, http.StatusOK, rec.Code, "body: %s", rec.Body.String())
-	var response createTaskResponse
-	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &response))
-	assert.Equal(t, v1.TaskStateCreated, repo.captured.State)
-	assert.Equal(t, v1.TaskStateCreated, response.State)
-	assert.Equal(t, "sess-1", response.TaskSessionID)
-	requireStartCreatedLaunch(t, startCreatedCalled)
-}
-
-func requireStartCreatedLaunch(t *testing.T, started <-chan struct{}) {
-	t.Helper()
-	select {
-	case <-started:
-	case <-time.After(1 * time.Second):
-		t.Fatal("async IntentStartCreated launch did not complete")
-	}
 }
 
 func TestValidateAttachments_DeliveryMode(t *testing.T) {

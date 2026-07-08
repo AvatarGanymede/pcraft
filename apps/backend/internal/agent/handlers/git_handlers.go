@@ -760,28 +760,14 @@ func (h *GitHandlers) computeGitCommits(ctx context.Context, req *GitCommitsRequ
 	if agentClient == nil {
 		return map[string]any{"commits": []any{}, "ready": false}, nil
 	}
-	var baseCommit, targetBranch string
-	if h.sessionReader != nil {
-		baseCommit = h.sessionReader.GetSessionBaseCommit(ctx, req.SessionID)
-		targetBranch = h.sessionReader.GetSessionBaseBranch(ctx, req.SessionID)
-	}
-	// Fallback: if base_commit_sha is not stored in the session, use the
-	// merge-base from git status. Applies to sessions created before the
-	// base-commit capture feature, or when that capture failed.
-	if baseCommit == "" {
-		status, statusErr := agentClient.GetGitStatus(ctx)
-		if statusErr == nil && status != nil && status.BaseCommit != "" {
-			baseCommit = status.BaseCommit
-			h.logger.Debug("using git status base commit as fallback",
-				zap.String("session_id", req.SessionID),
-				zap.String("base_commit", baseCommit))
-		}
-	}
-	result, err := agentClient.GitLog(ctx, baseCommit, req.Limit, targetBranch, "")
-	if err != nil {
-		return nil, fmt.Errorf("git log failed: %w", err)
-	}
-	return result, nil
+	// pcraft uses P4 workspaces, which have no per-session git commit history
+	// (see repository/sqlite/git_snapshots.go). The agentctl git endpoints were
+	// removed in the P4 migration, so a GitLog call here would hit a route that
+	// 404s — and the plain-text "404 page not found" body then fails JSON
+	// parsing on the client, surfacing as "git log failed" in the UI. Return an
+	// empty, ready result so the Changes/Commits panel shows "no commits"
+	// instead of an error.
+	return map[string]any{"commits": []any{}, "ready": true}, nil
 }
 
 // CumulativeDiffRequest for session.cumulative_diff action
@@ -832,28 +818,8 @@ func (h *GitHandlers) computeCumulativeDiff(ctx context.Context, req *Cumulative
 	if agentClient == nil {
 		return map[string]any{"cumulative_diff": nil, "ready": false}, nil
 	}
-	var baseCommit, targetBranch string
-	if h.sessionReader != nil {
-		baseCommit = h.sessionReader.GetSessionBaseCommit(ctx, req.SessionID)
-		targetBranch = h.sessionReader.GetSessionBaseBranch(ctx, req.SessionID)
-	}
-	if baseCommit == "" {
-		status, statusErr := agentClient.GetGitStatus(ctx)
-		if statusErr == nil && status != nil && status.BaseCommit != "" {
-			baseCommit = status.BaseCommit
-			h.logger.Debug("using git status base commit as fallback for cumulative diff",
-				zap.String("session_id", req.SessionID),
-				zap.String("base_commit", baseCommit))
-		} else {
-			// Repo-less tasks (no git workspace) have no base commit — return
-			// an empty diff instead of erroring so the frontend's polling
-			// doesn't spam the logs.
-			return map[string]any{"cumulative_diff": nil}, nil
-		}
-	}
-	result, err := agentClient.GetCumulativeDiff(ctx, baseCommit, targetBranch)
-	if err != nil {
-		return nil, fmt.Errorf("cumulative diff failed: %w", err)
-	}
-	return map[string]interface{}{"cumulative_diff": result}, nil
+	// pcraft uses P4 workspaces and the agentctl git endpoints were removed in
+	// the P4 migration (see computeGitCommits). A GetCumulativeDiff call would
+	// 404 and fail JSON parsing on the client, so return an empty, ready result.
+	return map[string]any{"cumulative_diff": nil, "ready": true}, nil
 }

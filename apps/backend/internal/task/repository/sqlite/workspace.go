@@ -3,6 +3,7 @@ package sqlite
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -10,6 +11,33 @@ import (
 
 	"github.com/AvatarGanymede/pcraft/internal/task/models"
 )
+
+// marshalTaskFormConfig serializes the form config for storage. A zero config
+// (no fields) is stored as an empty string so older rows and new "default
+// form" workspaces read back identically.
+func marshalTaskFormConfig(cfg models.TaskFormConfig) string {
+	if cfg.IsZero() {
+		return ""
+	}
+	b, err := json.Marshal(cfg)
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
+// scanTaskFormConfig parses a stored form config. Empty/invalid JSON yields a
+// zero config, which callers interpret as the default single-prompt form.
+func scanTaskFormConfig(raw sql.NullString) models.TaskFormConfig {
+	if !raw.Valid || raw.String == "" {
+		return models.TaskFormConfig{}
+	}
+	var cfg models.TaskFormConfig
+	if err := json.Unmarshal([]byte(raw.String), &cfg); err != nil {
+		return models.TaskFormConfig{}
+	}
+	return cfg
+}
 
 // CreateWorkspace creates a new workspace
 func (r *Repository) CreateWorkspace(ctx context.Context, workspace *models.Workspace) error {
@@ -29,18 +57,21 @@ func (r *Repository) CreateWorkspace(ctx context.Context, workspace *models.Work
 			name,
 			description,
 			owner_id,
-			default_executor_id,
 			default_environment_id,
 			default_agent_profile_id,
 			default_config_agent_profile_id,
 			task_prefix,
 			task_sequence,
 			office_workflow_id,
+			task_form_config,
+			p4_client,
+			p4_root,
+			p4_stream,
 			created_at,
 			updated_at
 		)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`), workspace.ID, workspace.Name, workspace.Description, workspace.OwnerID, workspace.DefaultExecutorID, workspace.DefaultEnvironmentID, workspace.DefaultAgentProfileID, workspace.DefaultConfigAgentProfileID, workspace.TaskPrefix, workspace.TaskSequence, workspace.OfficeWorkflowID, workspace.CreatedAt, workspace.UpdatedAt)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`), workspace.ID, workspace.Name, workspace.Description, workspace.OwnerID, workspace.DefaultEnvironmentID, workspace.DefaultAgentProfileID, workspace.DefaultConfigAgentProfileID, workspace.TaskPrefix, workspace.TaskSequence, workspace.OfficeWorkflowID, marshalTaskFormConfig(workspace.TaskFormConfig), workspace.P4Client, workspace.P4Root, workspace.P4Stream, workspace.CreatedAt, workspace.UpdatedAt)
 
 	return err
 }
@@ -48,32 +79,32 @@ func (r *Repository) CreateWorkspace(ctx context.Context, workspace *models.Work
 // GetWorkspace retrieves a workspace by ID
 func (r *Repository) GetWorkspace(ctx context.Context, id string) (*models.Workspace, error) {
 	workspace := &models.Workspace{}
-	var defaultExecutorID sql.NullString
 	var defaultEnvironmentID sql.NullString
 	var defaultAgentProfileID sql.NullString
 	var defaultConfigAgentProfileID sql.NullString
+	var taskFormConfig sql.NullString
 
 	err := r.ro.QueryRowContext(ctx, r.ro.Rebind(`
-		SELECT id, name, description, owner_id, default_executor_id, default_environment_id, default_agent_profile_id, default_config_agent_profile_id, task_prefix, task_sequence, office_workflow_id, created_at, updated_at
+		SELECT id, name, description, owner_id, default_environment_id, default_agent_profile_id, default_config_agent_profile_id, task_prefix, task_sequence, office_workflow_id, task_form_config, p4_client, p4_root, p4_stream, created_at, updated_at
 		FROM workspaces WHERE id = ?
 	`), id).Scan(
 		&workspace.ID,
 		&workspace.Name,
 		&workspace.Description,
 		&workspace.OwnerID,
-		&defaultExecutorID,
 		&defaultEnvironmentID,
 		&defaultAgentProfileID,
 		&defaultConfigAgentProfileID,
 		&workspace.TaskPrefix,
 		&workspace.TaskSequence,
 		&workspace.OfficeWorkflowID,
+		&taskFormConfig,
+		&workspace.P4Client,
+		&workspace.P4Root,
+		&workspace.P4Stream,
 		&workspace.CreatedAt,
 		&workspace.UpdatedAt,
 	)
-	if defaultExecutorID.Valid && defaultExecutorID.String != "" {
-		workspace.DefaultExecutorID = &defaultExecutorID.String
-	}
 	if defaultEnvironmentID.Valid && defaultEnvironmentID.String != "" {
 		workspace.DefaultEnvironmentID = &defaultEnvironmentID.String
 	}
@@ -83,6 +114,7 @@ func (r *Repository) GetWorkspace(ctx context.Context, id string) (*models.Works
 	if defaultConfigAgentProfileID.Valid && defaultConfigAgentProfileID.String != "" {
 		workspace.DefaultConfigAgentProfileID = &defaultConfigAgentProfileID.String
 	}
+	workspace.TaskFormConfig = scanTaskFormConfig(taskFormConfig)
 
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("workspace not found: %s", id)
@@ -98,13 +130,16 @@ func (r *Repository) UpdateWorkspace(ctx context.Context, workspace *models.Work
 		UPDATE workspaces
 		SET name = ?,
 			description = ?,
-			default_executor_id = ?,
 			default_environment_id = ?,
 			default_agent_profile_id = ?,
 			default_config_agent_profile_id = ?,
+			task_form_config = ?,
+			p4_client = ?,
+			p4_root = ?,
+			p4_stream = ?,
 			updated_at = ?
 		WHERE id = ?
-	`), workspace.Name, workspace.Description, workspace.DefaultExecutorID, workspace.DefaultEnvironmentID, workspace.DefaultAgentProfileID, workspace.DefaultConfigAgentProfileID, workspace.UpdatedAt, workspace.ID)
+	`), workspace.Name, workspace.Description, workspace.DefaultEnvironmentID, workspace.DefaultAgentProfileID, workspace.DefaultConfigAgentProfileID, marshalTaskFormConfig(workspace.TaskFormConfig), workspace.P4Client, workspace.P4Root, workspace.P4Stream, workspace.UpdatedAt, workspace.ID)
 	if err != nil {
 		return err
 	}
@@ -133,7 +168,7 @@ func (r *Repository) DeleteWorkspace(ctx context.Context, id string) error {
 // ListWorkspaces returns all workspaces
 func (r *Repository) ListWorkspaces(ctx context.Context) ([]*models.Workspace, error) {
 	rows, err := r.ro.QueryContext(ctx, `
-		SELECT id, name, description, owner_id, default_executor_id, default_environment_id, default_agent_profile_id, default_config_agent_profile_id, task_prefix, task_sequence, office_workflow_id, created_at, updated_at
+		SELECT id, name, description, owner_id, default_environment_id, default_agent_profile_id, default_config_agent_profile_id, task_prefix, task_sequence, office_workflow_id, task_form_config, p4_client, p4_root, p4_stream, created_at, updated_at
 		FROM workspaces ORDER BY created_at DESC
 	`)
 	if err != nil {
@@ -144,29 +179,29 @@ func (r *Repository) ListWorkspaces(ctx context.Context) ([]*models.Workspace, e
 	var result []*models.Workspace
 	for rows.Next() {
 		workspace := &models.Workspace{}
-		var defaultExecutorID sql.NullString
 		var defaultEnvironmentID sql.NullString
 		var defaultAgentProfileID sql.NullString
 		var defaultConfigAgentProfileID sql.NullString
+		var taskFormConfig sql.NullString
 		if err := rows.Scan(
 			&workspace.ID,
 			&workspace.Name,
 			&workspace.Description,
 			&workspace.OwnerID,
-			&defaultExecutorID,
 			&defaultEnvironmentID,
 			&defaultAgentProfileID,
 			&defaultConfigAgentProfileID,
 			&workspace.TaskPrefix,
 			&workspace.TaskSequence,
 			&workspace.OfficeWorkflowID,
+			&taskFormConfig,
+			&workspace.P4Client,
+			&workspace.P4Root,
+			&workspace.P4Stream,
 			&workspace.CreatedAt,
 			&workspace.UpdatedAt,
 		); err != nil {
 			return nil, err
-		}
-		if defaultExecutorID.Valid && defaultExecutorID.String != "" {
-			workspace.DefaultExecutorID = &defaultExecutorID.String
 		}
 		if defaultEnvironmentID.Valid && defaultEnvironmentID.String != "" {
 			workspace.DefaultEnvironmentID = &defaultEnvironmentID.String
@@ -177,6 +212,7 @@ func (r *Repository) ListWorkspaces(ctx context.Context) ([]*models.Workspace, e
 		if defaultConfigAgentProfileID.Valid && defaultConfigAgentProfileID.String != "" {
 			workspace.DefaultConfigAgentProfileID = &defaultConfigAgentProfileID.String
 		}
+		workspace.TaskFormConfig = scanTaskFormConfig(taskFormConfig)
 		result = append(result, workspace)
 	}
 	return result, rows.Err()

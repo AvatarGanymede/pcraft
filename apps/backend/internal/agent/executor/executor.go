@@ -20,7 +20,7 @@ const (
 // ExecutorTypeToBackend maps an ExecutorType to its corresponding executor Name.
 func ExecutorTypeToBackend(execType models.ExecutorType) Name {
 	switch execType {
-	case models.ExecutorTypeLocal, models.ExecutorTypeWorktree, models.ExecutorTypeMockRemote:
+	case models.ExecutorTypeLocal, models.ExecutorTypeMockRemote:
 		return NameStandalone
 	default:
 		return NameStandalone

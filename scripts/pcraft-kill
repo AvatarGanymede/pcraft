@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# kandev-kill — terminate exactly ONE kandev instance: the backend listening on
+# pcraft-kill — terminate exactly ONE kandev instance: the backend listening on
 # a given port, plus its agentctl child(ren) and matching Vite dev server.
 #
 # This NEVER does a blanket `pkill kandev`. It resolves the backend PID from the
@@ -21,12 +21,12 @@
 #     descendants individually, never a group it doesn't own.
 #
 # Usage:
-#   scripts/kandev-kill <backend_port> [--yes] [--force]
-#   scripts/kandev-kill --pidfile /tmp/kandev-dev-isolated-<port>.pid [--yes]
+#   scripts/pcraft-kill <backend_port> [--yes] [--force]
+#   scripts/pcraft-kill --pidfile /tmp/pcraft-dev-isolated-<port>.pid [--yes]
 #
 # Examples:
-#   scripts/kandev-kill 48429 --yes
-#   scripts/kandev-kill --pidfile /tmp/kandev-dev-isolated-48429.pid --yes
+#   scripts/pcraft-kill 48429 --yes
+#   scripts/pcraft-kill --pidfile /tmp/pcraft-dev-isolated-48429.pid --yes
 #
 set -euo pipefail
 
@@ -73,14 +73,14 @@ while [[ $# -gt 0 ]]; do
       usage 0
       ;;
     --*)
-      echo "kandev-kill: unknown flag '$1'" >&2
+      echo "pcraft-kill: unknown flag '$1'" >&2
       usage 2
       ;;
     *)
       if [[ -z "$PORT" ]]; then
         PORT="$1"
       else
-        echo "kandev-kill: unexpected argument '$1'" >&2
+        echo "pcraft-kill: unexpected argument '$1'" >&2
         usage 2
       fi
       shift
@@ -129,34 +129,34 @@ is_kandev_backend() {
 # --- Resolve the target backend PID + port ---
 BACKEND_PID=""
 if [[ -n "$PIDFILE" ]]; then
-  [[ -f "$PIDFILE" ]] || { echo "kandev-kill: pidfile not found: $PIDFILE" >&2; exit 1; }
+  [[ -f "$PIDFILE" ]] || { echo "pcraft-kill: pidfile not found: $PIDFILE" >&2; exit 1; }
   BACKEND_PID="$(tr -d '[:space:]' <"$PIDFILE")"
-  [[ "$BACKEND_PID" =~ ^[0-9]+$ ]] || { echo "kandev-kill: pidfile has no numeric PID: $PIDFILE" >&2; exit 1; }
+  [[ "$BACKEND_PID" =~ ^[0-9]+$ ]] || { echo "pcraft-kill: pidfile has no numeric PID: $PIDFILE" >&2; exit 1; }
   if [[ ! -d "/proc/$BACKEND_PID" ]]; then
-    echo "kandev-kill: process $BACKEND_PID from pidfile is already gone; nothing to do." >&2
+    echo "pcraft-kill: process $BACKEND_PID from pidfile is already gone; nothing to do." >&2
     rm -f "$PIDFILE" 2>/dev/null || true
     exit 0
   fi
 elif [[ -n "$PORT" ]]; then
-  [[ "$PORT" =~ ^[0-9]+$ ]] || { echo "kandev-kill: port must be numeric, got '$PORT'" >&2; exit 2; }
+  [[ "$PORT" =~ ^[0-9]+$ ]] || { echo "pcraft-kill: port must be numeric, got '$PORT'" >&2; exit 2; }
   BACKEND_PID="$(pid_for_port "$PORT")"
-  [[ -n "$BACKEND_PID" ]] || { echo "kandev-kill: no listening process found on port $PORT" >&2; exit 1; }
+  [[ -n "$BACKEND_PID" ]] || { echo "pcraft-kill: no listening process found on port $PORT" >&2; exit 1; }
 else
-  echo "kandev-kill: refusing to run without an explicit <port> or --pidfile." >&2
+  echo "pcraft-kill: refusing to run without an explicit <port> or --pidfile." >&2
   usage 2
 fi
 
 # --- Resolve EVERY listening port of the target PID (for guard + display) ---
 # The guard must hold no matter how the target was supplied. We derive all
 # listening ports from the running process itself, so a --pidfile pointing at a
-# guarded port is refused exactly like `kandev-kill <guarded_port>`.
+# guarded port is refused exactly like `pcraft-kill <guarded_port>`.
 mapfile -t TARGET_PORTS < <(listening_ports_for_pid "$BACKEND_PID")
 # Fail closed: in --pidfile mode the guard relies entirely on resolving the
 # target's listening ports. If neither ss nor lsof is available (empty list and
 # no explicit port supplied), we can't prove the target isn't a guarded
 # production instance — refuse rather than kill blind, unless --force.
 if [[ -n "$PIDFILE" && -z "$PORT" && ${#TARGET_PORTS[@]} -eq 0 && "$FORCE" -ne 1 ]]; then
-  echo "kandev-kill: cannot resolve listening ports for PID $BACKEND_PID (need ss or lsof)." >&2
+  echo "pcraft-kill: cannot resolve listening ports for PID $BACKEND_PID (need ss or lsof)." >&2
   echo "             Refusing a --pidfile kill without --force — the guarded-port check can't run." >&2
   exit 3
 fi
@@ -179,13 +179,13 @@ for p in "${TARGET_PORTS[@]:-}"; do
   fi
 done
 if [[ -n "$guarded_hit" && "$FORCE" -ne 1 ]]; then
-  echo "kandev-kill: port $guarded_hit is a guarded production port (the user's live instance)." >&2
+  echo "pcraft-kill: port $guarded_hit is a guarded production port (the user's live instance)." >&2
   echo "             PID $BACKEND_PID listens on it — refusing to kill without --force." >&2
   exit 3
 fi
 
 if ! is_kandev_backend "$BACKEND_PID"; then
-  echo "kandev-kill: PID $BACKEND_PID (port ${PORT:-?}) does not look like a kandev backend. Aborting." >&2
+  echo "pcraft-kill: PID $BACKEND_PID (port ${PORT:-?}) does not look like a kandev backend. Aborting." >&2
   exit 4
 fi
 
@@ -223,7 +223,7 @@ if [[ -n "$PIDFILE" && -f "${PIDFILE%.pid}.web.pid" ]]; then
 fi
 
 # Describe the kill set.
-echo "kandev-kill: will terminate the following processes (backend port ${PORT:-?}):"
+echo "pcraft-kill: will terminate the following processes (backend port ${PORT:-?}):"
 for p in "${TREE[@]}"; do
   cmd="$( (tr '\0' ' ' <"/proc/$p/cmdline") 2>/dev/null | cut -c1-90 || true)"
   echo "  PID $p  ${cmd:-<gone>}"
@@ -234,7 +234,7 @@ if [[ "$ASSUME_YES" -ne 1 ]]; then
   read -r answer
   case "$answer" in
     y|Y|yes|YES) ;;
-    *) echo "kandev-kill: aborted by user."; exit 0 ;;
+    *) echo "pcraft-kill: aborted by user."; exit 0 ;;
   esac
 fi
 
@@ -254,7 +254,7 @@ if pid_is_pgleader "$BACKEND_PID"; then
 fi
 
 # A PID is "alive" only if it exists AND is not a zombie. A zombie (state Z) has
-# already exited; it just hasn't been reaped by its parent. When kandev-kill
+# already exited; it just hasn't been reaped by its parent. When pcraft-kill
 # targets a non-leader backend whose parent is a sleeping launcher (not us), the
 # dead process lingers as a zombie — treat that as success, not failure.
 pid_is_alive() {
@@ -296,7 +296,7 @@ while pid_is_alive "$BACKEND_PID" && [[ "$waited" -lt "$GRACE_SECONDS" ]]; do
 done
 
 if pid_is_alive "$BACKEND_PID"; then
-  echo "kandev-kill: backend still alive after ${GRACE_SECONDS}s, sending SIGKILL."
+  echo "pcraft-kill: backend still alive after ${GRACE_SECONDS}s, sending SIGKILL."
   signal_tree KILL
   sleep 1
 fi
@@ -309,7 +309,7 @@ for p in "${TREE[@]}"; do
 done
 
 if pid_is_alive "$BACKEND_PID"; then
-  echo "kandev-kill: WARNING — backend PID $BACKEND_PID is still present." >&2
+  echo "pcraft-kill: WARNING — backend PID $BACKEND_PID is still present." >&2
   exit 5
 fi
 
@@ -318,4 +318,4 @@ if [[ -n "$PIDFILE" ]]; then
   rm -f "$PIDFILE" "${PIDFILE%.pid}.web.pid" 2>/dev/null || true
 fi
 
-echo "kandev-kill: done. Backend on port ${PORT:-?} (PID $BACKEND_PID) terminated."
+echo "pcraft-kill: done. Backend on port ${PORT:-?} (PID $BACKEND_PID) terminated."

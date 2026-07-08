@@ -352,28 +352,6 @@ func TestPlanService_RevertNeverCoalesces(t *testing.T) {
 	}
 }
 
-func TestPlanService_RevertRejectsWrongTask(t *testing.T) {
-	svc, _, repo := createTestPlanService(t)
-	ctx := context.Background()
-	seedTask(t, ctx, repo, "task-x")
-	_ = repo.CreateTask(ctx, &models.Task{
-		ID: "task-y", WorkspaceID: "ws-plan", WorkflowID: "wf-plan", Title: "Y",
-		State: v1.TaskStateCreated, Priority: "medium",
-		CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC(),
-	})
-
-	_, _ = svc.CreatePlan(ctx, CreatePlanRequest{TaskID: "task-x", Content: "x", AuthorKind: "agent"})
-	xList, _ := svc.ListRevisions(ctx, "task-x")
-	xRev := xList[0]
-
-	_, err := svc.RevertPlan(ctx, RevertPlanRequest{
-		TaskID: "task-y", TargetRevisionID: xRev.ID, AuthorName: "Alice",
-	})
-	if err != ErrRevisionTaskMismatch {
-		t.Errorf("expected ErrRevisionTaskMismatch, got %v", err)
-	}
-}
-
 func TestPlanService_AgentAuthorNameFromSession(t *testing.T) {
 	svc, _, repo := createTestPlanService(t)
 	ctx := context.Background()

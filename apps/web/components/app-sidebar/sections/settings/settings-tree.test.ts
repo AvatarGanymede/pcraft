@@ -13,7 +13,7 @@ describe("settingsGroupIdForPath", () => {
 
   it("maps a nested path to its owning group", () => {
     expect(settingsGroupIdForPath("/settings/executors/profile-123")).toBe("executors");
-    expect(settingsGroupIdForPath("/settings/workspace/ws-1/repositories")).toBe("workspaces");
+    expect(settingsGroupIdForPath("/settings/workspace/ws-1/workflows")).toBe("workspaces");
     expect(settingsGroupIdForPath("/settings/system/logs")).toBe("system");
     expect(settingsGroupIdForPath("/settings/system/feature-toggles")).toBe("system");
     // General subpages stay under /settings/general so they belong to General.

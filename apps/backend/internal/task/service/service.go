@@ -194,8 +194,22 @@ type Service struct {
 	blockers              BlockerRepository
 	comments              CommentRepository
 	baseBranchPusher      AgentBaseBranchPusher
+	p4ClientResolver      P4ClientResolver
 	// cleanupDoneForTest lets unit tests wait for async cleanup; nil in production.
 	cleanupDoneForTest chan struct{}
+}
+
+// P4ClientResolver resolves a P4 client (workspace) name to its local Root and
+// Stream. Implemented by internal/p4.Service; injected via SetP4ClientResolver
+// to avoid an import cycle. nil when P4 is not configured.
+type P4ClientResolver interface {
+	ResolveClientRoot(ctx context.Context, clientName string) (root, stream string, err error)
+}
+
+// SetP4ClientResolver wires the P4 client root resolver used when a workspace
+// binds a P4 client.
+func (s *Service) SetP4ClientResolver(r P4ClientResolver) {
+	s.p4ClientResolver = r
 }
 
 // NewService creates a new task service

@@ -19,7 +19,6 @@ type CreateWorkspaceRequest struct {
 	Name                  string
 	Description           string
 	OwnerID               string
-	DefaultExecutorID     *string
 	DefaultEnvironmentID  *string
 	DefaultAgentProfileID *string
 }
@@ -28,7 +27,6 @@ type UpdateWorkspaceRequest struct {
 	ID                    string
 	Name                  *string
 	Description           *string
-	DefaultExecutorID     *string
 	DefaultEnvironmentID  *string
 	DefaultAgentProfileID *string
 }

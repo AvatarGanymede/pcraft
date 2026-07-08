@@ -15,7 +15,7 @@ func TestBuildWorkflowPrompt_ReplacesTaskPromptPlaceholder(t *testing.T) {
 		Prompt: "Implement this exactly:\n\n{{task_prompt}}",
 	}
 
-	got := svc.buildWorkflowPrompt("Migrate Atlantis datasource.", step, "task-1", "session-1")
+	got := svc.buildWorkflowPrompt(context.Background(), "Migrate Atlantis datasource.", step, "task-1", "session-1")
 
 	want := "Implement this exactly:\n\nMigrate Atlantis datasource."
 	if got != want {
@@ -30,7 +30,7 @@ func TestBuildWorkflowPrompt_UsesStepPromptOnlyWithoutTaskPromptPlaceholder(t *t
 		Prompt: "Commit the changes, push and create a draft PR.",
 	}
 
-	got := svc.buildWorkflowPrompt("Migrate Atlantis datasource.", step, "task-1", "session-1")
+	got := svc.buildWorkflowPrompt(context.Background(), "Migrate Atlantis datasource.", step, "task-1", "session-1")
 
 	want := "Commit the changes, push and create a draft PR."
 	if got != want {

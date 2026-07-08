@@ -854,8 +854,8 @@ func (h *TaskHandlers) startAgentForNewTask(
 	}
 	sessionID := prepResp.SessionID
 	response.TaskSessionID = sessionID
-	if updatedTask, updateErr := h.service.UpdateTaskState(ctx, taskID, v1.TaskStateBacklog); updateErr != nil {
-		h.logger.Warn("failed to mark task backlog after preparing start session",
+	if updatedTask, updateErr := h.service.UpdateTaskState(ctx, taskID, v1.TaskStateScheduling); updateErr != nil {
+		h.logger.Warn("failed to mark task scheduling after preparing start session",
 			zap.Error(updateErr),
 			zap.String("task_id", taskID),
 			zap.String("session_id", sessionID))
@@ -1177,8 +1177,8 @@ func (body *httpStartQuickChatRequest) resolveParams(workspace *models.Workspace
 		agentProfileID = *workspace.DefaultAgentProfileID
 	}
 	executorID := body.ExecutorID
-	if executorID == "" && workspace.DefaultExecutorID != nil {
-		executorID = *workspace.DefaultExecutorID
+	if executorID == "" {
+		executorID = models.ExecutorIDLocal
 	}
 
 	metadata := make(map[string]interface{})
@@ -1300,8 +1300,8 @@ func resolveConfigChatDefaults(body httpStartConfigChatRequest, ws *models.Works
 		agentProfileID = *ws.DefaultAgentProfileID
 	}
 	executorID = body.ExecutorID
-	if executorID == "" && ws.DefaultExecutorID != nil {
-		executorID = *ws.DefaultExecutorID
+	if executorID == "" {
+		executorID = models.ExecutorIDLocal
 	}
 	metadata = map[string]interface{}{
 		"config_mode":      true,

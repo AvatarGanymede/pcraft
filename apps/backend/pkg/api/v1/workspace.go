@@ -8,7 +8,6 @@ type Workspace struct {
 	Name                        string    `json:"name"`
 	Description                 *string   `json:"description,omitempty"`
 	OwnerID                     string    `json:"owner_id"`
-	DefaultExecutorID           *string   `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string   `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string   `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string   `json:"default_config_agent_profile_id,omitempty"`
@@ -20,7 +19,6 @@ type Workspace struct {
 type CreateWorkspaceRequest struct {
 	Name                        string  `json:"name" binding:"required,max=255"`
 	Description                 *string `json:"description,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
@@ -30,7 +28,6 @@ type CreateWorkspaceRequest struct {
 type UpdateWorkspaceRequest struct {
 	Name                        *string `json:"name,omitempty" binding:"omitempty,max=255"`
 	Description                 *string `json:"description,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`

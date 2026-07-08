@@ -5,8 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/AvatarGanymede/pcraft/internal/p4"
-
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
 	"github.com/AvatarGanymede/pcraft/internal/task/dto"
@@ -35,7 +33,6 @@ type TaskHandlers struct {
 	repo                handlerRepo
 	planService         *service.PlanService
 	handoffSvc          *service.HandoffService
-	p4svc               *p4.Service
 	onTaskCreatedWithPR func(ctx context.Context, taskID, sessionID, prURL, branch string)
 	logger              *logger.Logger
 }

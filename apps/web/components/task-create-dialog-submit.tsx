@@ -19,6 +19,11 @@ import {
   validateCreateInputs,
   toMessageAttachments,
 } from "@/components/task-create-dialog-helpers";
+import {
+  buildPromptFromTemplate,
+  fieldPlaceholderKey,
+  isTaskFormComplete,
+} from "@/lib/task-form-config";
 
 const GENERIC_ERROR_MESSAGE = "An error occurred";
 const DUPLICATE_REPO_TITLE = "Duplicate repository";
@@ -67,10 +72,8 @@ export function useTaskSubmitHandlers({
   noRepository,
   workspacePath,
   transformDescriptionBeforeSubmit,
-  p4WorkspaceId,
-  panelId,
-  requirement,
-  prefabPath,
+  taskFormConfig,
+  dynamicValues,
 }: SubmitHandlersDeps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -100,10 +103,7 @@ export function useTaskSubmitHandlers({
         remoteRepos: useRemote ? remoteRepos : undefined,
         agentProfileId,
         noRepository,
-        p4WorkspaceId,
-        panelId,
-        requirement,
-      }),
+      }) && isTaskFormComplete(taskFormConfig, dynamicValues),
     [
       workspaceId,
       effectiveWorkflowId,
@@ -112,11 +112,26 @@ export function useTaskSubmitHandlers({
       remoteRepos,
       agentProfileId,
       noRepository,
-      p4WorkspaceId,
-      panelId,
-      requirement,
+      taskFormConfig,
+      dynamicValues,
     ],
   );
+
+  // Builds the base task prompt from the workspace's custom form: each field's
+  // value is exposed as {{prompt_<def>}} for the template, and the raw values
+  // are persisted in metadata so workflow STEP PROMPTs can reference them too.
+  const buildDynamicPrompt = useCallback((): { description: string; metadata: Record<string, string> } => {
+    const prefixed: Record<string, string> = {};
+    for (const field of taskFormConfig.fields) {
+      prefixed[fieldPlaceholderKey(field.def)] = dynamicValues[field.def] ?? "";
+    }
+    const description = buildPromptFromTemplate(taskFormConfig.template, prefixed).trim();
+    const metadata: Record<string, string> = {};
+    for (const [key, value] of Object.entries(prefixed)) {
+      if (value.trim() !== "") metadata[key] = value;
+    }
+    return { description, metadata };
+  }, [taskFormConfig, dynamicValues]);
 
   // Blocks submit when two Remote rows resolve to the same GitHub repo (same
   // PR URL twice, or two PRs of one repo). Surfaces a repo-named toast before
@@ -324,6 +339,7 @@ export function useTaskSubmitHandlers({
       withAgent: boolean;
       planMode?: boolean;
       attachments?: ReturnType<typeof toMessageAttachments>;
+      metadata?: Record<string, string>;
     }) => {
       if (!workspaceId || !effectiveWorkflowId) return;
       const buildPayload = (c: string[]) =>
@@ -345,10 +361,7 @@ export function useTaskSubmitHandlers({
           // case and keeps "no path provided" semantically distinct from
           // "empty path string" on the wire.
           workspacePath: noRepository ? workspacePath.trim() || undefined : undefined,
-          p4WorkspaceId,
-          panelId,
-          requirement,
-          prefabPath,
+          metadata: opts.metadata,
         });
       const taskResponse = await createTaskWithFreshBranchRetry(buildPayload, opts.consented);
       if (!taskResponse) return;
@@ -455,9 +468,7 @@ export function useTaskSubmitHandlers({
       return;
     }
     const trimmedTitle = taskName.trim();
-    const description = descriptionInputRef.current?.getValue() ?? "";
-    const trimmedDescription = description.trim();
-    const attachments = toMessageAttachments(descriptionInputRef.current?.getAttachments() ?? []);
+    const { description: trimmedDescription, metadata } = buildDynamicPrompt();
     if (!validateForCreate(trimmedTitle)) return;
     if (checkRemoteDuplicates()) return;
     const consent = await ensureFreshBranchConsent();
@@ -470,7 +481,7 @@ export function useTaskSubmitHandlers({
         consented: consent,
         withAgent: true,
         planMode: true,
-        attachments,
+        metadata,
       });
     } catch (error) {
       toast({
@@ -490,31 +501,29 @@ export function useTaskSubmitHandlers({
     ensureFreshBranchConsent,
     performCreate,
     toast,
-    descriptionInputRef,
+    buildDynamicPrompt,
     setIsCreatingTask,
   ]);
 
   const handleCreateSubmit = useCallback(async () => {
     const trimmedTitle = taskName.trim();
-    const description = descriptionInputRef.current?.getValue() ?? "";
-    const trimmedDescription = description.trim();
-    const attachments = toMessageAttachments(descriptionInputRef.current?.getAttachments() ?? []);
+    const { description, metadata } = buildDynamicPrompt();
     if (!validateForCreate(trimmedTitle)) return;
     if (checkRemoteDuplicates()) return;
     const consent = await ensureFreshBranchConsent();
     if (consent === null) return;
     setIsCreatingTask(true);
     try {
-      if (trimmedDescription) {
+      if (description) {
         const finalDescription = transformDescriptionBeforeSubmit
-          ? await transformDescriptionBeforeSubmit(trimmedDescription)
-          : trimmedDescription;
+          ? await transformDescriptionBeforeSubmit(description)
+          : description;
         await performCreate({
           trimmedTitle,
           trimmedDescription: finalDescription,
           consented: consent,
           withAgent: true,
-          attachments,
+          metadata,
         });
       } else {
         await handleCreatePlanMode(trimmedTitle, consent);
@@ -537,13 +546,13 @@ export function useTaskSubmitHandlers({
     handleCreatePlanMode,
     transformDescriptionBeforeSubmit,
     toast,
-    descriptionInputRef,
+    buildDynamicPrompt,
     setIsCreatingTask,
   ]);
 
   const handleCreateWithoutAgent = useCallback(async () => {
     const trimmedTitle = taskName.trim();
-    const trimmedDescription = (descriptionInputRef.current?.getValue() ?? "").trim();
+    const { description: trimmedDescription, metadata } = buildDynamicPrompt();
     if (!validateForCreate(trimmedTitle)) return;
     if (!trimmedDescription || !effectiveDefaultStepId || !workspaceId || !effectiveWorkflowId)
       return;
@@ -565,10 +574,7 @@ export function useTaskSubmitHandlers({
           executorProfileId,
           withAgent: false,
           workspacePath: noRepository ? workspacePath.trim() || undefined : undefined,
-          p4WorkspaceId,
-          panelId,
-          requirement,
-          prefabPath,
+          metadata,
         });
         p.workflow_step_id = effectiveDefaultStepId;
         return p;
@@ -606,7 +612,7 @@ export function useTaskSubmitHandlers({
     onOpenChange,
     clearDraft,
     toast,
-    descriptionInputRef,
+    buildDynamicPrompt,
     setIsCreatingTask,
   ]);
 

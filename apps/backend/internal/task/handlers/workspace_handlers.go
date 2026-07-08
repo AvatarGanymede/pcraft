@@ -2,16 +2,49 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"regexp"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 	"github.com/AvatarGanymede/pcraft/internal/task/dto"
+	"github.com/AvatarGanymede/pcraft/internal/task/models"
 	"github.com/AvatarGanymede/pcraft/internal/task/service"
 	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 	"go.uber.org/zap"
 )
+
+// taskFormDefPattern restricts a field's placeholder key to English
+// letters/digits/underscore, starting with a letter — matching the
+// {{prompt_<def>}} token the frontend builds and the backend interpolates.
+var taskFormDefPattern = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_]*$`)
+
+// validateTaskFormConfig enforces the per-workspace new-task form invariants:
+// every field needs a label and a unique, English-only def. An empty config
+// (no fields) is valid and means "use the default single-prompt form".
+func validateTaskFormConfig(cfg models.TaskFormConfig) error {
+	seen := make(map[string]struct{}, len(cfg.Fields))
+	for i, f := range cfg.Fields {
+		def := strings.TrimSpace(f.Def)
+		if def == "" {
+			return fmt.Errorf("task form field %d: def is required", i+1)
+		}
+		if !taskFormDefPattern.MatchString(def) {
+			return fmt.Errorf("task form field %q: def must be English letters, digits or underscore and start with a letter", def)
+		}
+		if _, dup := seen[def]; dup {
+			return fmt.Errorf("task form field def %q is duplicated", def)
+		}
+		seen[def] = struct{}{}
+		if strings.TrimSpace(f.Label) == "" {
+			return fmt.Errorf("task form field %q: label is required", def)
+		}
+	}
+	return nil
+}
 
 type WorkspaceHandlers struct {
 	service *service.Service
@@ -76,7 +109,6 @@ type httpCreateWorkspaceRequest struct {
 	Name                        string  `json:"name"`
 	Description                 string  `json:"description,omitempty"`
 	OwnerID                     string  `json:"owner_id,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
@@ -96,7 +128,6 @@ func (h *WorkspaceHandlers) httpCreateWorkspace(c *gin.Context) {
 		Name:                        body.Name,
 		Description:                 body.Description,
 		OwnerID:                     body.OwnerID,
-		DefaultExecutorID:           body.DefaultExecutorID,
 		DefaultEnvironmentID:        body.DefaultEnvironmentID,
 		DefaultAgentProfileID:       body.DefaultAgentProfileID,
 		DefaultConfigAgentProfileID: body.DefaultConfigAgentProfileID,
@@ -118,12 +149,13 @@ func (h *WorkspaceHandlers) httpGetWorkspace(c *gin.Context) {
 }
 
 type httpUpdateWorkspaceRequest struct {
-	Name                        *string `json:"name,omitempty"`
-	Description                 *string `json:"description,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
-	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
-	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
-	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
+	Name                        *string                `json:"name,omitempty"`
+	Description                 *string                `json:"description,omitempty"`
+	DefaultEnvironmentID        *string                `json:"default_environment_id,omitempty"`
+	DefaultAgentProfileID       *string                `json:"default_agent_profile_id,omitempty"`
+	DefaultConfigAgentProfileID *string                `json:"default_config_agent_profile_id,omitempty"`
+	TaskFormConfig              *models.TaskFormConfig `json:"task_form_config,omitempty"`
+	P4Client                    *string                `json:"p4_client,omitempty"`
 }
 
 func (h *WorkspaceHandlers) httpUpdateWorkspace(c *gin.Context) {
@@ -132,13 +164,20 @@ func (h *WorkspaceHandlers) httpUpdateWorkspace(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid payload"})
 		return
 	}
+	if body.TaskFormConfig != nil {
+		if err := validateTaskFormConfig(*body.TaskFormConfig); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
 	workspace, err := h.service.UpdateWorkspace(c.Request.Context(), c.Param("id"), &service.UpdateWorkspaceRequest{
 		Name:                        body.Name,
 		Description:                 body.Description,
-		DefaultExecutorID:           body.DefaultExecutorID,
 		DefaultEnvironmentID:        body.DefaultEnvironmentID,
 		DefaultAgentProfileID:       body.DefaultAgentProfileID,
 		DefaultConfigAgentProfileID: body.DefaultConfigAgentProfileID,
+		TaskFormConfig:              body.TaskFormConfig,
+		P4Client:                    body.P4Client,
 	})
 	if err != nil {
 		handleNotFound(c, h.logger, err, "workspace not updated")
@@ -170,7 +209,6 @@ type wsCreateWorkspaceRequest struct {
 	Name                        string  `json:"name"`
 	Description                 string  `json:"description,omitempty"`
 	OwnerID                     string  `json:"owner_id,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
 	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
 	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
 	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
@@ -188,7 +226,6 @@ func (h *WorkspaceHandlers) wsCreateWorkspace(ctx context.Context, msg *ws.Messa
 		Name:                        req.Name,
 		Description:                 req.Description,
 		OwnerID:                     req.OwnerID,
-		DefaultExecutorID:           req.DefaultExecutorID,
 		DefaultEnvironmentID:        req.DefaultEnvironmentID,
 		DefaultAgentProfileID:       req.DefaultAgentProfileID,
 		DefaultConfigAgentProfileID: req.DefaultConfigAgentProfileID,
@@ -221,13 +258,14 @@ func (h *WorkspaceHandlers) wsGetWorkspace(ctx context.Context, msg *ws.Message)
 }
 
 type wsUpdateWorkspaceRequest struct {
-	ID                          string  `json:"id"`
-	Name                        *string `json:"name,omitempty"`
-	Description                 *string `json:"description,omitempty"`
-	DefaultExecutorID           *string `json:"default_executor_id,omitempty"`
-	DefaultEnvironmentID        *string `json:"default_environment_id,omitempty"`
-	DefaultAgentProfileID       *string `json:"default_agent_profile_id,omitempty"`
-	DefaultConfigAgentProfileID *string `json:"default_config_agent_profile_id,omitempty"`
+	ID                          string                 `json:"id"`
+	Name                        *string                `json:"name,omitempty"`
+	Description                 *string                `json:"description,omitempty"`
+	DefaultEnvironmentID        *string                `json:"default_environment_id,omitempty"`
+	DefaultAgentProfileID       *string                `json:"default_agent_profile_id,omitempty"`
+	DefaultConfigAgentProfileID *string                `json:"default_config_agent_profile_id,omitempty"`
+	TaskFormConfig              *models.TaskFormConfig `json:"task_form_config,omitempty"`
+	P4Client                    *string                `json:"p4_client,omitempty"`
 }
 
 func (h *WorkspaceHandlers) wsUpdateWorkspace(ctx context.Context, msg *ws.Message) (*ws.Message, error) {
@@ -238,14 +276,20 @@ func (h *WorkspaceHandlers) wsUpdateWorkspace(ctx context.Context, msg *ws.Messa
 	if req.ID == "" {
 		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "id is required", nil)
 	}
+	if req.TaskFormConfig != nil {
+		if err := validateTaskFormConfig(*req.TaskFormConfig); err != nil {
+			return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, err.Error(), nil)
+		}
+	}
 
 	workspace, err := h.service.UpdateWorkspace(ctx, req.ID, &service.UpdateWorkspaceRequest{
 		Name:                        req.Name,
 		Description:                 req.Description,
-		DefaultExecutorID:           req.DefaultExecutorID,
 		DefaultEnvironmentID:        req.DefaultEnvironmentID,
 		DefaultAgentProfileID:       req.DefaultAgentProfileID,
 		DefaultConfigAgentProfileID: req.DefaultConfigAgentProfileID,
+		TaskFormConfig:              req.TaskFormConfig,
+		P4Client:                    req.P4Client,
 	})
 	if err != nil {
 		h.logger.Error("failed to update workspace", zap.Error(err))

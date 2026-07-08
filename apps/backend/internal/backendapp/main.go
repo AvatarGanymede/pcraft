@@ -61,6 +61,7 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/office/configloader"
 	officeservice "github.com/AvatarGanymede/pcraft/internal/office/service"
 	"github.com/AvatarGanymede/pcraft/internal/orchestrator"
+	"github.com/AvatarGanymede/pcraft/internal/p4"
 	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 
 	// Office feature packages
@@ -719,7 +720,7 @@ func startGatewayAndServe(
 	// HTTP SERVER
 	// ============================================
 	server := buildHTTPServer(cfg, log, gateway, repos, services, agentSettingsController,
-		lifecycleMgr, eventBus, orchestratorSvc, notificationCtrl, msgCreator, agentRegistry, hostUtilityMgr, addCleanup, repoCloner, systemSvc)
+		lifecycleMgr, eventBus, orchestratorSvc, notificationCtrl, msgCreator, agentRegistry, hostUtilityMgr, addCleanup, repoCloner, systemSvc, dbPool)
 
 	port := cfg.Server.Port
 	if port == 0 {
@@ -1578,6 +1579,7 @@ func buildHTTPServer(
 	addCleanup func(func() error),
 	repoCloner *repoclone.Cloner,
 	systemSvc *systemsvc.Service,
+	dbPool *db.Pool,
 ) *http.Server {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
@@ -1591,6 +1593,24 @@ func buildHTTPServer(
 		port = ports.Backend
 	}
 
+	// P4 (Perforce) integration: lists local p4 clients for the task-create
+	// dialog and manages per-task changelists/locks. Construction is best
+	// effort — a failure here must not take down the whole HTTP server, so we
+	// log and continue with the P4 routes simply absent.
+	var p4Svc *p4.Service
+	if dbPool != nil {
+		svc, cleanup, err := p4.Provide(dbPool.Writer().DB, log)
+		if err != nil {
+			log.Warn("Failed to initialize P4 service; P4 routes disabled", zap.Error(err))
+		} else {
+			p4Svc = svc
+			addCleanup(cleanup)
+			// Let the task service resolve a bound P4 client's root/stream when
+			// a workspace saves its P4 binding, and derive task cwd from it.
+			services.Task.SetP4ClientResolver(p4Svc)
+		}
+	}
+
 	registerRoutes(routeParams{
 		router:                  router,
 		gateway:                 gateway,
@@ -1599,6 +1619,7 @@ func buildHTTPServer(
 		officeRepo:              repos.Office,
 		analyticsRepo:           repos.Analytics,
 		orchestratorSvc:         orchestratorSvc,
+		p4Svc:                   p4Svc,
 		lifecycleMgr:            lifecycleMgr,
 		hostUtilityMgr:          hostUtilityMgr,
 		eventBus:                eventBus,

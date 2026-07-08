@@ -148,55 +148,11 @@ func TestCreateTask_AllowsSameRepoDifferentBranches(t *testing.T) {
 // local — sibling worktrees are a git-worktree layout and other executors
 // would silently swallow the new branch. The service must reject before
 // inserting a task_repositories row so the DB stays consistent with disk.
-func TestAddBranchToTask_RejectsNonWorktreeExecutor(t *testing.T) {
-	svc, _, repo := createTestService(t)
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "WS"})
-	_ = repo.CreateWorkflow(ctx, &models.Workflow{ID: "wf-1", WorkspaceID: "ws-1", Name: "WF"})
-	_ = repo.CreateRepository(ctx, &models.Repository{ID: "repo-1", WorkspaceID: "ws-1", Name: "frontend"})
-
-	task, err := svc.CreateTask(ctx, &CreateTaskRequest{
-		WorkspaceID:    "ws-1",
-		WorkflowID:     "wf-1",
-		WorkflowStepID: "step-1",
-		Title:          "Docker task",
-		Repositories: []TaskRepositoryInput{
-			{RepositoryID: "repo-1", BaseBranch: "main"},
-		},
-	})
-	if err != nil {
-		t.Fatalf("CreateTask: %v", err)
-	}
-
-	// Seed a task_environments row with a non-worktree executor type.
-	now := time.Now().UTC()
-	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
-		ID:           "env-1",
-		TaskID:       task.ID,
-		ExecutorType: string(models.ExecutorTypeLocal),
-		Status:       "ready",
-		CreatedAt:    now,
-		UpdatedAt:    now,
-	}); err != nil {
-		t.Fatalf("CreateTaskEnvironment: %v", err)
-	}
-
-	_, err = svc.AddBranchToTask(ctx, AddBranchToTaskRequest{
-		TaskID:         task.ID,
-		CheckoutBranch: "feature/x",
-	})
-	if err == nil {
-		t.Fatal("expected error rejecting non-worktree executor")
-	}
-	if !strings.Contains(err.Error(), "worktree executor") {
-		t.Errorf("unexpected error: %v", err)
-	}
-}
-
-// TestAddBranchToTask_AllowsWorktreeExecutor guards the happy path: a task
-// running on the worktree executor accepts add_branch normally.
-func TestAddBranchToTask_AllowsWorktreeExecutor(t *testing.T) {
+// TestAddBranchToTask_AllowsLaunchedTask guards the happy path: a task that has
+// already created its task_environments row accepts add_branch normally. (The
+// former worktree-executor gate has been removed along with the worktree
+// executor; Local is now the only executor.)
+func TestAddBranchToTask_AllowsLaunchedTask(t *testing.T) {
 	svc, _, repo := createTestService(t)
 	ctx := context.Background()
 
@@ -208,7 +164,7 @@ func TestAddBranchToTask_AllowsWorktreeExecutor(t *testing.T) {
 		WorkspaceID:    "ws-1",
 		WorkflowID:     "wf-1",
 		WorkflowStepID: "step-1",
-		Title:          "Worktree task",
+		Title:          "Local task",
 		Repositories: []TaskRepositoryInput{
 			{RepositoryID: "repo-1", BaseBranch: "main"},
 		},
@@ -221,7 +177,7 @@ func TestAddBranchToTask_AllowsWorktreeExecutor(t *testing.T) {
 	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
 		ID:            "env-1",
 		TaskID:        task.ID,
-		ExecutorType:  string(models.ExecutorTypeWorktree),
+		ExecutorType:  string(models.ExecutorTypeLocal),
 		WorkspacePath: "/tmp/task-env",
 		Status:        "ready",
 		CreatedAt:     now,
@@ -234,7 +190,7 @@ func TestAddBranchToTask_AllowsWorktreeExecutor(t *testing.T) {
 		TaskID:         task.ID,
 		CheckoutBranch: "feature/x",
 	}); err != nil {
-		t.Fatalf("AddBranchToTask on worktree executor: %v", err)
+		t.Fatalf("AddBranchToTask on launched task: %v", err)
 	}
 }
 
@@ -539,83 +495,6 @@ func TestAddBranchToTask_ResolvesLocalPath(t *testing.T) {
 	}
 }
 
-// TestAddBranchToTask_RejectsNonWorktreeExecutor_NoOrphanRepo pins the
-// ordering guarantee documented on requireWorktreeExecutorForBranchAdd:
-// the executor gate must fire BEFORE ResolveRepositoryRef so a rejected
-// add_branch call on a non-worktree task never leaks a freshly-created
-// Repository row into the workspace via the github_url / local_path paths.
-//
-// Without this ordering, FindOrCreateRepository (github_url) and
-// CreateRepository (local_path) write before the executor check rejects,
-// leaving an orphan repository the user never asked for.
-func TestAddBranchToTask_RejectsNonWorktreeExecutor_NoOrphanRepo(t *testing.T) {
-	svc, _, repo := createTestService(t)
-	ctx := context.Background()
-
-	_ = repo.CreateWorkspace(ctx, &models.Workspace{ID: "ws-1", Name: "WS"})
-	_ = repo.CreateWorkflow(ctx, &models.Workflow{ID: "wf-1", WorkspaceID: "ws-1", Name: "WF"})
-	_ = repo.CreateRepository(ctx, &models.Repository{ID: "repo-primary", WorkspaceID: "ws-1", Name: "primary", DefaultBranch: "main"})
-
-	task, err := svc.CreateTask(ctx, &CreateTaskRequest{
-		WorkspaceID:    "ws-1",
-		WorkflowID:     "wf-1",
-		WorkflowStepID: "step-1",
-		Title:          "Docker task",
-		Repositories: []TaskRepositoryInput{
-			{RepositoryID: "repo-primary", BaseBranch: "main"},
-		},
-	})
-	if err != nil {
-		t.Fatalf("CreateTask: %v", err)
-	}
-
-	// Seed a non-worktree executor — add_branch must reject.
-	now := time.Now().UTC()
-	if err := repo.CreateTaskEnvironment(ctx, &models.TaskEnvironment{
-		ID:           "env-1",
-		TaskID:       task.ID,
-		ExecutorType: string(models.ExecutorTypeLocal),
-		Status:       "ready",
-		CreatedAt:    now,
-		UpdatedAt:    now,
-	}); err != nil {
-		t.Fatalf("CreateTaskEnvironment: %v", err)
-	}
-
-	before, err := repo.ListRepositories(ctx, "ws-1")
-	if err != nil {
-		t.Fatalf("ListRepositories before: %v", err)
-	}
-	beforeCount := len(before)
-
-	// github_url points at a repo NOT yet in the workspace — would trigger
-	// FindOrCreateRepository if resolution ran. The executor check must
-	// reject first.
-	_, err = svc.AddBranchToTask(ctx, AddBranchToTaskRequest{
-		TaskID:    task.ID,
-		GitHubURL: "https://github.com/acme/never-created",
-	})
-	if err == nil {
-		t.Fatal("expected error rejecting non-worktree executor")
-	}
-	if !strings.Contains(err.Error(), "worktree executor") {
-		t.Errorf("unexpected error: %v", err)
-	}
-
-	after, err := repo.ListRepositories(ctx, "ws-1")
-	if err != nil {
-		t.Fatalf("ListRepositories after: %v", err)
-	}
-	if len(after) != beforeCount {
-		t.Errorf("expected no new repository rows, got %d before vs %d after", beforeCount, len(after))
-	}
-	for _, r := range after {
-		if r.ProviderOwner == "acme" && r.ProviderName == "never-created" {
-			t.Errorf("orphan repository row leaked into workspace: %+v", r)
-		}
-	}
-}
-
 // TestCreateTask_RejectsSameRepoSameBranch verifies the dedup guard still
 // fires when the exact (repo, branch) pair is duplicated in the create
 // payload — the migration-layer constraint mirrors the in-memory guard.
@@ -677,9 +556,8 @@ func (m *stubMaterializer) MaterializeBranch(_ context.Context, _ string, _ stri
 	return m.err
 }
 
-// seedWorktreeTaskEnv attaches a worktree-executor task_environments row so
-// requireWorktreeExecutorForBranchAdd permits the call and taskAlreadyLaunched
-// reports the task as live.
+// seedWorktreeTaskEnv attaches a task_environments row so taskAlreadyLaunched
+// reports the task as live (the former worktree-executor gate has been removed).
 func seedWorktreeTaskEnv(t *testing.T, repo interface {
 	CreateTaskEnvironment(ctx context.Context, env *models.TaskEnvironment) error
 }, taskID, id string,
@@ -689,7 +567,7 @@ func seedWorktreeTaskEnv(t *testing.T, repo interface {
 	if err := repo.CreateTaskEnvironment(context.Background(), &models.TaskEnvironment{
 		ID:            id,
 		TaskID:        taskID,
-		ExecutorType:  string(models.ExecutorTypeWorktree),
+		ExecutorType:  string(models.ExecutorTypeLocal),
 		WorkspacePath: "/tmp/task-env",
 		Status:        "ready",
 		CreatedAt:     now,
