@@ -118,13 +118,24 @@ jobs:
           print(f'{best[0]}.{best[1]}.{best[2]}')
           ")"
 
-          # Use the higher of package.json version and the latest tag as baseline
+          # Use the higher of package.json core SemVer and latest tag.
+          # package.json may contain prerelease/build suffixes (e.g. 0.1.1-beta.0).
           BASELINE="$(python3 -c "
-          a = '$PKG_VERSION'.split('.')
-          b = '$LATEST_TAG'.split('.')
-          ai = tuple(int(x) for x in a)
-          bi = tuple(int(x) for x in b)
-          print('$PKG_VERSION' if ai >= bi else '$LATEST_TAG')
+          import re
+          def parse_core(v):
+              m = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?(?:[-+].*)?$', v)
+              if not m:
+                  raise ValueError(f'invalid semver: {v}')
+              major = int(m.group(1))
+              minor = int(m.group(2))
+              patch = int(m.group(3) or 0)
+              return (major, minor, patch)
+          pkg = '$PKG_VERSION'
+          tag = '$LATEST_TAG'
+          p = parse_core(pkg)
+          t = parse_core(tag)
+          best = p if p >= t else t
+          print(f'{best[0]}.{best[1]}.{best[2]}')
           ")"
 
           IFS=. read -r MAJ MIN PAT <<<"$BASELINE"
