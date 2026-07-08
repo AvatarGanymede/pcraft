@@ -2,7 +2,7 @@
 
 All notable changes to pcraft.
 
-## 0.2.0 - 2026-07-08
+## 0.3.0 - 2026-07-08
 
 ### Features
 
