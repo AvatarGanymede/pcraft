@@ -1,6 +1,6 @@
 name: Preview Environment
 
-# Dual triggers — mirrors the claude-code-review.yml pattern exactly:
+# Dual triggers — mirrors the same-repo/fork safety pattern:
 #   pull_request: same-repo PRs (secrets available, safe to run on PR head)
 #   pull_request_target: fork PRs (secrets available via base repo, gated by allowlist)
 # Exactly one job runs per PR event based on event_name AND head repo identity.
@@ -75,7 +75,7 @@ jobs:
   #     blocked on `synchronize` so a contributor's push cannot re-use a
   #     stale label — the maintainer must re-apply it after each push for
   #     the `labeled` event to trigger a fresh deploy of the new SHA. This
-  #     matters more here than for claude-code-review.yml because deploy
+  #     matters more here than read-only review workflows because deploy
   #     actually runs the fork's `cmd/preview` code with SPRITES_API_TOKEN.
   # -----------------------------------------------------------------------
   # Branch order matters: keep cheap/safe checks before `fromJSON(vars.*)`,

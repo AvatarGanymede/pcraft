@@ -111,15 +111,13 @@ describe("markdownComponents", () => {
   it("opens absolute worktree file links with line suffixes in the editor", () => {
     render(
       <Markdown>
-        {
-          "[workflow](/root/.kandev/tasks/example/kandev/.github/workflows/claude-code-review.yml:1)"
-        }
+        {"[workflow](/root/.kandev/tasks/example/kandev/.github/workflows/release.yml:1)"}
       </Markdown>,
     );
 
     fireEvent.click(screen.getByRole("link", { name: "workflow" }));
 
-    expect(openFile).toHaveBeenCalledWith(".github/workflows/claude-code-review.yml");
+    expect(openFile).toHaveBeenCalledWith(".github/workflows/release.yml");
   });
 
   it("opens relative file links in the editor", () => {
