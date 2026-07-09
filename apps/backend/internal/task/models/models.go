@@ -64,6 +64,10 @@ const (
 	// (set by CreateTask, read by the orchestrator when building a session).
 	// Centralised here so the set/read sites can't drift apart.
 	MetaKeyWorkspacePath = "workspace_path"
+	// MetaKeyJnpmID is the optional JNPM ticket number (raw input, may include
+	// a leading "#") captured on the create dialog. The notification path reads
+	// it to resolve the ticket assignee for Lark delivery.
+	MetaKeyJnpmID = "jnpm_id"
 )
 
 // TaskSession.Metadata key that records how the session came into existence.

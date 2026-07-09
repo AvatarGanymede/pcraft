@@ -152,7 +152,7 @@ test.describe("Markdown preview", () => {
 
     // Verify the markdownPreview flag is in sessionStorage
     const storedTabs = await testPage.evaluate((sid) => {
-      const raw = window.sessionStorage.getItem(`kandev.openFiles.${sid}`);
+      const raw = window.sessionStorage.getItem(`pcraft.openFiles.${sid}`);
       return raw ? JSON.parse(raw) : null;
     }, sessionId);
     expect(storedTabs).not.toBeNull();

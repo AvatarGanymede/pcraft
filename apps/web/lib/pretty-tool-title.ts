@@ -1,4 +1,4 @@
-const KANDEV_TOOL_RE = /^[a-z][a-z0-9_]*_kandev$/;
+const KANDEV_TOOL_RE = /^[a-z][a-z0-9_]*_pcraft$/;
 // Different agents prefix MCP tools differently: Claude Code passes the bare
 // tool name, Codex passes `<server>/<tool>`, others may use `mcp__<server>__`.
 const NAMESPACE_SEP = /\/|__/;
@@ -10,7 +10,7 @@ export function prettifyToolTitle(raw: string): string {
   const segments = trimmed.split(NAMESPACE_SEP);
   const tail = segments[segments.length - 1];
   if (!KANDEV_TOOL_RE.test(tail)) return trimmed;
-  const stem = tail.slice(0, -"_kandev".length);
+  const stem = tail.slice(0, -"_pcraft".length);
   const words = stem
     .split("_")
     .filter(Boolean)

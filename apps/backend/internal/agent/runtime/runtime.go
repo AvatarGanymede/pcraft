@@ -64,7 +64,7 @@ type LaunchSpec struct {
 	AgentProfileID string
 
 	// ExecutorID identifies the executor backend to dispatch on
-	// (e.g. "local_pc", "local_docker", "sprites").
+	// (e.g. "exec-local" for the local standalone executor).
 	ExecutorID string
 
 	// Workspace describes the workspace the agent operates in.

@@ -31,7 +31,7 @@ type KandevToolMessageProps = {
 // and returns the first one that parses to a known kandev stem. The fields
 // disagree in practice:
 //   - `metadata.tool_name`     — not set by the orchestrator today (null).
-//   - `metadata.title`         — the raw `mcp__kandev__<tool>_kandev` string.
+//   - `metadata.title`         — the raw `mcp__pcraft__<tool>_pcraft` string.
 //   - `comment.content`        — same raw string, redundant with title.
 //   - `metadata.normalized.generic.name` — the ACP adapter's *category*
 //     (often `"other"`) rather than the tool name, so it cannot be matched on.

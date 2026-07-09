@@ -2,16 +2,25 @@ import { describe, expect, it } from "vitest";
 import { extractKandevStem, extractMcpResult, shortId } from "./parse";
 
 describe("extractKandevStem", () => {
-  it("strips the mcp__kandev__ namespace and the _kandev suffix", () => {
-    expect(extractKandevStem("mcp__kandev__list_tasks_kandev")).toBe("list_tasks");
+  it("strips the mcp__pcraft__ namespace and the _pcraft suffix", () => {
+    expect(extractKandevStem("mcp__pcraft__list_tasks_pcraft")).toBe("list_tasks");
   });
 
-  it("handles the codex-style kandev/ prefix", () => {
-    expect(extractKandevStem("kandev/list_tasks_kandev")).toBe("list_tasks");
+  it("still accepts legacy mcp__pcraft__ names with _pcraft suffix", () => {
+    expect(extractKandevStem("mcp__pcraft__list_tasks_pcraft")).toBe("list_tasks");
+  });
+
+  it("handles the codex-style pcraft/ prefix", () => {
+    expect(extractKandevStem("pcraft/list_tasks_pcraft")).toBe("list_tasks");
+  });
+
+  it("handles legacy codex-style kandev/ prefix", () => {
+    expect(extractKandevStem("kandev/list_tasks_pcraft")).toBe("list_tasks");
   });
 
   it("handles a bare suffix-only name", () => {
-    expect(extractKandevStem("create_task_kandev")).toBe("create_task");
+    expect(extractKandevStem("create_task_pcraft")).toBe("create_task");
+    expect(extractKandevStem("create_task_pcraft")).toBe("create_task");
   });
 
   it("returns null for non-kandev tools", () => {
@@ -22,7 +31,8 @@ describe("extractKandevStem", () => {
   });
 
   it("returns null when the suffix is bare (no stem)", () => {
-    expect(extractKandevStem("_kandev")).toBeNull();
+    expect(extractKandevStem("_pcraft")).toBeNull();
+    expect(extractKandevStem("_pcraft")).toBeNull();
   });
 });
 

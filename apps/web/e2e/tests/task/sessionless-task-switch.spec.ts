@@ -2,7 +2,7 @@ import { test, expect } from "../../fixtures/test-base";
 import { SessionPage } from "../../pages/session-page";
 
 /**
- * Bug: when a task is created via MCP `create_task_kandev` with
+ * Bug: when a task is created via MCP `create_task_pcraft` with
  * `start_agent=false`, it has no session/environment. Selecting that task in
  * the sidebar previously left the dockview layout corrupted (wrong widths on
  * the central group) and did not update the breadcrumb to the new task. The
@@ -30,7 +30,7 @@ test.describe("Sessionless task switching", () => {
     const script = [
       'e2e:thinking("Creating sessionless subtask...")',
       "e2e:delay(100)",
-      `e2e:mcp:kandev:create_task_kandev({"parent_id":"self","title":"${SUBTASK_TITLE}","description":"Sessionless subtask for layout-recovery test","start_agent":false})`,
+      `e2e:mcp:pcraft:create_task_pcraft({"parent_id":"self","title":"${SUBTASK_TITLE}","description":"Sessionless subtask for layout-recovery test","start_agent":false})`,
       "e2e:delay(100)",
       'e2e:message("Done.")',
     ].join("\n");
@@ -181,7 +181,7 @@ test.describe("Sessionless task switching", () => {
         panels: { chat: { id: "chat", contentComponent: "chat" } },
         activeGroup: "g1",
       };
-      window.sessionStorage.setItem(`kandev.dockview.env-layout.${envId}`, JSON.stringify(corrupt));
+      window.sessionStorage.setItem(`pcraft.dockview.env-layout.${envId}`, JSON.stringify(corrupt));
     }, sessionAEnvId!);
 
     // Switch back to A — performEnvSwitch should drop the corrupt blob

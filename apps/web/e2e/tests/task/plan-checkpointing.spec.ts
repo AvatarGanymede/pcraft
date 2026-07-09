@@ -16,7 +16,7 @@ import { SessionPage } from "../../pages/session-page";
 // e2e:delay(200).
 //
 // Agent-authored revisions are seeded through the MCP tool
-// (create_task_plan_kandev). User-authored revisions are produced by typing
+// (create_task_plan_pcraft). User-authored revisions are produced by typing
 // into the plan editor and waiting for the 1500ms autosave debounce.
 
 // ---------------------------------------------------------------------------
@@ -116,7 +116,7 @@ async function expectRevisionCount(session: SessionPage, count: number, timeout 
 function mcpWrite(content: string): string {
   // JSON-string-escape content: handles backslashes, quotes, and control chars.
   const escaped = JSON.stringify(content).slice(1, -1);
-  return `e2e:mcp:kandev:create_task_plan_kandev({"task_id":"{task_id}","content":"${escaped}"})`;
+  return `e2e:mcp:pcraft:create_task_plan_pcraft({"task_id":"{task_id}","content":"${escaped}"})`;
 }
 
 /** Build a mock-agent script that chains plan writes with inter-write delays. */

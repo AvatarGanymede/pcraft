@@ -74,6 +74,7 @@ export function useTaskSubmitHandlers({
   transformDescriptionBeforeSubmit,
   taskFormConfig,
   dynamicValues,
+  jnpmId,
 }: SubmitHandlersDeps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -130,8 +131,12 @@ export function useTaskSubmitHandlers({
     for (const [key, value] of Object.entries(prefixed)) {
       if (value.trim() !== "") metadata[key] = value;
     }
+    // Persist the optional JNPM ticket number under a fixed metadata key so the
+    // backend notification path can resolve the ticket assignee.
+    const trimmedJnpmId = (jnpmId ?? "").trim();
+    if (trimmedJnpmId !== "") metadata.jnpm_id = trimmedJnpmId;
     return { description, metadata };
-  }, [taskFormConfig, dynamicValues]);
+  }, [taskFormConfig, dynamicValues, jnpmId]);
 
   // Blocks submit when two Remote rows resolve to the same GitHub repo (same
   // PR URL twice, or two PRs of one repo). Surfaces a repo-named toast before
@@ -405,13 +410,14 @@ export function useTaskSubmitHandlers({
   );
 
   const handleCreatePlanMode = useCallback(
-    (trimmedTitle: string, consented: string[]) =>
+    (trimmedTitle: string, consented: string[], metadata?: Record<string, string>) =>
       performCreate({
         trimmedTitle,
         trimmedDescription: "",
         consented,
         withAgent: false,
         planMode: true,
+        metadata,
       }),
     [performCreate],
   );
@@ -526,7 +532,7 @@ export function useTaskSubmitHandlers({
           metadata,
         });
       } else {
-        await handleCreatePlanMode(trimmedTitle, consent);
+        await handleCreatePlanMode(trimmedTitle, consent, metadata);
       }
     } catch (error) {
       toast({

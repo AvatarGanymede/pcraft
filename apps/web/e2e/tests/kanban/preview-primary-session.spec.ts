@@ -94,8 +94,8 @@ test.describe("Preview primary session", () => {
       type KandevStore = {
         getState: () => { kanban: { tasks: { id: string; primarySessionId?: string | null }[] } };
       };
-      const win = window as unknown as { __KANDEV_STORE?: KandevStore };
-      const store = win.__KANDEV_STORE;
+      const win = window as unknown as { __pcraft_STORE?: KandevStore };
+      const store = win.__pcraft_STORE;
       if (!store) return { error: "no store" };
       const state = store.getState();
       const kanbanTask = state.kanban.tasks.find((t) => t.id === taskId);

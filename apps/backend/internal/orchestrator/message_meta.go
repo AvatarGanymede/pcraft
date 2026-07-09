@@ -58,7 +58,7 @@ func (m *UserMessageMeta) WithContextFiles(files []v1.ContextFileMeta) *UserMess
 }
 
 // WithSenderTask records that the message originated from another task's agent
-// (via the message_task_kandev MCP tool). Title is a snapshot at send time;
+// (via the message_task_pcraft MCP tool). Title is a snapshot at send time;
 // session ID is optional and identifies the sender's specific session.
 func (m *UserMessageMeta) WithSenderTask(taskID, taskTitle, sessionID string) *UserMessageMeta {
 	m.SenderTaskID = taskID

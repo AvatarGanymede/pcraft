@@ -31,8 +31,6 @@ const FALLBACK_ROLES: Array<{ id: string; label: string }> = [
 
 const FALLBACK_EXECUTOR_TYPES: Array<{ id: string; label: string }> = [
   { id: "local_pc", label: "Local (standalone)" },
-  { id: "local_docker", label: "Local Docker" },
-  { id: "sprites", label: "Sprites (remote sandbox)" },
 ];
 
 const CAPABILITY_LABELS: Record<string, string> = {

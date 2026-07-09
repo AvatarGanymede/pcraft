@@ -21,7 +21,7 @@ import { applyUpdate, fetchSystemInfo, fetchSystemJob } from "@/lib/api/domains/
  */
 export type SelfUpdatePhase = "idle" | "starting" | "installing" | "restarting" | "done" | "error";
 
-const STORAGE_KEY = "kandev.selfUpdate";
+const STORAGE_KEY = "pcraft.selfUpdate";
 const POLL_INTERVAL_MS = 2000;
 // Safety net: if the version never flips (helper died after launch, network
 // wedged), stop polling and surface an error instead of spinning forever.

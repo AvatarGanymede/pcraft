@@ -581,7 +581,7 @@ func (s *Service) publishTaskUpdated(ctx context.Context, task *models.Task) {
 
 // StepRequiresCompletionSignal reports whether the workflow step bound to taskID
 // has `auto_advance_requires_signal = true` (ADR 0015). Used by sysprompt
-// injection sites to decide whether to expose the `step_complete_kandev` MCP
+// injection sites to decide whether to expose the `step_complete_pcraft` MCP
 // tool to the agent. Returns false (without error) when the getter is unset,
 // the task has no workflow step, or the step lookup fails — the caller treats
 // "unknown" the same as "no signal required" so a flaky workflow lookup never
@@ -977,7 +977,7 @@ func (s *Service) Stop() error {
 //  2. Never-started (Created) → clean up executor record
 //  3. Active states (Starting/Running/WaitingForInput) → set session to WAITING_FOR_INPUT,
 //     clear stale execution IDs, fix task state, preserve ExecutorRunning record
-//  4. Pre-poll remote executor status for remote runtimes (sprites, remote_docker)
+//  4. Pre-poll executor status (remote runtimes have been removed).
 //
 // Called by: Start() method during orchestrator initialization.
 func (s *Service) reconcileSessionsOnStartup(ctx context.Context) {

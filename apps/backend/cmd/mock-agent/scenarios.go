@@ -153,7 +153,7 @@ func scenarioKandevMCPPermission(e *emitter) {
 
 	fixedDelay(50)
 	id := nextToolID()
-	toolName := "mcp__kandev__list_workspaces_kandev"
+	toolName := "mcp__pcraft__list_workspaces_pcraft"
 	input := map[string]any{}
 	e.startTool(id, toolName, acp.ToolKindOther, input)
 	allowed := e.requestPermission(id, toolName, acp.ToolKindOther, input)
@@ -665,7 +665,7 @@ func scenarioClarification(e *emitter) {
 	fixedDelay(100)
 	e.text("Let me ask you a question about the project setup.")
 
-	result, err := callMCPTool("kandev", "ask_user_question_kandev", clarificationQuestionArgs())
+	result, err := callMCPTool("pcraft", "ask_user_question_pcraft", clarificationQuestionArgs())
 	if err != nil {
 		e.text(fmt.Sprintf("Question failed: %s", err))
 		return
@@ -681,7 +681,7 @@ func scenarioClarificationMulti(e *emitter) {
 	fixedDelay(100)
 	e.text("Let me ask you a few questions about the project setup.")
 
-	result, err := callMCPTool("kandev", "ask_user_question_kandev", clarificationMultiQuestionArgs())
+	result, err := callMCPTool("pcraft", "ask_user_question_pcraft", clarificationMultiQuestionArgs())
 	if err != nil {
 		e.text(fmt.Sprintf("Questions failed: %s", err))
 		return
@@ -699,7 +699,7 @@ func scenarioClarificationTimeout(e *emitter) {
 	ctx, cancel := contextWithTimeout(5)
 	defer cancel()
 
-	result, err := callMCPToolCtx(ctx, "kandev", "ask_user_question_kandev", clarificationQuestionArgs())
+	result, err := callMCPToolCtx(ctx, "pcraft", "ask_user_question_pcraft", clarificationQuestionArgs())
 	if err != nil {
 		fixedDelay(50)
 		if ctx.Err() != nil {

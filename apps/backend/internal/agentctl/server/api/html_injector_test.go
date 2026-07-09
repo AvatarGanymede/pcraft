@@ -44,7 +44,7 @@ func TestInspectorScript_UsesPreviewRouteForAnnotationPagePath(t *testing.T) {
 	if !strings.Contains(inspectorScript, "function currentPagePath()") {
 		t.Fatal("inspector should derive annotation routes through currentPagePath")
 	}
-	if !strings.Contains(inspectorScript, "window.__kandevProxyPrefix") {
+	if !strings.Contains(inspectorScript, "window.__pcraftProxyPrefix") {
 		t.Fatal("inspector should read the proxy prefix exposed by the runtime shim")
 	}
 	if !strings.Contains(inspectorScript, "pagePath: currentPagePath()") {

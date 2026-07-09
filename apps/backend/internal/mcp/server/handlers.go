@@ -21,7 +21,7 @@ import (
 // responds. Declared as a var so tests can shorten it.
 var askQuestionKeepAliveInterval = 20 * time.Second
 
-// Argument-name constants used across the ask_user_question_kandev handler.
+// Argument-name constants used across the ask_user_question_pcraft handler.
 // Pulled out so goconst stays happy and renames stay safe.
 const (
 	promptArg          = "prompt"

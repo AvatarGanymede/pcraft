@@ -369,7 +369,7 @@ export function KanbanBoard({ onPreviewTask, onOpenTask, onBeforeEdit }: KanbanB
         isDialogOpen={s.isDialogOpen}
         handleDialogOpenChange={s.handleDialogOpenChange}
         workspaceId={s.workspaceState.activeId}
-        workflowId={s.kanban.workflowId}
+        workflowId={s.workflowsState.activeId ?? s.kanban.workflowId}
         defaultStepId={s.activeSteps[0]?.id ?? null}
         stepOptions={stepOptions}
         editingTask={s.editingTask}

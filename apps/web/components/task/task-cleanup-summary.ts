@@ -4,19 +4,10 @@ export type CleanupSummary = {
   lines: string[];
 };
 
-// mock_remote is test-only — intentionally absent so it falls through to GENERIC_LINE.
-type KnownExecutor = "local" | "worktree" | "local_docker" | "remote_docker" | "sprites" | "ssh";
+type KnownExecutor = "local";
 
 const SINGLE: Record<KnownExecutor, string> = {
   local: "The agent ran directly in your repo — your files, branch, and folder are not touched.",
-  worktree:
-    "The task's git worktree and its branch will be deleted. Your main repo and other branches are not affected.",
-  local_docker:
-    "The Docker container running this task will be stopped and removed. Your host repo is not touched.",
-  remote_docker: "The remote Docker container running this task will be stopped and removed.",
-  sprites:
-    "The Sprites cloud sandbox for this task will be destroyed. Any uncommitted work inside it will be lost.",
-  ssh: "The task directory on the remote host will be removed (best-effort). Your local repo is not touched.",
 };
 
 const GENERIC_LINE = "Any running agent sessions will be stopped.";
@@ -37,14 +28,6 @@ export function getCleanupSummary(executorType: string | null | undefined): Clea
 
 const PLURAL: Partial<Record<KnownExecutor, (n: number) => string>> = {
   local: (n) => `${n} local ${pl(n, "task", "tasks")} — your repo folders won't be touched.`,
-  worktree: (n) =>
-    `${n} ${pl(n, "worktree", "worktrees")} and ${pl(n, "its branch", "their branches")} will be deleted.`,
-  local_docker: (n) => `${n} Docker ${pl(n, "container", "containers")} will be removed.`,
-  remote_docker: (n) => `${n} remote Docker ${pl(n, "container", "containers")} will be removed.`,
-  sprites: (n) =>
-    `${n} Sprites ${pl(n, "sandbox", "sandboxes")} will be destroyed (uncommitted work lost).`,
-  ssh: (n) =>
-    `${n} remote task ${pl(n, "directory", "directories")} will be removed (best-effort).`,
 };
 
 function pl(n: number, one: string, many: string): string {
@@ -64,14 +47,7 @@ export function getBulkCleanupSummary(
     counts.set(known, (counts.get(known) ?? 0) + 1);
   }
 
-  const order: KnownExecutor[] = [
-    "worktree",
-    "local_docker",
-    "remote_docker",
-    "sprites",
-    "ssh",
-    "local",
-  ];
+  const order: KnownExecutor[] = ["local"];
 
   const lines: string[] = [];
   for (const key of order) {

@@ -26,7 +26,7 @@ async function setupFreshSession(newSessionId: string): Promise<void> {
  * from a clean context window. Inherits agent + executor from the planning
  * session so the user doesn't pick anything; planning session is left running
  * in parallel. Reuses the same kandev-system block as the same-session
- * "Implement plan" path — both rely on get_task_plan_kandev to load the plan,
+ * "Implement plan" path — both rely on get_task_plan_pcraft to load the plan,
  * which is task-scoped.
  *
  * The newly created session is automatically set as primary and focused (active

@@ -10,7 +10,7 @@ describe("readBootPayload", () => {
 
   it("normalizes the injected Go boot payload shape", () => {
     const win = {
-      __KANDEV_BOOT_PAYLOAD__: {
+      __PCRAFT_BOOT_PAYLOAD__: {
         version: 1,
         route: {
           kind: "spa",
@@ -48,7 +48,7 @@ describe("readBootPayload", () => {
 
   it("drops invalid route params instead of exposing mixed values", () => {
     const win = {
-      __KANDEV_BOOT_PAYLOAD__: {
+      __PCRAFT_BOOT_PAYLOAD__: {
         route: {
           params: { taskId: "task-1", bad: 3 },
         },
@@ -60,7 +60,7 @@ describe("readBootPayload", () => {
 
   it("enables the runtime debug global when boot payload debug is true", () => {
     const win = {
-      __KANDEV_BOOT_PAYLOAD__: {
+      __PCRAFT_BOOT_PAYLOAD__: {
         runtime: {
           debug: true,
         },
@@ -68,14 +68,14 @@ describe("readBootPayload", () => {
     } as unknown as Window;
 
     expect(readBootPayload(win).runtime?.debug).toBe(true);
-    expect(win.__KANDEV_DEBUG).toBe(true);
+    expect(win.__PCRAFT_DEBUG).toBe(true);
   });
 });
 
 describe("loadBootPayload", () => {
   it("uses the injected Go boot payload without fetching", async () => {
     const win = Object.assign(new Window(), {
-      __KANDEV_BOOT_PAYLOAD__: { version: 1, initialState: { features: { office: true } } },
+      __PCRAFT_BOOT_PAYLOAD__: { version: 1, initialState: { features: { office: true } } },
     }) as Window;
     const fetcher = vi.fn();
 

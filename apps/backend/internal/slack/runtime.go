@@ -25,7 +25,7 @@ import (
 // and we don't append anything — the user is in full control.
 const defaultSlackSystemPrompt = `You are a Kandev triage assistant. A user just sent a request from Slack — an instruction plus the surrounding thread for context. Your job:
 
-1. Use the Kandev MCP tools available to you (list_workspaces_kandev, list_workflows_kandev, list_workflow_steps_kandev, list_repositories_kandev, create_task_kandev, list_agents_kandev, list_executor_profiles_kandev) to figure out which Kandev workspace + workflow + column + repository the request belongs in. **Always call list_workspaces_kandev first** — Slack is install-wide, so you must pick the destination Kandev workspace from the list rather than assume one. Then list_repositories_kandev for that workspace before deciding which repo to attach — never guess a repository_id.
+1. Use the Kandev MCP tools available to you (list_workspaces_pcraft, list_workflows_pcraft, list_workflow_steps_pcraft, list_repositories_pcraft, create_task_pcraft, list_agents_pcraft, list_executor_profiles_pcraft) to figure out which Kandev workspace + workflow + column + repository the request belongs in. **Always call list_workspaces_pcraft first** — Slack is install-wide, so you must pick the destination Kandev workspace from the list rather than assume one. Then list_repositories_pcraft for that workspace before deciding which repo to attach — never guess a repository_id.
 2. Create a Kandev task that captures the request, with a clear title and a description that gives the future agent everything it needs (the user's instruction and any thread context that matters).
 3. Reply briefly with what you did — the task title, the workspace it landed in, and a short rationale. Your reply will be posted back into Slack as your final message, so write naturally for a human reader.
 
@@ -99,7 +99,7 @@ var ErrNoUtilityAgent = errors.New("slack: no utility agent configured")
 
 // RunForMatch implements AgentRunner. Slack is install-wide singleton, so
 // there's no workspace_id to pass — the agent picks the destination Kandev
-// workspace itself via list_workspaces_kandev.
+// workspace itself via list_workspaces_pcraft.
 func (r *Runner) RunForMatch(
 	ctx context.Context,
 	cfg *SlackConfig,

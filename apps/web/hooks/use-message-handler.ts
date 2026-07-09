@@ -72,7 +72,7 @@ export function buildTaskMentionsContext(tasks: TaskMentionData[], state: AppSta
   return (
     `\n\n<kandev-system>\n` +
     `REFERENCED TASKS: The user mentioned the following tasks. Use these IDs with the kandev MCP tools ` +
-    `(e.g. \`get_task_conversation_kandev\`, \`update_task_kandev\`, \`get_task_plan_kandev\`) when the user asks you to act on them.\n` +
+    `(e.g. \`get_task_conversation_pcraft\`, \`update_task_pcraft\`, \`get_task_plan_pcraft\`) when the user asks you to act on them.\n` +
     lines.join("\n") +
     `\n</kandev-system>`
   );

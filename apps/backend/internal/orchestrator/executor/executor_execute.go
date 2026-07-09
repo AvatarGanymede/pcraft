@@ -186,7 +186,7 @@ func (e *Executor) Execute(ctx context.Context, task *v1.Task) (*TaskExecution, 
 }
 
 // ExecuteWithProfile starts agent execution for a task using an explicit agent profile.
-// The executorID parameter specifies which executor to use (determines runtime: local, worktree, local_docker, etc.).
+// The executorID parameter specifies which executor to use (determines runtime: local).
 // If executorID is empty, falls back to workspace's default executor.
 // The prompt parameter is the initial prompt to send to the agent.
 // The workflowStepID parameter associates the session with a workflow step for transitions.

@@ -570,10 +570,7 @@ func (m *Manager) runEnvironmentPreparerWithProgress(
 	if m.preparerRegistry == nil {
 		return nil
 	}
-	// Preparer registry is keyed by ExecutorType (the "local"/"worktree"/
-	// "local_docker"/... taxonomy), not Runtime — so executor types that
-	// share a runtime backend (local + worktree both run on standalone)
-	// can still get distinct preparation logic.
+	// Preparer registry is keyed by ExecutorType ("local"), not Runtime.
 	execType := models.ExecutorType(req.ExecutorType)
 	preparer := m.preparerRegistry.Get(execType)
 	if preparer == nil && execType == "" {
@@ -581,7 +578,7 @@ func (m *Manager) runEnvironmentPreparerWithProgress(
 		// — legacy task rows (e.g. PR-watcher-created tasks without an
 		// explicit executor) rely on local environment prep, including
 		// missing-branch detection. Typed-but-unregistered values like
-		// "remote_docker" intentionally return nil so the caller skips prep
+		// exec-local intentionally return nil so the caller skips prep
 		// rather than running local git operations against a remote executor.
 		preparer = m.preparerRegistry.Get(models.ExecutorTypeLocal)
 	}

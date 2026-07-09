@@ -240,7 +240,7 @@ func TestHandleImportWorkflow_ValidationError(t *testing.T) {
 	// surfaced as a validation error so the agent can correct its document.
 	msg := makeWSMessage(t, ws.ActionMCPImportWorkflow, map[string]interface{}{
 		"workspace_id": "ws-1",
-		"document":     "version: 1\ntype: not_kandev\nworkflows:\n  - name: X\n    steps: []\n",
+		"document":     "version: 1\ntype: not_pcraft\nworkflows:\n  - name: X\n    steps: []\n",
 	})
 
 	resp, err := h.handleImportWorkflow(context.Background(), msg)

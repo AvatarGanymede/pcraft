@@ -15,13 +15,23 @@
 
 const NAMESPACE_SEP = /\/|__/;
 const PCRAFT_SUFFIX = "_pcraft";
+/** Legacy tool suffix from pre-rename sessions; kept for historical messages. */
+const LEGACY_pcraft_SUFFIX = "_pcraft";
+
+function stripToolSuffix(tail: string): string | null {
+  for (const suffix of [PCRAFT_SUFFIX, LEGACY_pcraft_SUFFIX]) {
+    if (tail.endsWith(suffix)) {
+      const stem = tail.slice(0, -suffix.length);
+      return stem.length > 0 ? stem : null;
+    }
+  }
+  return null;
+}
 
 export function extractPcraftStem(toolName: string | undefined): string | null {
   if (!toolName) return null;
   const tail = toolName.trim().split(NAMESPACE_SEP).pop() ?? "";
-  if (!tail.endsWith(PCRAFT_SUFFIX)) return null;
-  const stem = tail.slice(0, -PCRAFT_SUFFIX.length);
-  return stem.length > 0 ? stem : null;
+  return stripToolSuffix(tail);
 }
 
 export function isPcraftTool(toolName: string | undefined): boolean {

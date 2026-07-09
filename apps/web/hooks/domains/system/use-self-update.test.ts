@@ -15,7 +15,7 @@ vi.mock("@/lib/api/domains/system-api", () => ({
 
 import { useSelfUpdate } from "./use-self-update";
 
-const STORAGE_KEY = "kandev.selfUpdate";
+const STORAGE_KEY = "pcraft.selfUpdate";
 
 beforeEach(() => {
   mocks.applyUpdate.mockReset();

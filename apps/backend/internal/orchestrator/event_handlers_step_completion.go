@@ -11,7 +11,7 @@ import (
 )
 
 // subscribeStepCompletionEvents wires the ADR 0015 out-of-band subscriber
-// for `step_complete_kandev` signals that arrive after the agent's turn
+// for `step_complete_pcraft` signals that arrive after the agent's turn
 // already ended. Safe to call when the feature is gated off — the
 // subscriber's gating check short-circuits on every event in that case.
 func (s *Service) subscribeStepCompletionEvents() {
@@ -60,7 +60,7 @@ func (s *Service) clearPendingStepSignalByID(ctx context.Context, sessionID stri
 }
 
 // onStepCompletionSignaled subscribes to events.WorkflowStepCompletionSignaled
-// to handle the case where the agent's `step_complete_kandev` call lands
+// to handle the case where the agent's `step_complete_pcraft` call lands
 // AFTER the turn already ended — at that point processOnTurnCompleteViaEngine
 // has already setSessionWaitingForInput. The subscriber re-triggers the
 // transition pipeline so the gated step finally advances.

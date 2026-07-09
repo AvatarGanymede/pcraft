@@ -7,7 +7,7 @@ import { SessionPage } from "../../pages/session-page";
 /**
  * E2E coverage for the cross-task message attribution feature.
  *
- * When an agent calls `message_task_kandev` to message another task, the
+ * When an agent calls `message_task_pcraft` to message another task, the
  * receiving task must:
  * - Render a clickable "from {sender title}" badge above the user message bubble.
  * - Show only the original prompt body in the bubble (the <kandev-system>
@@ -15,7 +15,7 @@ import { SessionPage } from "../../pages/session-page";
  * - Persist the sender_task_id / sender_task_title / sender_session_id
  *   metadata on the recorded user message.
  *
- * The mock-agent's `e2e:mcp:kandev:message_task_kandev(...)` script directive
+ * The mock-agent's `e2e:mcp:pcraft:message_task_pcraft(...)` script directive
  * drives the MCP call. The MCP server (running inside the sender's agentctl)
  * automatically injects sender_task_id and sender_session_id from its server
  * struct fields, so tests don't need to pass those — the wire-level
@@ -25,7 +25,7 @@ import { SessionPage } from "../../pages/session-page";
 /** Quote a JSON string so it survives both JSON.stringify (in this file) and
  *  the e2e script parser's quoted-arg extractor in the mock-agent. */
 function mcpScript(args: Record<string, string>): string {
-  return `e2e:mcp:kandev:message_task_kandev(${JSON.stringify(args)})`;
+  return `e2e:mcp:pcraft:message_task_pcraft(${JSON.stringify(args)})`;
 }
 
 /** Locator for the sender-task badge inside the chat panel. */

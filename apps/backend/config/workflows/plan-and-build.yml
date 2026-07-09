@@ -34,7 +34,7 @@ steps:
       Before anything else, create a task list tracking the substeps below (use your todo/task tracking tool if available). Mark each task in_progress when you begin it and completed when you finish. Do not skip ahead — each step feeds the next.
 
       STEP 1: UNDERSTAND THE REQUIREMENTS
-      If anything is unclear or ambiguous, ask the user clarifying questions using the ask_user_question_kandev tool before proceeding.
+      If anything is unclear or ambiguous, ask the user clarifying questions using the ask_user_question_pcraft tool before proceeding.
 
       STEP 2: EXPLORE THE CODEBASE
       - Find similar features and understand how they are implemented.
@@ -51,7 +51,7 @@ steps:
 
       When including diagrams (architecture, sequence, flowcharts, etc.), always use mermaid syntax in code blocks.
 
-      IMPORTANT: Save your plan using the create_task_plan_kandev MCP tool with the task_id provided in the session context.
+      IMPORTANT: Save your plan using the create_task_plan_pcraft MCP tool with the task_id provided in the session context.
       After saving the plan, STOP and wait for user review. The user will review your plan in the UI and may edit it.
       Do not create any other files during this phase — only use the MCP tool to save the plan.
     events:
@@ -82,7 +82,7 @@ steps:
       Before anything else, create a task list tracking the substeps below (use your todo/task tracking tool if available). Mark each task in_progress when you begin it and completed when you finish. Do not skip ahead — each step feeds the next.
 
       STEP 1: RETRIEVE THE PLAN
-      Before starting, retrieve the task plan using get_task_plan_kandev with the task_id from the session context.
+      Before starting, retrieve the task plan using get_task_plan_pcraft with the task_id from the session context.
       Review the plan carefully, including any edits the user may have made.
       Acknowledge the plan and any user modifications before proceeding.
 
@@ -97,7 +97,7 @@ steps:
 
       Build incrementally — one behavior at a time, tests passing at every step.
       Follow existing codebase conventions (naming, patterns, file organization).
-      You can update the plan during implementation using update_task_plan_kandev if needed.
+      You can update the plan during implementation using update_task_plan_pcraft if needed.
 
       STEP 3: STOP CONDITIONS
       - If you hit a blocker (missing dependency, unclear requirement, test fails repeatedly): stop and ask the user.

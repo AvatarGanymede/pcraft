@@ -28,9 +28,8 @@ func (d *Deployer) deliver(_ context.Context, manifest *Manifest, executorType, 
 
 // deliverLocal writes skills directly into the session's worktree
 // under the agent's project skill directory and writes instruction
-// files to the host runtime tree. Used for local_pc and local_docker
-// — Docker's worktree bind-mount makes the worktree path identical
-// inside and outside the container, so a single write satisfies both.
+// files to the host runtime tree. Used for local_pc executor —
+// writes directly to the host filesystem.
 func (d *Deployer) deliverLocal(manifest *Manifest, worktreePath string) DeployResult {
 	if worktreePath != "" && manifest.ProjectSkillDir != "" {
 		if err := injectSkills(worktreePath, manifest.ProjectSkillDir, manifest.Skills); err != nil {

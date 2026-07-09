@@ -367,7 +367,7 @@ export function ChildrenCompletedSelect({
 
 // --- ExplicitCompletionToggle ---
 // ADR 0015: when checked, on_turn_complete transitions only fire after the
-// agent calls the `step_complete_kandev` MCP tool. Bare turn-end leaves the
+// agent calls the `step_complete_pcraft` MCP tool. Bare turn-end leaves the
 // task in WAITING_FOR_INPUT until the signal arrives.
 
 type ExplicitCompletionToggleProps = {
@@ -396,7 +396,7 @@ export function ExplicitCompletionToggle({
       <Label htmlFor={`${step.id}-require-signal`} className="text-sm">
         Wait for agent completion signal
       </Label>
-      <HelpTip text="Only auto-advance once the agent calls step_complete_kandev. Otherwise turn-end is treated as completion." />
+      <HelpTip text="Only auto-advance once the agent calls step_complete_pcraft. Otherwise turn-end is treated as completion." />
     </div>
   );
 }

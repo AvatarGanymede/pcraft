@@ -357,7 +357,7 @@ type LaunchRequest struct {
 	IsPassthrough bool
 
 	// Executor configuration - determines which runtime to use
-	ExecutorType        string            // Executor type (e.g., "local", "worktree", "local_docker") - determines runtime
+	ExecutorType        string            // Executor type (e.g., "local") - determines runtime
 	ExecutorConfig      map[string]string // Executor config (docker_host, git_token, etc.)
 	PreviousExecutionID string            // Previous execution ID for runtime reconnect
 	McpMode             string            // MCP tool mode: "task" (default), "config", or "office"

@@ -21,12 +21,12 @@ function makeStore() {
 
 type UIStore = UseBoundStore<StoreApi<UISlice>>;
 
-const KEY = "kandev.sidebar.collapsedSubtasks";
+const KEY = "pcraft.sidebar.collapsedSubtasks";
 const TASK_A = "task-a";
 const TASK_B = "task-b";
-const SIDEBAR_VIEWS_KEY = "kandev.sidebar.views";
-const SIDEBAR_ACTIVE_VIEW_KEY = "kandev.sidebar.activeViewId";
-const SIDEBAR_DRAFT_KEY = "kandev.sidebar.draft";
+const SIDEBAR_VIEWS_KEY = "pcraft.sidebar.views";
+const SIDEBAR_ACTIVE_VIEW_KEY = "pcraft.sidebar.activeViewId";
+const SIDEBAR_DRAFT_KEY = "pcraft.sidebar.draft";
 const BACKEND_DOWN = "backend down";
 
 function makeSidebarView(id: string, name: string) {
@@ -81,8 +81,8 @@ describe("toggleSubtaskCollapsed", () => {
 });
 
 describe("sidebar task prefs (pin + manual order)", () => {
-  const PINNED_KEY = "kandev.sidebar.pinnedTaskIds";
-  const ORDER_KEY = "kandev.sidebar.orderedTaskIds";
+  const PINNED_KEY = "pcraft.sidebar.pinnedTaskIds";
+  const ORDER_KEY = "pcraft.sidebar.orderedTaskIds";
 
   beforeEach(() => {
     window.localStorage.clear();
@@ -231,7 +231,7 @@ describe("sidebar view sync rollback", () => {
 });
 
 describe("setSubtaskOrder", () => {
-  const SUB_KEY = "kandev.sidebar.subtaskOrderByParentId";
+  const SUB_KEY = "pcraft.sidebar.subtaskOrderByParentId";
   const PARENT_A = "parent-a";
   const PARENT_B = "parent-b";
 
@@ -301,8 +301,8 @@ describe("setSubtaskOrder", () => {
 });
 
 describe("appSidebar actions", () => {
-  const COLLAPSED_KEY = "kandev.appSidebar.collapsed";
-  const SECTION_KEY = "kandev.appSidebar.sectionExpanded";
+  const COLLAPSED_KEY = "pcraft.appSidebar.collapsed";
+  const SECTION_KEY = "pcraft.appSidebar.sectionExpanded";
 
   beforeEach(() => {
     window.localStorage.clear();
@@ -368,7 +368,7 @@ describe("appSidebar actions", () => {
   });
 
   it("settingsMode defaults off and is never read from storage", () => {
-    window.localStorage.setItem("kandev.appSidebar.settingsMode", JSON.stringify(true));
+    window.localStorage.setItem("pcraft.appSidebar.settingsMode", JSON.stringify(true));
     const store = makeStore();
     expect(store.getState().appSidebar.settingsMode).toBe(false);
   });
@@ -377,7 +377,7 @@ describe("appSidebar actions", () => {
     const store = makeStore();
     store.getState().toggleAppSidebarSettingsMode();
     expect(store.getState().appSidebar.settingsMode).toBe(true);
-    expect(window.localStorage.getItem("kandev.appSidebar.settingsMode")).toBeNull();
+    expect(window.localStorage.getItem("pcraft.appSidebar.settingsMode")).toBeNull();
 
     store.getState().toggleAppSidebarSettingsMode();
     expect(store.getState().appSidebar.settingsMode).toBe(false);

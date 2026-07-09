@@ -7,7 +7,7 @@ import { SessionPage } from "../../pages/session-page";
 const CREATE_PLAN_SCRIPT = [
   'e2e:thinking("creating plan")',
   "e2e:delay(100)",
-  'e2e:mcp:kandev:create_task_plan_kandev({"task_id":"{task_id}","content":"## Initial\\n\\nStep one","title":"Plan v1"})',
+  'e2e:mcp:pcraft:create_task_plan_pcraft({"task_id":"{task_id}","content":"## Initial\\n\\nStep one","title":"Plan v1"})',
   "e2e:delay(100)",
   'e2e:message("plan created")',
 ].join("\n");
@@ -15,7 +15,7 @@ const CREATE_PLAN_SCRIPT = [
 const UPDATE_PLAN_SCRIPT = [
   'e2e:thinking("updating plan")',
   "e2e:delay(100)",
-  'e2e:mcp:kandev:update_task_plan_kandev({"task_id":"{task_id}","content":"## Updated\\n\\nStep one\\nStep two"})',
+  'e2e:mcp:pcraft:update_task_plan_pcraft({"task_id":"{task_id}","content":"## Updated\\n\\nStep one\\nStep two"})',
   "e2e:delay(100)",
   'e2e:message("plan updated")',
 ].join("\n");

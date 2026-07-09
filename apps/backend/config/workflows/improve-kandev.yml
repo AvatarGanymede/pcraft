@@ -35,7 +35,7 @@ steps:
 
       STEP 1: UNDERSTAND THE REPORT
       Re-read the title and description carefully. If anything is unclear
-      or ambiguous, use the ask_user_question_kandev tool before coding.
+      or ambiguous, use the ask_user_question_pcraft tool before coding.
 
       STEP 2: EXPLORE THE CODEBASE
       - Find similar features and understand how they are implemented.

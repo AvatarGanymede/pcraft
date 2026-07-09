@@ -438,7 +438,7 @@ type httpCreateTaskRequest struct {
 	BlockedBy         []string                  `json:"blocked_by,omitempty"`
 	ProjectID         string                    `json:"project_id,omitempty"`
 	// Office task-handoffs phase 5 — workspace policy. Optional; same
-	// shape as the MCP create_task_kandev fields.
+	// shape as the MCP create_task_pcraft fields.
 	WorkspaceMode         string `json:"workspace_mode,omitempty"`
 	WorkspaceGroupID      string `json:"workspace_group_id,omitempty"`
 	DefaultChildWorkspace string `json:"default_child_workspace,omitempty"`
@@ -835,7 +835,7 @@ func (h *TaskHandlers) startAgentForNewTask(
 ) {
 	// Create session entry synchronously so we can return the session ID immediately.
 	// Skip workspace launch — the start intent will handle it in the background goroutine.
-	// This prevents blocking for 30-60s on remote executors (sprites, remote_docker).
+	// This avoids blocking — remote executors have been removed and local startup is fast.
 	prepResp, err := h.orchestrator.LaunchSession(ctx, &orchestrator.LaunchSessionRequest{
 		TaskID:            taskID,
 		Intent:            orchestrator.IntentPrepare,

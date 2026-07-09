@@ -66,7 +66,7 @@ type PromptContext struct {
 	// via the TaskContextProvider hook (HandoffService.GetTaskContext).
 	// Document bodies are intentionally never inlined — the section
 	// renders metadata + the fetch-tool name so the agent can call
-	// get_task_document_kandev to read content.
+	// get_task_document_pcraft to read content.
 	HandoffContext *v1.TaskContext
 }
 
@@ -101,7 +101,7 @@ func BuildPrompt(pc *PromptContext) string {
 // (Related tasks / Documents available / Workspace) onto every run
 // prompt that carries a HandoffContext. Document bodies are
 // intentionally NOT inlined — the section names the fetch tool so the
-// agent can call get_task_document_kandev when it needs content.
+// agent can call get_task_document_pcraft when it needs content.
 //
 // Returns the prompt unchanged when HandoffContext is nil or carries
 // no relations / docs / workspace info.
@@ -153,7 +153,7 @@ func appendDocumentsBlock(b *strings.Builder, ctx *v1.TaskContext) {
 	if b.Len() > 0 {
 		b.WriteString("\n")
 	}
-	b.WriteString("Documents available (fetch with get_task_document_kandev):\n")
+	b.WriteString("Documents available (fetch with get_task_document_pcraft):\n")
 	for _, d := range ctx.AvailableDocs {
 		title := d.Title
 		if title == "" {

@@ -32,7 +32,7 @@ const (
 	ModeTask = "task"
 	// ModeConfig registers configuration tools for workflows, agents, and MCP servers.
 	ModeConfig = "config"
-	// ModeExternal registers config tools plus create_task_kandev for external coding agents
+	// ModeExternal registers config tools plus create_task_pcraft for external coding agents
 	// (Claude Code, Cursor, etc.) that connect to the backend's MCP endpoint.
 	// No session-scoped tools (plan, ask_user_question) since there is no live session.
 	ModeExternal = "external"
@@ -169,7 +169,7 @@ func newServer(backend BackendClient, sessionID, taskID string, log *logger.Logg
 	}
 
 	s.mcpServer = server.NewMCPServer(
-		"kandev-mcp",
+		"pcraft-mcp",
 		"1.0.0",
 		server.WithToolCapabilities(true),
 	)
@@ -322,7 +322,7 @@ func (s *Server) registerTools() {
 			count++
 		}
 	case ModeExternal:
-		// External coding agents get config tools plus create_task_kandev so
+		// External coding agents get config tools plus create_task_pcraft so
 		// they can both manage Kandev configuration and spawn new tasks.
 		// No interaction or plan tools (no live session to attach them to).
 		s.registerConfigWorkflowTools()
@@ -358,8 +358,8 @@ func (s *Server) registerTools() {
 		s.registerTaskDocumentTools()
 		count += 3
 	default: // ModeTask
-		// Kanban tasks get list_related_tasks_kandev (useful for finding
-		// a sibling to message_task_kandev) but NOT the task-document
+		// Kanban tasks get list_related_tasks_pcraft (useful for finding
+		// a sibling to message_task_pcraft) but NOT the task-document
 		// tools — those are office coordination plumbing.
 		s.registerKanbanTools()
 		count += 13
@@ -395,60 +395,60 @@ func (s *Server) registerKanbanTools() {
 	// omitempty which drops empty properties maps, causing OpenAI API validation
 	// errors ("object schema missing properties").
 	s.mcpServer.AddTool(
-		mcp.NewToolWithRawSchema("list_workspaces_kandev",
+		mcp.NewToolWithRawSchema("list_workspaces_pcraft",
 			"List all workspaces. Use this first to get workspace IDs.",
 			json.RawMessage(`{"type":"object","properties":{}}`),
 		),
-		s.wrapHandler("list_workspaces_kandev", s.listWorkspacesHandler()),
+		s.wrapHandler("list_workspaces_pcraft", s.listWorkspacesHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("list_workflows_kandev",
+		mcp.NewTool("list_workflows_pcraft",
 			mcp.WithDescription("List all workflows in a workspace."),
 			mcp.WithString("workspace_id", mcp.Required(), mcp.Description("The workspace ID")),
 		),
-		s.wrapHandler("list_workflows_kandev", s.listWorkflowsHandler()),
+		s.wrapHandler("list_workflows_pcraft", s.listWorkflowsHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("list_workflow_steps_kandev",
+		mcp.NewTool("list_workflow_steps_pcraft",
 			mcp.WithDescription("List all workflow steps in a workflow."),
 			mcp.WithString("workflow_id", mcp.Required(), mcp.Description("The workflow ID")),
 		),
-		s.wrapHandler("list_workflow_steps_kandev", s.listWorkflowStepsHandler()),
+		s.wrapHandler("list_workflow_steps_pcraft", s.listWorkflowStepsHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("list_tasks_kandev",
+		mcp.NewTool("list_tasks_pcraft",
 			mcp.WithDescription("List all tasks in a workflow. Each task includes its associated GitHub pull requests (number, url, title, state) under the \"prs\" field when any exist — use the PR state (open/closed/merged) to find tasks whose work has landed."),
 			mcp.WithString("workflow_id", mcp.Required(), mcp.Description("The workflow ID")),
 		),
-		s.wrapHandler("list_tasks_kandev", s.listTasksHandler()),
+		s.wrapHandler("list_tasks_pcraft", s.listTasksHandler()),
 	)
 	s.registerCreateTaskTool()
 	s.mcpServer.AddTool(
-		mcp.NewToolWithRawSchema("list_agents_kandev",
-			"List all configured agents with their profiles. Use this to find available agent_profile_ids for create_task_kandev.",
+		mcp.NewToolWithRawSchema("list_agents_pcraft",
+			"List all configured agents with their profiles. Use this to find available agent_profile_ids for create_task_pcraft.",
 			json.RawMessage(`{"type":"object","properties":{}}`),
 		),
-		s.wrapHandler("list_agents_kandev", s.listAgentsHandler()),
+		s.wrapHandler("list_agents_pcraft", s.listAgentsHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("list_executor_profiles_kandev",
-			mcp.WithDescription("List all profiles for an executor. Use this to find available executor_profile_ids for create_task_kandev. Standard executor IDs: exec-local (standalone process), exec-worktree (git worktree), exec-local-docker (Docker container), exec-sprites (cloud)."),
-			mcp.WithString("executor_id", mcp.Required(), mcp.Description("The executor ID (e.g. exec-local, exec-worktree, exec-local-docker, exec-sprites)")),
+		mcp.NewTool("list_executor_profiles_pcraft",
+			mcp.WithDescription("List all profiles for an executor. Use this to find available executor_profile_ids for create_task_pcraft. Standard executor ID: exec-local (standalone process)."),
+			mcp.WithString("executor_id", mcp.Required(), mcp.Description("The executor ID (e.g. exec-local)")),
 		),
-		s.wrapHandler("list_executor_profiles_kandev", s.listExecutorProfilesHandler()),
+		s.wrapHandler("list_executor_profiles_pcraft", s.listExecutorProfilesHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("update_task_kandev",
+		mcp.NewTool("update_task_pcraft",
 			mcp.WithDescription("Update an existing task."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID")),
 			mcp.WithString("title", mcp.Description("New title")),
 			mcp.WithString("description", mcp.Description("New description")),
 			mcp.WithString("state", mcp.Description("New state: not_started, in_progress, etc.")),
 		),
-		s.wrapHandler("update_task_kandev", s.updateTaskHandler()),
+		s.wrapHandler("update_task_pcraft", s.updateTaskHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("move_task_kandev",
+		mcp.NewTool("move_task_pcraft",
 			mcp.WithDescription("Move a task to a different workflow step. When the source session is mid-turn (RUNNING), the move is deferred to turn-end automatically — prompt is optional (use it for cross-agent hand-offs). Idle-session and admin moves apply immediately."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID")),
 			mcp.WithString("workflow_id", mcp.Required(), mcp.Description("Target workflow ID")),
@@ -456,24 +456,24 @@ func (s *Server) registerKanbanTools() {
 			mcp.WithNumber("position", mcp.Description("Position within the step (0-based)")),
 			mcp.WithString("prompt", mcp.Description("Optional hand-off message for the receiving agent at the new step. Mid-turn moves are always deferred; include a prompt when the next agent needs context (e.g. QA → review). Omit for self-moves like Work → Done.")),
 		),
-		s.wrapHandler("move_task_kandev", s.moveTaskHandler()),
+		s.wrapHandler("move_task_pcraft", s.moveTaskHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("delete_task_kandev",
-			mcp.WithDescription("Delete a task permanently. Use to clean up orphaned, duplicate, or test tasks you no longer need. This cannot be undone — prefer archive_task_kandev when the task may still be wanted. Restoring an archived task is a user action done from the UI, not via MCP."),
+		mcp.NewTool("delete_task_pcraft",
+			mcp.WithDescription("Delete a task permanently. Use to clean up orphaned, duplicate, or test tasks you no longer need. This cannot be undone — prefer archive_task_pcraft when the task may still be wanted. Restoring an archived task is a user action done from the UI, not via MCP."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to delete")),
 		),
-		s.wrapHandler("delete_task_kandev", s.deleteTaskHandler()),
+		s.wrapHandler("delete_task_pcraft", s.deleteTaskHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("archive_task_kandev",
+		mcp.NewTool("archive_task_pcraft",
 			mcp.WithDescription("Archive a task. The task is hidden from active board views but kept in the database. Use to tidy up finished or abandoned tasks. Unarchiving is a user action done from the UI, not via MCP."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to archive")),
 		),
-		s.wrapHandler("archive_task_kandev", s.archiveTaskHandler()),
+		s.wrapHandler("archive_task_pcraft", s.archiveTaskHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("message_task_kandev",
+		mcp.NewTool("message_task_pcraft",
 			mcp.WithDescription(`Send a follow-up prompt (message) to an existing task's primary session.
 
 Use this to communicate with a sibling task, a parent task, or any task you know the ID of — for example to ask a delegated subtask for clarification, hand it new context, or nudge a paused task forward.
@@ -482,16 +482,16 @@ Behaviour by session state:
 - Running/starting: the message is queued and delivered when the current turn ends.
 - Idle (waiting for input or completed): the message is sent immediately as a new turn.
 - Created (not yet started): the agent is started with this message as its first prompt.
-- Failed/cancelled: an error is returned (use create_task_kandev to start fresh).
+- Failed/cancelled: an error is returned (use create_task_pcraft to start fresh).
 
 Returns the dispatch status: "queued", "sent", or "started".`),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The target task's full UUID (not a truncated prefix)")),
 			mcp.WithString("prompt", mcp.Required(), mcp.Description("The message to deliver to the task's agent")),
 		),
-		s.wrapHandler("message_task_kandev", s.messageTaskHandler()),
+		s.wrapHandler("message_task_pcraft", s.messageTaskHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("get_task_conversation_kandev",
+		mcp.NewTool("get_task_conversation_pcraft",
 			mcp.WithDescription("Get conversation history for a task. If session_id is omitted, the primary session is used."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID")),
 			mcp.WithString("session_id", mcp.Description("Optional session ID (must belong to task_id)")),
@@ -501,11 +501,11 @@ Returns the dispatch status: "queued", "sent", or "started".`),
 			mcp.WithString("sort", mcp.Description("Optional sort order: asc or desc")),
 			mcp.WithArray("message_types", mcp.Description("Optional message type filters (e.g. message, tool_call, error)"), mcp.Items(map[string]any{"type": "string"})),
 		),
-		s.wrapHandler("get_task_conversation_kandev", s.getTaskConversationHandler()),
+		s.wrapHandler("get_task_conversation_pcraft", s.getTaskConversationHandler()),
 	)
 }
 
-// registerCreateTaskTool registers the create_task_kandev tool. Shared between
+// registerCreateTaskTool registers the create_task_pcraft tool. Shared between
 // kanban (task) mode and external mode. The tool description and parent_id
 // guidance differ by mode: in external mode there is no current task, so the
 // 'self' shorthand is omitted.
@@ -529,7 +529,7 @@ IMPORTANT:
 - base_branch behaviour:
   - Same repo as parent (no repo args): subtask inherits the parent's base_branch (sibling branches off the same starting point — useful for PR stacks)
   - Different repo (you passed repository_url / repository_id / local_path): subtask defaults to that repo's default_branch
-  - Pass base_branch explicitly to override either default. Use list_repositories_kandev to see each repo's default_branch.
+  - Pass base_branch explicitly to override either default. Use list_repositories_pcraft to see each repo's default_branch.
 - Top-level tasks need a repository via repository_url, repository_id, or local_path
 - 'description' is the sub-agent's initial prompt — be specific and detailed
 - start_agent defaults to true and is what you want in nearly every case — the new task auto-launches an agent that immediately works on the description. Pass start_agent=false ONLY for an explicit placeholder (e.g. queuing work the user will start later, or creating a tracking task with no immediate work). When in doubt, leave it true.
@@ -549,7 +549,7 @@ IMPORTANT:
 	}
 
 	s.mcpServer.AddTool(
-		mcp.NewTool("create_task_kandev",
+		mcp.NewTool("create_task_pcraft",
 			mcp.WithDescription(toolDesc),
 			mcp.WithString("parent_id", mcp.Description(parentDesc)),
 			mcp.WithString("workspace_id", mcp.Description("The workspace ID. Auto-resolved if only one workspace exists. Inherited from parent for subtasks.")),
@@ -563,27 +563,27 @@ IMPORTANT:
 			mcp.WithString("repository_id", mcp.Description("Repository ID. Required for top-level tasks unless local_path or repository_url is provided. For subtasks: optional — supply only when the subtask should target a different repo than the parent.")),
 			mcp.WithString("local_path", mcp.Description("Local repository folder path (e.g. '/Users/me/projects/myrepo'). Will create/find the repository automatically. Preferred for local worktree flow. For subtasks: supply only when the subtask should target a different repo than the parent.")),
 			mcp.WithString("repository_url", mcp.Description("GitHub repository URL (e.g. 'https://github.com/owner/repo'). The repository will be cloned automatically on first use. For subtasks: supply only when the subtask should target a different repo than the parent.")),
-			mcp.WithString("base_branch", mcp.Description("Base branch for the repository (e.g. 'main'). Optional. Defaults: same-repo subtasks inherit the parent's base_branch; cross-repo subtasks and top-level tasks fall back to the repository's default_branch (visible via list_repositories_kandev).")),
+			mcp.WithString("base_branch", mcp.Description("Base branch for the repository (e.g. 'main'). Optional. Defaults: same-repo subtasks inherit the parent's base_branch; cross-repo subtasks and top-level tasks fall back to the repository's default_branch (visible via list_repositories_pcraft).")),
 		),
-		s.wrapHandler("create_task_kandev", s.createTaskHandler()),
+		s.wrapHandler("create_task_pcraft", s.createTaskHandler()),
 	)
 }
 
-// registerAddBranchToTaskTool registers add_branch_to_task_kandev. Scoped to
+// registerAddBranchToTaskTool registers add_branch_to_task_pcraft. Scoped to
 // task mode only — external coding agents have no live session context to
 // attach the new worktree to, and shipping this tool through the shared
 // create-task path would silently widen the external surface.
 func (s *Server) registerAddBranchToTaskTool() {
 	s.mcpServer.AddTool(
-		mcp.NewTool("add_branch_to_task_kandev",
+		mcp.NewTool("add_branch_to_task_pcraft",
 			mcp.WithDescription(`Attach an additional (repository, branch) worktree to an existing task.
 
 Use this when the task should open more than one PR — same repo with different branches, or a second repository entirely. The new branch gets its own worktree under the task directory and behaves like any other multi-repo entry for changes, PRs, and review surfaces.
 
 IMPORTANT:
-- Only works on tasks running the WORKTREE executor. Tasks on docker / sprites / local-pc / SSH / remote_docker reject this tool because sibling worktrees are a git-worktree-specific layout — other executors bind one workspace path per task and the new branch would silently never appear on disk.
+- Only works on tasks running the local executor. Containerized / remote executors have been removed; the local executor binds one workspace path per task.
 - task_id defaults to your CURRENT task when omitted — pass it explicitly only to target a different task.
-- Repository selection (matches create_task_kandev): pass exactly one of repository_id / repository_url / local_path. For single-repo tasks all three are optional — the service auto-resolves to the task's only repository. Multi-repo tasks must identify the target repo explicitly.
+- Repository selection (matches create_task_pcraft): pass exactly one of repository_id / repository_url / local_path. For single-repo tasks all three are optional — the service auto-resolves to the task's only repository. Multi-repo tasks must identify the target repo explicitly.
 - checkout_branch is the branch the new worktree will check out. Leave empty to create a fresh feature branch from base_branch.
 - base_branch is optional; defaults to the repository's default_branch.
 - The (task_id, repository_id, base_branch, checkout_branch) tuple must be unique on the task — re-adding the same combination is an error, not a no-op.`),
@@ -594,7 +594,7 @@ IMPORTANT:
 			mcp.WithString("checkout_branch", mcp.Description("Existing branch to check out in the new worktree (e.g. a PR head branch). Empty to create a fresh feature branch from base_branch.")),
 			mcp.WithString("base_branch", mcp.Description("Branch to base the worktree on. Defaults to the repository's default_branch.")),
 		),
-		s.wrapHandler("add_branch_to_task_kandev", s.addBranchToTaskHandler()),
+		s.wrapHandler("add_branch_to_task_pcraft", s.addBranchToTaskHandler()),
 	)
 }
 
@@ -617,7 +617,7 @@ func (s *Server) addBranchToTaskHandler() server.ToolHandlerFunc {
 		if locatorCount(repositoryID, repositoryURL, localPath) > 1 {
 			return mcp.NewToolResultError("pass at most one of repository_id, repository_url, local_path"), nil
 		}
-		// repository_url is the tool-facing alias used by create_task_kandev;
+		// repository_url is the tool-facing alias used by create_task_pcraft;
 		// translate to github_url on the wire so the WS handler can reuse the
 		// same field name as the rest of the multi-repo payloads.
 		payload := map[string]interface{}{
@@ -638,13 +638,13 @@ func (s *Server) addBranchToTaskHandler() server.ToolHandlerFunc {
 }
 
 // registerUpdateRepositoryBaseBranchTool registers
-// update_repository_base_branch_kandev. Lets an agent or the UI change the
+// update_repository_base_branch_pcraft. Lets an agent or the UI change the
 // base branch used for diff stats / changes panel comparison after a task
 // has already been created — used by promotion-chain users who branched
 // from a release branch instead of `main`.
 func (s *Server) registerUpdateRepositoryBaseBranchTool() {
 	s.mcpServer.AddTool(
-		mcp.NewTool("update_repository_base_branch_kandev",
+		mcp.NewTool("update_repository_base_branch_pcraft",
 			mcp.WithDescription(`Change the base branch used by a task repository for diff stats and the Changes panel.
 
 Use when a task was created against the wrong base (e.g. picked up `+"`main`"+` when the work was forked from a release / QA / staging branch). The Changes panel and per-task +/- counts compare HEAD against this branch.
@@ -653,10 +653,10 @@ Scope: this updates the value the WorkspaceTracker uses for diff comparison (Bas
 
 The agentctl tracker is updated live: a successful call refreshes BaseCommit / Ahead / Behind without needing a session restart.`),
 			mcp.WithString("task_id", mcp.Description("The task whose repository to update. Defaults to the current task when omitted.")),
-			mcp.WithString("task_repository_id", mcp.Description("UUID of the task_repositories row to update. Required — disambiguates multi-repo tasks. Find it via list_tasks_kandev's repositories[] field.")),
+			mcp.WithString("task_repository_id", mcp.Description("UUID of the task_repositories row to update. Required — disambiguates multi-repo tasks. Find it via list_tasks_pcraft's repositories[] field.")),
 			mcp.WithString("base_branch", mcp.Description("New base branch name (e.g. 'staging', 'release/v2.4'). Required.")),
 		),
-		s.wrapHandler("update_repository_base_branch_kandev", s.updateRepositoryBaseBranchHandler()),
+		s.wrapHandler("update_repository_base_branch_pcraft", s.updateRepositoryBaseBranchHandler()),
 	)
 }
 
@@ -691,7 +691,7 @@ func (s *Server) updateRepositoryBaseBranchHandler() server.ToolHandlerFunc {
 	}
 }
 
-// registerStepCompleteTool registers step_complete_kandev — the ADR 0015
+// registerStepCompleteTool registers step_complete_pcraft — the ADR 0015
 // explicit completion signal. The tool is bound to the current (task, session)
 // and writes a pending-signal entry on the session's metadata bag; the
 // orchestrator consumes that signal to drive the workflow's on_turn_complete
@@ -699,7 +699,7 @@ func (s *Server) updateRepositoryBaseBranchHandler() server.ToolHandlerFunc {
 // default) ignore the signal entirely.
 func (s *Server) registerStepCompleteTool() {
 	s.mcpServer.AddTool(
-		mcp.NewTool("step_complete_kandev",
+		mcp.NewTool("step_complete_pcraft",
 			mcp.WithDescription(`Signal that every user-stated requirement for the CURRENT workflow step is satisfied.
 
 WHEN TO CALL:
@@ -707,7 +707,7 @@ WHEN TO CALL:
 - This is the LAST thing you do in the step — call it after the final tool call / commit / answer that completes the requested work.
 
 WHEN NOT TO CALL:
-- You are about to ask the user a question (use ask_user_question_kandev instead and wait).
+- You are about to ask the user a question (use ask_user_question_pcraft instead and wait).
 - The work is partially done or you ran into a blocker you couldn't resolve.
 - You are mid-conversation and expect the user to reply with more direction.
 
@@ -722,14 +722,14 @@ The summary you provide is shown to the user in chat and may be forwarded to the
 			mcp.WithString("handoff", mcp.Description("Optional context the next step's agent will need to pick up where you left off (decisions, open files, follow-ups).")),
 			mcp.WithString("blockers", mcp.Description("Optional list of known unresolved issues. Use sparingly — only when the step is complete in the sense that you cannot make further progress without input, not for normal partial work.")),
 		),
-		s.wrapHandler("step_complete_kandev", s.stepCompleteHandler()),
+		s.wrapHandler("step_complete_pcraft", s.stepCompleteHandler()),
 	)
 }
 
 func (s *Server) stepCompleteHandler() server.ToolHandlerFunc {
 	return func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		if s.taskID == "" || s.sessionID == "" {
-			return mcp.NewToolResultError("step_complete_kandev requires a bound task and session"), nil
+			return mcp.NewToolResultError("step_complete_pcraft requires a bound task and session"), nil
 		}
 		summary := strings.TrimSpace(req.GetString("summary", ""))
 		if summary == "" {
@@ -753,7 +753,7 @@ func (s *Server) stepCompleteHandler() server.ToolHandlerFunc {
 
 func (s *Server) registerInteractionTools() {
 	s.mcpServer.AddTool(
-		mcp.NewTool("ask_user_question_kandev",
+		mcp.NewTool("ask_user_question_pcraft",
 			mcp.WithDescription(`Ask the user one or more clarifying questions in a single tool call.
 
 Use this tool when you need user input to proceed. Bundle related questions
@@ -819,47 +819,47 @@ Example rejection:
 			),
 			mcp.WithString("context", mcp.Description("Optional shared background information to help the user understand why you're asking these questions.")),
 		),
-		s.wrapHandler("ask_user_question_kandev", s.askUserQuestionHandler()),
+		s.wrapHandler("ask_user_question_pcraft", s.askUserQuestionHandler()),
 	)
 }
 
 func (s *Server) registerPlanTools() {
 	s.mcpServer.AddTool(
-		mcp.NewTool("create_task_plan_kandev",
+		mcp.NewTool("create_task_plan_pcraft",
 			mcp.WithDescription("Create or save a task plan. Use this to save your implementation plan for the current task."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to create a plan for")),
 			mcp.WithString("content", mcp.Required(), mcp.Description("The plan content in markdown format")),
 			mcp.WithString("title", mcp.Description("Optional title for the plan (default: 'Plan')")),
 		),
-		s.wrapHandler("create_task_plan_kandev", s.createTaskPlanHandler()),
+		s.wrapHandler("create_task_plan_pcraft", s.createTaskPlanHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("get_task_plan_kandev",
+		mcp.NewTool("get_task_plan_pcraft",
 			mcp.WithDescription("Get the current plan for a task. Use this to retrieve an existing plan, including any user edits."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to get the plan for")),
 		),
-		s.wrapHandler("get_task_plan_kandev", s.getTaskPlanHandler()),
+		s.wrapHandler("get_task_plan_pcraft", s.getTaskPlanHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("update_task_plan_kandev",
+		mcp.NewTool("update_task_plan_pcraft",
 			mcp.WithDescription("Update an existing task plan. Use this to modify the plan during implementation."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to update the plan for")),
 			mcp.WithString("content", mcp.Required(), mcp.Description("The updated plan content in markdown format")),
 			mcp.WithString("title", mcp.Description("Optional new title for the plan")),
 		),
-		s.wrapHandler("update_task_plan_kandev", s.updateTaskPlanHandler()),
+		s.wrapHandler("update_task_plan_pcraft", s.updateTaskPlanHandler()),
 	)
 	s.mcpServer.AddTool(
-		mcp.NewTool("delete_task_plan_kandev",
+		mcp.NewTool("delete_task_plan_pcraft",
 			mcp.WithDescription("Delete a task plan."),
 			mcp.WithString("task_id", mcp.Required(), mcp.Description("The task ID to delete the plan for")),
 		),
-		s.wrapHandler("delete_task_plan_kandev", s.deleteTaskPlanHandler()),
+		s.wrapHandler("delete_task_plan_pcraft", s.deleteTaskPlanHandler()),
 	)
 }
 
 // buildQuestionSchemaItem describes the shape of a single question object in
-// the ask_user_question_kandev tool schema. Hoisted out of registerInteractionTools
+// the ask_user_question_pcraft tool schema. Hoisted out of registerInteractionTools
 // to keep the registration body short and to deduplicate the JSON-schema
 // keyword strings (linter goconst rules).
 func buildQuestionSchemaItem() map[string]any {

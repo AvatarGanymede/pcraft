@@ -388,15 +388,8 @@ function TopBarRight({
 }
 
 function shouldShowExecutorEnvironmentControls(executorType?: string | null): boolean {
-  switch (executorType) {
-    case "local_docker":
-    case "remote_docker":
-    case "sprites":
-    case "ssh":
-      return true;
-    default:
-      return false;
-  }
+  // Only the local executor is supported; no remote/container controls needed.
+  return false;
 }
 
 export { TaskTopBar };

@@ -1,11 +1,11 @@
 // Parsing helpers for Kandev MCP tool calls.
 //
 // Tool names arrive prefixed by the agent runtime:
-//   - Claude Code:  `mcp__kandev__<tool>_kandev`
-//   - Codex:        `kandev/<tool>_kandev`
-//   - Bare:         `<tool>_kandev`
+//   - Claude Code:  `mcp__pcraft__<tool>_pcraft`
+//   - Codex:        `pcraft/<tool>_pcraft` (legacy: `kandev/<tool>_pcraft`)
+//   - Bare:         `<tool>_pcraft`
 //
-// `extractKandevStem` strips the namespace and the trailing `_kandev` suffix so
+// `extractKandevStem` strips the namespace and the trailing `_pcraft` suffix so
 // the dispatcher can match on the short stem (`list_tasks`, `create_task`, …).
 //
 // `extractMcpResult` unwraps the MCP CallToolResult shape that lands in
@@ -14,14 +14,24 @@
 // JSON-encoded string; we parse that inner JSON so the renderers see plain JS.
 
 const NAMESPACE_SEP = /\/|__/;
-const KANDEV_SUFFIX = "_kandev";
+const PCRAFT_SUFFIX = "_pcraft";
+/** @deprecated Legacy tool suffix from pre-rename sessions; kept for historical messages. */
+const LEGACY_pcraft_SUFFIX = "_pcraft";
+
+function stripToolSuffix(tail: string): string | null {
+  for (const suffix of [PCRAFT_SUFFIX, LEGACY_pcraft_SUFFIX]) {
+    if (tail.endsWith(suffix)) {
+      const stem = tail.slice(0, -suffix.length);
+      return stem.length > 0 ? stem : null;
+    }
+  }
+  return null;
+}
 
 export function extractKandevStem(toolName: string | undefined): string | null {
   if (!toolName) return null;
   const tail = toolName.trim().split(NAMESPACE_SEP).pop() ?? "";
-  if (!tail.endsWith(KANDEV_SUFFIX)) return null;
-  const stem = tail.slice(0, -KANDEV_SUFFIX.length);
-  return stem.length > 0 ? stem : null;
+  return stripToolSuffix(tail);
 }
 
 export function isKandevTool(toolName: string | undefined): boolean {

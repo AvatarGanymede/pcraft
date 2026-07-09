@@ -18,6 +18,12 @@ const (
 	osWindows = "windows"
 )
 
+// systemNotificationsDisabled permanently disables OS-level desktop toasts in
+// pcraft. The full shell-out implementation below is intentionally retained
+// (never deleted) but never fires: notifications are delivered via the Lark
+// provider instead. See plan/notification-jnpm-lark-plan.md.
+const systemNotificationsDisabled = true
+
 type SystemProvider struct {
 	assets systemAssets
 }
@@ -27,6 +33,11 @@ func NewSystemProvider() *SystemProvider {
 }
 
 func (p *SystemProvider) Available() bool {
+	// OS-level notifications are permanently disabled; reporting unavailable
+	// keeps ensureDefaultProviders from ever seeding a System provider.
+	if systemNotificationsDisabled {
+		return false
+	}
 	// Suppress OS-level notifications during e2e runs so Playwright sessions
 	// don't pop osascript / notify-send / powershell toasts on the developer's
 	// machine every time a session transitions to WAITING_FOR_INPUT. The
@@ -64,6 +75,11 @@ func (p *SystemProvider) Validate(config map[string]interface{}) error {
 }
 
 func (p *SystemProvider) Send(ctx context.Context, message Message) error {
+	// OS-level desktop notifications are permanently disabled: skip the
+	// shell-out even if a System provider was pre-seeded into an existing DB.
+	if systemNotificationsDisabled {
+		return nil
+	}
 	// Defense-in-depth match for the e2e gate in Available(): if a System
 	// provider was pre-seeded into the DB before PCRAFT_E2E_MOCK was set,
 	// still skip the shell-out so tests stay quiet.

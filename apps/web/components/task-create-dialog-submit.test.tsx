@@ -127,6 +127,7 @@ function makeDeps(overrides: Partial<SubmitHandlersDeps>): SubmitHandlersDeps {
       template: "{{prompt_main}}",
     },
     dynamicValues: {},
+    jnpmId: "",
     ...overrides,
   };
 }
@@ -138,6 +139,8 @@ beforeEach(() => {
   pushMock.mockClear();
   toastMock.mockClear();
 });
+
+const REFACTOR_PROMPT = "refactor module";
 
 describe("useTaskSubmitHandlers — handleCreateSubmit (CLI-mode parity)", () => {
   it("skips create when prompt is empty even with cli_passthrough=true (prompt is now required)", async () => {
@@ -183,7 +186,7 @@ describe("useTaskSubmitHandlers — handleCreateSubmit (CLI-mode parity)", () =>
   it("still creates the task in ACP mode when prompt is provided", async () => {
     const deps = makeDeps({
       isPassthroughProfile: false,
-      dynamicValues: { main: "refactor module" },
+      dynamicValues: { main: REFACTOR_PROMPT },
     });
     const { result } = renderHook(() => useTaskSubmitHandlers(deps));
 
@@ -196,6 +199,42 @@ describe("useTaskSubmitHandlers — handleCreateSubmit (CLI-mode parity)", () =>
       trimmedDescription: string;
     };
     expect(payloadArg.withAgent).toBe(true);
-    expect(payloadArg.trimmedDescription).toBe("refactor module");
+    expect(payloadArg.trimmedDescription).toBe(REFACTOR_PROMPT);
+  });
+
+  it("persists the trimmed JNPM id into task metadata as jnpm_id", async () => {
+    const deps = makeDeps({
+      isPassthroughProfile: false,
+      dynamicValues: { main: REFACTOR_PROMPT },
+      jnpmId: "  #755621  ",
+    });
+    const { result } = renderHook(() => useTaskSubmitHandlers(deps));
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault: () => {} } as never);
+    });
+
+    const payloadArg = buildCreateTaskPayloadMock.mock.calls[0]![0] as {
+      metadata?: Record<string, string>;
+    };
+    expect(payloadArg.metadata?.jnpm_id).toBe("#755621");
+  });
+
+  it("omits jnpm_id from metadata when the field is left empty", async () => {
+    const deps = makeDeps({
+      isPassthroughProfile: false,
+      dynamicValues: { main: REFACTOR_PROMPT },
+      jnpmId: "   ",
+    });
+    const { result } = renderHook(() => useTaskSubmitHandlers(deps));
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault: () => {} } as never);
+    });
+
+    const payloadArg = buildCreateTaskPayloadMock.mock.calls[0]![0] as {
+      metadata?: Record<string, string>;
+    };
+    expect(payloadArg.metadata?.jnpm_id).toBeUndefined();
   });
 });

@@ -230,7 +230,7 @@ func TestRuntimeShim_ExposesProxyPrefixToInspector(t *testing.T) {
 
 	// The inspector script uses this to report app-local routes in annotation
 	// prompts instead of the gateway's /port-proxy/... path.
-	mustContain(t, shim, `window.__kandevProxyPrefix=P;`)
+	mustContain(t, shim, `window.__pcraftProxyPrefix=P;`)
 }
 
 func TestRuntimeShim_ForwardsConsoleToParent(t *testing.T) {

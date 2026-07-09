@@ -16,7 +16,7 @@ type TaskCreateLastUsedPatch = {
 
 let pendingLastUsed: TaskCreateLastUsedPatch = {};
 let lastUsedSync = Promise.resolve();
-const PENDING_LAST_USED_SYNC_KEY = "kandev.taskCreateLastUsed.pendingSync";
+const PENDING_LAST_USED_SYNC_KEY = "pcraft.taskCreateLastUsed.pendingSync";
 
 export function resetTaskCreateLastUsedSync() {
   pendingLastUsed = {};

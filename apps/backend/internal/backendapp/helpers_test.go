@@ -780,7 +780,7 @@ func TestNewWebAppHandlerUsesEmbeddedAssetsWithoutDistDir(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status = %d, want %d", rec.Code, http.StatusOK)
 	}
-	if !strings.Contains(rec.Body.String(), "window.__KANDEV_BOOT_PAYLOAD__") {
+	if !strings.Contains(rec.Body.String(), "window.__PCRAFT_BOOT_PAYLOAD__") {
 		t.Fatal("embedded shell should receive boot payload injection")
 	}
 }

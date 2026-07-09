@@ -29,7 +29,7 @@ test.describe("Topbar breadcrumb", () => {
     // leftover collapsed state can't turn this into a confusing timeout (the
     // collapsed-rail header carries no testid) rather than a real assertion.
     await testPage.addInitScript(() => {
-      window.localStorage.setItem("kandev.appSidebar.collapsed", "false");
+      window.localStorage.setItem("pcraft.appSidebar.collapsed", "false");
     });
     await testPage.setViewportSize({ width: 1280, height: 900 });
     await testPage.goto("/office/inbox");

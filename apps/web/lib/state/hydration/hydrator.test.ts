@@ -23,7 +23,7 @@ describe("hydrateUI — quick chat name overlay", () => {
 
   it("overlays a locally-renamed name onto the SSR-provided session name", () => {
     window.localStorage.setItem(
-      "kandev.quickChat.names",
+      "pcraft.quickChat.names",
       JSON.stringify({ "sess-1": "My custom name" }),
     );
 
@@ -56,7 +56,7 @@ describe("hydrateUI — quick chat name overlay", () => {
 
   it("only overlays sessions that have a stored rename, leaving siblings untouched", () => {
     window.localStorage.setItem(
-      "kandev.quickChat.names",
+      "pcraft.quickChat.names",
       JSON.stringify({ "sess-a": "Renamed A" }),
     );
 

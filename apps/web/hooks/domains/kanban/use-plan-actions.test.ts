@@ -14,7 +14,7 @@ describe("buildImplementPlanContent", () => {
     const out = buildImplementPlanContent("ship it");
     expect(out.startsWith("ship it\n\n")).toBe(true);
     expect(out).toContain("<kandev-system>");
-    expect(out).toContain("get_task_plan_kandev");
+    expect(out).toContain("get_task_plan_pcraft");
     expect(out).toContain("</kandev-system>");
   });
 

@@ -84,6 +84,10 @@ export function useAllWorkflowSnapshots(workspaceId: string | null) {
     if (lastWorkspaceIdRef.current !== workspaceId) {
       if (lastWorkspaceIdRef.current !== null) {
         store.getState().clearKanbanMulti();
+        store.setState((state) => ({
+          ...state,
+          kanban: { workflowId: null, steps: [], tasks: [], isLoading: false },
+        }));
         lastFetchedRef.current = "";
         fetchGenRef.current += 1;
       }

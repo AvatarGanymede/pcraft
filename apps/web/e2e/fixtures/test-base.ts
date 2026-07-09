@@ -235,27 +235,27 @@ async function setupPage(page: Page, backend: BackendContext, seedData: SeedData
       repositoryId: string;
       agentProfileId: string;
     }) => {
-      localStorage.setItem("kandev.onboarding.completed", "true");
+      localStorage.setItem("pcraft.onboarding.completed", "true");
       // Pre-seed dialog selections so auto-select effects resolve on their
       // first render cycle instead of waiting for async API chains.
-      localStorage.setItem("kandev.dialog.lastRepositoryId", JSON.stringify(repositoryId));
-      localStorage.setItem("kandev.dialog.lastAgentProfileId", JSON.stringify(agentProfileId));
-      localStorage.setItem("kandev.dialog.lastBranch", JSON.stringify("main"));
+      localStorage.setItem("pcraft.dialog.lastRepositoryId", JSON.stringify(repositoryId));
+      localStorage.setItem("pcraft.dialog.lastAgentProfileId", JSON.stringify(agentProfileId));
+      localStorage.setItem("pcraft.dialog.lastBranch", JSON.stringify("main"));
       // Set the window global that getBackendConfig() reads for API/WS connections
       // (e2e tests run frontend and backend on separate ports, like dev mode)
-      window.__KANDEV_API_PORT = backendPort;
-      window.__KANDEV_E2E_EXPOSE_STORE__ = true;
+      window.__pcraft_API_PORT = backendPort;
+      window.__pcraft_E2E_EXPOSE_STORE__ = true;
 
       // Replace native Notification with a capture stub so e2e runs never
       // pop OS-level toasts on the developer's machine. Tests that want to
-      // assert read window.__kandevTestNotifications via the helpers in
+      // assert read window.__pcraftTestNotifications via the helpers in
       // e2e/helpers/notifications-capture.ts. permission stays "granted"
       // so the WS handler at apps/web/lib/ws/handlers/notifications.ts
       // (which early-returns when not granted) still runs its full logic.
       const captured: { title: string; body?: string }[] = [];
       (
-        window as unknown as { __kandevTestNotifications: typeof captured }
-      ).__kandevTestNotifications = captured;
+        window as unknown as { __pcraftTestNotifications: typeof captured }
+      ).__pcraftTestNotifications = captured;
       class NotificationStub {
         static permission: NotificationPermission = "granted";
         static async requestPermission(): Promise<NotificationPermission> {

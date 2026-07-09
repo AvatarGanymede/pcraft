@@ -235,8 +235,7 @@ func (a *lifecycleAdapter) SetExecutionDescription(ctx context.Context, agentExe
 }
 
 // RequiresCloneURL implements executor.ExecutorTypeCapabilities by delegating to
-// the lifecycle manager. Without this, executor types like local_docker and
-// sprites can't tell the orchestrator they need a clone URL.
+// the lifecycle manager. All executors are local — this returns false.
 func (a *lifecycleAdapter) RequiresCloneURL(executorType string) bool {
 	return a.mgr.RequiresCloneURL(executorType)
 }

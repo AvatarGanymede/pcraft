@@ -109,9 +109,6 @@ func AllRoles() []RoleMeta {
 func AllExecutorTypes() []ExecutorTypeMeta {
 	return []ExecutorTypeMeta{
 		{ID: "local_pc", Label: "Local (standalone)", Description: "Run on host machine"},
-		{ID: "local_docker", Label: "Local Docker", Description: "Run in a local Docker container"},
-		{ID: "sprites", Label: "Sprites (remote sandbox)", Description: "Run in a Sprites cloud environment"},
-		{ID: "remote_docker", Label: "Remote Docker", Description: "Run in a remote Docker host"},
 	}
 }
 

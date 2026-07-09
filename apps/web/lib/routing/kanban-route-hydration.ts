@@ -30,6 +30,10 @@ export function hasHydratedKanbanRouteState(
   }
 
   const workflowId = route.workflowId ?? state.workflows.activeId;
-  if (!workflowId) return false;
+  if (!workflowId) {
+    return workspaceWorkflows.every((workflow) =>
+      Boolean(state.kanbanMulti.snapshots[workflow.id]),
+    );
+  }
   return Boolean(state.kanbanMulti.snapshots[workflowId] || state.kanban.workflowId === workflowId);
 }

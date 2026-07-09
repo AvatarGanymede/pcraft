@@ -534,7 +534,7 @@ func TestHandleUpdateTaskState_MissingState(t *testing.T) {
 }
 
 // TestHandleMoveTask_ActiveSessionWithoutPrompt_DefersMove pins the production
-// bug where an agent on Work called move_task_kandev → Done without a prompt
+// bug where an agent on Work called move_task_pcraft → Done without a prompt
 // mid-turn. The immediate path hit validateMoveSessions (RUNNING session) and
 // returned INTERNAL_ERROR. Active-session moves must always defer.
 func TestHandleMoveTask_ActiveSessionWithoutPrompt_DefersMove(t *testing.T) {

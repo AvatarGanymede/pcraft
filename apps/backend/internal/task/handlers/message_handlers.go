@@ -215,7 +215,7 @@ func (h *MessageHandlers) wsAddMessage(ctx context.Context, msg *ws.Message) (*w
 	// Kandev MCP system block. A workflow step transition fired by
 	// on_turn_start changes which step's `auto_advance_requires_signal`
 	// applies — running the wrap first would bake in the previous step's
-	// flag and either hide or expose `step_complete_kandev` on the wrong
+	// flag and either hide or expose `step_complete_pcraft` on the wrong
 	// first turn. dispatchPromptAsync no longer calls ProcessOnTurnStart;
 	// it forwards the (now correctly-wrapped) prompt to the agent.
 	if h.orchestrator != nil {

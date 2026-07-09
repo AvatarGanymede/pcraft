@@ -30,26 +30,51 @@ type taskGetter interface {
 	GetTask(ctx context.Context, id string) (*taskmodels.Task, error)
 }
 
-type Service struct {
-	repo      notificationstore.Repository
-	taskRepo  taskGetter
-	hub       *gatewayws.Hub
-	logger    *logger.Logger
-	providers map[models.ProviderType]providers.Provider
+// AssigneeResolver resolves a JNPM ticket's assignee email from a raw ticket
+// number. Satisfied by *jnpm.Service; kept as an interface so this package does
+// not import the jnpm package directly.
+type AssigneeResolver interface {
+	Enabled() bool
+	ResolveAssigneeEmail(ctx context.Context, rawJnpmID string) (email, name string, err error)
 }
 
-func NewService(repo notificationstore.Repository, taskRepo taskGetter, hub *gatewayws.Hub, log *logger.Logger) *Service {
+type Service struct {
+	repo       notificationstore.Repository
+	taskRepo   taskGetter
+	hub        *gatewayws.Hub
+	logger     *logger.Logger
+	providers  map[models.ProviderType]providers.Provider
+	jnpm       AssigneeResolver
+	adminEmail string
+}
+
+// NewService builds the notification service. larkSender + jnpmResolver may be
+// disabled (nil client); adminEmail is the fallback Lark recipient used when a
+// task has no JNPM assignee (or no JNPM id at all).
+func NewService(
+	repo notificationstore.Repository,
+	taskRepo taskGetter,
+	hub *gatewayws.Hub,
+	log *logger.Logger,
+	larkSender providers.LarkSender,
+	jnpmResolver AssigneeResolver,
+	adminEmail string,
+	taskBaseURL string,
+) *Service {
 	providerMap := map[models.ProviderType]providers.Provider{
 		models.ProviderTypeLocal:   providers.NewLocalProvider(hub),
 		models.ProviderTypeApprise: providers.NewAppriseProvider(),
 		models.ProviderTypeSystem:  providers.NewSystemProvider(),
+		models.ProviderTypeLark:    providers.NewLarkProvider(larkSender, taskBaseURL),
 	}
 	return &Service{
-		repo:      repo,
-		taskRepo:  taskRepo,
-		hub:       hub,
-		logger:    log.WithFields(zap.String("component", "notifications-service")),
-		providers: providerMap,
+		repo:       repo,
+		taskRepo:   taskRepo,
+		hub:        hub,
+		logger:     log.WithFields(zap.String("component", "notifications-service")),
+		providers:  providerMap,
+		jnpm:       jnpmResolver,
+		adminEmail: strings.TrimSpace(adminEmail),
 	}
 }
 
@@ -168,6 +193,17 @@ func (s *Service) HandleTaskSessionStateChanged(ctx context.Context, taskID, ses
 		return
 	}
 	title, body := s.buildWaitingForInputMessage(ctx, taskID)
+	targetEmail := s.resolveRecipientEmail(ctx, taskID)
+	larkAvailable := false
+	if p := s.providers[models.ProviderTypeLark]; p != nil {
+		larkAvailable = p.Available()
+	}
+	s.logger.Info("waiting-for-input notification",
+		zap.String("task_id", taskID),
+		zap.String("session_id", sessionID),
+		zap.String("recipient_email", targetEmail),
+		zap.Bool("lark_available", larkAvailable),
+		zap.Int("provider_count", len(providers)))
 	for _, provider := range providers {
 		if !provider.Enabled {
 			continue
@@ -195,9 +231,17 @@ func (s *Service) HandleTaskSessionStateChanged(ctx context.Context, taskID, ses
 			TaskSessionID: sessionID,
 			Title:         title,
 			Body:          body,
+			TargetEmail:   targetEmail,
 		}); err != nil {
-			s.logger.Warn("notification delivery failed", zap.String("provider_id", provider.ID), zap.Error(err))
+			s.logger.Warn("notification delivery failed",
+				zap.String("provider_id", provider.ID),
+				zap.String("provider_type", string(provider.Type)),
+				zap.Error(err))
 			_ = s.repo.DeleteDelivery(ctx, provider.ID, EventTaskSessionWaitingForInput, sessionID)
+		} else {
+			s.logger.Info("notification delivered",
+				zap.String("provider_type", string(provider.Type)),
+				zap.String("recipient_email", targetEmail))
 		}
 	}
 }
@@ -215,6 +259,9 @@ func (s *Service) HandleInboxItem(ctx context.Context, itemType, title string) {
 	if itemType != "" {
 		notifTitle = fmt.Sprintf("Inbox: %s", itemType)
 	}
+	// Inbox items are not task-scoped, so there is no JNPM assignee to resolve;
+	// Lark delivery goes to the configured admin address.
+	targetEmail := s.adminEmail
 	for _, provider := range providers {
 		if !provider.Enabled {
 			continue
@@ -223,24 +270,25 @@ func (s *Service) HandleInboxItem(ctx context.Context, itemType, title string) {
 		if !containsEvent(events, EventOfficeInboxItem) {
 			continue
 		}
-		if err := s.dispatchGenericNotification(ctx, provider, EventOfficeInboxItem, notifTitle, body); err != nil {
+		if err := s.dispatchGenericNotification(ctx, provider, EventOfficeInboxItem, notifTitle, body, targetEmail); err != nil {
 			s.logger.Warn("inbox item notification delivery failed",
 				zap.String("provider_id", provider.ID), zap.Error(err))
 		}
 	}
 }
 
-func (s *Service) dispatchGenericNotification(ctx context.Context, provider *models.Provider, eventType, title, body string) error {
+func (s *Service) dispatchGenericNotification(ctx context.Context, provider *models.Provider, eventType, title, body, targetEmail string) error {
 	adapter := s.providers[provider.Type]
 	if adapter == nil {
 		return fmt.Errorf("unknown provider type: %s", provider.Type)
 	}
 	return adapter.Send(ctx, providers.Message{
-		EventType: eventType,
-		Title:     title,
-		Body:      body,
-		UserID:    userstore.DefaultUserID,
-		Config:    provider.Config,
+		EventType:   eventType,
+		Title:       title,
+		Body:        body,
+		UserID:      userstore.DefaultUserID,
+		Config:      provider.Config,
+		TargetEmail: targetEmail,
 	})
 }
 
@@ -249,6 +297,7 @@ type waitingForInputPayload struct {
 	TaskSessionID string
 	Title         string
 	Body          string
+	TargetEmail   string
 }
 
 func (s *Service) dispatchProvider(ctx context.Context, provider *models.Provider, payload waitingForInputPayload) error {
@@ -264,7 +313,47 @@ func (s *Service) dispatchProvider(ctx context.Context, provider *models.Provide
 		TaskSessionID: payload.TaskSessionID,
 		UserID:        userstore.DefaultUserID,
 		Config:        provider.Config,
+		TargetEmail:   payload.TargetEmail,
 	})
+}
+
+// resolveRecipientEmail picks the Lark recipient for a task-scoped
+// notification: the JNPM ticket assignee when the task carries a jnpm_id and
+// JNPM resolution succeeds, otherwise the configured admin address.
+func (s *Service) resolveRecipientEmail(ctx context.Context, taskID string) string {
+	if taskID == "" || s.taskRepo == nil {
+		return s.adminEmail
+	}
+	task, err := s.taskRepo.GetTask(ctx, taskID)
+	if err != nil || task == nil {
+		return s.adminEmail
+	}
+	jnpmID := metadataString(task.Metadata, taskmodels.MetaKeyJnpmID)
+	if jnpmID == "" || s.jnpm == nil || !s.jnpm.Enabled() {
+		return s.adminEmail
+	}
+	email, _, err := s.jnpm.ResolveAssigneeEmail(ctx, jnpmID)
+	if err != nil {
+		s.logger.Warn("jnpm assignee resolution failed; falling back to admin",
+			zap.String("task_id", taskID), zap.String("jnpm_id", jnpmID), zap.Error(err))
+		return s.adminEmail
+	}
+	if strings.TrimSpace(email) == "" {
+		return s.adminEmail
+	}
+	return email
+}
+
+// metadataString reads a string value from a task metadata map, tolerating a
+// nil map and non-string values.
+func metadataString(meta map[string]interface{}, key string) string {
+	if meta == nil {
+		return ""
+	}
+	if v, ok := meta[key].(string); ok {
+		return strings.TrimSpace(v)
+	}
+	return ""
 }
 
 func (s *Service) buildWaitingForInputMessage(ctx context.Context, taskID string) (string, string) {
@@ -290,12 +379,15 @@ func (s *Service) ensureDefaultProviders(ctx context.Context, userID string) err
 	}
 	hasLocal := false
 	hasSystem := false
+	hasLark := false
 	for _, provider := range providers {
 		switch provider.Type {
 		case models.ProviderTypeLocal:
 			hasLocal = true
 		case models.ProviderTypeSystem:
 			hasSystem = true
+		case models.ProviderTypeLark:
+			hasLark = true
 		}
 	}
 	if !hasLocal {
@@ -322,7 +414,37 @@ func (s *Service) ensureDefaultProviders(ctx context.Context, userID string) err
 			return err
 		}
 	}
+	if !hasLark {
+		if err := s.ensureLarkProvider(ctx, userID); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+// ensureLarkProvider seeds the Lark (Feishu) bot provider when the adapter is
+// available (app credentials configured). This is the primary delivery channel
+// now that OS/desktop notifications are permanently disabled.
+func (s *Service) ensureLarkProvider(ctx context.Context, userID string) error {
+	adapter := s.providers[models.ProviderTypeLark]
+	if adapter == nil || !adapter.Available() {
+		return nil
+	}
+	provider := &models.Provider{
+		ID:      uuid.New().String(),
+		UserID:  userID,
+		Name:    "Lark Bot",
+		Type:    models.ProviderTypeLark,
+		Config:  map[string]interface{}{},
+		Enabled: true,
+	}
+	if err := s.repo.CreateProvider(ctx, provider); err != nil {
+		return err
+	}
+	return s.repo.ReplaceSubscriptions(ctx, provider.ID, userID, []string{
+		EventTaskSessionWaitingForInput,
+		EventOfficeInboxItem,
+	})
 }
 
 // ensureSystemProvider creates the system notification provider if the adapter is available.

@@ -67,7 +67,7 @@ type QueueStatus struct {
 }
 
 // PendingMove represents a workflow step move requested by an agent (via
-// move_task_kandev) while its turn is still active. Applied by handleAgentReady
+// move_task_pcraft) while its turn is still active. Applied by handleAgentReady
 // once the turn ends.
 type PendingMove struct {
 	TaskID         string    `json:"task_id"`

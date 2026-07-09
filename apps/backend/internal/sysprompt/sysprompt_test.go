@@ -19,35 +19,35 @@ const (
 
 func TestConfigContext_ContainsAllTools(t *testing.T) {
 	expectedTools := []string{
-		"list_workspaces_kandev",
-		"list_workflows_kandev",
-		"create_workflow_kandev",
-		"update_workflow_kandev",
-		"delete_workflow_kandev",
-		"list_workflow_steps_kandev",
-		"create_workflow_step_kandev",
-		"update_workflow_step_kandev",
-		"delete_workflow_step_kandev",
-		"reorder_workflow_steps_kandev",
-		"list_agents_kandev",
-		"update_agent_kandev",
-		"create_agent_profile_kandev",
-		"delete_agent_profile_kandev",
-		"list_executors_kandev",
-		"list_executor_profiles_kandev",
-		"create_executor_profile_kandev",
-		"update_executor_profile_kandev",
-		"delete_executor_profile_kandev",
-		"list_agent_profiles_kandev",
-		"update_agent_profile_kandev",
-		"get_mcp_config_kandev",
-		"update_mcp_config_kandev",
-		"list_tasks_kandev",
-		"move_task_kandev",
-		"delete_task_kandev",
-		"archive_task_kandev",
-		"update_task_state_kandev",
-		"ask_user_question_kandev",
+		"list_workspaces_pcraft",
+		"list_workflows_pcraft",
+		"create_workflow_pcraft",
+		"update_workflow_pcraft",
+		"delete_workflow_pcraft",
+		"list_workflow_steps_pcraft",
+		"create_workflow_step_pcraft",
+		"update_workflow_step_pcraft",
+		"delete_workflow_step_pcraft",
+		"reorder_workflow_steps_pcraft",
+		"list_agents_pcraft",
+		"update_agent_pcraft",
+		"create_agent_profile_pcraft",
+		"delete_agent_profile_pcraft",
+		"list_executors_pcraft",
+		"list_executor_profiles_pcraft",
+		"create_executor_profile_pcraft",
+		"update_executor_profile_pcraft",
+		"delete_executor_profile_pcraft",
+		"list_agent_profiles_pcraft",
+		"update_agent_profile_pcraft",
+		"get_mcp_config_pcraft",
+		"update_mcp_config_pcraft",
+		"list_tasks_pcraft",
+		"move_task_pcraft",
+		"delete_task_pcraft",
+		"archive_task_pcraft",
+		"update_task_state_pcraft",
+		"ask_user_question_pcraft",
 	}
 
 	for _, tool := range expectedTools {
@@ -105,21 +105,21 @@ func TestKandevContext_HasExpectedPlaceholders(t *testing.T) {
 
 func TestFormatKandevContext_OmitsStepCompleteToolByDefault(t *testing.T) {
 	result := FormatKandevContext("task-abc", "session-xyz", false)
-	assert.NotContains(t, result, "step_complete_kandev",
-		"step_complete_kandev must be hidden when the step does not require an explicit signal")
+	assert.NotContains(t, result, "step_complete_pcraft",
+		"step_complete_pcraft must be hidden when the step does not require an explicit signal")
 	assert.NotContains(t, result, "{step_complete_section}")
 }
 
 func TestFormatKandevContext_IncludesStepCompleteToolWhenRequired(t *testing.T) {
 	result := FormatKandevContext("task-abc", "session-xyz", true)
-	assert.Contains(t, result, "step_complete_kandev",
-		"step_complete_kandev must be exposed when the step requires an explicit signal")
+	assert.Contains(t, result, "step_complete_pcraft",
+		"step_complete_pcraft must be exposed when the step requires an explicit signal")
 }
 
 func TestFormatKandevContext_InjectsIDs(t *testing.T) {
 	result := FormatKandevContext("task-abc", "session-xyz", false)
-	assert.Contains(t, result, "Kandev Task ID: task-abc")
-	assert.Contains(t, result, "Session ID: session-xyz")
+	assert.Contains(t, result, "Pcraft Task ID: task-abc")
+	assert.Contains(t, result, "Pcraft Session ID: session-xyz")
 	assert.NotContains(t, result, "{task_id}")
 	assert.NotContains(t, result, "{session_id}")
 }
@@ -157,7 +157,7 @@ func TestHasKandevContext_DetectsInjectedWrap(t *testing.T) {
 	// containing the marker counts. Without the regex scope, "how do I use
 	// the KANDEV MCP TOOLS?" would falsely register as already wrapped and
 	// the first-turn injection would be skipped.
-	userMentions := "how do I use the KANDEV MCP TOOLS?"
+	userMentions := "how do I use the PCRAFT MCP TOOLS?"
 	assert.False(t, HasKandevContext(userMentions))
 }
 
@@ -272,7 +272,7 @@ func TestInterpolatePlaceholders_MultiplePlaceholders(t *testing.T) {
 
 func TestContexts_DocumentCurrentAskUserQuestionSchema(t *testing.T) {
 	// Regression: the embedded prompt context used to document a legacy
-	// top-level `prompt` / `options` schema for ask_user_question_kandev.
+	// top-level `prompt` / `options` schema for ask_user_question_pcraft.
 	// The real MCP tool requires a `questions` array of 1-4 question objects.
 	// Stale docs caused agents to send malformed payloads that landed in the
 	// approval layer as "0 questions" and were ultimately cancelled.
@@ -290,15 +290,15 @@ func TestContexts_DocumentCurrentAskUserQuestionSchema(t *testing.T) {
 // --- ConfigContext vs KandevContext distinction ---
 
 func TestConfigContext_DoesNotContainPlanTools(t *testing.T) {
-	assert.NotContains(t, ConfigContext(), "create_task_plan_kandev")
-	assert.NotContains(t, ConfigContext(), "get_task_plan_kandev")
-	assert.NotContains(t, ConfigContext(), "update_task_plan_kandev")
-	assert.NotContains(t, ConfigContext(), "delete_task_plan_kandev")
+	assert.NotContains(t, ConfigContext(), "create_task_plan_pcraft")
+	assert.NotContains(t, ConfigContext(), "get_task_plan_pcraft")
+	assert.NotContains(t, ConfigContext(), "update_task_plan_pcraft")
+	assert.NotContains(t, ConfigContext(), "delete_task_plan_pcraft")
 }
 
 func TestKandevContext_DoesNotContainConfigTools(t *testing.T) {
-	assert.NotContains(t, KandevContext(), "create_workflow_step_kandev")
-	assert.NotContains(t, KandevContext(), "update_workflow_step_kandev")
-	assert.NotContains(t, KandevContext(), "list_agents_kandev")
-	assert.NotContains(t, KandevContext(), "create_agent_kandev")
+	assert.NotContains(t, KandevContext(), "create_workflow_step_pcraft")
+	assert.NotContains(t, KandevContext(), "update_workflow_step_pcraft")
+	assert.NotContains(t, KandevContext(), "list_agents_pcraft")
+	assert.NotContains(t, KandevContext(), "create_agent_pcraft")
 }

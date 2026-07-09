@@ -428,7 +428,7 @@ func emitSubagentSequence(e *emitter, model string) {
 	e.text("Subagent task completed successfully.")
 }
 
-// emitCreateSubtask calls the kandev MCP `create_task_kandev` tool with
+// emitCreateSubtask calls the kandev MCP `create_task_pcraft` tool with
 // parent_id="self" to create a subtask of the current task. Useful for
 // manually exercising sidebar subtask UI in dev with PCRAFT_MOCK_AGENT=true.
 // Usage: `/subtask` or `/subtask My subtask title`.
@@ -442,10 +442,10 @@ func emitCreateSubtask(e *emitter, cmd, model string) {
 	}
 
 	toolID := nextToolID()
-	e.startTool(toolID, "create_task_kandev", acp.ToolKindOther, args)
+	e.startTool(toolID, "create_task_pcraft", acp.ToolKindOther, args)
 	randomDelay(model)
 
-	result, err := callMCPTool("kandev", "create_task_kandev", args)
+	result, err := callMCPTool("pcraft", "create_task_pcraft", args)
 	if err != nil {
 		e.completeTool(toolID, map[string]any{"error": "MCP error: " + err.Error()})
 		e.text(fmt.Sprintf("Failed to create subtask: %v", err))

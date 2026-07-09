@@ -3,6 +3,14 @@ import { NOTIFICATION_EVENT_TASK_SESSION_WAITING_FOR_INPUT } from "@/lib/notific
 import type { AppState } from "@/lib/state/store";
 import type { WsHandlers } from "@/lib/ws/handlers/types";
 
+/**
+ * Browser (OS-level) desktop notifications are permanently disabled in pcraft.
+ * The handler below is intentionally retained but never fires — delivery now
+ * happens server-side via the Lark provider. See
+ * plan/notification-jnpm-lark-plan.md.
+ */
+const DESKTOP_NOTIFICATIONS_DISABLED: boolean = true;
+
 /** Check whether the notification should be suppressed. */
 function shouldSuppressNotification(
   state: AppState,
@@ -24,6 +32,7 @@ function shouldSuppressNotification(
 export function registerNotificationsHandlers(store: StoreApi<AppState>): WsHandlers {
   return {
     [NOTIFICATION_EVENT_TASK_SESSION_WAITING_FOR_INPUT]: (message) => {
+      if (DESKTOP_NOTIFICATIONS_DISABLED) return;
       if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
 
       const sessionId = message.payload?.session_id as string | undefined;

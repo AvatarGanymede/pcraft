@@ -3,6 +3,8 @@ package mcpconfig
 import (
 	"fmt"
 	"strings"
+
+	"github.com/AvatarGanymede/pcraft/internal/mcp/names"
 )
 
 // Resolve converts the stored config into a list of runtime-resolved servers based on policy.
@@ -33,9 +35,9 @@ func Resolve(config *ProfileConfig, policy Policy) ([]ResolvedServer, []string, 
 // Returns (nil, warnings, nil) when the server should be skipped.
 // Returns (nil, warnings, err) on a fatal configuration error.
 func resolveServer(name string, server ServerDef, policy Policy) (*ResolvedServer, []string, error) {
-	// Skip kandev server - it's automatically injected by agentctl with the correct local URL.
-	// This handles existing profiles that still have the old kandev config in the database.
-	if name == "kandev" {
+	// Skip the built-in Pcraft MCP server — agentctl injects it with the correct local URL.
+	// Also skip the legacy "kandev" alias still present in older profile configs.
+	if names.IsReservedServer(name) {
 		return nil, nil, nil
 	}
 

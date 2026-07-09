@@ -89,7 +89,7 @@ export function useNextWorkflowStep(taskId: string | null) {
 
 const IMPLEMENT_PLAN_SYSTEM_BLOCK = `<kandev-system>
 IMPLEMENT PLAN: The user has approved the plan and wants you to implement it now.
-Read the current plan using the get_task_plan_kandev MCP tool.
+Read the current plan using the get_task_plan_pcraft MCP tool.
 Implement all changes described in the plan step by step.
 After completing the implementation, provide a summary of what was done.
 </kandev-system>`;

@@ -62,10 +62,8 @@ type ChatInputContainerProps = {
   onPlanModeChange: (enabled: boolean) => void;
   isAgentBusy: boolean;
   isStarting: boolean;
-  /** True only while a containerized executor is bootstrapping (Docker
-   * prepare, Sprites sandbox spin-up). Distinct from the brief STARTING
-   * state every session — including local quick-chat — passes through;
-   * see useSessionState. */
+  /** True while the executor is bootstrapping. Distinct from the brief STARTING
+   * state every session passes through; see useSessionState. */
   isPreparingEnvironment?: boolean;
   isMoving?: boolean;
   isSending: boolean;

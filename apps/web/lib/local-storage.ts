@@ -62,9 +62,9 @@ export function removeLocalStorage(key: string): void {
 
 // Internal storage keys for kanban preview (not exported - encapsulated)
 const KANBAN_PREVIEW_KEYS = {
-  OPEN: "kandev.kanban.preview.open",
-  WIDTH: "kandev.kanban.preview.width",
-  SELECTED_TASK: "kandev.kanban.preview.selectedTask",
+  OPEN: "pcraft.kanban.preview.open",
+  WIDTH: "pcraft.kanban.preview.width",
+  SELECTED_TASK: "pcraft.kanban.preview.selectedTask",
 } as const;
 
 // Kanban preview state type
@@ -108,7 +108,7 @@ export function setKanbanPreviewState(state: Partial<KanbanPreviewState>): void 
 }
 
 // Internal storage key for plan notifications (not exported - encapsulated)
-const PLAN_NOTIFICATION_KEY = "kandev.plan.lastSeenByTask";
+const PLAN_NOTIFICATION_KEY = "pcraft.plan.lastSeenByTask";
 
 /**
  * Plan notification state - tracks when user last viewed each task's plan
@@ -150,7 +150,7 @@ export function getPlanLastSeen(taskId: string): string | null {
 }
 
 // Internal storage key for center panel tab (uses sessionStorage)
-const CENTER_PANEL_TAB_KEY = "kandev.centerPanel.tab";
+const CENTER_PANEL_TAB_KEY = "pcraft.centerPanel.tab";
 
 /**
  * Get the saved center panel tab from sessionStorage
@@ -183,8 +183,8 @@ export function setCenterPanelTab(tab: string): void {
 
 // Internal storage keys for files panel (uses sessionStorage for per-tab persistence)
 const FILES_PANEL_KEYS = {
-  EXPANDED: "kandev.filesPanel.expanded",
-  SCROLL: "kandev.filesPanel.scroll",
+  EXPANDED: "pcraft.filesPanel.expanded",
+  SCROLL: "pcraft.filesPanel.scroll",
 } as const;
 
 /**
@@ -262,7 +262,7 @@ export function setFilesPanelScrollPosition(sessionId: string, position: number)
 // Bumping the prefix invalidates legacy saves so every env opens at the
 // preset defaults once, then resumes per-env persistence. Bumped to v3 to
 // discard layouts captured with the now-removed dockview sidebar column.
-const DOCKVIEW_ENV_LAYOUT_PREFIX = "kandev.dockview.env-layout-v3.";
+const DOCKVIEW_ENV_LAYOUT_PREFIX = "pcraft.dockview.env-layout-v3.";
 
 /**
  * Get the saved dockview layout for a task environment.
@@ -295,7 +295,7 @@ export function setEnvLayout(envId: string, layout: object): void {
 // Stores the user's raw, unclamped width — clamping to the current screen
 // happens at apply time. Written only by a genuine sash drag; read by every
 // layout build/restore/switch via getPinnedWidth.
-const DOCKVIEW_GLOBAL_SIDEBAR_WIDTH_KEY = "kandev.dockview.sidebar-width";
+const DOCKVIEW_GLOBAL_SIDEBAR_WIDTH_KEY = "pcraft.dockview.sidebar-width";
 
 export function getGlobalSidebarWidth(): number | null {
   const v = getLocalStorage<number | null>(DOCKVIEW_GLOBAL_SIDEBAR_WIDTH_KEY, null);
@@ -315,7 +315,7 @@ export function clearGlobalSidebarWidth(): void {
 // v3: bumped in lockstep with DOCKVIEW_ENV_LAYOUT_PREFIX. The maximize blob
 // references the pre-maximize layout, which can carry the same oversized
 // widths as the env layout.
-const DOCKVIEW_ENV_MAXIMIZE_PREFIX = "kandev.dockview.env-maximize-v3.";
+const DOCKVIEW_ENV_MAXIMIZE_PREFIX = "pcraft.dockview.env-maximize-v3.";
 
 export type EnvMaximizeState = {
   /** The pre-maximize (normal) layout to restore on exit-maximize. */
@@ -367,7 +367,7 @@ export function removeEnvMaximizeState(envId: string): void {
 
 // PR panel "offered" flag — tracks whether the auto-show PR panel was offered
 // for a session. If offered and then closed by the user, we respect the dismissal.
-const PR_PANEL_OFFERED_PREFIX = "kandev.pr-panel-offered.";
+const PR_PANEL_OFFERED_PREFIX = "pcraft.pr-panel-offered.";
 
 export function wasPRPanelOffered(sessionId: string): boolean {
   if (typeof window === "undefined") return false;
@@ -389,7 +389,7 @@ export function markPRPanelOffered(sessionId: string): void {
 
 // PR merged banner dismissal — per-task, survives reload + task switch within
 // the tab session, resets on tab close.
-const PR_MERGED_BANNER_DISMISSED_PREFIX = "kandev.pr-merged-banner-dismissed.";
+const PR_MERGED_BANNER_DISMISSED_PREFIX = "pcraft.pr-merged-banner-dismissed.";
 
 export function wasPRMergedBannerDismissed(taskId: string): boolean {
   if (typeof window === "undefined") return false;
@@ -411,7 +411,7 @@ export function markPRMergedBannerDismissed(taskId: string): void {
 
 // PR closed banner dismissal — same lifetime as the merged banner: per-task,
 // survives reload + task switch within the tab session, resets on tab close.
-const PR_CLOSED_BANNER_DISMISSED_PREFIX = "kandev.pr-closed-banner-dismissed.";
+const PR_CLOSED_BANNER_DISMISSED_PREFIX = "pcraft.pr-closed-banner-dismissed.";
 
 export function wasPRClosedBannerDismissed(taskId: string): boolean {
   if (typeof window === "undefined") return false;
@@ -432,8 +432,8 @@ export function markPRClosedBannerDismissed(taskId: string): void {
 }
 
 // Internal storage keys for open file tabs
-const OPEN_FILES_KEY = "kandev.openFiles";
-const ACTIVE_TAB_KEY = "kandev.activeTab";
+const OPEN_FILES_KEY = "pcraft.openFiles";
+const ACTIVE_TAB_KEY = "pcraft.activeTab";
 
 /**
  * Minimal tab info stored in sessionStorage (no content - reloaded on restore).
@@ -532,10 +532,10 @@ export function setActiveTabForSession(sessionId: string, tabId: string): void {
 
 // --- Chat draft persistence (sessionStorage, per task) ---
 
-const CHAT_DRAFT_TEXT_KEY = "kandev.chatDraft.text";
-const CHAT_DRAFT_CONTENT_KEY = "kandev.chatDraft.content";
-const CHAT_DRAFT_ATTACHMENTS_KEY = "kandev.chatDraft.attachments";
-const CHAT_INPUT_HEIGHT_KEY = "kandev.chatInput.height";
+const CHAT_DRAFT_TEXT_KEY = "pcraft.chatDraft.text";
+const CHAT_DRAFT_CONTENT_KEY = "pcraft.chatDraft.content";
+const CHAT_DRAFT_ATTACHMENTS_KEY = "pcraft.chatDraft.attachments";
+const CHAT_INPUT_HEIGHT_KEY = "pcraft.chatInput.height";
 
 /** Stored attachment — same as FileAttachment but without `preview` (reconstructed on load) */
 type StoredFileAttachment = {
@@ -701,8 +701,8 @@ export function cleanupTaskStorage(
     removeSessionStorage(`${FILES_PANEL_KEYS.SCROLL}.${sessionId}`);
     removeSessionStorage(`${OPEN_FILES_KEY}.${sessionId}`);
     removeSessionStorage(`${ACTIVE_TAB_KEY}.${sessionId}`);
-    removeSessionStorage(`kandev.contextFiles.${sessionId}`);
-    removeSessionStorage(`kandev.comments.${sessionId}`);
+    removeSessionStorage(`pcraft.contextFiles.${sessionId}`);
+    removeSessionStorage(`pcraft.comments.${sessionId}`);
   }
 }
 
@@ -712,7 +712,7 @@ export function cleanupTaskStorage(
 // follows the underlying chat across reloads but vanishes if the user clears
 // browser storage. The backend task title remains the auto-generated name.
 
-const QUICK_CHAT_NAMES_KEY = "kandev.quickChat.names";
+const QUICK_CHAT_NAMES_KEY = "pcraft.quickChat.names";
 
 export function getStoredQuickChatNames(): Record<string, string> {
   const raw = getLocalStorage<Record<string, string>>(QUICK_CHAT_NAMES_KEY, {});
@@ -738,9 +738,9 @@ export function removeStoredQuickChatName(sessionId: string): void {
 
 // --- Sidebar filter views (localStorage, global) ---
 
-const SIDEBAR_VIEWS_KEY = "kandev.sidebar.views";
-const SIDEBAR_ACTIVE_VIEW_KEY = "kandev.sidebar.activeViewId";
-const SIDEBAR_DRAFT_KEY = "kandev.sidebar.draft";
+const SIDEBAR_VIEWS_KEY = "pcraft.sidebar.views";
+const SIDEBAR_ACTIVE_VIEW_KEY = "pcraft.sidebar.activeViewId";
+const SIDEBAR_DRAFT_KEY = "pcraft.sidebar.draft";
 
 // The SidebarView / SidebarViewDraft types aren't structurally assignable to
 // JsonValue (the filter clause value is `unknown`), so these wrappers take the
@@ -775,8 +775,8 @@ export function removeStoredSidebarDraft(): void {
 
 // --- Sidebar task prefs: pin + manual order (localStorage, global) ---
 
-const SIDEBAR_PINNED_TASKS_KEY = "kandev.sidebar.pinnedTaskIds";
-const SIDEBAR_TASK_ORDER_KEY = "kandev.sidebar.orderedTaskIds";
+const SIDEBAR_PINNED_TASKS_KEY = "pcraft.sidebar.pinnedTaskIds";
+const SIDEBAR_TASK_ORDER_KEY = "pcraft.sidebar.orderedTaskIds";
 
 function readStringArray(key: string): string[] {
   const raw = getLocalStorage<string[]>(key, []) as unknown;
@@ -800,7 +800,7 @@ export function setStoredOrderedTaskIds(ids: string[]): void {
   setLocalStorage(SIDEBAR_TASK_ORDER_KEY, ids);
 }
 
-const SIDEBAR_SUBTASK_ORDER_KEY = "kandev.sidebar.subtaskOrderByParentId";
+const SIDEBAR_SUBTASK_ORDER_KEY = "pcraft.sidebar.subtaskOrderByParentId";
 
 export function getStoredSubtaskOrderByParentId(): Record<string, string[]> {
   const raw = getLocalStorage<Record<string, string[]>>(SIDEBAR_SUBTASK_ORDER_KEY, {}) as unknown;
@@ -847,7 +847,7 @@ export function pruneSubtaskOrder(map: Record<string, string[]>, taskId: string)
 
 // --- Sidebar collapsed subtask parents (sessionStorage, tab-scoped) ---
 
-const COLLAPSED_SUBTASKS_KEY = "kandev.sidebar.collapsedSubtasks";
+const COLLAPSED_SUBTASKS_KEY = "pcraft.sidebar.collapsedSubtasks";
 
 /**
  * Get the list of parent task IDs whose subtasks are collapsed in the sidebar.
@@ -868,7 +868,7 @@ export function setStoredCollapsedSubtaskParents(ids: string[]): void {
 
 // --- Task creation draft persistence (sessionStorage, per workspace) ---
 
-const TASK_CREATE_DRAFT_KEY = "kandev.taskCreateDraft";
+const TASK_CREATE_DRAFT_KEY = "pcraft.taskCreateDraft";
 
 /**
  * Draft data for task creation dialog.

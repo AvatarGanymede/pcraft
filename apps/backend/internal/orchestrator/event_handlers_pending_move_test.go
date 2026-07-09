@@ -18,7 +18,7 @@ import (
 )
 
 // TestPendingMove_ReviewToInProgress_OneTransitionOnly reproduces the production bug
-// observed at task a99d863e ("buggy fibo"): a QA agent calls move_task_kandev to send
+// observed at task a99d863e ("buggy fibo"): a QA agent calls move_task_pcraft to send
 // the task back to "In Progress" with a hand-off prompt, but the deferred-move flow
 // triggers spurious additional transitions and the task ends up at "Reviewed" instead.
 //
@@ -40,7 +40,7 @@ import (
 //   - Two sessions exist: an "In Progress" session (profile-impl, completed earlier
 //     when the workflow first transitioned to Review) and an "In Review" session
 //     (profile-review, currently RUNNING, primary).
-//   - QA called move_task_kandev mid-turn → handleMoveTask set a PendingMove
+//   - QA called move_task_pcraft mid-turn → handleMoveTask set a PendingMove
 //     pointing at "In Progress" and queued the hand-off prompt.
 //   - QA's turn ends → agent.ready fires → handleAgentReady is invoked.
 //
@@ -113,7 +113,7 @@ type pendingMoveScenario struct {
 //     was completed earlier (revivable — has executors_running), and a Review
 //     session that's currently RUNNING and primary.
 //   - PendingMove + hand-off prompt seeded as if the QA agent just called
-//     move_task_kandev mid-turn.
+//     move_task_pcraft mid-turn.
 //   - Mock LaunchAgent that fires the boot signal asynchronously so the
 //     resume path can complete in tests without a real agent process.
 func buildPendingMoveScenario(t *testing.T) *pendingMoveScenario {
@@ -258,7 +258,7 @@ func seedImplSession(t *testing.T, repo *sqliterepo.Repository, now time.Time) s
 }
 
 // seedReviewSession seeds the currently-active Review session as primary,
-// RUNNING — the QA agent that's about to fire its move_task_kandev call.
+// RUNNING — the QA agent that's about to fire its move_task_pcraft call.
 func seedReviewSession(t *testing.T, repo *sqliterepo.Repository, now time.Time) string {
 	t.Helper()
 	const id = "session-review"

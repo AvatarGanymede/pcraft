@@ -113,7 +113,7 @@ describe("AppSidebarFooter", () => {
 
     expect(mocks.routerPush).toHaveBeenNthCalledWith(1, "/stats");
     expect(mocks.routerPush).toHaveBeenNthCalledWith(2, "/office?workspaceId=office-1");
-    expect(window.localStorage.getItem("kandev.lastKanbanWorkspaceId")).toBe("kanban-1");
+    expect(window.localStorage.getItem("pcraft.lastKanbanWorkspaceId")).toBe("kanban-1");
   });
 
   it("navigates to the last active office workspace when kanban is active", () => {
@@ -141,7 +141,7 @@ describe("AppSidebarFooter", () => {
   it("shows a Kanban button when an office workspace is active", () => {
     officeEnabled = true;
     state.workspaces.activeId = "office-1";
-    window.localStorage.setItem("kandev.lastKanbanWorkspaceId", "kanban-1");
+    window.localStorage.setItem("pcraft.lastKanbanWorkspaceId", "kanban-1");
 
     renderFooter();
 
@@ -154,7 +154,7 @@ describe("AppSidebarFooter", () => {
   it("remembers the current office workspace when toggling back to kanban", () => {
     officeEnabled = true;
     state.workspaces.activeId = "office-2";
-    window.localStorage.setItem("kandev.lastKanbanWorkspaceId", "kanban-1");
+    window.localStorage.setItem("pcraft.lastKanbanWorkspaceId", "kanban-1");
 
     renderFooter();
 

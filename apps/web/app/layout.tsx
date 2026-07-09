@@ -48,7 +48,7 @@ export default async function RootLayout({
   ]);
   const debugMode = envDebugMode || runtimeDebugMode;
 
-  const runtimeConfigScript = debugMode ? "window.__KANDEV_DEBUG = true;" : null;
+  const runtimeConfigScript = debugMode ? "window.__PCRAFT_DEBUG = true;" : null;
 
   return (
     <html lang="en" suppressHydrationWarning>

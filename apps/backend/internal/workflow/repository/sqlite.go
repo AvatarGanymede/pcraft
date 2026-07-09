@@ -112,7 +112,7 @@ func (r *Repository) initSchema() error {
 	// frontend ("work" | "review" | "approval" | "custom"). Backend code
 	// MUST NOT branch on it. Idempotent ALTER; default keeps existing rows at "custom".
 	r.migrate.Apply("workflow_steps.stage_type", `ALTER TABLE workflow_steps ADD COLUMN stage_type TEXT NOT NULL DEFAULT 'custom'`)
-	// ADR 0015 — gate auto-advance on an explicit `step_complete_kandev`
+	// ADR 0015 — gate auto-advance on an explicit `step_complete_pcraft`
 	// MCP signal. Idempotent ALTER; existing rows keep today's behaviour
 	// (immediate transition on turn-end) until the column is set to 1.
 	r.migrate.Apply("workflow_steps.auto_advance_requires_signal", `ALTER TABLE workflow_steps ADD COLUMN auto_advance_requires_signal INTEGER NOT NULL DEFAULT 0`)

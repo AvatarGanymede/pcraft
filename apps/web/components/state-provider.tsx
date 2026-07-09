@@ -12,8 +12,8 @@ import { STORAGE_KEYS } from "@/lib/settings/constants";
 const StoreContext = createContext<StoreApi<AppState> | null>(null);
 
 type E2EWindow = Window & {
-  __KANDEV_E2E_EXPOSE_STORE__?: boolean;
-  __KANDEV_E2E_STORE__?: StoreApi<AppState>;
+  __pcraft_E2E_EXPOSE_STORE__?: boolean;
+  __pcraft_E2E_STORE__?: StoreApi<AppState>;
 };
 
 export function StateProvider({ children, initialState }: StoreProviderProps) {
@@ -28,8 +28,8 @@ export function StateProvider({ children, initialState }: StoreProviderProps) {
 
   useEffect(() => {
     const win = window as E2EWindow;
-    if (win.__KANDEV_E2E_EXPOSE_STORE__) {
-      win.__KANDEV_E2E_STORE__ = store;
+    if (win.__pcraft_E2E_EXPOSE_STORE__) {
+      win.__pcraft_E2E_STORE__ = store;
     }
   }, [store]);
 

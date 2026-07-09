@@ -210,13 +210,12 @@ func SerializePrepareResult(result *EnvPrepareResult) map[string]interface{} {
 	}
 }
 
-// PreparerRegistry maps executor types (models.ExecutorType — the "local",
-// "worktree", "local_docker", "sprites" taxonomy) to environment preparers.
+// PreparerRegistry maps executor types (models.ExecutorType) to environment
+// preparers.
 //
 // Keyed by ExecutorType, not Runtime: preparers do per-executor-type filesystem
-// setup (e.g. worktree creation for the worktree type), and different
-// ExecutorTypes that share a Runtime (local + worktree both run on standalone)
-// can still get distinct preparation logic.
+// setup, and different ExecutorTypes that share a Runtime can still get
+// distinct preparation logic.
 type PreparerRegistry struct {
 	preparers map[models.ExecutorType]EnvironmentPreparer
 	logger    *logger.Logger

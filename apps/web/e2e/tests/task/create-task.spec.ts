@@ -160,7 +160,7 @@ test.describe("Task creation", () => {
     // bogus selection that the compatibility check then rejects.
     await testPage.addInitScript(() => {
       localStorage.setItem(
-        "kandev.dialog.lastAgentProfileId",
+        "pcraft.dialog.lastAgentProfileId",
         JSON.stringify("00000000-0000-0000-0000-000000000000"),
       );
     });
@@ -276,7 +276,7 @@ test.describe("Task creation", () => {
     const script = [
       'e2e:thinking("Analyzing task and creating plan...")',
       "e2e:delay(100)",
-      'e2e:mcp:kandev:create_task_plan_kandev({"task_id":"{task_id}","content":"## Plan\\n\\n1. Analyze requirements\\n2. Implement solution\\n3. Write tests","title":"Implementation Plan"})',
+      'e2e:mcp:pcraft:create_task_plan_pcraft({"task_id":"{task_id}","content":"## Plan\\n\\n1. Analyze requirements\\n2. Implement solution\\n3. Write tests","title":"Implementation Plan"})',
       "e2e:delay(100)",
       'e2e:message("I\'ve created an implementation plan for this task.")',
     ].join("\n");

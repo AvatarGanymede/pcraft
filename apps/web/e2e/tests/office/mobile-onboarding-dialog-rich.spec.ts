@@ -88,7 +88,7 @@ test.describe("OnboardingDialog with realistic agent data — mobile layout", ()
       });
     });
     await testPage.addInitScript(() => {
-      localStorage.removeItem("kandev.onboarding.completed");
+      localStorage.removeItem("pcraft.onboarding.completed");
     });
     // Pixel 7 viewport. Playwright's `mobile-chrome` project ships Pixel 5
     // (393x851); we override to Pixel 7's 412x915 here so the spec

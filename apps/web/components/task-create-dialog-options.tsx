@@ -188,9 +188,6 @@ export function computeExecutorHint(
   repoCount: number,
 ): string | null {
   const selectedExecutor = executors.find((e: Executor) => e.id === executorId);
-  if (selectedExecutor?.type === "local_docker" || selectedExecutor?.type === "remote_docker") {
-    return "A Docker container will be created from the selected base branch and checked out on a task branch.";
-  }
   if (selectedExecutor?.type === "local" || selectedExecutor?.type === "local_pc")
     return "The agent will run directly on the repository.";
   return null;

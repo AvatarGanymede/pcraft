@@ -36,14 +36,11 @@ func (si *SchedulerIntegration) buildEnvVars(
 	return env
 }
 
-// injectKandevCLI overrides PCRAFT_CLI for remote executor types where the
-// host binary path does not apply. For Docker and Sprites, the agentctl
-// binary is baked into the image or uploaded, so we use the container-side path.
+// injectKandevCLI overrides PCRAFT_CLI for executor types where the
+// host binary path does not apply. All executors are currently local,
+// so the host binary path is used directly — no override needed.
 func (si *SchedulerIntegration) injectKandevCLI(env map[string]string, executorType string) {
-	switch executorType {
-	case "local_docker", "sprites":
-		env["PCRAFT_CLI"] = "/usr/local/bin/agentctl"
-	}
+	// No-op: only local executor is supported; host binary path is always correct.
 }
 
 // extractField parses a single key from a JSON payload string.

@@ -21,7 +21,7 @@ export function multiMessageScript(lines: string[], delayMs = 10): string {
   return parts.join("\n");
 }
 
-/** Builder for a plan-seeding script using the create_task_plan_kandev MCP tool. */
+/** Builder for a plan-seeding script using the create_task_plan_pcraft MCP tool. */
 export function planScript(content: string, title = "Search test plan"): string {
   const escape = (s: string) =>
     s.replaceAll("\\", "\\\\").replaceAll('"', '\\"').replaceAll("\n", "\\n");
@@ -30,7 +30,7 @@ export function planScript(content: string, title = "Search test plan"): string 
   return [
     'e2e:thinking("Seeding plan...")',
     "e2e:delay(50)",
-    `e2e:mcp:kandev:create_task_plan_kandev({"task_id":"{task_id}","content":"${escapedContent}","title":"${escapedTitle}"})`,
+    `e2e:mcp:pcraft:create_task_plan_pcraft({"task_id":"{task_id}","content":"${escapedContent}","title":"${escapedTitle}"})`,
     "e2e:delay(50)",
     'e2e:message("Plan seeded.")',
   ].join("\n");

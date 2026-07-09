@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 
 type E2EStoreWindow = Window & {
-  __KANDEV_E2E_STORE__?: {
+  __pcraft_E2E_STORE__?: {
     getState: () => {
       taskSessions: { items: Record<string, Record<string, unknown>> };
       setAvailableCommands: (sessionId: string, commands: AvailableCommand[]) => void;
@@ -29,9 +29,9 @@ type AvailableCommand = {
  */
 export async function stripSessionProfileSnapshot(page: Page, sessionId: string): Promise<void> {
   await page.evaluate((sid) => {
-    const store = (window as E2EStoreWindow).__KANDEV_E2E_STORE__;
+    const store = (window as E2EStoreWindow).__pcraft_E2E_STORE__;
     if (!store) {
-      throw new Error("E2E store bridge missing — is __KANDEV_E2E_EXPOSE_STORE__ set?");
+      throw new Error("E2E store bridge missing — is __pcraft_E2E_EXPOSE_STORE__ set?");
     }
     store.setState((state) => {
       const session = state.taskSessions.items[sid];
@@ -57,9 +57,9 @@ export async function seedAvailableCommands(
 ): Promise<void> {
   await page.evaluate(
     ({ sid, commandList }) => {
-      const store = (window as E2EStoreWindow).__KANDEV_E2E_STORE__;
+      const store = (window as E2EStoreWindow).__pcraft_E2E_STORE__;
       if (!store) {
-        throw new Error("E2E store bridge missing — is __KANDEV_E2E_EXPOSE_STORE__ set?");
+        throw new Error("E2E store bridge missing — is __pcraft_E2E_EXPOSE_STORE__ set?");
       }
       store.getState().setAvailableCommands(sid, commandList);
     },

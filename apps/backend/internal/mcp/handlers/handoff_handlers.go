@@ -12,7 +12,7 @@ import (
 )
 
 // SetHandoffService wires the cross-task handoff service used to back the
-// list_related_tasks_kandev / *_task_document_kandev MCP tools. Optional —
+// list_related_tasks_pcraft / *_task_document_pcraft MCP tools. Optional —
 // when nil, the registered handlers report a configuration error instead
 // of registering and returning broken endpoints.
 func (h *Handlers) SetHandoffService(svc *service.HandoffService) {

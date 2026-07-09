@@ -7,7 +7,7 @@ import { fetchJson, type ApiRequestOptions } from "../client";
  *
  * Contract: AvailableDocs lists key + title + metadata only. Document
  * bodies must be fetched via the existing document endpoint (or
- * get_task_document_kandev for agents).
+ * get_task_document_pcraft for agents).
  */
 export type TaskContextDTO = {
   task: TaskRefDTO;

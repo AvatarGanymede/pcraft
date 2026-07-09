@@ -10,8 +10,8 @@ import { describe, expect, it } from "vitest";
 // repos (e.g. `kandev` → `kandev-cli`) don't silently fall back to the
 // raw tracker tag.
 
-const REPO_KANDEV = "kandev";
-const REPO_KANDEV_CLI = "kandev-cli";
+const REPO_pcraft = "kandev";
+const REPO_pcraft_CLI = "kandev-cli";
 
 describe("repo display label format (multi-branch)", () => {
   // Mirror of formatRepoLabel — kept in sync intentionally. The two-line
@@ -35,31 +35,31 @@ describe("repo display label format (multi-branch)", () => {
   }
 
   it("splits <repo>-<slug> into <repo> · <slug> when the repo is known", () => {
-    expect(formatRepoLabel("kandev-branch-2", undefined, [REPO_KANDEV])).toBe("kandev · branch-2");
-    expect(formatRepoLabel("kandev-feature-x", undefined, [REPO_KANDEV])).toBe(
+    expect(formatRepoLabel("kandev-branch-2", undefined, [REPO_pcraft])).toBe("kandev · branch-2");
+    expect(formatRepoLabel("kandev-feature-x", undefined, [REPO_pcraft])).toBe(
       "kandev · feature-x",
     );
   });
 
   it("prefers the longest known repo prefix so kandev-cli doesn't split as kandev · cli", () => {
-    expect(formatRepoLabel("kandev-cli-feature-x", undefined, [REPO_KANDEV, REPO_KANDEV_CLI])).toBe(
+    expect(formatRepoLabel("kandev-cli-feature-x", undefined, [REPO_pcraft, REPO_pcraft_CLI])).toBe(
       "kandev-cli · feature-x",
     );
   });
 
   it("passes through bare repo names unchanged when no prefix matches", () => {
-    expect(formatRepoLabel(REPO_KANDEV, undefined, [REPO_KANDEV])).toBe(REPO_KANDEV);
-    expect(formatRepoLabel("other-repo", undefined, [REPO_KANDEV])).toBe("other-repo");
+    expect(formatRepoLabel(REPO_pcraft, undefined, [REPO_pcraft])).toBe(REPO_pcraft);
+    expect(formatRepoLabel("other-repo", undefined, [REPO_pcraft])).toBe("other-repo");
   });
 
   it("treats an exact repo-name match as bare (no prefix split)", () => {
-    expect(formatRepoLabel(REPO_KANDEV_CLI, undefined, [REPO_KANDEV, REPO_KANDEV_CLI])).toBe(
-      REPO_KANDEV_CLI,
+    expect(formatRepoLabel(REPO_pcraft_CLI, undefined, [REPO_pcraft, REPO_pcraft_CLI])).toBe(
+      REPO_pcraft_CLI,
     );
   });
 
   it("falls back to primaryName when input is empty", () => {
-    expect(formatRepoLabel("", REPO_KANDEV, [REPO_KANDEV])).toBe(REPO_KANDEV);
-    expect(formatRepoLabel("", undefined, [REPO_KANDEV])).toBeUndefined();
+    expect(formatRepoLabel("", REPO_pcraft, [REPO_pcraft])).toBe(REPO_pcraft);
+    expect(formatRepoLabel("", undefined, [REPO_pcraft])).toBeUndefined();
   });
 });

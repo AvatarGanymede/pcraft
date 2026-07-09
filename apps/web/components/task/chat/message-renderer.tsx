@@ -246,7 +246,7 @@ const adapters: MessageAdapter[] = [
     },
   },
   {
-    // Kandev MCP tools — `mcp__kandev__list_tasks_kandev` etc. — get
+    // Kandev MCP tools — `mcp__pcraft__list_tasks_pcraft` etc. — get
     // per-tool structured rendering. Must run BEFORE the generic tool_call
     // adapter so the unwrapped + structured view wins. Unrecognised Kandev
     // tools (no matching renderer) fall through to the generic adapter.

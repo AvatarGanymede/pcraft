@@ -7,7 +7,7 @@ import { updateUserSettings } from "@/lib/api";
 import { getWebSocketClient } from "@/lib/ws/connection";
 import { useAppStore, useAppStoreApi } from "@/components/state-provider";
 
-const LEGACY_STORAGE_KEY = "kandev.releaseNotes.lastSeenVersion";
+const LEGACY_STORAGE_KEY = "pcraft.releaseNotes.lastSeenVersion";
 
 function isVersionNewer(version: string, baseline: string): boolean {
   const a = version.split(".").map(Number);

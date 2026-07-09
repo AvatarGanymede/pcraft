@@ -180,7 +180,7 @@ export async function waitForStoreFileDiffText(
         testPage.evaluate(
           ({ sid, path, expected }) => {
             type E2EStoreWindow = Window & {
-              __KANDEV_E2E_STORE__?: {
+              __pcraft_E2E_STORE__?: {
                 getState: () => {
                   environmentIdBySessionId: Record<string, string>;
                   gitStatus: {
@@ -192,7 +192,7 @@ export async function waitForStoreFileDiffText(
                 };
               };
             };
-            const store = (window as E2EStoreWindow).__KANDEV_E2E_STORE__;
+            const store = (window as E2EStoreWindow).__pcraft_E2E_STORE__;
             const state = store?.getState();
             if (!state) return false;
             const envKey = state.environmentIdBySessionId[sid] ?? sid;

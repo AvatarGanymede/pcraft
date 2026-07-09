@@ -202,8 +202,6 @@ const FALLBACK_ROLES = [
 
 const FALLBACK_EXECUTOR_TYPES = [
   { id: "local_pc", label: "Local (standalone)" },
-  { id: "local_docker", label: "Local Docker" },
-  { id: "sprites", label: "Sprites (remote sandbox)" },
 ];
 
 export function CreateAgentDialog({ open, onOpenChange }: CreateAgentDialogProps) {

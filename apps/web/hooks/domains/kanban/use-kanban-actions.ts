@@ -6,6 +6,7 @@ import { useAppStoreApi } from "@/components/state-provider";
 import { useTaskCRUD } from "@/hooks/use-task-crud";
 import type { Task as BackendTask } from "@/lib/types/http";
 import type { KanbanState, WorkspaceState, WorkflowsState } from "@/lib/state/slices";
+import { toKanbanTask } from "@/lib/kanban/map-task";
 
 type UseKanbanActionsOptions = {
   workspaceState: WorkspaceState;
@@ -66,6 +67,10 @@ function hydrateCreatedTask(
         ],
       },
     });
+  }
+  const workflowId = task.workflow_id;
+  if (workflowId && store.getState().kanbanMulti.snapshots[workflowId]) {
+    store.getState().updateMultiTask(workflowId, toKanbanTask(task));
   }
   if (task.workspace_id) {
     store.getState().invalidateRepositories(task.workspace_id);

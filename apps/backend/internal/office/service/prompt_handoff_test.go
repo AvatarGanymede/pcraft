@@ -42,7 +42,7 @@ func TestBuildPrompt_AppendsHandoffSection_OnActiveBuilder(t *testing.T) {
 	for _, needle := range []string{
 		"Related tasks:",
 		"Parent: KAN-1 Plan",
-		"Documents available (fetch with get_task_document_kandev):",
+		"Documents available (fetch with get_task_document_pcraft):",
 		"KAN-1 Plan spec",
 		"Architecture spec",
 		"KAN-1 Plan plan",
@@ -98,7 +98,7 @@ func TestBuildPrompt_RendersWorkspaceSection(t *testing.T) {
 }
 
 // REGRESSION: document BODIES never appear in the prompt. The agent
-// must call get_task_document_kandev to fetch content. Verify the
+// must call get_task_document_pcraft to fetch content. Verify the
 // content field of a document is never rendered.
 func TestBuildPrompt_DocumentBodiesNeverInlined(t *testing.T) {
 	pc := &service.PromptContext{
@@ -116,7 +116,7 @@ func TestBuildPrompt_DocumentBodiesNeverInlined(t *testing.T) {
 		},
 	}
 	out := service.BuildPrompt(pc)
-	if !strings.Contains(out, "get_task_document_kandev") {
+	if !strings.Contains(out, "get_task_document_pcraft") {
 		t.Errorf("documents section MUST name the fetch tool so agents don't inline bodies\nprompt:\n%s", out)
 	}
 }

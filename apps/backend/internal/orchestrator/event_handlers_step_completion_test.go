@@ -158,7 +158,7 @@ func TestLoadPendingStepSignal_RoundTrip(t *testing.T) {
 }
 
 // TestOnStepCompletionSignaled covers the out-of-band subscriber that
-// drives a step transition when a `step_complete_kandev` signal arrives
+// drives a step transition when a `step_complete_pcraft` signal arrives
 // AFTER the turn has already ended. The three branches:
 //
 //   - session still RUNNING (turn in flight): no-op, inline path will handle it.

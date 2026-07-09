@@ -8,7 +8,7 @@ import {
 // Runs under the mobile-chrome project (Pixel 5, viewport 393x851).
 //
 // Covers the OnboardingDialog that opens from `/` when the
-// `kandev.onboarding.completed` localStorage flag is unset. It is distinct
+// `pcraft.onboarding.completed` localStorage flag is unset. It is distinct
 // from the office /office/setup wizard (separate spec) — this dialog has
 // four steps: AI Agents, Executors, Agentic Workflows, Command Panel.
 
@@ -17,7 +17,7 @@ test.describe("OnboardingDialog — mobile layout", () => {
     // Undo the test-base init script that pre-marks onboarding completed —
     // otherwise the dialog never opens on `/`.
     await testPage.addInitScript(() => {
-      localStorage.removeItem("kandev.onboarding.completed");
+      localStorage.removeItem("pcraft.onboarding.completed");
     });
     await testPage.goto("/");
 

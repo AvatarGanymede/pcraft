@@ -47,4 +47,28 @@ describe("hasHydratedKanbanRouteState", () => {
       ),
     ).toBe(false);
   });
+
+  it("accepts all-workflows boot state when every workspace workflow has a snapshot", () => {
+    expect(
+      hasHydratedKanbanRouteState(
+        state({
+          workflows: {
+            activeId: null,
+            items: [
+              { id: "wf-1", workspaceId: "ws-1", name: "Development" },
+              { id: "wf-2", workspaceId: "ws-1", name: "QA" },
+            ],
+          },
+          kanbanMulti: {
+            snapshots: {
+              "wf-1": { workflowId: "wf-1", workflowName: "Development", steps: [], tasks: [] },
+              "wf-2": { workflowId: "wf-2", workflowName: "QA", steps: [], tasks: [] },
+            },
+            isLoading: false,
+          },
+        }),
+        {},
+      ),
+    ).toBe(true);
+  });
 });

@@ -9,7 +9,7 @@ import "time"
 //
 // IMPORTANT: this DTO never carries document body content. AvailableDocs
 // lists keys + titles only; the agent / UI must explicitly fetch a
-// document via the existing get_task_document_kandev MCP tool or the
+// document via the existing get_task_document_pcraft MCP tool or the
 // HTTP document endpoint.
 type TaskContext struct {
 	Task            TaskRef            `json:"task"`

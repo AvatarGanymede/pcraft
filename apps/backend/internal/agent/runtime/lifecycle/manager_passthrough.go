@@ -18,6 +18,7 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/agentctl/server/process"
 	agentctltypes "github.com/AvatarGanymede/pcraft/internal/agentctl/types"
 	"github.com/AvatarGanymede/pcraft/internal/events"
+	"github.com/AvatarGanymede/pcraft/internal/mcp/names"
 	v1 "github.com/AvatarGanymede/pcraft/pkg/api/v1"
 )
 
@@ -231,9 +232,9 @@ const (
 	// metadataKeyPassthroughMCPEnv carries env vars the MCP strategy needs on the
 	// agent process (e.g. opencode's OPENCODE_CONFIG), merged in buildPassthroughEnv.
 	metadataKeyPassthroughMCPEnv = "passthrough_mcp_env"
-	// kandevMCPServerName is the reserved name of kandev's own HTTP MCP server,
+	// pcraftMCPServerName is the reserved name of Pcraft's own HTTP MCP server,
 	// which exposes the task tools to the agent.
-	kandevMCPServerName = "kandev"
+	pcraftMCPServerName = names.ServerName
 )
 
 // redactPassthroughArgs masks secret-bearing MCP override values before the
@@ -344,7 +345,7 @@ func (m *Manager) passthroughMCPServers(ctx context.Context, execution *AgentExe
 		return nil, fmt.Errorf("standalone port unavailable for passthrough MCP config")
 	}
 	servers := []agentctltypes.McpServer{{
-		Name: kandevMCPServerName,
+		Name: pcraftMCPServerName,
 		Type: string(mcpconfig.ServerTypeHTTP),
 		URL:  fmt.Sprintf("http://localhost:%d/mcp", port),
 	}}
@@ -353,7 +354,7 @@ func (m *Manager) passthroughMCPServers(ctx context.Context, execution *AgentExe
 		return nil, err
 	}
 	for _, srv := range profileServers {
-		if srv.Name == kandevMCPServerName {
+		if names.IsReservedServer(srv.Name) {
 			continue
 		}
 		servers = append(servers, srv)

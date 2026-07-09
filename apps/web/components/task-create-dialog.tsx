@@ -5,6 +5,7 @@ import type { JiraTicket } from "@/lib/types/jira";
 import type { LinearIssue } from "@/lib/types/linear";
 import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@pcraft/ui/dialog";
 import { Label } from "@pcraft/ui/label";
+import { Input } from "@pcraft/ui/input";
 import type { Task, Repository } from "@/lib/types/http";
 import { SHORTCUTS } from "@/lib/keyboard/constants";
 import { useIsUtilityConfigured } from "@/hooks/use-is-utility-configured";
@@ -138,6 +139,17 @@ function CreateModeBody(props: DialogFormBodyProps) {
               />
             </div>
           )}
+          <div className="grid gap-1.5">
+            <Label htmlFor="task-jnpm-id-input">JNPM ID</Label>
+            <Input
+              id="task-jnpm-id-input"
+              data-testid="task-jnpm-id-input"
+              value={props.jnpmId}
+              onChange={(e) => props.onJnpmIdChange(e.target.value)}
+              disabled={isTaskStarted}
+              placeholder="JNPM单号，需要带#"
+            />
+          </div>
         </div>
       </section>
       <section className="rounded-lg border border-border bg-muted/30 p-4">
@@ -254,6 +266,7 @@ type SubmitWiringArgs = {
   isEditMode: boolean;
   p4Values: P4TaskFormValues;
   taskFormConfig: import("@/lib/task-form-config").TaskFormConfig;
+  jnpmId: string;
 };
 
 function useSubmitHandlersWiring({
@@ -266,6 +279,7 @@ function useSubmitHandlersWiring({
   isEditMode,
   p4Values,
   taskFormConfig,
+  jnpmId,
 }: SubmitWiringArgs) {
   const { workspaceId, workflowId, editingTask, onSuccess, onCreateSession, onOpenChange } = props;
   const { parentTaskId } = props;
@@ -314,6 +328,7 @@ function useSubmitHandlersWiring({
     workspacePath: fs.workspacePath,
     taskFormConfig,
     dynamicValues: p4Values.values,
+    jnpmId,
   });
 }
 
@@ -353,6 +368,46 @@ function useCreateModeFormSync(
   }, [isCreateMode, dynamicFormValid, fs]);
 }
 
+// Local create-form state that lives outside the shared DialogFormState: the
+// dynamic P4 field values and the optional JNPM ticket number. The JNPM id is
+// persisted into task metadata as `jnpm_id` and later used to route
+// notifications to the ticket assignee. Reset on each open.
+function useDialogDynamicFormState(open: boolean) {
+  const [p4Values, setP4Values] = useState<P4TaskFormValues>({ values: {} });
+  const onP4ValuesChange = useCallback((patch: Partial<P4TaskFormValues>) => {
+    setP4Values((prev) => ({ ...prev, ...patch }));
+  }, []);
+  const [jnpmId, setJnpmId] = useState("");
+  useEffect(() => {
+    if (open) setJnpmId("");
+  }, [open]);
+  return { p4Values, onP4ValuesChange, jnpmId, setJnpmId };
+}
+
+// Resolves the workspace's custom new-task form (falling back to the default
+// single-prompt form) plus the P4-binding gate that blocks create when the
+// workspace has no bound P4 client (there is no working directory to run in).
+function useResolvedTaskForm(
+  workspaceId: string | null,
+  isCreateMode: boolean,
+  submitBlockedReason: string | null | undefined,
+) {
+  const workspaceItem = useAppStore((state) =>
+    workspaceId ? (state.workspaces.items.find((w) => w.id === workspaceId) ?? null) : null,
+  );
+  const taskFormConfig = useMemo(
+    () => resolveTaskFormConfig(workspaceItem?.task_form_config),
+    [workspaceItem],
+  );
+  const p4Unbound = isCreateMode && !(workspaceItem?.p4_client ?? "").trim();
+  const effectiveSubmitBlockedReason =
+    submitBlockedReason ??
+    (p4Unbound
+      ? "This workspace has no P4 workspace configured. Configure it in Settings first."
+      : undefined);
+  return { taskFormConfig, p4Unbound, effectiveSubmitBlockedReason };
+}
+
 export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
   const { open, mode = "create", workspaceId, workflowId, defaultStepId } = props;
   const { editingTask, initialValues } = props;
@@ -361,29 +416,12 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
   const isCreateMode = mode === "create";
   const isTaskStarted = computeIsTaskStarted(isEditMode, editingTask);
   const fs = useDialogFormState(open, workspaceId, workflowId, initialValues);
-  const [p4Values, setP4Values] = useState<P4TaskFormValues>({
-    values: {},
-  });
-  const onP4ValuesChange = useCallback((patch: Partial<P4TaskFormValues>) => {
-    setP4Values((prev) => ({ ...prev, ...patch }));
-  }, []);
-  // Resolve the workspace's custom new-task form (default single-prompt form
-  // when the workspace hasn't configured one).
-  const workspaceItem = useAppStore((state) =>
-    workspaceId ? (state.workspaces.items.find((w) => w.id === workspaceId) ?? null) : null,
+  const { p4Values, onP4ValuesChange, jnpmId, setJnpmId } = useDialogDynamicFormState(open);
+  const { taskFormConfig, p4Unbound, effectiveSubmitBlockedReason } = useResolvedTaskForm(
+    workspaceId,
+    isCreateMode,
+    props.submitBlockedReason,
   );
-  const taskFormConfig = useMemo(
-    () => resolveTaskFormConfig(workspaceItem?.task_form_config),
-    [workspaceItem],
-  );
-  // The task cwd comes from the workspace's bound P4 client (1:1). Block create
-  // when the workspace has no binding — there is no working directory to run in.
-  const p4Unbound = isCreateMode && !(workspaceItem?.p4_client ?? "").trim();
-  const effectiveSubmitBlockedReason =
-    props.submitBlockedReason ??
-    (p4Unbound
-      ? "This workspace has no P4 workspace configured. Configure it in Settings first."
-      : undefined);
   useCreateModeFormSync(isCreateMode, open, fs, taskFormConfig, p4Values.values);
   const { toast } = useToast();
   const sessionRepoName = useSessionRepoName(isSessionMode);
@@ -425,6 +463,7 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     isEditMode,
     p4Values,
     taskFormConfig,
+    jnpmId,
   });
   const guardedHandleSubmit = useGuardedSubmit(
     submitHandlers.handleSubmit,
@@ -464,6 +503,8 @@ export function useTaskCreateDialogSetup(props: TaskCreateDialogProps) {
     taskFormConfig,
     p4Unbound,
     effectiveSubmitBlockedReason,
+    jnpmId,
+    setJnpmId,
   };
 }
 

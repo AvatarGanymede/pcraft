@@ -353,6 +353,8 @@ export type SubmitHandlersDeps = {
   taskFormConfig: import("@/lib/task-form-config").TaskFormConfig;
   /** Dynamic form values keyed by field `def`. */
   dynamicValues: Record<string, string>;
+  /** Optional JNPM ticket number (raw input, may include "#"); stored as `jnpm_id` metadata. */
+  jnpmId: string;
   /**
    * Optional async transform applied to the trimmed description before the
    * API payload is built. Used by feature wrappers (e.g. Improve Kandev) to
@@ -444,4 +446,7 @@ export type DialogFormBodyProps = {
   /** True in create mode when the selected pcraft workspace has no bound P4
    * client — the body shows a hint and submit is blocked. */
   p4Unbound?: boolean;
+  /** Optional JNPM ticket number (raw, may include "#"); persisted as `jnpm_id` metadata. */
+  jnpmId: string;
+  onJnpmIdChange: (value: string) => void;
 };

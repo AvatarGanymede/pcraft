@@ -16,7 +16,7 @@ import (
 //
 // Document bodies are intentionally NOT returned — AvailableDocs lists
 // keys + titles only. Agents must explicitly fetch a document via
-// get_task_document_kandev (phase 2) and the UI uses the existing
+// get_task_document_pcraft (phase 2) and the UI uses the existing
 // document endpoint.
 func (s *HandoffService) GetTaskContext(ctx context.Context, taskID string) (*v1.TaskContext, error) {
 	if taskID == "" {

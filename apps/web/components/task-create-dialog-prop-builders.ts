@@ -75,6 +75,8 @@ export function buildDialogFormBodyProps(
     onP4ValuesChange: setup.onP4ValuesChange,
     taskFormConfig: setup.taskFormConfig,
     p4Unbound: setup.p4Unbound,
+    jnpmId: setup.jnpmId,
+    onJnpmIdChange: setup.setJnpmId,
   };
 }
 

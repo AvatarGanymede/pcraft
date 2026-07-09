@@ -25,7 +25,7 @@ func TestAskUserQuestion_ToolSchema_RequiresQuestionsArray(t *testing.T) {
 	s := newTaskModeServer(t, backend, "task-current")
 
 	toolsMap := s.mcpServer.ListTools()
-	tool, ok := toolsMap["ask_user_question_kandev"]
+	tool, ok := toolsMap["ask_user_question_pcraft"]
 	require.True(t, ok, "ask_user_question tool not registered")
 
 	schema, err := json.Marshal(tool.Tool.InputSchema)
@@ -55,7 +55,7 @@ func TestAskUserQuestion_RejectsLegacyPromptShape(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"prompt": "Which database?",
 		"options": []map[string]interface{}{
 			{"label": "Postgres", "description": "Relational"},
@@ -80,7 +80,7 @@ func TestAskUserQuestion_SingleQuestion_PayloadShape(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"questions": []map[string]interface{}{
 			{
 				"id":     "q1",
@@ -135,7 +135,7 @@ func TestAskUserQuestion_MultiQuestion_BuildsMapResponse(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"questions": []map[string]interface{}{
 			{
 				"id":     "db",
@@ -194,7 +194,7 @@ func TestAskUserQuestion_RejectsTooManyQuestions(t *testing.T) {
 		}
 	}
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"questions": []map[string]interface{}{
 			makeQ("q1"), makeQ("q2"), makeQ("q3"), makeQ("q4"), makeQ("q5"),
 		},
@@ -208,7 +208,7 @@ func TestAskUserQuestion_RejectsTooFewOptions(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"questions": []map[string]interface{}{
 			{
 				"id":     "q1",
@@ -233,7 +233,7 @@ func TestAskUserQuestion_RejectionPath(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "ask_user_question_kandev", map[string]interface{}{
+	result := callTool(t, s, "ask_user_question_pcraft", map[string]interface{}{
 		"questions": []map[string]interface{}{
 			{
 				"id":     "q1",
@@ -354,7 +354,7 @@ func TestAskUserQuestion_StreamsKeepAliveDuringWait(t *testing.T) {
 	initResp := postJSONRPC(t, ts.URL+"/mcp", initReq, "")
 	require.Equal(t, http.StatusOK, initResp.statusCode, "init: %s", initResp.body)
 
-	callBody := `{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"ask_user_question_kandev","arguments":{"questions":[{"id":"q1","prompt":"Which?","options":[{"label":"A","description":"a"},{"label":"B","description":"b"}]}]}}}`
+	callBody := `{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"ask_user_question_pcraft","arguments":{"questions":[{"id":"q1","prompt":"Which?","options":[{"label":"A","description":"a"},{"label":"B","description":"b"}]}]}}}`
 	req, err := http.NewRequest(http.MethodPost, ts.URL+"/mcp", strings.NewReader(callBody))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")

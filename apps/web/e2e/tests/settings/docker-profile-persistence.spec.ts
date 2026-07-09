@@ -82,10 +82,10 @@ test.describe("Docker executor profile persistence", () => {
         state: "running",
         status: "Up 5 seconds",
         labels: {
-          "kandev.executor_profile_id": profile.id,
-          "kandev.task_id": "task-abc123",
-          "kandev.task_title": "Readable Task Title",
-          "kandev.task_environment_id": "env-123",
+          "pcraft.executor_profile_id": profile.id,
+          "pcraft.task_id": "task-abc123",
+          "pcraft.task_title": "Readable Task Title",
+          "pcraft.task_environment_id": "env-123",
         },
       },
     ];

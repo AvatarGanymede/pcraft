@@ -95,7 +95,7 @@ export type WorkflowStep = {
   stage_type?: "work" | "review" | "approval" | "custom";
   /**
    * ADR 0015: gate on_turn_complete transitions on an explicit
-   * `step_complete_kandev` MCP signal from the agent. When true, the
+   * `step_complete_pcraft` MCP signal from the agent. When true, the
    * step's auto-advance only fires once the agent (or the manual
    * fallback button) signals completion. Default false preserves
    * legacy "any turn-end advances" behaviour.

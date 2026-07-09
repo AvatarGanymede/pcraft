@@ -13,7 +13,7 @@ import (
 // TestStepRequiresCompletionSignal covers every silent-false branch and the
 // positive path of Service.StepRequiresCompletionSignal (ADR 0015 gate).
 // All four "unknown ⇒ false" cases must hold: a flaky workflow lookup must
-// never silently expose the step_complete_kandev tool.
+// never silently expose the step_complete_pcraft tool.
 func TestStepRequiresCompletionSignal(t *testing.T) {
 	ctx := context.Background()
 

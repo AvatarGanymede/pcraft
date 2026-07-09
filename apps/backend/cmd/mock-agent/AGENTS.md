@@ -14,7 +14,7 @@ Friendly aliases live in `handler.go` next to the dispatcher: `/ask-single`, `/a
 
 **2. Inline scripts — `e2e:<directive>(...)`**
 
-`script.go` parses prompts starting with `e2e:` (no leading slash) as multi-line scripts. Supported directives include `e2e:message(...)`, `e2e:thinking(...)`, `e2e:tool_use("Name", {...})`, `e2e:tool_result(...)`, `e2e:delay(ms)`, the Monitor-flavoured `e2e:monitor_start/event/end`, and the MCP-flavoured `e2e:mcp:kandev:<tool>({...})`. Comments start with `#`, blank lines are ignored. Tests live in `script_test.go`.
+`script.go` parses prompts starting with `e2e:` (no leading slash) as multi-line scripts. Supported directives include `e2e:message(...)`, `e2e:thinking(...)`, `e2e:tool_use("Name", {...})`, `e2e:tool_result(...)`, `e2e:delay(ms)`, the Monitor-flavoured `e2e:monitor_start/event/end`, and the MCP-flavoured `e2e:mcp:pcraft:<tool>({...})`. Comments start with `#`, blank lines are ignored. Tests live in `script_test.go`.
 
 Use predefined scenarios for anything you want to trigger from the slash menu or replay across sessions; use inline scripts for ad-hoc shapes inside a single E2E spec or manual session.
 

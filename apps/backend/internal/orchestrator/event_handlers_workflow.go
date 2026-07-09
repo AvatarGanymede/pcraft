@@ -58,7 +58,7 @@ func (s *Service) processOnTurnComplete(ctx context.Context, task *models.Task, 
 
 	// ADR 0015 — explicit completion signal gating (legacy path mirror of
 	// processOnTurnCompleteViaEngine). Steps marked
-	// `auto_advance_requires_signal=true` wait for a step_complete_kandev
+	// `auto_advance_requires_signal=true` wait for a step_complete_pcraft
 	// signal before evaluating their transition actions.
 	if currentStep.AutoAdvanceRequiresSignal {
 		signal, has := models.LoadPendingStepSignal(session.Metadata)
@@ -606,7 +606,7 @@ func (s *Service) reuseSessionForStep(ctx context.Context, taskID string, curren
 
 	// Transfer any queued message and pending move from the session being
 	// switched away from to the reused session — without this, a hand-off
-	// prompt queued via move_task_kandev on the previous session is orphaned
+	// prompt queued via move_task_pcraft on the previous session is orphaned
 	// and gets delivered to the wrong agent the next time that previous
 	// session is reused (e.g. on the on_turn_complete bounce back).
 	if s.messageQueue != nil {
@@ -698,7 +698,7 @@ func (s *Service) createNewSessionForStep(ctx context.Context, taskID string, cu
 		}
 	}
 
-	// Transfer any queued message (e.g. a move_task_kandev hand-off prompt) and
+	// Transfer any queued message (e.g. a move_task_pcraft hand-off prompt) and
 	// pending move from the old session to the new one — the queue is keyed by
 	// session ID, and without this the prompt would never reach the new agent.
 	if s.messageQueue != nil {
@@ -830,7 +830,7 @@ func (s *Service) processOnEnter(ctx context.Context, taskID string, session *mo
 	hasPlanMode := s.resolveStepPlanMode(ctx, session, step, isPassthrough)
 
 	if len(step.Events.OnEnter) == 0 && !sessionSwitched {
-		// Active-turn case (e.g. move_task_kandev mid-turn): the agent is still
+		// Active-turn case (e.g. move_task_pcraft mid-turn): the agent is still
 		// running and will fire agent.ready when the turn ends. Don't flip state
 		// to WAITING here — handleAgentReady's RUNNING/STARTING guard would then
 		// silence the event and orphan the queue. handleAgentReady runs
@@ -951,7 +951,7 @@ func (s *Service) processOnEnter(ctx context.Context, taskID string, session *mo
 	}
 }
 
-// applyPendingMove applies a deferred move_task_kandev call now that the agent's
+// applyPendingMove applies a deferred move_task_pcraft call now that the agent's
 // turn has ended. Synchronous: updates the task's step in the DB, runs on_exit
 // for the source step and on_enter for the target step. Bypasses
 // task.Service.MoveTask (and the task.moved event) so the orchestrator's async
@@ -1181,7 +1181,7 @@ func (s *Service) autoStartStepPrompt(
 	origin := workflowOriginFromStep(step)
 	stepName := origin.StepName
 
-	// Take any queued message (e.g. from move_task_kandev with a hand-off
+	// Take any queued message (e.g. from move_task_pcraft with a hand-off
 	// prompt) and merge it with the step's auto-start prompt — auto-start
 	// content first, hand-off after — and forward attachments verbatim.
 	// Track the original message so terminal failure paths can restore it
@@ -1368,7 +1368,7 @@ func (s *Service) fallbackFreshLaunchOnMissingExecution(
 }
 
 // takeAndMergeHandoffMessage drains any queued hand-off message for the session
-// (set by handleMoveTask via move_task_kandev or by drainQueuedMessageForPromptableSession)
+// (set by handleMoveTask via move_task_pcraft or by drainQueuedMessageForPromptableSession)
 // and merges its content + attachments into the auto-start prompt. Returns the
 // original queued message (so terminal failure paths can re-queue it via
 // requeueMessage), the merged prompt, and the converted attachments. Empty
@@ -1990,7 +1990,7 @@ func (s *Service) processOnTurnCompleteViaEngine(ctx context.Context, taskID str
 	// (or the manual fallback button) has written the pending bag entry.
 	// On gate-fail we set the session to WAITING_FOR_INPUT and bail —
 	// either the user replies (clearing the bag) or a later
-	// step_complete_kandev call triggers the out-of-band subscriber.
+	// step_complete_pcraft call triggers the out-of-band subscriber.
 	//
 	// Fail closed on step-load errors: a missing/broken step record must
 	// not silently bypass the gate (which would let a signal-required step

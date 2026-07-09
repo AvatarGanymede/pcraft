@@ -110,11 +110,11 @@ export const sshTest = backendFixture.extend<
         repositoryId: string;
         agentProfileId: string;
       }) => {
-        localStorage.setItem("kandev.onboarding.completed", "true");
-        localStorage.setItem("kandev.dialog.lastRepositoryId", JSON.stringify(repositoryId));
-        localStorage.setItem("kandev.dialog.lastAgentProfileId", JSON.stringify(agentProfileId));
-        localStorage.setItem("kandev.dialog.lastBranch", JSON.stringify("main"));
-        window.__KANDEV_API_PORT = backendPort;
+        localStorage.setItem("pcraft.onboarding.completed", "true");
+        localStorage.setItem("pcraft.dialog.lastRepositoryId", JSON.stringify(repositoryId));
+        localStorage.setItem("pcraft.dialog.lastAgentProfileId", JSON.stringify(agentProfileId));
+        localStorage.setItem("pcraft.dialog.lastBranch", JSON.stringify("main"));
+        window.__pcraft_API_PORT = backendPort;
       },
       {
         backendPort: String((backend as BackendContext).port),

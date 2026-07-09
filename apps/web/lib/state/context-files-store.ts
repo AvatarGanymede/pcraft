@@ -18,7 +18,7 @@ type ContextFilesStore = {
   hydrateSession: (sessionId: string) => void;
 };
 
-const STORAGE_PREFIX = "kandev.contextFiles.";
+const STORAGE_PREFIX = "pcraft.contextFiles.";
 
 function persistFiles(sessionId: string, files: ContextFile[]) {
   setSessionStorage(

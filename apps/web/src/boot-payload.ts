@@ -43,16 +43,16 @@ export type BootPayload = {
 };
 
 type BootWindow = Window & {
-  __KANDEV_BOOT_PAYLOAD__?: unknown;
-  __KANDEV_DEBUG?: boolean;
+  __PCRAFT_BOOT_PAYLOAD__?: unknown;
+  __PCRAFT_DEBUG?: boolean;
 };
 
 export function readBootPayload(win: Window = window): BootPayload {
-  const payload = (win as BootWindow).__KANDEV_BOOT_PAYLOAD__;
+  const payload = (win as BootWindow).__PCRAFT_BOOT_PAYLOAD__;
   if (!isRecord(payload)) return { initialState: {} };
   const runtime = isRecord(payload.runtime) ? readRuntime(payload.runtime) : undefined;
   if (runtime?.debug) {
-    (win as BootWindow).__KANDEV_DEBUG = true;
+    (win as BootWindow).__PCRAFT_DEBUG = true;
   }
 
   return {
@@ -68,7 +68,7 @@ export async function loadBootPayload(
   win: Window = window,
   fetcher: typeof fetch = fetch,
 ): Promise<BootPayload> {
-  const injected = (win as BootWindow).__KANDEV_BOOT_PAYLOAD__;
+  const injected = (win as BootWindow).__PCRAFT_BOOT_PAYLOAD__;
   if (isRecord(injected)) {
     return readBootPayload(win);
   }
@@ -80,7 +80,7 @@ export async function loadBootPayload(
     const response = await fetcher(url.toString(), { cache: "no-store", credentials: "include" });
     if (!response.ok) return { initialState: {} };
     const payload = await response.json();
-    (win as BootWindow).__KANDEV_BOOT_PAYLOAD__ = payload;
+    (win as BootWindow).__PCRAFT_BOOT_PAYLOAD__ = payload;
     return readBootPayload(win);
   } catch {
     return { initialState: {} };

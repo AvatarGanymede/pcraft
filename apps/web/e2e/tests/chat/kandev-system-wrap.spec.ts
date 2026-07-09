@@ -12,7 +12,7 @@ import type { ApiClient } from "../../helpers/api-client";
  *  - The visible `content` is the user's original text — the wrap is
  *    stripped server-side via Message.ToAPI.
  *  - The wrap carries the task ID, session ID, and the MCP tools list
- *    (ask_user_question_kandev, create_task_plan_kandev, …) so the agent
+ *    (ask_user_question_pcraft, create_task_plan_pcraft, …) so the agent
  *    can act on the kandev platform without re-discovering its identifiers.
  *  - Wrap is applied ONCE on the first prompt. Follow-up prompts and
  *    resumes do not re-wrap (covered by backend lifecycle tests).
@@ -74,8 +74,8 @@ test.describe("Kandev system prompt wrap on first launch", () => {
     // Guard one representative MCP tool from kandev-context.md — if the
     // template drifts the test will fail loudly rather than silently passing
     // an empty wrap.
-    expect(raw).toContain("ask_user_question_kandev");
-    expect(raw).toContain("create_task_plan_kandev");
+    expect(raw).toContain("ask_user_question_pcraft");
+    expect(raw).toContain("create_task_plan_pcraft");
     // The user's text must survive inside the wrapped form.
     expect(raw).toContain('e2e:message("ack")');
 

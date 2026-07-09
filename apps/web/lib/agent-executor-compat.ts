@@ -4,7 +4,9 @@ import { createDebugLogger } from "@/lib/debug/log";
 
 const debug = createDebugLogger("executor-compat");
 
-const REMOTE_EXECUTOR_TYPES = new Set(["local_docker", "remote_docker", "sprites"]);
+// Only the local executor is supported. Remote executors (Docker, Sprites, SSH)
+// have been removed — no executor types require remote agent credentials.
+const REMOTE_EXECUTOR_TYPES: Set<string> = new Set();
 
 export function executorRequiresAgentCredentials(executorType?: string | null): boolean {
   if (!executorType) return false;
@@ -68,13 +70,9 @@ function evalAgentCompat(
 }
 
 /**
- * For local/worktree executors, agents need no extra credentials → always supported.
- * For remote executors (Docker/Sprites), the executor profile must carry either:
- *   - a non-env auth method ID for the agent's spec in `remote_credentials`, or
- *   - a non-null secret keyed by an env method ID in `remote_auth_secrets`.
- * Agents without a remote-auth spec (Copilot/Amp/TUI) cannot
- * carry credentials on remote executors → blocked. A spec with zero methods
- * means "no credentials needed" (mock-agent for tests) → allowed.
+ * For local executors, agents always need no extra credentials → always supported.
+ * Remote executors (Docker/Sprites) have been removed — no executor types
+ * require remote agent credentials.
  *
  * Spec IDs are registry-type strings ("claude-acp", "codex-acp", …) which the
  * frontend exposes as `AgentProfileOption.agent_name`. `agent_id` is a DB UUID

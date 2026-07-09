@@ -79,7 +79,7 @@ func (s *Service) publishQueueStatusEvent(ctx context.Context, sessionID string)
 }
 
 // requeueMessage re-enqueues a message that could not be delivered, publishing a queue status event on success.
-// Preserves the original Metadata (e.g. sender_task_id from message_task_kandev)
+// Preserves the original Metadata (e.g. sender_task_id from message_task_pcraft)
 // so attribution survives transient failures + retries.
 func (s *Service) requeueMessage(ctx context.Context, queuedMsg *messagequeue.QueuedMessage, queuedBy string) {
 	requeuedMsg, queueErr := s.messageQueue.QueueMessageWithMetadata(
@@ -250,7 +250,7 @@ func (s *Service) handleAgentReady(ctx context.Context, data watcher.AgentEventD
 	// Complete the current turn
 	s.completeTurnForSession(ctx, data.SessionID)
 
-	// A move_task_kandev call during this turn deferred the actual move to
+	// A move_task_pcraft call during this turn deferred the actual move to
 	// avoid racing on_enter against the running turn. Apply it now: the move
 	// is the explicit transition the agent requested, so skip the regular
 	// on_turn_complete evaluation against the (still old) step.
@@ -259,7 +259,7 @@ func (s *Service) handleAgentReady(ctx context.Context, data watcher.AgentEventD
 		return
 	}
 
-	// Explicit agent-requested moves (move_task_kandev) take precedence over pending clarifications.
+	// Explicit agent-requested moves (move_task_pcraft) take precedence over pending clarifications.
 	if s.sessionHasPendingClarification(ctx, data.SessionID) {
 		s.logger.Info("deferring on_turn_complete while clarification is pending",
 			zap.String("task_id", data.TaskID),
@@ -382,7 +382,7 @@ func (s *Service) executeQueuedMessage(callerSessionID string, queuedMsg *messag
 			WithPlanMode(queuedMsg.PlanMode).
 			WithAttachments(attachments)
 		// Merge any extra metadata captured at queue time (e.g. sender_task_id
-		// from message_task_kandev) so the resulting Message row carries the
+		// from message_task_pcraft) so the resulting Message row carries the
 		// full context.
 		metaMap := mergeMetadata(meta.ToMap(), queuedMsg.Metadata)
 		err := s.messageCreator.CreateUserMessage(promptCtx, queuedMsg.TaskID, queuedMsg.Content, queuedMsg.SessionID, turnID, metaMap)

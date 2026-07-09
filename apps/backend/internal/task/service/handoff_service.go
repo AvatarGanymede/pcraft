@@ -135,7 +135,7 @@ func (p WorkspacePolicy) NeedsAttachment() bool {
 }
 
 // RelatedTask is the lightweight projection of a task surfaced through the
-// list_related_tasks_kandev MCP tool. Document keys are precomputed so an
+// list_related_tasks_pcraft MCP tool. Document keys are precomputed so an
 // agent can decide what to fetch without a follow-up list call.
 type RelatedTask struct {
 	ID            string             `json:"id"`
@@ -268,7 +268,7 @@ func NewHandoffService(
 
 // parentMutex serialises sequential-child creation per parent. A naive
 // "previous sibling = most recent non-archived" lookup races when two
-// create_task_kandev calls arrive concurrently — both could pick the
+// create_task_pcraft calls arrive concurrently — both could pick the
 // same previous sibling and the resulting blocker chain would skip a
 // task. Per-parent locking keeps the chain deterministic without a
 // schema change.

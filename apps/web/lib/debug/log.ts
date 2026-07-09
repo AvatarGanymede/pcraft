@@ -3,8 +3,8 @@
  *
  * Active when any of the following is true:
  *   - `NODE_ENV !== "production"` (i.e. `make dev`)
- *   - `VITE_KANDEV_DEBUG=true` at build time (inlined into the bundle)
- *   - `window.__KANDEV_DEBUG === true` at runtime (set by `layout.tsx` when
+ *   - `VITE_pcraft_DEBUG=true` at build time (inlined into the bundle)
+ *   - `window.__PCRAFT_DEBUG === true` at runtime (set by `layout.tsx` when
  *     the server-side env var is present, e.g. `make start-debug`)
  *
  * The runtime `window` check exists because `make start-debug` re-uses the
@@ -208,26 +208,26 @@ export function isDebug(): boolean {
   const processDev = typeof process !== "undefined" && process.env.NODE_ENV !== "production";
   const processDebug =
     typeof process !== "undefined" &&
-    (process.env.KANDEV_DEBUG === "true" || process.env.VITE_KANDEV_DEBUG === "true");
+    (process.env.KANDEV_DEBUG === "true" || process.env.VITE_pcraft_DEBUG === "true");
   debugCached =
     viteDev ||
     processDev ||
-    env.VITE_KANDEV_DEBUG === "true" ||
+    env.VITE_pcraft_DEBUG === "true" ||
     processDebug ||
-    (typeof window !== "undefined" && window.__KANDEV_DEBUG === true);
+    (typeof window !== "undefined" && window.__PCRAFT_DEBUG === true);
   return debugCached;
 }
 
 function getViteEnv(): {
   DEV?: boolean;
-  VITE_KANDEV_DEBUG?: string;
+  VITE_pcraft_DEBUG?: string;
 } {
   return (
     (
       import.meta as unknown as {
         env?: {
           DEV?: boolean;
-          VITE_KANDEV_DEBUG?: string;
+          VITE_pcraft_DEBUG?: string;
         };
       }
     ).env ?? {}

@@ -282,7 +282,7 @@ func TestAddBranchToTask_AutoGeneratesNameWhenWouldCollide(t *testing.T) {
 // TestAddBranchToTask_DefaultsRepositoryWhenSingleRepoTask exercises the
 // agent-friendly path: omitting repository_id on a single-repo task
 // auto-resolves to that repo. Agents inside a task only have task-mode MCP
-// tools (no list_repositories_kandev), so requiring the UUID would force
+// tools (no list_repositories_pcraft), so requiring the UUID would force
 // them to hit the DB directly.
 func TestAddBranchToTask_DefaultsRepositoryWhenSingleRepoTask(t *testing.T) {
 	svc, _, repo := createTestService(t)

@@ -13,11 +13,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// kandevToolRef matches any `<name>_kandev` identifier appearing in a prompt.
-// The regex enforces snake_case and requires the _kandev suffix at a word boundary.
-var kandevToolRef = regexp.MustCompile(`\b[a-z][a-z0-9_]*_kandev\b`)
+// kandevToolRef matches any `<name>_pcraft` identifier appearing in a prompt.
+// The regex enforces snake_case and requires the _pcraft suffix at a word boundary.
+var kandevToolRef = regexp.MustCompile(`\b[a-z][a-z0-9_]*_pcraft\b`)
 
-// extractKandevTools returns the unique set of "<name>_kandev" tool names
+// extractKandevTools returns the unique set of "<name>_pcraft" tool names
 // referenced anywhere inside the given prompt text.
 func extractKandevTools(prompt string) map[string]struct{} {
 	out := make(map[string]struct{})
@@ -31,11 +31,11 @@ func extractKandevTools(prompt string) map[string]struct{} {
 // `bareName`. Returns the sorted list of bare names found. Used to catch
 // sysprompt drift in the opposite direction of the v0.28 bug — i.e. a prompt
 // that says `get_task_plan` (no suffix) when the registered tool is
-// `get_task_plan_kandev`.
+// `get_task_plan_pcraft`.
 //
 // `\b` in Go's RE2 fires at a transition between a word char (`[A-Za-z0-9_]`)
 // and a non-word char. Since `_` is a word char, `\b<bare>\b` cannot match
-// inside `<bare>_kandev` — the trailing `\b` requires a non-word char after the
+// inside `<bare>_pcraft` — the trailing `\b` requires a non-word char after the
 // last letter of `bare`, and `_` fails that test. So this regex naturally
 // distinguishes bare references from the suffixed form without an explicit
 // suffix guard.
@@ -51,11 +51,11 @@ func findBareToolReferences(prompt string, bareNames map[string]struct{}) []stri
 	return found
 }
 
-// bareNamesOf strips the `_kandev` suffix from every registered tool name and
+// bareNamesOf strips the `_pcraft` suffix from every registered tool name and
 // returns the bare set, used by findBareToolReferences as the haystack of
 // candidates to scan for.
 func bareNamesOf(registered map[string]struct{}) map[string]struct{} {
-	const suffix = "_kandev"
+	const suffix = "_pcraft"
 	out := make(map[string]struct{}, len(registered))
 	for name := range registered {
 		out[strings.TrimSuffix(name, suffix)] = struct{}{}
@@ -63,12 +63,12 @@ func bareNamesOf(registered map[string]struct{}) map[string]struct{} {
 	return out
 }
 
-// TestSyspromptToolNames_MatchMCPTaskMode verifies that every `<name>_kandev`
+// TestSyspromptToolNames_MatchMCPTaskMode verifies that every `<name>_pcraft`
 // tool referenced in the task-mode prompts (PlanMode, KandevContext,
 // DefaultPlanPrefix) is actually registered by an MCP server in ModeTask.
 //
 // This is the regression test for the v0.28 bug where the sysprompt told
-// agents to call tools like `get_task_plan_kandev` but the MCP server
+// agents to call tools like `get_task_plan_pcraft` but the MCP server
 // registered them as `get_task_plan` (no suffix), causing "Tool not found"
 // errors at runtime.
 func TestSyspromptToolNames_MatchMCPTaskMode(t *testing.T) {
@@ -95,7 +95,7 @@ func TestSyspromptToolNames_MatchMCPTaskMode(t *testing.T) {
 		referenced[name] = struct{}{}
 	}
 
-	require.NotEmpty(t, referenced, "expected task-mode prompts to reference at least one _kandev tool")
+	require.NotEmpty(t, referenced, "expected task-mode prompts to reference at least one _pcraft tool")
 
 	for name := range referenced {
 		_, ok := registered[name]
@@ -105,7 +105,7 @@ func TestSyspromptToolNames_MatchMCPTaskMode(t *testing.T) {
 	}
 }
 
-// TestSyspromptToolNames_MatchMCPConfigMode verifies that every `<name>_kandev`
+// TestSyspromptToolNames_MatchMCPConfigMode verifies that every `<name>_pcraft`
 // tool referenced in ConfigContext is registered by an MCP server in ModeConfig.
 func TestSyspromptToolNames_MatchMCPConfigMode(t *testing.T) {
 	log := newTestLogger(t)
@@ -121,7 +121,7 @@ func TestSyspromptToolNames_MatchMCPConfigMode(t *testing.T) {
 	}
 
 	referenced := extractKandevTools(sysprompt.ConfigContext())
-	require.NotEmpty(t, referenced, "expected ConfigContext to reference at least one _kandev tool")
+	require.NotEmpty(t, referenced, "expected ConfigContext to reference at least one _pcraft tool")
 
 	for name := range referenced {
 		_, ok := registered[name]
@@ -133,9 +133,9 @@ func TestSyspromptToolNames_MatchMCPConfigMode(t *testing.T) {
 
 // TestSyspromptToolNames_NoBareToolReferences catches the opposite drift: a
 // prompt that mentions a registered tool by its bare name (without the
-// `_kandev` suffix). Without this check, a typo like
+// `_pcraft` suffix). Without this check, a typo like
 // `get_task_plan` in a sysprompt would silently slip past the other tests
-// because they only inspect `_kandev`-suffixed mentions.
+// because they only inspect `_pcraft`-suffixed mentions.
 func TestSyspromptToolNames_NoBareToolReferences(t *testing.T) {
 	log := newTestLogger(t)
 	backend := NewChannelBackendClient(log)
@@ -165,7 +165,7 @@ func TestSyspromptToolNames_NoBareToolReferences(t *testing.T) {
 	for name, prompt := range cases {
 		bare := findBareToolReferences(prompt, bareNames)
 		assert.Empty(t, bare,
-			"sysprompt %s contains tool name(s) without the _kandev suffix: %v — every reference must use the suffixed form",
+			"sysprompt %s contains tool name(s) without the _pcraft suffix: %v — every reference must use the suffixed form",
 			name, bare)
 	}
 }
@@ -193,12 +193,12 @@ func TestFindBareToolReferences_DistinguishesSuffixedFromBare(t *testing.T) {
 		},
 		{
 			name:   "suffixed name is not flagged",
-			prompt: "Use list_executors_kandev to find IDs.",
+			prompt: "Use list_executors_pcraft to find IDs.",
 			want:   nil,
 		},
 		{
 			name:   "both forms in same prompt: only bare is flagged",
-			prompt: "list_executors_kandev (bare: list_executors) returns IDs.",
+			prompt: "list_executors_pcraft (bare: list_executors) returns IDs.",
 			want:   []string{"list_executors"},
 		},
 		{
@@ -222,7 +222,7 @@ func TestFindBareToolReferences_DistinguishesSuffixedFromBare(t *testing.T) {
 }
 
 // askUserQuestionSchemaFacts pulls the load-bearing structural facts from the
-// registered ask_user_question_kandev tool schema: the top-level array param
+// registered ask_user_question_pcraft tool schema: the top-level array param
 // name, its min/max bounds, and the required sub-fields of each question
 // object. These are the facts the embedded prompt contexts must mirror.
 type askUserQuestionSchemaFacts struct {
@@ -235,8 +235,8 @@ type askUserQuestionSchemaFacts struct {
 func extractAskUserQuestionFacts(t *testing.T, s *Server) askUserQuestionSchemaFacts {
 	t.Helper()
 
-	tool, ok := s.mcpServer.ListTools()["ask_user_question_kandev"]
-	require.True(t, ok, "ask_user_question_kandev not registered on this server")
+	tool, ok := s.mcpServer.ListTools()["ask_user_question_pcraft"]
+	require.True(t, ok, "ask_user_question_pcraft not registered on this server")
 
 	raw, err := json.Marshal(tool.Tool.InputSchema)
 	require.NoError(t, err)
@@ -296,7 +296,7 @@ func extractAskUserQuestionFacts(t *testing.T, s *Server) askUserQuestionSchemaF
 }
 
 // TestAskUserQuestionDocs_MatchSchema binds the embedded prompt documentation
-// for ask_user_question_kandev to the actual MCP tool schema. If the schema
+// for ask_user_question_pcraft to the actual MCP tool schema. If the schema
 // changes (param renamed, bounds adjusted, required sub-fields added or
 // removed) the prompt files must change with it — otherwise agents read stale
 // docs and send malformed payloads, which is exactly what cancelled task
@@ -315,7 +315,7 @@ func TestAskUserQuestionDocs_MatchSchema(t *testing.T) {
 	taskFacts := extractAskUserQuestionFacts(t, taskServer)
 	configFacts := extractAskUserQuestionFacts(t, configServer)
 	require.Equal(t, taskFacts, configFacts,
-		"ask_user_question_kandev schema differs between task and config modes — pick one source of truth")
+		"ask_user_question_pcraft schema differs between task and config modes — pick one source of truth")
 
 	facts := taskFacts
 	bounds := fmt.Sprintf("%d-%d", facts.minItems, facts.maxItems)

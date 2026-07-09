@@ -24,7 +24,7 @@ export const TASK_COLOR_LABEL: Record<TaskColor, string> = {
   pink: "Pink",
 };
 
-export const TASK_COLORS_STORAGE_KEY = "kandev.taskColors";
+export const TASK_COLORS_STORAGE_KEY = "pcraft.taskColors";
 export const TASK_COLORS_CHANGED_EVENT = "kandev:task-colors-changed";
 
 function isTaskColor(value: unknown): value is TaskColor {

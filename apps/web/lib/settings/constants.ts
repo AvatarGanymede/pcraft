@@ -1,10 +1,10 @@
 export const STORAGE_KEYS = {
-  BACKEND_URL: "kandev.settings.backendUrl",
-  ONBOARDING_COMPLETED: "kandev.onboarding.completed",
-  LAST_AGENT_PROFILE_ID: "kandev.dialog.lastAgentProfileId",
-  LAST_REPOSITORY_ID: "kandev.dialog.lastRepositoryId",
-  LAST_BRANCH: "kandev.dialog.lastBranch",
-  LAST_EXECUTOR_PROFILE_ID: "kandev.dialog.lastExecutorProfileId",
+  BACKEND_URL: "pcraft.settings.backendUrl",
+  ONBOARDING_COMPLETED: "pcraft.onboarding.completed",
+  LAST_AGENT_PROFILE_ID: "pcraft.dialog.lastAgentProfileId",
+  LAST_REPOSITORY_ID: "pcraft.dialog.lastRepositoryId",
+  LAST_BRANCH: "pcraft.dialog.lastBranch",
+  LAST_EXECUTOR_PROFILE_ID: "pcraft.dialog.lastExecutorProfileId",
 } as const;
 
 export const DEFAULT_BACKEND_URL = "http://localhost:38429";

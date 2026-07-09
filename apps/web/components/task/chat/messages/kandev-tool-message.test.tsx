@@ -7,7 +7,7 @@ import { sessionId as toSessionId, taskId as toTaskId, type Message } from "@/li
 // orchestrator for an MCP tool_call. The shape mirrors live production data
 // observed on a real session:
 //   - `metadata.tool_name`    — NOT set
-//   - `metadata.title`        — raw tool name (`mcp__kandev__list_*_kandev`)
+//   - `metadata.title`        — raw tool name (`mcp__pcraft__list_*_pcraft`)
 //   - `comment.content`       — same raw tool name
 //   - `normalized.generic.name` — the ACP adapter's *category* ("other"),
 //                                 NOT the tool name
@@ -48,7 +48,7 @@ function kandevToolCall(opts: {
 
 describe("hasKandevRenderer", () => {
   it("matches a registered kandev tool", () => {
-    expect(hasKandevRenderer(kandevToolCall({ toolName: "mcp__kandev__list_tasks_kandev" }))).toBe(
+    expect(hasKandevRenderer(kandevToolCall({ toolName: "mcp__pcraft__list_tasks_pcraft" }))).toBe(
       true,
     );
   });
@@ -60,7 +60,7 @@ describe("hasKandevRenderer", () => {
 
   it("does not match kandev tools with no registered renderer", () => {
     expect(
-      hasKandevRenderer(kandevToolCall({ toolName: "mcp__kandev__never_heard_of_it_kandev" })),
+      hasKandevRenderer(kandevToolCall({ toolName: "mcp__pcraft__never_heard_of_it_pcraft" })),
     ).toBe(false);
   });
 });
@@ -81,7 +81,7 @@ describe("KandevToolMessage list renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "mcp__kandev__list_workflow_steps_kandev",
+          toolName: "mcp__pcraft__list_workflow_steps_pcraft",
           input: { workflow_id: "f058586c-8a32-474b-ac02-eef47c938b41" },
           resultJson: {
             steps: [
@@ -114,7 +114,7 @@ describe("KandevToolMessage list renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "list_tasks_kandev",
+          toolName: "list_tasks_pcraft",
           input: { workflow_id: "wf-1" },
           resultJson: {
             tasks: [
@@ -138,7 +138,7 @@ describe("KandevToolMessage list renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
           resultJson: {
             workspaces: [
               { id: "w1", name: "Main" },
@@ -162,7 +162,7 @@ describe("KandevToolMessage task renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "kandev/create_task_kandev",
+          toolName: "kandev/create_task_pcraft",
           input: { title: FIX_LOGIN_BUG, description: "..." },
           resultJson: { id: "new-id", title: FIX_LOGIN_BUG, state: "CREATED" },
         })}
@@ -177,7 +177,7 @@ describe("KandevToolMessage task renderers", () => {
     const html = renderToStaticMarkup(
       <KandevToolMessage
         comment={kandevToolCall({
-          toolName: "mcp__kandev__update_task_kandev",
+          toolName: "mcp__pcraft__update_task_pcraft",
           input: { task_id: "t1", state: COMPLETED },
           resultJson: { id: "t1", title: "Old title", state: COMPLETED },
         })}
@@ -194,7 +194,7 @@ describe("KandevToolMessage document & question renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "mcp__kandev__get_task_plan_kandev",
+          toolName: "mcp__pcraft__get_task_plan_pcraft",
           input: { task_id: "t1" },
           resultJson: {
             id: "p1",
@@ -218,7 +218,7 @@ describe("KandevToolMessage document & question renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "mcp__kandev__ask_user_question_kandev",
+          toolName: "mcp__pcraft__ask_user_question_pcraft",
           input: {
             questions: [
               {
@@ -249,7 +249,7 @@ describe("KandevToolMessage document & question renderers", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "running",
-          toolName: "mcp__kandev__ask_user_question_kandev",
+          toolName: "mcp__pcraft__ask_user_question_pcraft",
           input: {
             questions: [
               { id: "q1", prompt: "Pick one", options: [{ label: "A" }, { label: "B" }] },
@@ -267,7 +267,7 @@ describe("KandevToolMessage document & question renderers", () => {
   it("does not render anything when the renderer is missing", () => {
     const html = renderToStaticMarkup(
       <KandevToolMessage
-        comment={kandevToolCall({ toolName: "mcp__kandev__unknown_tool_kandev" })}
+        comment={kandevToolCall({ toolName: "mcp__pcraft__unknown_tool_pcraft" })}
       />,
     );
     expect(html).toBe("");
@@ -303,7 +303,7 @@ describe("KandevToolMessage permission UI", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={pendingPermissionMessage("tc-1")}
       />,
@@ -318,7 +318,7 @@ describe("KandevToolMessage permission UI", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "complete",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
       />,
     );
@@ -331,7 +331,7 @@ describe("KandevToolMessage permission UI", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={pendingPermissionMessage("tc-1")}
       />,
@@ -345,7 +345,7 @@ describe("KandevToolMessage permission UI", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={pendingPermissionMessage("tc-1")}
       />,
@@ -368,7 +368,7 @@ describe("KandevToolMessage resolved-permission overlay", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
       />,
@@ -382,7 +382,7 @@ describe("KandevToolMessage resolved-permission overlay", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
       />,
@@ -395,7 +395,7 @@ describe("KandevToolMessage resolved-permission overlay", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "error",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
       />,
@@ -408,7 +408,7 @@ describe("KandevToolMessage resolved-permission overlay", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
           resultJson: { workspaces: [{ id: "w1", name: "Main" }], total: 1 },
         })}
         permissionMessage={resolvedPermissionMessage("tc-1", "approved")}
@@ -422,7 +422,7 @@ describe("KandevToolMessage resolved-permission overlay", () => {
       <KandevToolMessage
         comment={kandevToolCall({
           status: "pending",
-          toolName: "mcp__kandev__list_workspaces_kandev",
+          toolName: "mcp__pcraft__list_workspaces_pcraft",
         })}
         permissionMessage={resolvedPermissionMessage("tc-1", "rejected")}
       />,

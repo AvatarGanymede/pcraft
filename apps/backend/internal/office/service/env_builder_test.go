@@ -106,7 +106,7 @@ func TestBuildEnvVars_TaskIDExtractedFromPayload(t *testing.T) {
 	}
 }
 
-func TestBuildEnvVars_KandevCLI(t *testing.T) {
+func TestBuildEnvVars_pcraftCLI(t *testing.T) {
 	svc := newTestService(t)
 	svc.SetAgentctlBinaryPath("/usr/local/bin/agentctl")
 	si := service.NewSchedulerIntegration(svc, 0)
@@ -124,7 +124,7 @@ func TestBuildEnvVars_KandevCLI(t *testing.T) {
 	}
 }
 
-func TestBuildEnvVars_KandevCLI_NotSetWhenEmpty(t *testing.T) {
+func TestBuildEnvVars_pcraftCLI_NotSetWhenEmpty(t *testing.T) {
 	svc := newTestService(t)
 	// Do not set agentctl binary path
 	si := service.NewSchedulerIntegration(svc, 0)

@@ -191,7 +191,7 @@ function UtilityAgentPicker({
       </Select>
       <p className="text-xs text-muted-foreground">
         The utility agent that interprets each Slack message and creates the Kandev task. It runs
-        with Kandev MCP tools wired in (list_workspaces_kandev, create_task_kandev, …) so it picks
+        with Kandev MCP tools wired in (list_workspaces_pcraft, create_task_pcraft, …) so it picks
         the destination Kandev workspace + workflow + repo from context. Built-in agents use your
         default model from{" "}
         <Link href="/settings/utility-agents" className="underline cursor-pointer">

@@ -10,6 +10,7 @@ type Workflow = { id: string; workspaceId: string; name: string };
 type MockState = {
   connection: { status: string };
   workflows: { items: Workflow[] };
+  kanban: { workflowId: string | null; steps: unknown[]; tasks: unknown[]; isLoading: boolean };
   kanbanMulti: { snapshots: Record<string, unknown>; isLoading: boolean };
   clearKanbanMulti: typeof mockClearKanbanMulti;
   setKanbanMultiLoading: typeof mockSetKanbanMultiLoading;
@@ -19,6 +20,7 @@ type MockState = {
 let mockState: MockState = {
   connection: { status: "connected" },
   workflows: { items: [] },
+  kanban: { workflowId: "wf-A", steps: [], tasks: [{ id: "t-1" }], isLoading: false },
   kanbanMulti: { snapshots: {}, isLoading: false },
   clearKanbanMulti: mockClearKanbanMulti,
   setKanbanMultiLoading: mockSetKanbanMultiLoading,
@@ -27,7 +29,12 @@ let mockState: MockState = {
 
 vi.mock("@/components/state-provider", () => ({
   useAppStore: (selector: (s: MockState) => unknown) => selector(mockState),
-  useAppStoreApi: () => ({ getState: () => mockState }),
+  useAppStoreApi: () => ({
+    getState: () => mockState,
+    setState: (updater: (state: MockState) => MockState) => {
+      mockState = updater(mockState);
+    },
+  }),
 }));
 
 vi.mock("@/lib/api", () => ({
@@ -42,6 +49,7 @@ function resetMocks(workflows: Workflow[] = []) {
   mockState = {
     connection: { status: "connected" },
     workflows: { items: workflows },
+    kanban: { workflowId: "wf-A", steps: [], tasks: [{ id: "t-1" }], isLoading: false },
     kanbanMulti: { snapshots: {}, isLoading: false },
     clearKanbanMulti: mockClearKanbanMulti,
     setKanbanMultiLoading: mockSetKanbanMultiLoading,
@@ -97,6 +105,12 @@ describe("useAllWorkflowSnapshots — workspace scoping", () => {
     rerender({ workspaceId: "ws-B" });
 
     await waitFor(() => expect(mockClearKanbanMulti).toHaveBeenCalledTimes(1));
+    expect(mockState.kanban).toEqual({
+      workflowId: null,
+      steps: [],
+      tasks: [],
+      isLoading: false,
+    });
   });
 
   it("skips refetch when workspace + workflow set is unchanged across renders", async () => {

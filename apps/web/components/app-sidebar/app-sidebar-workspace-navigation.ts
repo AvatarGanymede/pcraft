@@ -3,7 +3,7 @@ export type SidebarWorkspace = {
   office_workflow_id?: string | null;
 };
 
-export const LAST_KANBAN_WORKSPACE_KEY = "kandev.lastKanbanWorkspaceId";
+export const LAST_KANBAN_WORKSPACE_KEY = "pcraft.lastKanbanWorkspaceId";
 export const ACTIVE_WORKSPACE_COOKIE = "kandev-active-workspace";
 export const OFFICE_ACTIVE_WORKSPACE_COOKIE = "office-active-workspace";
 const ACTIVE_WORKSPACE_COOKIE_MAX_AGE = 31536000;

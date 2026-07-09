@@ -12,10 +12,10 @@ export function isDebugUI(): boolean {
   if (debugUiCached !== undefined) return debugUiCached;
   const env = getViteEnv();
   debugUiCached =
-    env.VITE_KANDEV_DEBUG === "true" ||
+    env.VITE_pcraft_DEBUG === "true" ||
     (typeof process !== "undefined" &&
-      (process.env.KANDEV_DEBUG === "true" || process.env.VITE_KANDEV_DEBUG === "true")) ||
-    (typeof window !== "undefined" && window.__KANDEV_DEBUG === true);
+      (process.env.KANDEV_DEBUG === "true" || process.env.VITE_pcraft_DEBUG === "true")) ||
+    (typeof window !== "undefined" && window.__PCRAFT_DEBUG === true);
   return debugUiCached;
 }
 
@@ -28,12 +28,12 @@ export function getBackendConfig(): AppConfig {
   }
 
   // Client-side URL resolution:
-  // 1. Port-based URL via __KANDEV_API_PORT (dev mode: browser on :37429, API on :38429)
+  // 1. Port-based URL via __pcraft_API_PORT (dev mode: browser on :37429, API on :38429)
   // 2. Vite env port (Vite dev server injects VITE_* env at build time)
   // 3. Same-origin (production: Go serves the SPA and API on one port)
   //    Works for any hosting scenario: localhost, custom domain, Tailscale, etc.
   const env = getViteEnv();
-  const port = readPort(window.__KANDEV_API_PORT) ?? readPort(env.VITE_KANDEV_API_PORT);
+  const port = readPort(window.__pcraft_API_PORT) ?? readPort(env.VITE_pcraft_API_PORT);
   if (port) {
     const protocol = window.location.protocol;
     return { apiBaseUrl: `${protocol}//${window.location.hostname}:${port}` };

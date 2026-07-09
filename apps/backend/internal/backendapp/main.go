@@ -22,6 +22,7 @@ import (
 
 	// Common packages
 	"github.com/AvatarGanymede/pcraft/internal/common/config"
+	"github.com/AvatarGanymede/pcraft/internal/common/dotenv"
 	"github.com/AvatarGanymede/pcraft/internal/common/logger"
 
 	// Event bus
@@ -181,6 +182,16 @@ func Run(args []string, build BuildInfo) int {
 	if parsedFlags.Version {
 		fmt.Printf("kandev version %s (commit %s, built %s)\n", Version, Commit, BuildTime)
 		return 0
+	}
+
+	// Load optional <pcraft-home>/.env before anything reads the environment,
+	// so integration credentials (JNPM, Lark, admin email, …) are available to
+	// both viper (PCRAFT_* config) and the direct os.Getenv reads in the
+	// notification wiring. Real environment variables still take precedence.
+	if envPath, applied, envErr := dotenv.Load(); envErr != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to read %s: %v\n", envPath, envErr)
+	} else if applied > 0 {
+		fmt.Fprintf(os.Stderr, "Loaded %d env var(s) from %s\n", applied, envPath)
 	}
 
 	// 1. Load configuration
@@ -606,7 +617,7 @@ func startGatewayAndServe(
 		ctx, log, eventBus, services.Task, services.User,
 		orchestratorSvc, lifecycleMgr, agentRegistry,
 		repos.Notification, repos.Task, repos.Terminal, services.GitHub,
-		cfg.ResolvedHomeDir(),
+		cfg.ResolvedHomeDir(), resolvePublicBaseURL(cfg),
 	)
 	if terminalSvc != nil {
 		services.Terminal = terminalSvc
@@ -656,8 +667,8 @@ func startGatewayAndServe(
 
 	// Wire the Slack agent runner. Slack triage uses the host-utility
 	// inference path (single-shot ACP subprocess) with the Kandev MCP
-	// server attached so the agent can call list_workflows_kandev /
-	// create_task_kandev / etc. mid-prompt. Both deps land here at the
+	// server attached so the agent can call list_workflows_pcraft /
+	// create_task_pcraft / etc. mid-prompt. Both deps land here at the
 	// same time: hostUtilityMgr just bootstrapped above, services.Utility
 	// was constructed in provideServices.
 	if services.Slack != nil && services.Utility != nil {

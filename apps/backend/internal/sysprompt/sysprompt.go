@@ -47,12 +47,12 @@ func HasSystemContent(text string) bool {
 	return systemTagRegex.MatchString(text)
 }
 
-// kandevContextMarker is a stable string from kandev-context.md that lets
-// callers detect a prompt that has already been wrapped with the Kandev MCP
+// pcraftContextMarker is a stable string from pcraft-context.md that lets
+// callers detect a prompt that has already been wrapped with the Pcraft MCP
 // system block. Used by [HasKandevContext] to make the wrap step idempotent
 // across the multiple call sites that record first-turn prompts (WS handler,
 // workflow auto-start, orchestrator).
-const kandevContextMarker = "KANDEV MCP TOOLS"
+const pcraftContextMarker = "PCRAFT MCP TOOLS"
 
 // HasKandevContext reports whether the prompt already contains the Kandev MCP
 // system block produced by [InjectKandevContext]. Use this to gate a wrap at
@@ -64,7 +64,7 @@ const kandevContextMarker = "KANDEV MCP TOOLS"
 // would not falsely signal that the wrap is already applied.
 func HasKandevContext(text string) bool {
 	for _, block := range systemTagRegex.FindAllString(text, -1) {
-		if strings.Contains(block, kandevContextMarker) {
+		if strings.Contains(block, pcraftContextMarker) {
 			return true
 		}
 	}
@@ -78,34 +78,34 @@ func PlanMode() string { return prompts.Get("plan-mode") }
 // KandevContext returns the system prompt template that provides Kandev-specific
 // instructions and session context to agents. Contains {task_id}, {session_id},
 // and {step_complete_section} placeholders — use [FormatKandevContext] to inject values.
-func KandevContext() string { return prompts.Get("kandev-context") }
+func KandevContext() string { return prompts.Get("pcraft-context") }
 
 // stepCompleteSection is the description + instruction block for the
-// step_complete_kandev MCP tool. Only injected when the current workflow step
+// step_complete_pcraft MCP tool. Only injected when the current workflow step
 // has `auto_advance_requires_signal = true` (ADR 0015). Agents on legacy
 // auto-advance steps never see the tool so they cannot fire false transitions.
 //
 // MUST end with "\n": the template inlines {step_complete_section}
-// immediately before the next bullet (`- create_task_plan_kandev:`), so the
+// immediately before the next bullet (`- create_task_plan_pcraft:`), so the
 // trailing newline is what separates the two list items in the enabled case
 // without forcing the template to add its own. Dropping the "\n" silently
 // merges the two bullets onto one line; the omit path (empty string) is
 // unaffected since the next line in the template already starts the bullet.
-const stepCompleteSection = "- step_complete_kandev: Signal that every user-stated requirement for the CURRENT workflow step is satisfied. " +
+const stepCompleteSection = "- step_complete_pcraft: Signal that every user-stated requirement for the CURRENT workflow step is satisfied. " +
 	"Call this as the LAST action of the step (after the final tool call / commit / answer). " +
 	"Idempotent — a second call within the same step is a no-op. " +
 	"Do NOT call when asking a question, mid-conversation, or on partial progress. " +
 	"Required params: summary (one-paragraph plain text). Optional: handoff, blockers.\n"
 
 // FormatKandevContext returns the Kandev context prompt with task and session IDs injected.
-// When requiresCompletionSignal is true, the step_complete_kandev tool description is
+// When requiresCompletionSignal is true, the step_complete_pcraft tool description is
 // included; otherwise the placeholder is collapsed to an empty string.
 func FormatKandevContext(taskID, sessionID string, requiresCompletionSignal bool) string {
 	section := ""
 	if requiresCompletionSignal {
 		section = stepCompleteSection
 	}
-	return Resolve("kandev-context", map[string]string{
+	return Resolve("pcraft-context", map[string]string{
 		"task_id":               taskID,
 		"session_id":            sessionID,
 		"step_complete_section": section,
@@ -132,7 +132,7 @@ func InjectConfigContext(sessionID, prompt string) string {
 // InjectKandevContext prepends the Kandev system prompt and session context to a user's prompt.
 // The system content is wrapped in <kandev-system> tags. Pass requiresCompletionSignal=true
 // when the current workflow step has `auto_advance_requires_signal` enabled (ADR 0015) so the
-// step_complete_kandev tool description is exposed; otherwise the tool is hidden from the agent.
+// step_complete_pcraft tool description is exposed; otherwise the tool is hidden from the agent.
 func InjectKandevContext(taskID, sessionID, prompt string, requiresCompletionSignal bool) string {
 	return Wrap(FormatKandevContext(taskID, sessionID, requiresCompletionSignal)) + "\n\n" + prompt
 }

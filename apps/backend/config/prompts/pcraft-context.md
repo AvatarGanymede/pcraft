@@ -1,4 +1,4 @@
-KANDEV MCP TOOLS — You have access to the following MCP tools from the "pcraft" server.
+PCRAFT MCP TOOLS — You have access to the following MCP tools from the "pcraft" server.
 Always use the exact tool names shown below (they include the _pcraft suffix).
 
 Pcraft Task ID: {task_id}

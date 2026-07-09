@@ -15,8 +15,6 @@ import {
   IconArrowLeft,
   IconCheck,
   IconFolder,
-  IconFolders,
-  IconBrandDocker,
   IconX,
   IconLoader2,
   IconCommand,
@@ -25,7 +23,6 @@ import {
   IconGitCommit,
   IconTerminal2,
   IconArrowDown,
-  IconCloud,
 } from "@tabler/icons-react";
 import { Kbd } from "@pcraft/ui/kbd";
 import { type ProfileFormData } from "@/components/settings/profile-form-fields";
@@ -48,28 +45,12 @@ const RUNTIMES = [
     description: "Run agents directly on your machine with full access to your local filesystem.",
     icon: IconFolder,
   },
-  {
-    name: "Git Worktree",
-    description: "Isolated branch environment under a worktree root for parallel work.",
-    icon: IconFolders,
-  },
-  {
-    name: "Docker",
-    description: "Containerized execution for full isolation and reproducibility.",
-    icon: IconBrandDocker,
-  },
-  {
-    name: "Sprites (Remote sprites.dev)",
-    description: "Hardware-isolated execution environment for arbitrary code.",
-    icon: IconCloud,
-    href: "https://sprites.dev",
-  },
 ];
 
 const STEP_TITLES = ["AI Agents", "Executors", "Agentic Workflows", "Command Panel"];
 const STEP_DESCRIPTIONS = [
   "Manage discovered agents and install new ones.",
-  "Agents can run in different executor environments — local, containerized, or remote.",
+  "Agents run on your local machine.",
   "Workflows define the steps and automation for your tasks.",
   "Quick access to actions from anywhere with a keyboard shortcut.",
 ];

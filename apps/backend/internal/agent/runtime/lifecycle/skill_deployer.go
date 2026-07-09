@@ -25,7 +25,7 @@ type SkillDeployer interface {
 // per-agent skills + prompt before launch. The Profile is the resolved row
 // from the agent_profiles table; WorkspacePath is the host filesystem path
 // the agent will run inside; ExecutorType is the executor backend
-// (local_pc / local_docker / sprites) so the deployer can pick a strategy.
+// (local_pc) so the deployer can pick a strategy.
 type SkillDeployRequest struct {
 	Profile       *settingsmodels.AgentProfile
 	WorkspacePath string

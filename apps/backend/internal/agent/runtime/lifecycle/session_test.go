@@ -823,7 +823,7 @@ func TestSendPrompt_RetriesUntilUpdateStreamReconnects(t *testing.T) {
 
 // TestSendPrompt_DispatchOnlyReturnsWithoutWaiting verifies that dispatch-only
 // mode returns immediately after agentctl.Prompt succeeds, without blocking on
-// the agent's complete event. This is what message_task_kandev relies on so the
+// the agent's complete event. This is what message_task_pcraft relies on so the
 // MCP tool call doesn't hang for the duration of the target's turn.
 func TestSendPrompt_DispatchOnlyReturnsWithoutWaiting(t *testing.T) {
 	mock := newMockAgentServer(t)

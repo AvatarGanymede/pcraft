@@ -260,16 +260,8 @@ function formatUptime(startedAt: string): string {
 function formatExecutorType(type: string): string {
   switch (type) {
     case "local_pc":
-    case "worktree":
-      return "Local (worktree)";
-    case "local_docker":
-      return "Local Docker";
-    case "sprites":
-      return "Sprites sandbox";
-    case "remote_docker":
-      return "Remote Docker";
-    case "ssh":
-      return "SSH";
+    case "local":
+      return "Local (standalone)";
     default:
       return type || "Unknown executor";
   }

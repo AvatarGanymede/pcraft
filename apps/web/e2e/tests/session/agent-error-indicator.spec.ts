@@ -83,7 +83,7 @@ test.describe("Task agent error indicator", () => {
       })
       .not.toBe("");
 
-    await testPage.evaluate(() => window.localStorage.removeItem("kandev.dismissedAgentErrors"));
+    await testPage.evaluate(() => window.localStorage.removeItem("pcraft.dismissedAgentErrors"));
     await testPage.reload();
     await session.waitForLoad();
     await expect(testPage.getByTestId("last-agent-error-notice")).toBeHidden();

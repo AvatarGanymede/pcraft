@@ -36,63 +36,63 @@ func TestServerModeTask_RegistersCorrectTools(t *testing.T) {
 	tools := getRegisteredToolNames(s)
 
 	// Task mode should have kanban tools
-	assert.Contains(t, tools, "list_workspaces_kandev")
-	assert.Contains(t, tools, "list_workflows_kandev")
-	assert.Contains(t, tools, "list_workflow_steps_kandev")
-	assert.Contains(t, tools, "list_tasks_kandev")
-	assert.Contains(t, tools, "create_task_kandev")
-	assert.Contains(t, tools, "update_task_kandev")
-	assert.Contains(t, tools, "move_task_kandev")
-	assert.Contains(t, tools, "message_task_kandev")
-	assert.Contains(t, tools, "get_task_conversation_kandev")
+	assert.Contains(t, tools, "list_workspaces_pcraft")
+	assert.Contains(t, tools, "list_workflows_pcraft")
+	assert.Contains(t, tools, "list_workflow_steps_pcraft")
+	assert.Contains(t, tools, "list_tasks_pcraft")
+	assert.Contains(t, tools, "create_task_pcraft")
+	assert.Contains(t, tools, "update_task_pcraft")
+	assert.Contains(t, tools, "move_task_pcraft")
+	assert.Contains(t, tools, "message_task_pcraft")
+	assert.Contains(t, tools, "get_task_conversation_pcraft")
 
 	// Task mode should have plan tools
-	assert.Contains(t, tools, "create_task_plan_kandev")
-	assert.Contains(t, tools, "get_task_plan_kandev")
-	assert.Contains(t, tools, "update_task_plan_kandev")
-	assert.Contains(t, tools, "delete_task_plan_kandev")
+	assert.Contains(t, tools, "create_task_plan_pcraft")
+	assert.Contains(t, tools, "get_task_plan_pcraft")
+	assert.Contains(t, tools, "update_task_plan_pcraft")
+	assert.Contains(t, tools, "delete_task_plan_pcraft")
 
 	// Task mode should have interaction tools
-	assert.Contains(t, tools, "ask_user_question_kandev")
+	assert.Contains(t, tools, "ask_user_question_pcraft")
 
 	// Task mode should have profile listing tools (needed for create_task)
-	assert.Contains(t, tools, "list_agents_kandev")
-	assert.Contains(t, tools, "list_executor_profiles_kandev")
+	assert.Contains(t, tools, "list_agents_pcraft")
+	assert.Contains(t, tools, "list_executor_profiles_pcraft")
 
-	// Task mode keeps list_related_tasks_kandev (sibling discovery) but
+	// Task mode keeps list_related_tasks_pcraft (sibling discovery) but
 	// drops the task-document tools — those are office-only.
-	assert.Contains(t, tools, "list_related_tasks_kandev")
-	assert.NotContains(t, tools, "list_task_documents_kandev")
-	assert.NotContains(t, tools, "get_task_document_kandev")
-	assert.NotContains(t, tools, "write_task_document_kandev")
+	assert.Contains(t, tools, "list_related_tasks_pcraft")
+	assert.NotContains(t, tools, "list_task_documents_pcraft")
+	assert.NotContains(t, tools, "get_task_document_pcraft")
+	assert.NotContains(t, tools, "write_task_document_pcraft")
 
 	// Task mode exposes delete + archive so agents can clean up the tasks
 	// they fan out. Restore/unarchive is intentionally NOT exposed via MCP —
 	// it stays a user action in the UI.
-	assert.Contains(t, tools, "delete_task_kandev")
-	assert.Contains(t, tools, "archive_task_kandev")
-	assert.NotContains(t, tools, "restore_task_kandev")
+	assert.Contains(t, tools, "delete_task_pcraft")
+	assert.Contains(t, tools, "archive_task_pcraft")
+	assert.NotContains(t, tools, "restore_task_pcraft")
 
 	// Task mode should NOT have config/mutation tools
-	assert.NotContains(t, tools, "create_workflow_kandev")
-	assert.NotContains(t, tools, "update_workflow_kandev")
-	assert.NotContains(t, tools, "delete_workflow_kandev")
-	assert.NotContains(t, tools, "create_workflow_step_kandev")
-	assert.NotContains(t, tools, "update_workflow_step_kandev")
-	assert.NotContains(t, tools, "update_agent_kandev")
-	assert.NotContains(t, tools, "create_agent_profile_kandev")
-	assert.NotContains(t, tools, "delete_agent_profile_kandev")
-	assert.NotContains(t, tools, "list_agent_profiles_kandev")
-	assert.NotContains(t, tools, "update_agent_profile_kandev")
-	assert.NotContains(t, tools, "get_mcp_config_kandev")
-	assert.NotContains(t, tools, "update_mcp_config_kandev")
-	assert.NotContains(t, tools, "list_executors_kandev")
-	assert.NotContains(t, tools, "create_executor_profile_kandev")
-	assert.NotContains(t, tools, "update_executor_profile_kandev")
-	assert.NotContains(t, tools, "delete_executor_profile_kandev")
-	assert.NotContains(t, tools, "update_task_state_kandev")
-	assert.NotContains(t, tools, "delete_workflow_step_kandev")
-	assert.NotContains(t, tools, "reorder_workflow_steps_kandev")
+	assert.NotContains(t, tools, "create_workflow_pcraft")
+	assert.NotContains(t, tools, "update_workflow_pcraft")
+	assert.NotContains(t, tools, "delete_workflow_pcraft")
+	assert.NotContains(t, tools, "create_workflow_step_pcraft")
+	assert.NotContains(t, tools, "update_workflow_step_pcraft")
+	assert.NotContains(t, tools, "update_agent_pcraft")
+	assert.NotContains(t, tools, "create_agent_profile_pcraft")
+	assert.NotContains(t, tools, "delete_agent_profile_pcraft")
+	assert.NotContains(t, tools, "list_agent_profiles_pcraft")
+	assert.NotContains(t, tools, "update_agent_profile_pcraft")
+	assert.NotContains(t, tools, "get_mcp_config_pcraft")
+	assert.NotContains(t, tools, "update_mcp_config_pcraft")
+	assert.NotContains(t, tools, "list_executors_pcraft")
+	assert.NotContains(t, tools, "create_executor_profile_pcraft")
+	assert.NotContains(t, tools, "update_executor_profile_pcraft")
+	assert.NotContains(t, tools, "delete_executor_profile_pcraft")
+	assert.NotContains(t, tools, "update_task_state_pcraft")
+	assert.NotContains(t, tools, "delete_workflow_step_pcraft")
+	assert.NotContains(t, tools, "reorder_workflow_steps_pcraft")
 }
 
 func TestServerModeConfig_RegistersCorrectTools(t *testing.T) {
@@ -106,58 +106,58 @@ func TestServerModeConfig_RegistersCorrectTools(t *testing.T) {
 	tools := getRegisteredToolNames(s)
 
 	// Config mode should have workflow config tools
-	assert.Contains(t, tools, "list_workspaces_kandev")
-	assert.Contains(t, tools, "list_workflows_kandev")
-	assert.Contains(t, tools, "list_repositories_kandev")
-	assert.Contains(t, tools, "create_workflow_kandev")
-	assert.Contains(t, tools, "update_workflow_kandev")
-	assert.Contains(t, tools, "delete_workflow_kandev")
-	assert.Contains(t, tools, "import_workflow_kandev")
-	assert.Contains(t, tools, "list_workflow_steps_kandev")
-	assert.Contains(t, tools, "create_workflow_step_kandev")
-	assert.Contains(t, tools, "update_workflow_step_kandev")
-	assert.Contains(t, tools, "delete_workflow_step_kandev")
-	assert.Contains(t, tools, "reorder_workflow_steps_kandev")
+	assert.Contains(t, tools, "list_workspaces_pcraft")
+	assert.Contains(t, tools, "list_workflows_pcraft")
+	assert.Contains(t, tools, "list_repositories_pcraft")
+	assert.Contains(t, tools, "create_workflow_pcraft")
+	assert.Contains(t, tools, "update_workflow_pcraft")
+	assert.Contains(t, tools, "delete_workflow_pcraft")
+	assert.Contains(t, tools, "import_workflow_pcraft")
+	assert.Contains(t, tools, "list_workflow_steps_pcraft")
+	assert.Contains(t, tools, "create_workflow_step_pcraft")
+	assert.Contains(t, tools, "update_workflow_step_pcraft")
+	assert.Contains(t, tools, "delete_workflow_step_pcraft")
+	assert.Contains(t, tools, "reorder_workflow_steps_pcraft")
 
 	// Config mode should have agent tools
-	assert.Contains(t, tools, "list_agents_kandev")
-	assert.Contains(t, tools, "update_agent_kandev")
-	assert.Contains(t, tools, "create_agent_profile_kandev")
-	assert.Contains(t, tools, "delete_agent_profile_kandev")
+	assert.Contains(t, tools, "list_agents_pcraft")
+	assert.Contains(t, tools, "update_agent_pcraft")
+	assert.Contains(t, tools, "create_agent_profile_pcraft")
+	assert.Contains(t, tools, "delete_agent_profile_pcraft")
 
 	// Config mode should have MCP config tools
-	assert.Contains(t, tools, "list_agent_profiles_kandev")
-	assert.Contains(t, tools, "update_agent_profile_kandev")
-	assert.Contains(t, tools, "get_mcp_config_kandev")
-	assert.Contains(t, tools, "update_mcp_config_kandev")
+	assert.Contains(t, tools, "list_agent_profiles_pcraft")
+	assert.Contains(t, tools, "update_agent_profile_pcraft")
+	assert.Contains(t, tools, "get_mcp_config_pcraft")
+	assert.Contains(t, tools, "update_mcp_config_pcraft")
 
 	// Config mode should have executor profile tools
-	assert.Contains(t, tools, "list_executors_kandev")
-	assert.Contains(t, tools, "list_executor_profiles_kandev")
-	assert.Contains(t, tools, "create_executor_profile_kandev")
-	assert.Contains(t, tools, "update_executor_profile_kandev")
-	assert.Contains(t, tools, "delete_executor_profile_kandev")
+	assert.Contains(t, tools, "list_executors_pcraft")
+	assert.Contains(t, tools, "list_executor_profiles_pcraft")
+	assert.Contains(t, tools, "create_executor_profile_pcraft")
+	assert.Contains(t, tools, "update_executor_profile_pcraft")
+	assert.Contains(t, tools, "delete_executor_profile_pcraft")
 
 	// Config mode should have task tools
-	assert.Contains(t, tools, "list_tasks_kandev")
-	assert.Contains(t, tools, "move_task_kandev")
-	assert.Contains(t, tools, "delete_task_kandev")
-	assert.Contains(t, tools, "archive_task_kandev")
-	assert.Contains(t, tools, "update_task_state_kandev")
-	assert.Contains(t, tools, "get_task_conversation_kandev")
+	assert.Contains(t, tools, "list_tasks_pcraft")
+	assert.Contains(t, tools, "move_task_pcraft")
+	assert.Contains(t, tools, "delete_task_pcraft")
+	assert.Contains(t, tools, "archive_task_pcraft")
+	assert.Contains(t, tools, "update_task_state_pcraft")
+	assert.Contains(t, tools, "get_task_conversation_pcraft")
 
 	// Config mode should have interaction tools
-	assert.Contains(t, tools, "ask_user_question_kandev")
+	assert.Contains(t, tools, "ask_user_question_pcraft")
 
 	// Config mode should NOT have plan tools
-	assert.NotContains(t, tools, "create_task_plan_kandev")
-	assert.NotContains(t, tools, "get_task_plan_kandev")
-	assert.NotContains(t, tools, "update_task_plan_kandev")
-	assert.NotContains(t, tools, "delete_task_plan_kandev")
+	assert.NotContains(t, tools, "create_task_plan_pcraft")
+	assert.NotContains(t, tools, "get_task_plan_pcraft")
+	assert.NotContains(t, tools, "update_task_plan_pcraft")
+	assert.NotContains(t, tools, "delete_task_plan_pcraft")
 
 	// Config mode should NOT have task-mode kanban create/update tools
-	assert.NotContains(t, tools, "create_task_kandev")
-	assert.NotContains(t, tools, "update_task_kandev")
+	assert.NotContains(t, tools, "create_task_pcraft")
+	assert.NotContains(t, tools, "update_task_pcraft")
 }
 
 func TestServerModeDefault_DefaultsToTask(t *testing.T) {
@@ -170,9 +170,9 @@ func TestServerModeDefault_DefaultsToTask(t *testing.T) {
 	assert.Equal(t, ModeTask, s.mode)
 
 	tools := getRegisteredToolNames(s)
-	assert.Contains(t, tools, "create_task_kandev")
-	assert.Contains(t, tools, "create_task_plan_kandev")
-	assert.NotContains(t, tools, "create_workflow_step_kandev")
+	assert.Contains(t, tools, "create_task_pcraft")
+	assert.Contains(t, tools, "create_task_plan_pcraft")
+	assert.NotContains(t, tools, "create_workflow_step_pcraft")
 }
 
 func TestServerModeConfig_DisableAskQuestion(t *testing.T) {
@@ -184,9 +184,9 @@ func TestServerModeConfig_DisableAskQuestion(t *testing.T) {
 	require.NotNil(t, s)
 
 	tools := getRegisteredToolNames(s)
-	assert.NotContains(t, tools, "ask_user_question_kandev")
-	assert.Contains(t, tools, "list_agents_kandev")
-	assert.Contains(t, tools, "create_workflow_step_kandev")
+	assert.NotContains(t, tools, "ask_user_question_pcraft")
+	assert.Contains(t, tools, "list_agents_pcraft")
+	assert.Contains(t, tools, "create_workflow_step_pcraft")
 }
 
 func TestServerModeTask_DisableAskQuestion(t *testing.T) {
@@ -198,9 +198,9 @@ func TestServerModeTask_DisableAskQuestion(t *testing.T) {
 	require.NotNil(t, s)
 
 	tools := getRegisteredToolNames(s)
-	assert.NotContains(t, tools, "ask_user_question_kandev")
-	assert.Contains(t, tools, "create_task_kandev")
-	assert.Contains(t, tools, "create_task_plan_kandev")
+	assert.NotContains(t, tools, "ask_user_question_pcraft")
+	assert.Contains(t, tools, "create_task_pcraft")
+	assert.Contains(t, tools, "create_task_plan_pcraft")
 }
 
 func TestServerModeTask_ToolCount(t *testing.T) {
@@ -214,7 +214,7 @@ func TestServerModeTask_ToolCount(t *testing.T) {
 	// 1 update_repository_base_branch + 1 step_complete (ADR 0015) +
 	// 1 interaction + 4 plan + 1 related-tasks = 22. Task-document tools
 	// (list/get/write) are office-only.
-	assert.Contains(t, tools, "step_complete_kandev", "ADR 0015 explicit-completion signal must be registered in task mode")
+	assert.Contains(t, tools, "step_complete_pcraft", "ADR 0015 explicit-completion signal must be registered in task mode")
 	assert.Equal(t, 22, len(tools))
 }
 
@@ -226,7 +226,7 @@ func TestServerModeConfig_ToolCount(t *testing.T) {
 	s := New(backend, "test-session", "test-task", 10005, log, "", false, ModeConfig)
 	tools := getRegisteredToolNames(s)
 	// 12 workflow (incl. list_repositories + import_workflow) + 4 agent + 4 mcp + 5 executor + 6 task + 1 interaction = 32
-	assert.NotContains(t, tools, "step_complete_kandev", "step_complete_kandev requires a live task session; must NOT register in config mode")
+	assert.NotContains(t, tools, "step_complete_pcraft", "step_complete_pcraft requires a live task session; must NOT register in config mode")
 	assert.Equal(t, 32, len(tools))
 }
 
@@ -239,9 +239,9 @@ func TestServerModeConfig_ToolDescriptions(t *testing.T) {
 
 	toolsMap := s.mcpServer.ListTools()
 
-	assert.Contains(t, toolsMap["create_workflow_step_kandev"].Tool.Description, "Create a new workflow step")
-	assert.Contains(t, toolsMap["list_agents_kandev"].Tool.Description, "List all configured agents")
-	assert.Contains(t, toolsMap["get_mcp_config_kandev"].Tool.Description, "Get MCP server configuration")
+	assert.Contains(t, toolsMap["create_workflow_step_pcraft"].Tool.Description, "Create a new workflow step")
+	assert.Contains(t, toolsMap["list_agents_pcraft"].Tool.Description, "List all configured agents")
+	assert.Contains(t, toolsMap["get_mcp_config_pcraft"].Tool.Description, "Get MCP server configuration")
 }
 
 func TestServerModeOffice_RegistersCorrectTools(t *testing.T) {
@@ -255,39 +255,39 @@ func TestServerModeOffice_RegistersCorrectTools(t *testing.T) {
 	tools := getRegisteredToolNames(s)
 
 	// Office mode should have plan tools
-	assert.Contains(t, tools, "create_task_plan_kandev")
-	assert.Contains(t, tools, "get_task_plan_kandev")
-	assert.Contains(t, tools, "update_task_plan_kandev")
-	assert.Contains(t, tools, "delete_task_plan_kandev")
+	assert.Contains(t, tools, "create_task_plan_pcraft")
+	assert.Contains(t, tools, "get_task_plan_pcraft")
+	assert.Contains(t, tools, "update_task_plan_pcraft")
+	assert.Contains(t, tools, "delete_task_plan_pcraft")
 
 	// Office mode should have interaction tools
-	assert.Contains(t, tools, "ask_user_question_kandev")
+	assert.Contains(t, tools, "ask_user_question_pcraft")
 
-	// delegate_task_kandev was removed from ModeOffice when the
+	// delegate_task_pcraft was removed from ModeOffice when the
 	// agentctl CLI started covering task creation/delegation via
 	// `agentctl kandev task create --parent $KANDEV_TASK_ID …`.
-	assert.NotContains(t, tools, "delegate_task_kandev")
+	assert.NotContains(t, tools, "delegate_task_pcraft")
 
 	// Office mode exposes the cross-task handoff tools.
-	assert.Contains(t, tools, "list_related_tasks_kandev")
-	assert.Contains(t, tools, "list_task_documents_kandev")
-	assert.Contains(t, tools, "get_task_document_kandev")
-	assert.Contains(t, tools, "write_task_document_kandev")
+	assert.Contains(t, tools, "list_related_tasks_pcraft")
+	assert.Contains(t, tools, "list_task_documents_pcraft")
+	assert.Contains(t, tools, "get_task_document_pcraft")
+	assert.Contains(t, tools, "write_task_document_pcraft")
 
 	// Office mode should NOT have kanban tools
-	assert.NotContains(t, tools, "create_task_kandev")
-	assert.NotContains(t, tools, "list_tasks_kandev")
-	assert.NotContains(t, tools, "update_task_kandev")
-	assert.NotContains(t, tools, "list_workspaces_kandev")
-	assert.NotContains(t, tools, "list_workflows_kandev")
-	assert.NotContains(t, tools, "list_workflow_steps_kandev")
-	assert.NotContains(t, tools, "list_agents_kandev")
-	assert.NotContains(t, tools, "list_executor_profiles_kandev")
+	assert.NotContains(t, tools, "create_task_pcraft")
+	assert.NotContains(t, tools, "list_tasks_pcraft")
+	assert.NotContains(t, tools, "update_task_pcraft")
+	assert.NotContains(t, tools, "list_workspaces_pcraft")
+	assert.NotContains(t, tools, "list_workflows_pcraft")
+	assert.NotContains(t, tools, "list_workflow_steps_pcraft")
+	assert.NotContains(t, tools, "list_agents_pcraft")
+	assert.NotContains(t, tools, "list_executor_profiles_pcraft")
 
 	// Office mode should NOT have config tools
-	assert.NotContains(t, tools, "create_workflow_kandev")
-	assert.NotContains(t, tools, "update_workflow_kandev")
-	assert.NotContains(t, tools, "update_agent_kandev")
+	assert.NotContains(t, tools, "create_workflow_pcraft")
+	assert.NotContains(t, tools, "update_workflow_pcraft")
+	assert.NotContains(t, tools, "update_agent_pcraft")
 }
 
 func TestServerModeOffice_ToolCount(t *testing.T) {
@@ -298,8 +298,8 @@ func TestServerModeOffice_ToolCount(t *testing.T) {
 	s := New(backend, "test-session", "test-task", 10005, log, "", false, ModeOffice)
 	tools := getRegisteredToolNames(s)
 	// 4 plan + 1 interaction + 1 related-tasks + 3 task-documents = 9
-	// (delegate_task_kandev retired in favour of `agentctl kandev task create …`).
-	assert.NotContains(t, tools, "step_complete_kandev", "step_complete_kandev is kanban-task-only; office mode advances tasks via its own approval surface")
+	// (delegate_task_pcraft retired in favour of `agentctl kandev task create …`).
+	assert.NotContains(t, tools, "step_complete_pcraft", "step_complete_pcraft is kanban-task-only; office mode advances tasks via its own approval surface")
 	assert.Equal(t, 9, len(tools))
 }
 
@@ -312,11 +312,11 @@ func TestServerModeOffice_DisableAskQuestion(t *testing.T) {
 	require.NotNil(t, s)
 
 	tools := getRegisteredToolNames(s)
-	assert.NotContains(t, tools, "ask_user_question_kandev")
-	assert.Contains(t, tools, "create_task_plan_kandev")
-	// delegate_task_kandev was retired from ModeOffice (now lives in
+	assert.NotContains(t, tools, "ask_user_question_pcraft")
+	assert.Contains(t, tools, "create_task_plan_pcraft")
+	// delegate_task_pcraft was retired from ModeOffice (now lives in
 	// the agentctl CLI as `agentctl kandev task create --parent …`).
-	assert.NotContains(t, tools, "delegate_task_kandev")
+	assert.NotContains(t, tools, "delegate_task_pcraft")
 	// 4 plan + 1 related-tasks + 3 task-documents = 8 (no ask_user_question, no delegate)
 	assert.Equal(t, 8, len(tools))
 }
@@ -339,29 +339,29 @@ func TestServerModeExternal_RegistersCorrectTools(t *testing.T) {
 	tools := getRegisteredToolNames(s)
 
 	// External mode includes all config tools
-	assert.Contains(t, tools, "list_workspaces_kandev")
-	assert.Contains(t, tools, "list_repositories_kandev")
-	assert.Contains(t, tools, "create_workflow_kandev")
-	assert.Contains(t, tools, "list_agents_kandev")
-	assert.Contains(t, tools, "get_mcp_config_kandev")
-	assert.Contains(t, tools, "list_executors_kandev")
-	assert.Contains(t, tools, "move_task_kandev")
+	assert.Contains(t, tools, "list_workspaces_pcraft")
+	assert.Contains(t, tools, "list_repositories_pcraft")
+	assert.Contains(t, tools, "create_workflow_pcraft")
+	assert.Contains(t, tools, "list_agents_pcraft")
+	assert.Contains(t, tools, "get_mcp_config_pcraft")
+	assert.Contains(t, tools, "list_executors_pcraft")
+	assert.Contains(t, tools, "move_task_pcraft")
 
-	// External mode includes create_task_kandev so external agents can spawn tasks
-	assert.Contains(t, tools, "create_task_kandev")
+	// External mode includes create_task_pcraft so external agents can spawn tasks
+	assert.Contains(t, tools, "create_task_pcraft")
 
 	// External mode does NOT include session-scoped tools
-	assert.NotContains(t, tools, "ask_user_question_kandev")
-	assert.NotContains(t, tools, "create_task_plan_kandev")
-	assert.NotContains(t, tools, "get_task_plan_kandev")
-	assert.NotContains(t, tools, "update_task_plan_kandev")
-	assert.NotContains(t, tools, "delete_task_plan_kandev")
+	assert.NotContains(t, tools, "ask_user_question_pcraft")
+	assert.NotContains(t, tools, "create_task_plan_pcraft")
+	assert.NotContains(t, tools, "get_task_plan_pcraft")
+	assert.NotContains(t, tools, "update_task_plan_pcraft")
+	assert.NotContains(t, tools, "delete_task_plan_pcraft")
 
-	// External mode does NOT include kanban update_task_kandev (config has its own update_task_state)
-	assert.NotContains(t, tools, "update_task_kandev")
+	// External mode does NOT include kanban update_task_pcraft (config has its own update_task_state)
+	assert.NotContains(t, tools, "update_task_pcraft")
 
-	// External mode does NOT include message_task_kandev (no live session context)
-	assert.NotContains(t, tools, "message_task_kandev")
+	// External mode does NOT include message_task_pcraft (no live session context)
+	assert.NotContains(t, tools, "message_task_pcraft")
 }
 
 func TestServerModeExternal_ToolCount(t *testing.T) {
@@ -372,9 +372,9 @@ func TestServerModeExternal_ToolCount(t *testing.T) {
 	s := New(backend, "", "", 0, log, "", true, ModeExternal)
 	tools := getRegisteredToolNames(s)
 	// 12 workflow (incl. list_repositories + import_workflow) + 4 agent + 4 mcp + 5 executor + 6 task + 1 create_task = 32.
-	// add_branch_to_task_kandev is task-mode only — external coding agents have no live session to attach a worktree to.
+	// add_branch_to_task_pcraft is task-mode only — external coding agents have no live session to attach a worktree to.
 	assert.Equal(t, 32, len(tools))
-	assert.NotContains(t, tools, "add_branch_to_task_kandev")
+	assert.NotContains(t, tools, "add_branch_to_task_pcraft")
 }
 
 func TestNewExternal_Constructs(t *testing.T) {

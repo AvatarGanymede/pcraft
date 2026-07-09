@@ -3,7 +3,7 @@ import { waitFor } from "@testing-library/react";
 import { updateUserSettings } from "@/lib/api/domains/settings-api";
 import { resetTaskCreateLastUsedSync, syncTaskCreateLastUsed } from "./task-create-dialog-handlers";
 
-const PENDING_LAST_USED_SYNC_KEY = "kandev.taskCreateLastUsed.pendingSync";
+const PENDING_LAST_USED_SYNC_KEY = "pcraft.taskCreateLastUsed.pendingSync";
 
 vi.mock("@/lib/api/domains/settings-api", () => ({
   updateUserSettings: vi.fn(),

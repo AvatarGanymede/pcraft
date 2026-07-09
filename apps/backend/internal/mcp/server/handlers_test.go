@@ -21,7 +21,7 @@ func TestCreateTask_ToolSchema_HasParentID(t *testing.T) {
 	s := newTaskModeServer(t, backend, "task-current")
 
 	toolsMap := s.mcpServer.ListTools()
-	tool, ok := toolsMap["create_task_kandev"]
+	tool, ok := toolsMap["create_task_pcraft"]
 	require.True(t, ok, "create_task tool not registered")
 
 	schema, err := json.Marshal(tool.Tool.InputSchema)
@@ -55,7 +55,7 @@ func TestCreateTask_SelfResolvesToTaskID(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":     "Write tests",
 		"parent_id": "self",
 	})
@@ -75,7 +75,7 @@ func TestCreateTask_SelfWithNoTaskContext_ReturnsError(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":     "Write tests",
 		"parent_id": "self",
 	})
@@ -89,7 +89,7 @@ func TestCreateTask_ExplicitParentID(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":     "Fix bug",
 		"parent_id": "task-abc",
 	})
@@ -107,7 +107,7 @@ func TestCreateTask_NoParentID_WithIDs_CreatesTopLevelTask(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":        "Standalone",
 		"workspace_id": "ws-1",
 		"workflow_id":  "wf-1",
@@ -129,7 +129,7 @@ func TestCreateTask_SourceTaskID_AlwaysSet(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "my-task-123")
 
-	callTool(t, s, "create_task_kandev", map[string]interface{}{
+	callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":        "New task",
 		"workspace_id": "ws-1",
 		"workflow_id":  "wf-1",
@@ -146,7 +146,7 @@ func TestCreateTask_SourceTaskID_EmptyWhenNoTaskContext(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "")
 
-	callTool(t, s, "create_task_kandev", map[string]interface{}{
+	callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":        "New task",
 		"workspace_id": "ws-1",
 		"workflow_id":  "wf-1",
@@ -163,7 +163,7 @@ func TestCreateTask_StartAgentFalse_DoesNotAutoStart(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":        "Plan task",
 		"workspace_id": "ws-1",
 		"workflow_id":  "wf-1",
@@ -183,7 +183,7 @@ func TestCreateTask_WithRepositoryID(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":         "Task with repo",
 		"workspace_id":  "ws-1",
 		"workflow_id":   "wf-1",
@@ -209,7 +209,7 @@ func TestCreateTask_WithLocalPath(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":        "Task with local path",
 		"workspace_id": "ws-1",
 		"workflow_id":  "wf-1",
@@ -233,7 +233,7 @@ func TestCreateTask_WithRepositoryURL(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":          "Task with URL",
 		"workspace_id":   "ws-1",
 		"workflow_id":    "wf-1",
@@ -265,7 +265,7 @@ func TestCreateTask_BaseBranchOnly_ForwardsTopLevel(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":       "Stacked PR child",
 		"parent_id":   "self",
 		"description": "branch off the parent's PR branch",
@@ -288,7 +288,7 @@ func TestCreateTask_RepositoryURL_AllowedForSubtasks(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":          "Subtask with URL",
 		"parent_id":      "self",
 		"description":    "Fix the upstream review-eligibility check",
@@ -315,7 +315,7 @@ func TestCreateTask_LocalPath_AllowedForSubtasks(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "create_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_task_pcraft", map[string]interface{}{
 		"title":       "Subtask with local path",
 		"parent_id":   "self",
 		"description": "Patch the sibling repo",
@@ -336,7 +336,7 @@ func TestCreateTask_LocalPath_AllowedForSubtasks(t *testing.T) {
 
 // TestAddBranchToTask_ForwardsRepositoryURL verifies the agent-facing alias:
 // repository_url on the MCP tool surface translates to github_url on the WS
-// payload — mirroring create_task_kandev's wire format so the backend handler
+// payload — mirroring create_task_pcraft's wire format so the backend handler
 // can resolve through the same code path.
 func TestAddBranchToTask_ForwardsRepositoryURL(t *testing.T) {
 	backend := &testBackend{
@@ -344,7 +344,7 @@ func TestAddBranchToTask_ForwardsRepositoryURL(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "add_branch_to_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "add_branch_to_task_pcraft", map[string]interface{}{
 		"repository_url":  "https://github.com/acme/widgets",
 		"checkout_branch": "feature/x",
 	})
@@ -370,7 +370,7 @@ func TestAddBranchToTask_ForwardsLocalPath(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "add_branch_to_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "add_branch_to_task_pcraft", map[string]interface{}{
 		"local_path":      "/Users/me/projects/sibling",
 		"checkout_branch": "feature/y",
 	})
@@ -392,7 +392,7 @@ func TestAddBranchToTask_RejectsMultipleLocators(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "add_branch_to_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "add_branch_to_task_pcraft", map[string]interface{}{
 		"repository_url": "https://github.com/acme/widgets",
 		"local_path":     "/Users/me/projects/sibling",
 	})
@@ -416,7 +416,7 @@ func TestMessageTask_ForwardsToBackend(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "message_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "message_task_pcraft", map[string]interface{}{
 		"task_id": "task-target",
 		"prompt":  "follow up",
 	})
@@ -434,7 +434,7 @@ func TestMessageTask_MissingTaskID_ReturnsError(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "message_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "message_task_pcraft", map[string]interface{}{
 		"prompt": "follow up",
 	})
 
@@ -445,7 +445,7 @@ func TestMessageTask_MissingPrompt_ReturnsError(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "message_task_kandev", map[string]interface{}{
+	result := callTool(t, s, "message_task_pcraft", map[string]interface{}{
 		"task_id": "task-target",
 	})
 
@@ -465,7 +465,7 @@ func TestGetTaskConversation_ForwardsToBackend(t *testing.T) {
 	}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "get_task_conversation_kandev", map[string]interface{}{
+	result := callTool(t, s, "get_task_conversation_pcraft", map[string]interface{}{
 		"task_id":       "task-target",
 		"session_id":    "sess-1",
 		"limit":         25,
@@ -489,7 +489,7 @@ func TestGetTaskConversation_MissingTaskID_ReturnsError(t *testing.T) {
 	backend := &testBackend{}
 	s := newTaskModeServer(t, backend, "task-current")
 
-	result := callTool(t, s, "get_task_conversation_kandev", map[string]interface{}{})
+	result := callTool(t, s, "get_task_conversation_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }

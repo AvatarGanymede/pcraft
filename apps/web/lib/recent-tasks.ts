@@ -1,7 +1,7 @@
 import type { TaskSessionState, TaskState } from "@/lib/types/http";
 
-export const RECENT_TASKS_STORAGE_KEY = "kandev.recentTasks.v1";
-export const RECENT_TASKS_CHANGED_EVENT = "kandev:recent-tasks-changed";
+export const RECENT_TASKS_STORAGE_KEY = "pcraft.recentTasks.v1";
+export const RECENT_TASKS_CHANGED_EVENT = "pcraft:recent-tasks-changed";
 export const MAX_RECENT_TASKS = 12;
 
 export type RecentTaskEntry = {

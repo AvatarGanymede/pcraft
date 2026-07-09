@@ -7,7 +7,7 @@
 //
 // Slack credentials and triage settings are install-wide singletons (one
 // Slack account per Kandev install) — the agent picks the destination Kandev
-// workspace per-message via `list_workspaces_kandev`. Only "browser session"
+// workspace per-message via `list_workspaces_pcraft`. Only "browser session"
 // auth is supported in this v1 slice — bot tokens and user-OAuth modes are
 // scoped out per docs/specs/slack-integration/spec.md.
 package slack
@@ -47,7 +47,7 @@ type SlackConfig struct {
 	CommandPrefix string `json:"commandPrefix" db:"command_prefix"`
 	// UtilityAgentID points at a row in `utility_agents`. The agent is
 	// invoked for each Slack match with Kandev MCP wired in so it can call
-	// list_workflows_kandev, create_task_kandev, etc. Required — the trigger
+	// list_workflows_pcraft, create_task_pcraft, etc. Required — the trigger
 	// skips matches when this is empty.
 	UtilityAgentID      string `json:"utilityAgentId" db:"utility_agent_id"`
 	PollIntervalSeconds int    `json:"pollIntervalSeconds" db:"poll_interval_seconds"`

@@ -16,8 +16,6 @@ type StepReviewProps = {
 // Fallback used only when meta has not been hydrated yet (graceful degradation).
 const FALLBACK_EXECUTOR_LABELS: Record<string, string> = {
   local_pc: "Local (standalone)",
-  local_docker: "Local Docker",
-  sprites: "Sprites (remote sandbox)",
 };
 
 export function StepReview({

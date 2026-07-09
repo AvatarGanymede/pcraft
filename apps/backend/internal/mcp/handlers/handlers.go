@@ -111,7 +111,7 @@ type Handlers struct {
 	mcpConfigSvc      *mcpconfig.Service
 
 	// Cross-task handoff service (optional, set via SetHandoffService).
-	// Wires the list_related_tasks_kandev / *_task_document_kandev
+	// Wires the list_related_tasks_pcraft / *_task_document_pcraft
 	// MCP tools introduced in office task handoffs phase 2.
 	handoffSvc *service.HandoffService
 
@@ -401,7 +401,7 @@ func (h *Handlers) handleCreateTask(ctx context.Context, msg *ws.Message) (*ws.M
 		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "title is required", nil)
 	}
 	if req.AssigneeAgentProfileID != "" {
-		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "assignee_agent_profile_id is office-only and cannot be set via create_task_kandev", nil)
+		return ws.NewError(msg.ID, msg.Action, ws.ErrorCodeValidation, "assignee_agent_profile_id is office-only and cannot be set via create_task_pcraft", nil)
 	}
 
 	// Default start_agent to true for backward compatibility
@@ -628,7 +628,7 @@ func inheritedRepoInputs(src []*models.TaskRepository) []service.TaskRepositoryI
 // autoStartTask launches an agent session for a newly created task in the background.
 // It resolves the agent profile: explicit > parent's session > source task's session > workspace default.
 // It resolves the executor: explicit executor_profile_id > parent's executor_profile_id >
-// source task's executor_profile_id > parent's executor_id > "exec-worktree" (default for MCP-created tasks).
+// source task's executor_profile_id > parent's executor_id > "exec-local" (default for MCP-created tasks).
 func (h *Handlers) autoStartTask(task *models.Task, agentProfileID, executorProfileID, sourceTaskID string) {
 	if h.sessionLauncher == nil {
 		return

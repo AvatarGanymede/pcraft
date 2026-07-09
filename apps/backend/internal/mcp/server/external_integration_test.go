@@ -59,11 +59,11 @@ func TestExternalMCP_ToolsListOverHTTP(t *testing.T) {
 	for _, tool := range rpcResp.Result.Tools {
 		names = append(names, tool.Name)
 	}
-	assert.Contains(t, names, "create_task_kandev", "external mode must expose create_task_kandev")
-	assert.Contains(t, names, "list_workspaces_kandev")
-	assert.Contains(t, names, "get_mcp_config_kandev")
-	assert.NotContains(t, names, "ask_user_question_kandev", "external mode must not expose session-scoped tools")
-	assert.NotContains(t, names, "create_task_plan_kandev")
+	assert.Contains(t, names, "create_task_pcraft", "external mode must expose create_task_pcraft")
+	assert.Contains(t, names, "list_workspaces_pcraft")
+	assert.Contains(t, names, "get_mcp_config_pcraft")
+	assert.NotContains(t, names, "ask_user_question_pcraft", "external mode must not expose session-scoped tools")
+	assert.NotContains(t, names, "create_task_plan_pcraft")
 }
 
 // TestExternalMCP_ToolsCallDispatchesToBackend verifies that calling a tool via
@@ -95,7 +95,7 @@ func TestExternalMCP_ToolsCallDispatchesToBackend(t *testing.T) {
 	resp := postJSONRPC(t, ts.URL+"/mcp", initReq, "")
 	require.Equal(t, http.StatusOK, resp.statusCode)
 
-	callReq := `{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"list_workspaces_kandev","arguments":{}}}`
+	callReq := `{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"list_workspaces_pcraft","arguments":{}}}`
 	resp = postJSONRPC(t, ts.URL+"/mcp", callReq, resp.sessionID)
 	require.Equal(t, http.StatusOK, resp.statusCode, "call response: %s", resp.body)
 

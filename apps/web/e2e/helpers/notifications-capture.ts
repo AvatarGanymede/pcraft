@@ -14,7 +14,7 @@ export type CapturedNotification = {
  * never displays a real OS-level toast (those are noisy on developer
  * machines - Chromium pops the macOS notification center on every agent
  * "waiting for input" event during a run). The stub instead records each
- * attempted notification on `window.__kandevTestNotifications` so tests can
+ * attempted notification on `window.__pcraftTestNotifications` so tests can
  * assert on what *would* have notified.
  *
  * Stub also reports `permission === "granted"` so the WS handler at
@@ -23,16 +23,16 @@ export type CapturedNotification = {
  */
 declare global {
   interface Window {
-    __kandevTestNotifications?: CapturedNotification[];
+    __pcraftTestNotifications?: CapturedNotification[];
   }
 }
 
 export async function getCapturedNotifications(page: Page): Promise<CapturedNotification[]> {
-  return page.evaluate(() => window.__kandevTestNotifications ?? []);
+  return page.evaluate(() => window.__pcraftTestNotifications ?? []);
 }
 
 export async function clearCapturedNotifications(page: Page): Promise<void> {
   await page.evaluate(() => {
-    if (window.__kandevTestNotifications) window.__kandevTestNotifications.length = 0;
+    if (window.__pcraftTestNotifications) window.__pcraftTestNotifications.length = 0;
   });
 }

@@ -55,7 +55,7 @@ func TestBootPayloadScriptEscapesScriptTerminators(t *testing.T) {
 	if strings.Contains(string(script), "</script><script>") {
 		t.Fatalf("script contains unescaped script terminator: %s", script)
 	}
-	if !strings.HasPrefix(string(script), "<script>window.__KANDEV_BOOT_PAYLOAD__=") {
+	if !strings.HasPrefix(string(script), "<script>window.__PCRAFT_BOOT_PAYLOAD__=") {
 		t.Fatalf("script has unexpected prefix: %s", script)
 	}
 }
@@ -74,7 +74,7 @@ func TestBootPayloadScriptSetsDebugGlobalBeforeBootPayload(t *testing.T) {
 		t.Fatalf("BootPayloadScript: %v", err)
 	}
 	got := string(script)
-	debugIdx := strings.Index(got, "window.__KANDEV_DEBUG=true;")
+	debugIdx := strings.Index(got, "window.__PCRAFT_DEBUG=true;")
 	payloadIdx := strings.Index(got, bootPayloadGlobal)
 	if debugIdx < 0 {
 		t.Fatalf("script missing debug global assignment: %s", got)

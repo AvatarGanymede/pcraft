@@ -175,26 +175,26 @@ describe("isDebug", () => {
     vi.unstubAllGlobals();
   });
 
-  it("is true in a production build when window.__KANDEV_DEBUG is set", async () => {
+  it("is true in a production build when window.__pcraft_DEBUG is set", async () => {
     // Simulates `make start-debug`: production bundle, runtime window flag.
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("VITE_KANDEV_DEBUG", "");
-    vi.stubGlobal("window", { __KANDEV_DEBUG: true });
+    vi.stubEnv("VITE_pcraft_DEBUG", "");
+    vi.stubGlobal("window", { __pcraft_DEBUG: true });
     const { isDebug } = await import("./log");
     expect(isDebug()).toBe(true);
   });
 
   it("is false in a production build with no flag set", async () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("VITE_KANDEV_DEBUG", "");
+    vi.stubEnv("VITE_pcraft_DEBUG", "");
     vi.stubGlobal("window", {});
     const { isDebug } = await import("./log");
     expect(isDebug()).toBe(false);
   });
 
-  it("is true when VITE_KANDEV_DEBUG=true at build time", async () => {
+  it("is true when VITE_pcraft_DEBUG=true at build time", async () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("VITE_KANDEV_DEBUG", "true");
+    vi.stubEnv("VITE_pcraft_DEBUG", "true");
     vi.stubGlobal("window", {});
     const { isDebug } = await import("./log");
     expect(isDebug()).toBe(true);

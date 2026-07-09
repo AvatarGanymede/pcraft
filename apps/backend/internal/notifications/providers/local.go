@@ -8,6 +8,12 @@ import (
 	ws "github.com/AvatarGanymede/pcraft/pkg/websocket"
 )
 
+// localNotificationsDisabled permanently disables the browser (OS-level)
+// desktop-notification WS broadcast. The implementation is retained but never
+// fires; delivery now happens via the Lark provider. See
+// plan/notification-jnpm-lark-plan.md.
+const localNotificationsDisabled = true
+
 type LocalProvider struct {
 	hub *gatewayws.Hub
 }
@@ -25,6 +31,11 @@ func (p *LocalProvider) Validate(_ map[string]interface{}) error {
 }
 
 func (p *LocalProvider) Send(_ context.Context, message Message) error {
+	// Browser/OS desktop notifications are permanently disabled: skip the WS
+	// broadcast. The frontend handler is likewise a no-op.
+	if localNotificationsDisabled {
+		return nil
+	}
 	if p.hub == nil {
 		return fmt.Errorf("websocket hub not available")
 	}

@@ -1,6 +1,6 @@
 // Package messagequeue persists per-session FIFO message queues and deferred
 // workflow moves. The queue lets a user (or another agent via the
-// message_task_kandev MCP tool) enqueue follow-up prompts while the target
+// message_task_pcraft MCP tool) enqueue follow-up prompts while the target
 // session is still busy with a turn; handleAgentReady drains one entry per
 // turn after each turn completes.
 //
@@ -52,7 +52,7 @@ func (s *Service) QueueMessage(ctx context.Context, sessionID, taskID, content, 
 
 // QueueMessageWithMetadata is like QueueMessage but stores extra metadata that
 // is propagated to the resulting Message row when the queued message is
-// drained (e.g. sender_task_id for messages sent via message_task_kandev).
+// drained (e.g. sender_task_id for messages sent via message_task_pcraft).
 func (s *Service) QueueMessageWithMetadata(ctx context.Context, sessionID, taskID, content, model, userID string, planMode bool, attachments []MessageAttachment, metadata map[string]interface{}) (*QueuedMessage, error) {
 	msg := &QueuedMessage{
 		SessionID:   sessionID,

@@ -8,6 +8,10 @@ const (
 	ProviderTypeLocal   ProviderType = "local"
 	ProviderTypeApprise ProviderType = "apprise"
 	ProviderTypeSystem  ProviderType = "system"
+	// ProviderTypeLark delivers notifications as Feishu/Lark bot direct
+	// messages. The recipient email is resolved by the service (JNPM ticket
+	// assignee, falling back to the admin address).
+	ProviderTypeLark ProviderType = "lark"
 )
 
 type Provider struct {

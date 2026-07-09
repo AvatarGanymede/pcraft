@@ -2,8 +2,8 @@ import { getLocalStorage, setLocalStorage } from "./local-storage";
 
 // --- Unified AppSidebar collapse + section expand state (localStorage, global) ---
 
-const APP_SIDEBAR_COLLAPSED_KEY = "kandev.appSidebar.collapsed";
-const APP_SIDEBAR_SECTION_EXPANDED_KEY = "kandev.appSidebar.sectionExpanded";
+const APP_SIDEBAR_COLLAPSED_KEY = "pcraft.appSidebar.collapsed";
+const APP_SIDEBAR_SECTION_EXPANDED_KEY = "pcraft.appSidebar.sectionExpanded";
 
 export function getStoredAppSidebarCollapsed(fallback: boolean): boolean {
   return getLocalStorage(APP_SIDEBAR_COLLAPSED_KEY, fallback);
@@ -34,7 +34,7 @@ export function setStoredAppSidebarSectionExpanded(map: Record<string, boolean>)
   setLocalStorage(APP_SIDEBAR_SECTION_EXPANDED_KEY, map);
 }
 
-const APP_SIDEBAR_WIDTH_KEY = "kandev.appSidebar.width";
+const APP_SIDEBAR_WIDTH_KEY = "pcraft.appSidebar.width";
 
 export function getStoredAppSidebarWidth(fallback: number): number {
   const raw = getLocalStorage<number>(APP_SIDEBAR_WIDTH_KEY, fallback) as unknown;

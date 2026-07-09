@@ -31,6 +31,10 @@ import type { Task } from "@/components/kanban-card";
 import type { MoveTaskError } from "@/hooks/use-drag-and-drop";
 import type { Repository } from "@/lib/types/http";
 import type { WorkflowSnapshotData } from "@/lib/state/slices/kanban/types";
+import {
+  buildOrderedWorkflows,
+  getSwimlaneEmptyMessage,
+} from "@/lib/kanban/swimlane-display";
 
 export type SwimlaneContainerProps = {
   viewMode: string;
@@ -52,21 +56,6 @@ export type SwimlaneContainerProps = {
   onToggleMultiSelect?: () => void;
 };
 
-function getEmptyMessage(
-  isLoading: boolean,
-  snapshots: Record<string, unknown>,
-  orderedWorkflows: { id: string; name: string }[],
-  workflowFilter: string | null,
-  getFilteredTasks: (id: string) => Task[],
-): string | null {
-  if (isLoading && Object.keys(snapshots).length === 0) return "Loading...";
-  if (orderedWorkflows.length === 0) return "No workflows available yet.";
-  const visible = workflowFilter
-    ? orderedWorkflows
-    : orderedWorkflows.filter((wf) => getFilteredTasks(wf.id).length > 0);
-  if (visible.length === 0) return "No tasks yet";
-  return null;
-}
 
 function renderEmptyState(emptyMessage: string) {
   return (
@@ -230,14 +219,10 @@ function useSwimlaneData(
     () => mapSelectedRepositoryIds(repositories, selectedRepositoryIds),
     [repositories, selectedRepositoryIds],
   );
-  const orderedWorkflows = useMemo(() => {
-    if (workflowFilter) {
-      const snapshot = snapshots[workflowFilter];
-      if (!snapshot) return [];
-      return [{ id: workflowFilter, name: snapshot.workflowName }];
-    }
-    return workflows.filter((wf) => snapshots[wf.id]);
-  }, [workflowFilter, workflows, snapshots]);
+  const orderedWorkflows = useMemo(
+    () => buildOrderedWorkflows(workflowFilter, workflows, snapshots),
+    [workflowFilter, workflows, snapshots],
+  );
 
   const getFilteredTasks = useCallback(
     (wfId: string) => filterTasks(snapshots, wfId, repoFilter, searchQuery),
@@ -279,13 +264,13 @@ export function SwimlaneContainer({
     handleDragEnd: handleWorkflowDragEnd,
   } = useWorkflowReorder(orderedWorkflows, workflowFilter);
 
-  const emptyMessage = getEmptyMessage(
+  const emptyMessage = getSwimlaneEmptyMessage({
     isLoading,
     snapshots,
     orderedWorkflows,
     workflowFilter,
     getFilteredTasks,
-  );
+  });
   if (emptyMessage) return renderEmptyState(emptyMessage);
 
   const visibleWorkflows = workflowFilter
@@ -309,7 +294,16 @@ export function SwimlaneContainer({
         <div className={cls} data-testid="swimlane-container">
           {visibleWorkflows.map((wf, index) => {
             const snapshot = snapshots[wf.id];
-            if (!snapshot) return null;
+            if (!snapshot) {
+              return (
+                <div
+                  key={wf.id}
+                  className="rounded-lg border border-dashed border-border/60 px-4 py-8 text-sm text-muted-foreground"
+                >
+                  Loading...
+                </div>
+              );
+            }
             return (
               <SortableWorkflowItem
                 key={wf.id}

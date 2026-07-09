@@ -14,7 +14,7 @@ export type LastAgentError = {
 // across components and reloads. Bounded growth: one entry per session that
 // ever had an error.
 
-const DISMISSED_AGENT_ERRORS_KEY = "kandev.dismissedAgentErrors";
+const DISMISSED_AGENT_ERRORS_KEY = "pcraft.dismissedAgentErrors";
 
 export function getStoredDismissedAgentErrors(): Record<string, string> {
   return getLocalStorage<Record<string, string>>(DISMISSED_AGENT_ERRORS_KEY, {});

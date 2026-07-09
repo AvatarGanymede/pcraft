@@ -12,19 +12,19 @@ describe("external MCP tool catalog", () => {
     const names = EXTERNAL_MCP_TOOL_GROUPS.flatMap((g) => g.tools.map((t) => t.name));
     expect(new Set(names).size).toBe(names.length);
     for (const name of names) {
-      expect(name.endsWith("_kandev")).toBe(true);
+      expect(name.endsWith("_pcraft")).toBe(true);
     }
   });
 
-  it("includes create_task_kandev (the only task-spawning tool exposed externally)", () => {
+  it("includes create_task_pcraft (the only task-spawning tool exposed externally)", () => {
     const names = EXTERNAL_MCP_TOOL_GROUPS.flatMap((g) => g.tools.map((t) => t.name));
-    expect(names).toContain("create_task_kandev");
+    expect(names).toContain("create_task_pcraft");
   });
 
   it("does not expose session-scoped tools (plan, ask_user_question)", () => {
     const names = EXTERNAL_MCP_TOOL_GROUPS.flatMap((g) => g.tools.map((t) => t.name));
-    expect(names).not.toContain("ask_user_question_kandev");
-    expect(names).not.toContain("create_task_plan_kandev");
+    expect(names).not.toContain("ask_user_question_pcraft");
+    expect(names).not.toContain("create_task_plan_pcraft");
   });
 
   it("every group has at least one tool and a non-empty title", () => {

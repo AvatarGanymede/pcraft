@@ -41,7 +41,7 @@ type DockApi = {
 };
 
 type FlickerWindow = {
-  __KANDEV_E2E_STORE__?: E2EStore;
+  __pcraft_E2E_STORE__?: E2EStore;
   __dockviewApi__?: DockApi;
   __activeLog__?: Array<string | null>;
   __panelRemovals__?: string[];
@@ -155,7 +155,7 @@ test.describe("Session flicker", () => {
     // Observe every change of the active session over the settle window.
     await testPage.evaluate(() => {
       const w = window as unknown as FlickerWindow;
-      const store = w.__KANDEV_E2E_STORE__;
+      const store = w.__pcraft_E2E_STORE__;
       if (!store) throw new Error("E2E store bridge missing");
       const log: Array<string | null> = [];
       w.__activeLog__ = log;
@@ -207,7 +207,7 @@ test.describe("Session flicker", () => {
     // session chat-panel teardown.
     await testPage.evaluate((sid2) => {
       const w = window as unknown as FlickerWindow;
-      const store = w.__KANDEV_E2E_STORE__;
+      const store = w.__pcraft_E2E_STORE__;
       if (!store) throw new Error("E2E store bridge missing");
       // Fail fast if the dockview bridge is absent — otherwise the removal
       // listener below would never register and the teardown assertion would

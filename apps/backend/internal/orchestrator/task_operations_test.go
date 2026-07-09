@@ -1034,8 +1034,8 @@ func TestStartCreatedSession_WrapsFirstPromptWithKandevSystemBlock(t *testing.T)
 		t.Errorf("expected Kandev Session ID in wrap, got %q", content)
 	}
 	// The MCP tool list is the whole point of the wrap — guard a representative one.
-	if !strings.Contains(content, "ask_user_question_kandev") {
-		t.Errorf("expected ask_user_question_kandev tool in wrap, got %q", content)
+	if !strings.Contains(content, "ask_user_question_pcraft") {
+		t.Errorf("expected ask_user_question_pcraft tool in wrap, got %q", content)
 	}
 }
 

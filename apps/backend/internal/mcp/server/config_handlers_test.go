@@ -100,7 +100,7 @@ func TestCreateWorkflowHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_pcraft", map[string]interface{}{
 		"workspace_id": "ws-123",
 		"name":         "Sprint Board",
 		"description":  "A sprint workflow",
@@ -119,7 +119,7 @@ func TestCreateWorkflowHandler_MissingWorkspaceID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_pcraft", map[string]interface{}{
 		"name": "Sprint Board",
 	})
 
@@ -130,7 +130,7 @@ func TestCreateWorkflowHandler_MissingName(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_pcraft", map[string]interface{}{
 		"workspace_id": "ws-123",
 	})
 
@@ -143,7 +143,7 @@ func TestUpdateWorkflowHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_workflow_pcraft", map[string]interface{}{
 		"workflow_id": "wf-1",
 		"name":        "Updated",
 		"description": "New description",
@@ -157,7 +157,7 @@ func TestUpdateWorkflowHandler_MissingWorkflowID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_workflow_pcraft", map[string]interface{}{
 		"name": "Updated",
 	})
 
@@ -170,7 +170,7 @@ func TestDeleteWorkflowHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "delete_workflow_pcraft", map[string]interface{}{
 		"workflow_id": "wf-1",
 	})
 
@@ -182,7 +182,7 @@ func TestDeleteWorkflowHandler_MissingWorkflowID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_workflow_kandev", map[string]interface{}{})
+	result := callTool(t, s, "delete_workflow_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -194,7 +194,7 @@ func TestImportWorkflowHandler_Success(t *testing.T) {
 	s := newTestServer(t, backend)
 
 	doc := "version: 1\ntype: kandev_workflow\nworkflows:\n  - name: Sprint Board\n    steps: []\n"
-	result := callTool(t, s, "import_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "import_workflow_pcraft", map[string]interface{}{
 		"workspace_id": "ws-123",
 		"document":     doc,
 	})
@@ -211,7 +211,7 @@ func TestImportWorkflowHandler_MissingWorkspaceID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "import_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "import_workflow_pcraft", map[string]interface{}{
 		"document": "version: 1",
 	})
 
@@ -222,7 +222,7 @@ func TestImportWorkflowHandler_MissingDocument(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "import_workflow_kandev", map[string]interface{}{
+	result := callTool(t, s, "import_workflow_pcraft", map[string]interface{}{
 		"workspace_id": "ws-123",
 	})
 
@@ -235,7 +235,7 @@ func TestCreateWorkflowStepHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_step_pcraft", map[string]interface{}{
 		"workflow_id": "wf-123",
 		"name":        "Review",
 		"color":       "#3b82f6",
@@ -252,7 +252,7 @@ func TestCreateWorkflowStepHandler_AllFields(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_step_pcraft", map[string]interface{}{
 		"workflow_id":           "wf-123",
 		"name":                  "Deploy",
 		"position":              float64(0),
@@ -280,7 +280,7 @@ func TestCreateWorkflowStepHandler_MissingWorkflowID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_step_pcraft", map[string]interface{}{
 		"name": "Review",
 	})
 
@@ -291,7 +291,7 @@ func TestCreateWorkflowStepHandler_MissingName(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_workflow_step_pcraft", map[string]interface{}{
 		"workflow_id": "wf-123",
 	})
 
@@ -304,7 +304,7 @@ func TestUpdateWorkflowStepHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_workflow_step_pcraft", map[string]interface{}{
 		"step_id": "step-1",
 		"name":    "Updated Name",
 	})
@@ -319,7 +319,7 @@ func TestUpdateWorkflowStepHandler_AllFields(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_workflow_step_pcraft", map[string]interface{}{
 		"step_id":                  "step-1",
 		"name":                     "In Review",
 		"color":                    "#3b82f6",
@@ -345,7 +345,7 @@ func TestUpdateWorkflowStepHandler_MissingStepID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_workflow_step_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_workflow_step_pcraft", map[string]interface{}{
 		"name": "Updated",
 	})
 
@@ -360,7 +360,7 @@ func TestListAgentsHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_agents_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_agents_pcraft", map[string]interface{}{})
 
 	assert.False(t, result.IsError)
 	assert.Equal(t, ws.ActionMCPListAgents, backend.lastAction)
@@ -372,7 +372,7 @@ func TestCreateAgentProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_agent_profile_pcraft", map[string]interface{}{
 		"agent_id": "agent-1",
 		"name":     "My Profile",
 		"model":    "claude-sonnet-4-5-20250514",
@@ -386,7 +386,7 @@ func TestCreateAgentProfileHandler_MissingAgentID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_agent_profile_pcraft", map[string]interface{}{
 		"name":  "My Profile",
 		"model": "claude-sonnet-4-5-20250514",
 	})
@@ -398,7 +398,7 @@ func TestCreateAgentProfileHandler_MissingModel(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_agent_profile_pcraft", map[string]interface{}{
 		"agent_id": "agent-1",
 		"name":     "My Profile",
 	})
@@ -412,7 +412,7 @@ func TestUpdateAgentHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_agent_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_agent_pcraft", map[string]interface{}{
 		"agent_id":     "agent-1",
 		"supports_mcp": true,
 	})
@@ -425,7 +425,7 @@ func TestUpdateAgentHandler_MissingAgentID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_agent_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_agent_pcraft", map[string]interface{}{
 		"supports_mcp": true,
 	})
 
@@ -438,7 +438,7 @@ func TestDeleteAgentProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "delete_agent_profile_pcraft", map[string]interface{}{
 		"profile_id": "profile-1",
 	})
 
@@ -450,7 +450,7 @@ func TestDeleteAgentProfileHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_agent_profile_kandev", map[string]interface{}{})
+	result := callTool(t, s, "delete_agent_profile_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -463,7 +463,7 @@ func TestListAgentProfilesHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_agent_profiles_kandev", map[string]interface{}{
+	result := callTool(t, s, "list_agent_profiles_pcraft", map[string]interface{}{
 		"agent_id": "agent-1",
 	})
 
@@ -475,7 +475,7 @@ func TestListAgentProfilesHandler_MissingAgentID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_agent_profiles_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_agent_profiles_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -486,7 +486,7 @@ func TestUpdateAgentProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_agent_profile_pcraft", map[string]interface{}{
 		"profile_id": "profile-1",
 		"name":       "Updated Profile",
 		"model":      "claude-3.5-sonnet",
@@ -500,7 +500,7 @@ func TestUpdateAgentProfileHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_agent_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_agent_profile_pcraft", map[string]interface{}{
 		"name": "Updated",
 	})
 
@@ -513,7 +513,7 @@ func TestGetMcpConfigHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "get_mcp_config_kandev", map[string]interface{}{
+	result := callTool(t, s, "get_mcp_config_pcraft", map[string]interface{}{
 		"profile_id": "p-1",
 	})
 
@@ -525,7 +525,7 @@ func TestGetMcpConfigHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "get_mcp_config_kandev", map[string]interface{}{})
+	result := callTool(t, s, "get_mcp_config_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -536,7 +536,7 @@ func TestUpdateMcpConfigHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_mcp_config_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_mcp_config_pcraft", map[string]interface{}{
 		"profile_id": "p-1",
 		"enabled":    true,
 	})
@@ -549,7 +549,7 @@ func TestUpdateMcpConfigHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_mcp_config_kandev", map[string]interface{}{})
+	result := callTool(t, s, "update_mcp_config_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -562,7 +562,7 @@ func TestListExecutorsHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_executors_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_executors_pcraft", map[string]interface{}{})
 
 	assert.False(t, result.IsError)
 	assert.Equal(t, ws.ActionMCPListExecutors, backend.lastAction)
@@ -574,7 +574,7 @@ func TestListExecutorProfilesHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_executor_profiles_kandev", map[string]interface{}{
+	result := callTool(t, s, "list_executor_profiles_pcraft", map[string]interface{}{
 		"executor_id": "exec-1",
 	})
 
@@ -586,7 +586,7 @@ func TestListExecutorProfilesHandler_MissingExecutorID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_executor_profiles_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_executor_profiles_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -597,7 +597,7 @@ func TestCreateExecutorProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_executor_profile_pcraft", map[string]interface{}{
 		"executor_id": "exec-1",
 		"name":        "Default",
 	})
@@ -614,7 +614,7 @@ func TestCreateExecutorProfileHandler_MissingExecutorID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_executor_profile_pcraft", map[string]interface{}{
 		"name": "Default",
 	})
 
@@ -625,7 +625,7 @@ func TestCreateExecutorProfileHandler_MissingName(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "create_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "create_executor_profile_pcraft", map[string]interface{}{
 		"executor_id": "exec-1",
 	})
 
@@ -638,7 +638,7 @@ func TestUpdateExecutorProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_executor_profile_pcraft", map[string]interface{}{
 		"profile_id": "prof-1",
 		"name":       "Updated Profile",
 	})
@@ -651,7 +651,7 @@ func TestUpdateExecutorProfileHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "update_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "update_executor_profile_pcraft", map[string]interface{}{
 		"name": "Updated",
 	})
 
@@ -664,7 +664,7 @@ func TestDeleteExecutorProfileHandler_Success(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_executor_profile_kandev", map[string]interface{}{
+	result := callTool(t, s, "delete_executor_profile_pcraft", map[string]interface{}{
 		"profile_id": "prof-1",
 	})
 
@@ -676,7 +676,7 @@ func TestDeleteExecutorProfileHandler_MissingProfileID(t *testing.T) {
 	backend := &testBackend{}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "delete_executor_profile_kandev", map[string]interface{}{})
+	result := callTool(t, s, "delete_executor_profile_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -689,7 +689,7 @@ func TestForwardToBackend_BackendError(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_agents_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_agents_pcraft", map[string]interface{}{})
 
 	assert.True(t, result.IsError)
 }
@@ -705,7 +705,7 @@ func TestForwardToBackend_ResultContainsJSON(t *testing.T) {
 	}
 	s := newTestServer(t, backend)
 
-	result := callTool(t, s, "list_agents_kandev", map[string]interface{}{})
+	result := callTool(t, s, "list_agents_pcraft", map[string]interface{}{})
 
 	assert.False(t, result.IsError)
 	require.NotEmpty(t, result.Content)

@@ -4,19 +4,19 @@ import { EXTERNAL_MCP_TOOL_GROUPS } from "./settings/external-mcp-tools";
 
 describe("prettifyToolTitle", () => {
   it("converts a kandev tool name to Title Case with brand prefix", () => {
-    expect(prettifyToolTitle("create_task_kandev")).toBe("Kandev: Create Task");
-    expect(prettifyToolTitle("list_workflow_steps_kandev")).toBe("Kandev: List Workflow Steps");
-    expect(prettifyToolTitle("ask_user_question_kandev")).toBe("Kandev: Ask User Question");
-    expect(prettifyToolTitle("move_task_kandev")).toBe("Kandev: Move Task");
+    expect(prettifyToolTitle("create_task_pcraft")).toBe("Kandev: Create Task");
+    expect(prettifyToolTitle("list_workflow_steps_pcraft")).toBe("Kandev: List Workflow Steps");
+    expect(prettifyToolTitle("ask_user_question_pcraft")).toBe("Kandev: Ask User Question");
+    expect(prettifyToolTitle("move_task_pcraft")).toBe("Kandev: Move Task");
   });
 
   it("uppercases known acronyms", () => {
-    expect(prettifyToolTitle("update_mcp_config_kandev")).toBe("Kandev: Update MCP Config");
-    expect(prettifyToolTitle("get_mcp_config_kandev")).toBe("Kandev: Get MCP Config");
+    expect(prettifyToolTitle("update_mcp_config_pcraft")).toBe("Kandev: Update MCP Config");
+    expect(prettifyToolTitle("get_mcp_config_pcraft")).toBe("Kandev: Get MCP Config");
   });
 
   it("trims surrounding whitespace, both for matches and pass-through", () => {
-    expect(prettifyToolTitle("  create_task_kandev  ")).toBe("Kandev: Create Task");
+    expect(prettifyToolTitle("  create_task_pcraft  ")).toBe("Kandev: Create Task");
     expect(prettifyToolTitle("  Reading foo.ts  ")).toBe("Reading foo.ts");
   });
 
@@ -28,10 +28,10 @@ describe("prettifyToolTitle", () => {
 
   it("strips namespace prefixes used by different agents", () => {
     // Codex passes `<server>/<tool>`.
-    expect(prettifyToolTitle("kandev/get_task_plan_kandev")).toBe("Kandev: Get Task Plan");
-    expect(prettifyToolTitle("kandev/update_mcp_config_kandev")).toBe("Kandev: Update MCP Config");
+    expect(prettifyToolTitle("kandev/get_task_plan_pcraft")).toBe("Kandev: Get Task Plan");
+    expect(prettifyToolTitle("kandev/update_mcp_config_pcraft")).toBe("Kandev: Update MCP Config");
     // Claude-style `mcp__<server>__<tool>` prefix.
-    expect(prettifyToolTitle("mcp__kandev__create_task_kandev")).toBe("Kandev: Create Task");
+    expect(prettifyToolTitle("mcp__pcraft__create_task_pcraft")).toBe("Kandev: Create Task");
   });
 
   it("leaves Claude-supplied human titles unchanged", () => {
@@ -39,13 +39,13 @@ describe("prettifyToolTitle", () => {
     expect(prettifyToolTitle("Running `git status`")).toBe("Running `git status`");
   });
 
-  it("does not match strings that merely contain _kandev mid-name", () => {
-    expect(prettifyToolTitle("create_kandev_task")).toBe("create_kandev_task");
+  it("does not match strings that merely contain _pcraft mid-name", () => {
+    expect(prettifyToolTitle("create_pcraft_task")).toBe("create_pcraft_task");
     expect(prettifyToolTitle("kandev_create_task")).toBe("kandev_create_task");
   });
 
   it("does not match uppercased or hyphenated variants", () => {
-    expect(prettifyToolTitle("CREATE_TASK_KANDEV")).toBe("CREATE_TASK_KANDEV");
+    expect(prettifyToolTitle("CREATE_TASK_pcraft")).toBe("CREATE_TASK_pcraft");
     expect(prettifyToolTitle("create-task-kandev")).toBe("create-task-kandev");
   });
 

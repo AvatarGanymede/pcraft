@@ -3,6 +3,7 @@ package backendapp
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"go.uber.org/zap"
 
@@ -16,6 +17,8 @@ import (
 	"github.com/AvatarGanymede/pcraft/internal/events/bus"
 	gateways "github.com/AvatarGanymede/pcraft/internal/gateway/websocket"
 	"github.com/AvatarGanymede/pcraft/internal/github"
+	"github.com/AvatarGanymede/pcraft/internal/jnpm"
+	"github.com/AvatarGanymede/pcraft/internal/lark"
 	lspinstaller "github.com/AvatarGanymede/pcraft/internal/lsp/installer"
 	notificationcontroller "github.com/AvatarGanymede/pcraft/internal/notifications/controller"
 	notificationservice "github.com/AvatarGanymede/pcraft/internal/notifications/service"
@@ -110,6 +113,7 @@ func provideGateway(
 	terminalRepo *terminalrepo.Repository,
 	githubSvc *github.Service,
 	dataDir string,
+	taskBaseURL string,
 ) (*gateways.Gateway, *notificationservice.Service, *notificationcontroller.Controller, *terminalservice.Service, error) {
 	gateway, err := gateways.Provide(log)
 	if err != nil {
@@ -250,7 +254,19 @@ func provideGateway(
 		gateway.Hub.Broadcast(msg)
 	})
 
-	notificationSvc := notificationservice.NewService(notificationRepo, taskRepo, gateway.Hub, log)
+	// JNPM + Lark are env-configured (no DB/secret deps), so build them inline
+	// here and hand them to the notification service. When unconfigured they
+	// report Enabled()=false and the pipeline falls back to the admin address /
+	// skips Lark delivery. See plan/notification-jnpm-lark-plan.md.
+	jnpmSvc := jnpm.Provide(log)
+	larkNotifier := lark.Provide(log)
+	adminEmail := os.Getenv("PCRAFT_NOTIFY_ADMIN_EMAIL")
+	if taskBaseURL != "" {
+		log.Info("notifications: task deep-link base URL", zap.String("base_url", taskBaseURL))
+	}
+	notificationSvc := notificationservice.NewService(
+		notificationRepo, taskRepo, gateway.Hub, log, larkNotifier, jnpmSvc, adminEmail, taskBaseURL,
+	)
 	notificationCtrl := notificationcontroller.NewController(notificationSvc)
 	if eventBus != nil {
 		_, err = eventBus.Subscribe(events.TaskSessionStateChanged, func(ctx context.Context, event *bus.Event) error {
